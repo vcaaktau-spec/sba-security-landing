@@ -14,6 +14,8 @@ interface TestimonialProps {
   rating: number
 }
 
+const scrollerRef = useRef<HTMLDivElement>(null)
+
 const testimonials: TestimonialProps[] = [
   {
     id: "1",
@@ -147,17 +149,25 @@ export const Testimonials = () => {
   const targetVelocity = useMotionValue(baseVelocity)
   const smoothVelocity = useSpring(targetVelocity, { damping: 50, stiffness: 200 })
 
-  useAnimationFrame((delta) => {
-    // Двигаем X на основе текущей плавной скорости
-    let moveBy = smoothVelocity.get() * (delta / 16) // нормализуем под 60fps
-    baseX.set(baseX.get() + moveBy)
+  useAnimationFrame((_, delta) => {
+  if (!scrollerRef.current) return
 
-    // Если уехали слишком далеко влево (на ширину одного оригинального блока), сбрасываем X в ноль (бесшовность)
-    // Ширина одной карточки ~420px + gap 32px = 452px. * 6 карточек = 2712px.
-    if (baseX.get() <= -2712) {
-      baseX.set(0)
-    }
-  })
+  // Вычисляем ширину одного набора (так как ты дублировал массив 4 раза, делим на 4)
+  const totalWidth = scrollerRef.current.offsetWidth
+  const oneBlockWidth = totalWidth / 4 
+
+  let moveBy = smoothVelocity.get() * (delta / 16)
+  let newX = baseX.get() + moveBy
+
+  // Магическая формула: если ушли за пределы одного блока, возвращаем в начало
+  if (newX <= -oneBlockWidth) {
+    newX = newX + oneBlockWidth
+  } else if (newX > 0) {
+    newX = newX - oneBlockWidth
+  }
+
+  baseX.set(newX)
+})
 
   // Перехватчики мыши управляют целевой скоростью
   const handleMouseEnter = () => {
@@ -247,6 +257,7 @@ export const Testimonials = () => {
 
         {/* Анимированный контейнер ленты */}
         <motion.div
+          ref={scrollerRef}
           style={{ x: baseX }} // Подключаем наш кинематический x
           className="flex gap-6 sm:gap-8 w-max px-4 sm:px-8 py-8" // Добавил py-8 чтобы при hover y:-8 карточки не обрезались
         >
