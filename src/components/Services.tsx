@@ -102,7 +102,7 @@ export const Services = () => {
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => setHoveredIndex(isHovered ? null : index)} // Для мобилок
                 animate={{ flex: flexValue }}
-                transition={springConfig}
+                transition={springConfig as any}
                 className={`relative overflow-hidden rounded-[32px] cursor-pointer border border-black/5 dark:border-white/10 flex flex-col bg-neutral-100/50 dark:bg-[#0a0a0a]/50 backdrop-blur-md group`}
               >
                 {/* Фоновый градиент карточки */}

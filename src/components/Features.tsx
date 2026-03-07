@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ShieldCheck, Cctv, Route, CheckCircle2 } from "lucide-react"
+import { ShieldCheck, Cctv, Route } from "lucide-react"
 import { useInView } from "react-intersection-observer"
 
 interface FeatureProps {
@@ -70,7 +70,7 @@ export const Features = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1.2, ease: smoothEase, delay }
+      transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
   }
 
@@ -80,7 +80,7 @@ export const Features = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1, ease: smoothEase, delay }
+      transition: { duration: 1, ease: smoothEase as any, delay }
     })
   }
 

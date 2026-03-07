@@ -70,7 +70,7 @@ export const HowItWorks = () => {
       y: 0, 
       scale: 1, 
       filter: "blur(0px)",
-      transition: springTransition 
+      transition: springTransition as any
     },
   }
 
@@ -80,7 +80,7 @@ export const HowItWorks = () => {
     show: { 
       opacity: 1, 
       scale: 1, 
-      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] } 
+      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] as any} 
     },
   }
 

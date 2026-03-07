@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useTheme } from "@/components/theme-provider"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Cctv } from "lucide-react"
+import { motion } from "framer-motion"
+import { Menu, Cctv } from "lucide-react"
 import {
   Sheet,
   SheetContent,

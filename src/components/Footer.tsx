@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState} from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Phone, MessageCircle, Mail, Globe, 
-  FileText, ExternalLink, X, ChevronUp,
-  ShieldCheck, Scale, Lock
+  Phone, MessageCircle,
+  FileText, X, ChevronUp,
+  Scale, Lock
 } from "lucide-react"
 import {
   Accordion,

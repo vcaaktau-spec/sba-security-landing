@@ -133,7 +133,7 @@ export const Projects = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1, ease: smoothEase } 
+      transition: { duration: 1, ease: smoothEase as any} 
     }
   }
 
@@ -181,7 +181,7 @@ export const Projects = () => {
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
-                transition={{ duration: 0.6, ease: smoothEase, delay: index * 0.1 }}
+                transition={{ duration: 0.6, ease: smoothEase as any, delay: index * 0.1 }}
                 whileHover="hover"
                 className="group relative h-[480px] rounded-[32px] overflow-hidden"
               >
@@ -264,7 +264,7 @@ export const Projects = () => {
             
             <motion.div
               animate={{ rotate: showAll ? 180 : 0 }}
-              transition={{ duration: 0.5, ease: smoothEase }}
+              transition={{ duration: 0.5, ease: smoothEase as any}}
               className="relative z-10 text-red-500"
             >
               <ChevronDown size={20} />

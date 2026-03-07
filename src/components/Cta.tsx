@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from "react"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { MessageCircle, X, ArrowRight, ShieldCheck, Zap } from "lucide-react"
 import { useInView } from "react-intersection-observer"
-import { Button } from "./ui/button" // Оставил твой импорт, если он используется внутри формы
 
 export const Cta = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -36,7 +35,7 @@ export const Cta = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1.2, ease: smoothEase, delay }
+      transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
   }
 
@@ -152,7 +151,7 @@ export const Cta = () => {
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: "0%", opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
-              transition={{ duration: 0.5, ease: smoothEase }}
+              transition={{ duration: 0.5, ease: smoothEase as any}}
               className="relative w-full max-w-md h-full bg-background border-l border-border shadow-2xl flex flex-col"
             >
               {/* Шапка панели */}

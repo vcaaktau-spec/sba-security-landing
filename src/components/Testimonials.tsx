@@ -147,7 +147,7 @@ export const Testimonials = () => {
   const targetVelocity = useMotionValue(baseVelocity)
   const smoothVelocity = useSpring(targetVelocity, { damping: 50, stiffness: 200 })
 
-  useAnimationFrame((time, delta) => {
+  useAnimationFrame((delta) => {
     // Двигаем X на основе текущей плавной скорости
     let moveBy = smoothVelocity.get() * (delta / 16) // нормализуем под 60fps
     baseX.set(baseX.get() + moveBy)
@@ -185,7 +185,7 @@ export const Testimonials = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1, ease: smoothEase } 
+      transition: { duration: 1, ease: smoothEase as any } 
     }
   }
 

@@ -54,7 +54,7 @@ export const Statistics = () => {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1.4, ease: smoothEase, delay }
+      transition: { duration: 1.4, ease: smoothEase as any, delay }
     })
   }
 
@@ -65,7 +65,7 @@ export const Statistics = () => {
       y: 0, 
       scale: 1,
       filter: "blur(0px)",
-      transition: { duration: 1.2, ease: smoothEase, delay }
+      transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
   }
 
@@ -132,7 +132,7 @@ export const Statistics = () => {
                   scale: 1.03, 
                   y: -8,
                 }}
-                transition={{ duration: 0.6, ease: smoothEase }}
+                transition={{ duration: 0.6, ease: smoothEase as any}}
                 className="relative group bg-white/70 dark:bg-white/5 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-xl dark:shadow-2xl rounded-3xl p-8 overflow-hidden flex flex-col justify-between min-h-[260px]"
               >
                 {/* Анимированная красная линия сверху карточки */}
