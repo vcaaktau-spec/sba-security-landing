@@ -14,8 +14,6 @@ interface TestimonialProps {
   rating: number
 }
 
-const scrollerRef = useRef<HTMLDivElement>(null)
-
 const testimonials: TestimonialProps[] = [
   {
     id: "1",
@@ -138,6 +136,7 @@ export const Testimonials = () => {
   const containerRef = useRef<HTMLElement>(null)
   const [isCarouselHovered, setIsCarouselHovered] = useState(false)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const scrollerRef = useRef<HTMLDivElement>(null)
 
   // --- ЛОГИКА ПЛАВНОЙ КИНЕМАТИКИ СКРОЛЛА ---
   const baseX = useMotionValue(0)
