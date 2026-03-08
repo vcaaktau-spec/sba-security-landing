@@ -141,7 +141,7 @@ export const Hero = () => {
                         "/cam4.webp?size=small"
                       ].map((src, i) => (
                         <div key={i} className="relative overflow-hidden group/cam aspect-video sm:aspect-auto sm:h-[150px]">
-                          <img src={src} alt="Camera Feed" className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" />
+                          <img src={src} alt="Camera Feed" loading="eager" fetchPriority="high" decoding="sync" className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" />
                           <div className="absolute inset-0 bg-black/20 group-hover/cam:bg-transparent transition-colors duration-500" />
                         </div>
                       ))}

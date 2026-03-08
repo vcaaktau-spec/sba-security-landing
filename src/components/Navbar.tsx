@@ -106,6 +106,7 @@ export const Navbar = () => {
           <a 
             href="https://wa.me/77000000000"
             target="_blank"
+            rel="noopener noreferrer"
             className={`
               text-[14px] font-medium px-4 py-1.5 rounded-md transition-all active:scale-95
               ${isDark 
@@ -121,7 +122,10 @@ export const Navbar = () => {
         <div className="flex md:hidden items-center gap-4">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <button className="text-muted-foreground hover:text-foreground">
+              <button 
+                className="text-muted-foreground hover:text-foreground"
+                aria-label="Открыть меню"
+              >
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
@@ -156,6 +160,8 @@ export const Navbar = () => {
                   </button>
                   <a 
                     href="https://wa.me/77000000000"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full text-center py-2 text-sm font-medium bg-foreground text-background rounded-md"
                   >
                     WhatsApp

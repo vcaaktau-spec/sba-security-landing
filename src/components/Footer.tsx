@@ -1,7 +1,8 @@
 "use client"
 
-import { useState} from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTranslation } from "react-i18next" // <--- ДОБАВИЛИ ИМПОРТ ПЕРЕВОДОВ
 import { 
   Phone, MessageCircle,
   FileText, X, ChevronUp,
@@ -22,59 +23,6 @@ const sponsors = [
   { name: "WD" }, { name: "Seagate" }, { name: "Kingston" },
 ]
 
-const FAQList = [
-  {
-    question: "Сколько стоит установка видеонаблюдения?",
-    answer: "Стоимость проекта всегда индивидуальна. Она складывается из цены выбранного оборудования (разрешение камер, глубина архива) и сложности монтажных работ. Мы подготовим для вас 3 варианта сметы под разный бюджет в течение дня.",
-    value: "item-1",
-  },
-  {
-    question: "Можно ли смотреть камеры с телефона?",
-    answer: "Безусловно. Мы устанавливаем и настраиваем защищенное мобильное приложение, которое позволяет смотреть онлайн-трансляцию и архив записей из любой точки мира, где есть интернет.",
-    value: "item-2",
-  },
-  {
-    question: "Предоставляете ли вы гарантию?",
-    answer: "Да, мы работаем официально. Гарантия на оборудование составляет от 1 до 3 лет (в зависимости от бренда), а гарантия на наши монтажные работы — 12 месяцев.",
-    value: "item-3",
-  },
-  {
-    question: "Как быстро вы приступаете к работе?",
-    answer: "Обычно монтаж начинается в течение 2-3 рабочих дней после согласования сметы и внесения предоплаты. Небольшие объекты (до 4 камер) закрываем за один рабочий день.",
-    value: "item-4",
-  },
-    {
-    question: "Можно ли установить скрытое видеонаблюдение?",
-    answer: "Нет, установка скрытого видеонаблюдения частными лицами и организациями в РК запрещена законом. Согласно ст. 147 УК РК, использование специальных технических средств для негласного получения информации преследуется по закону. Мы устанавливаем только открытые системы с обязательным размещением предупреждающих табличек.",
-    value: "item-5",
-  },
-    {
-    question: "Работает ли система при отключении электричества?",
-    answer: "Стандартные системы зависят от сети, но мы рекомендуем установку блоков бесперебойного питания (ИБП). С ними система продолжит запись от 2 до 8 часов (в зависимости от емкости АКБ) после отключения света, что критично для безопасности в ночное время.",
-    value: "item-6",
-  },
-  {
-    question: "Нужно ли мне самому покупать кабели и жесткие диски?",
-    answer: "Нет, мы берем на себя полную комплектацию объекта «под ключ». Мы используем только специализированные жесткие диски для систем видеонаблюдения (серии WD Purple или Seagate SkyHawk), которые рассчитаны на круглосуточную перезапись 24/7, в отличие от обычных компьютерных дисков.",
-    value: "item-7",
-  },
-  {
-    question: "Записывает ли камера звук?",
-    answer: "Зависит от выбранной модели. Мы можем установить камеры со встроенными микрофонами или подключить внешние активные микрофоны. Это часто требуется на кассах или в зонах приема клиентов для контроля качества обслуживания и решения спорных ситуаций.",
-    value: "item-8",
-  },
-  {
-    question: "Что делать, если пропадет интернет?",
-    answer: "Запись не прервется. Видео будет продолжать сохраняться на локальный регистратор (NVR/DVR) или SD-карту внутри камеры. Как только интернет-соединение восстановится, вы снова сможете просматривать архив удаленно через приложение.",
-    value: "item-9",
-  },
-  {
-    question: "Обучаете ли вы пользоваться системой?",
-    answer: "Да, это обязательная часть нашей работы. После монтажа мы устанавливаем приложение на все ваши устройства, настраиваем уведомления о движении и проводим краткий инструктаж: как смотреть онлайн, как найти нужный фрагмент в архиве и как скачать его на телефон.",
-    value: "item-10",
-  },
-]
-
 const languages = [
   { code: "RU", label: "Русский", flag: "🇷🇺" },
   { code: "KZ", label: "Қазақша", flag: "🇰🇿" },
@@ -82,16 +30,74 @@ const languages = [
 ]
 
 export const Footer = () => {
+  const { t, i18n } = useTranslation() // <--- ИНИЦИАЛИЗАЦИЯ ПЕРЕВОДОВ
   const [langOpen, setLangOpen] = useState(false)
-  const [activeLang, setActiveLang] = useState(languages[0])
+  
+  // Автоматически определяем активный язык по состоянию i18n
+  const activeLang = languages.find(l => l.code.toLowerCase() === i18n.language?.toLowerCase()) || languages[0]
+  
   const [modalContent, setModalContent] = useState<string | null>(null)
-
   const [openFaq, setOpenFaq] = useState<string>("")
+
+  const closeDrawer = () => setModalContent(null)
+
+  // Перенесли FAQ внутрь компонента, чтобы он реагировал на смену языка
+  const FAQList = [
+    {
+      question: t("faq.q1", "Сколько стоит установка видеонаблюдения?"),
+      answer: t("faq.a1", "Стоимость проекта всегда индивидуальна. Она складывается из цены выбранного оборудования (разрешение камер, глубина архива) и сложности монтажных работ. Мы подготовим для вас 3 варианта сметы под разный бюджет в течение дня."),
+      value: "item-1",
+    },
+    {
+      question: t("faq.q2", "Можно ли смотреть камеры с телефона?"),
+      answer: t("faq.a2", "Безусловно. Мы устанавливаем и настраиваем защищенное мобильное приложение, которое позволяет смотреть онлайн-трансляцию и архив записей из любой точки мира, где есть интернет."),
+      value: "item-2",
+    },
+    {
+      question: t("faq.q3", "Предоставляете ли вы гарантию?"),
+      answer: t("faq.a3", "Да, мы работаем официально. Гарантия на оборудование составляет от 1 до 3 лет (в зависимости от бренда), а гарантия на наши монтажные работы — 12 месяцев."),
+      value: "item-3",
+    },
+    {
+      question: t("faq.q4", "Как быстро вы приступаете к работе?"),
+      answer: t("faq.a4", "Обычно монтаж начинается в течение 2-3 рабочих дней после согласования сметы и внесения предоплаты. Небольшие объекты (до 4 камер) закрываем за один рабочий день."),
+      value: "item-4",
+    },
+    {
+      question: t("faq.q5", "Можно ли установить скрытое видеонаблюдение?"),
+      answer: t("faq.a5", "Нет, установка скрытого видеонаблюдения частными лицами и организациями в РК запрещена законом. Согласно ст. 147 УК РК, использование специальных технических средств для негласного получения информации преследуется по закону. Мы устанавливаем только открытые системы с обязательным размещением предупреждающих табличек."),
+      value: "item-5",
+    },
+    {
+      question: t("faq.q6", "Работает ли система при отключении электричества?"),
+      answer: t("faq.a6", "Стандартные системы зависят от сети, но мы рекомендуем установку блоков бесперебойного питания (ИБП). С ними система продолжит запись от 2 до 8 часов (в зависимости от емкости АКБ) после отключения света, что критично для безопасности в ночное время."),
+      value: "item-6",
+    },
+    {
+      question: t("faq.q7", "Нужно ли мне самому покупать кабели и жесткие диски?"),
+      answer: t("faq.a7", "Нет, мы берем на себя полную комплектацию объекта «под ключ». Мы используем только специализированные жесткие диски для систем видеонаблюдения (серии WD Purple или Seagate SkyHawk), которые рассчитаны на круглосуточную перезапись 24/7, в отличие от обычных компьютерных дисков."),
+      value: "item-7",
+    },
+    {
+      question: t("faq.q8", "Записывает ли камера звук?"),
+      answer: t("faq.a8", "Зависит от выбранной модели. Мы можем установить камеры со встроенными микрофонами или подключить внешние активные микрофоны. Это часто требуется на кассах или в зонах приема клиентов для контроля качества обслуживания и решения спорных ситуаций."),
+      value: "item-8",
+    },
+    {
+      question: t("faq.q9", "Что делать, если пропадет интернет?"),
+      answer: t("faq.a9", "Запись не прервется. Видео будет продолжать сохраняться на локальный регистратор (NVR/DVR) или SD-карту внутри камеры. Как только интернет-соединение восстановится, вы снова сможете просматривать архив удаленно через приложение."),
+      value: "item-9",
+    },
+    {
+      question: t("faq.q10", "Обучаете ли вы пользоваться системой?"),
+      answer: t("faq.a10", "Да, это обязательная часть нашей работы. После монтажа мы устанавливаем приложение на все ваши устройства, настраиваем уведомления о движении и проводим краткий инструктаж: как смотреть онлайн, как найти нужный фрагмент в архиве и как скачать его на телефон."),
+      value: "item-10",
+    },
+  ]
+
   const midPoint = Math.ceil(FAQList.length / 2)
   const leftFaq = FAQList.slice(0, midPoint)
   const rightFaq = FAQList.slice(midPoint)
-
-  const closeDrawer = () => setModalContent(null)
 
   return (
     <footer id="footer" className="relative snap-start bg-background border-t border-border">
@@ -105,7 +111,7 @@ export const Footer = () => {
             className="flex gap-16 items-center whitespace-nowrap px-10"
           >
             {[...sponsors, ...sponsors].map((brand, i) => (
-              <span key={i} className="text-xs font-bold tracking-widest text-muted-foreground/40 uppercase">
+              <span key={i} className="text-xs font-bold tracking-widest text-muted-foreground/70 uppercase">
                 {brand.name}
               </span>
             ))}
@@ -118,22 +124,15 @@ export const Footer = () => {
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <h2 className="text-3xl font-extrabold tracking-tight">
-              Вопрос<span className="text-red-600 ml-2">Ответ</span>
+              {t("faq.title1", "Вопрос")}<span className="text-red-600 ml-2">{t("faq.title2", "Ответ")}</span>
             </h2>
-            <p className="text-muted-foreground font-medium">Кратко о самом важном</p>
+            <p className="text-muted-foreground font-medium">{t("faq.subtitle", "Кратко о самом важном")}</p>
           </div>
           
-          {/* НОВЫЙ БЛОК: Обертка Grid, внутри которой два независимых Аккордеона */}
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-2">
             
             {/* ЛЕВАЯ КОЛОНКА */}
-            <Accordion 
-              type="single" 
-              collapsible 
-              value={openFaq} 
-              onValueChange={setOpenFaq}
-              className="flex flex-col gap-2"
-            >
+            <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
               {leftFaq.map(({ question, answer, value }) => (
                 <AccordionItem key={value} value={value} className="border-none">
                   <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
@@ -147,13 +146,7 @@ export const Footer = () => {
             </Accordion>
 
             {/* ПРАВАЯ КОЛОНКА */}
-            <Accordion 
-              type="single" 
-              collapsible 
-              value={openFaq} 
-              onValueChange={setOpenFaq}
-              className="flex flex-col gap-2"
-            >
+            <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
               {rightFaq.map(({ question, answer, value }) => (
                 <AccordionItem key={value} value={value} className="border-none">
                   <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
@@ -178,31 +171,31 @@ export const Footer = () => {
           <div className="space-y-6">
             <div className="flex flex-col gap-1">
               <span className="text-xl font-black tracking-tighter uppercase leading-none">
-                Система безопасности
+                {t("footer.brand1", "Система безопасности")}
               </span>
               <span className="text-red-600 font-black tracking-tighter uppercase text-2xl leading-none">
-                Актау
+                {t("footer.brand2", "Актау")}
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[240px]">
-              Профессиональные решения в области безопасности и IT-инфраструктуры с 2016 года.
+              {t("footer.desc", "Профессиональные решения в области безопасности и IT-инфраструктуры с 2016 года.")}
             </p>
           </div>
 
-          {/* Navigation Col */}
-          <div className="space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Навигация</h4>
+          {/* Navigation Col (ОТЦЕНТРОВАННО lg:justify-self-center) */}
+          <div className="space-y-6 lg:justify-self-center">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{t("footer.nav_title", "Навигация")}</h4>
             <ul className="space-y-3 text-sm font-bold">
-              <li><a href="#services" className="hover:text-red-600 transition-colors">Услуги</a></li>
-              <li><a href="#projects" className="hover:text-red-600 transition-colors">Проекты</a></li>
-              <li><a href="#statistics" className="hover:text-red-600 transition-colors">О компании</a></li>
-              <li><a href="#cta" className="hover:text-red-600 transition-colors">Связаться</a></li>
+              <li><a href="#services" className="hover:text-red-600 transition-colors">{t("nav.services", "Услуги")}</a></li>
+              <li><a href="#projects" className="hover:text-red-600 transition-colors">{t("nav.projects", "Проекты")}</a></li>
+              <li><a href="#statistics" className="hover:text-red-600 transition-colors">{t("nav.about", "О компании")}</a></li>
+              <li><a href="#cta" className="hover:text-red-600 transition-colors">{t("nav.contact", "Связаться")}</a></li>
             </ul>
           </div>
 
-          {/* Contacts Col */}
-          <div className="space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Контакты</h4>
+          {/* Contacts Col (ОТЦЕНТРОВАННО lg:justify-self-center) */}
+          <div className="space-y-6 lg:justify-self-center">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{t("footer.contacts_title", "Контакты")}</h4>
             <ul className="space-y-4">
               <li>
                 <a href="tel:+77779204988" className="flex items-center gap-3 group">
@@ -213,7 +206,7 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/77779204988" className="flex items-center gap-3 group text-green-600 dark:text-green-500">
+                <a href="https://wa.me/77779204988" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group text-green-600 dark:text-green-500">
                   <div className="w-8 h-8 rounded-lg bg-green-600/10 flex items-center justify-center transition-all group-hover:bg-green-600 group-hover:text-white">
                     <MessageCircle size={14} />
                   </div>
@@ -224,8 +217,8 @@ export const Footer = () => {
           </div>
 
           {/* Settings & Links Col */}
-          <div className="space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Настройки</h4>
+          <div className="space-y-6 lg:justify-self-end">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{t("footer.settings_title", "Настройки")}</h4>
             <div className="flex flex-col gap-4">
               {/* Language Switcher */}
               <div className="relative">
@@ -248,7 +241,10 @@ export const Footer = () => {
                       {languages.map((l) => (
                         <button
                           key={l.code}
-                          onClick={() => { setActiveLang(l); setLangOpen(false); }}
+                          onClick={() => { 
+                            i18n.changeLanguage(l.code.toLowerCase()); // МЕНЯЕМ ЯЗЫК ЧЕРЕЗ i18n
+                            setLangOpen(false); 
+                          }}
                           className="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold hover:bg-muted transition-colors border-b border-border last:border-0"
                         >
                           <span>{l.flag}</span> {l.label}
@@ -261,13 +257,13 @@ export const Footer = () => {
               
               <div className="flex flex-col gap-2 text-xs font-bold text-muted-foreground">
                 <button onClick={() => setModalContent("privacy")} className="text-left hover:text-red-600 transition-colors flex items-center gap-2">
-                  <Lock size={12}/> Privacy Policy
+                  <Lock size={12}/> {t("docs.privacy", "Privacy Policy")}
                 </button>
                 <button onClick={() => setModalContent("terms")} className="text-left hover:text-red-600 transition-colors flex items-center gap-2">
-                  <Scale size={12}/> Terms of Service
+                  <Scale size={12}/> {t("docs.terms", "Terms of Service")}
                 </button>
                 <button onClick={() => setModalContent("dpa")} className="text-left hover:text-red-600 transition-colors flex items-center gap-2">
-                  <FileText size={12}/> DPA Agreement
+                  <FileText size={12}/> {t("docs.dpa", "DPA Agreement")}
                 </button>
               </div>
             </div>
@@ -277,15 +273,15 @@ export const Footer = () => {
 
       {/* 4. FINAL FOOTNOTE */}
       <div className="border-t border-border/40 py-8 bg-muted/5">
-        <div className="container px-4 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] sm:text-xs font-bold tracking-widest uppercase text-muted-foreground/50">
-          <p>© {new Date().getFullYear()} ТОО "СИСТЕМА БЕЗОПАСНОСТИ АКТАУ". ВСЕ ПРАВА ЗАЩИЩЕНЫ.</p>
+        <div className="container px-4 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] sm:text-xs font-bold tracking-widest uppercase text-muted-foreground/70">
+          <p>{t("footer.copyright", `© ${new Date().getFullYear()} ТОО "СИСТЕМА БЕЗОПАСНОСТИ АКТАУ". ВСЕ ПРАВА ЗАЩИЩЕНЫ.`)}</p>
           
           <a 
             href="/" 
             target="_blank" 
             className="flex items-center gap-2 group hover:text-foreground transition-all duration-500"
           >
-            С любовью от 
+            {t("footer.love", "С любовью от")}
             <span className="text-foreground group-hover:text-red-600 transition-colors relative">
               RS STUDIO
               <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-red-600 group-hover:w-full transition-all duration-500" />
@@ -296,97 +292,97 @@ export const Footer = () => {
 
       {/* 5. DRAWER MODAL FOR DOCUMENTS */}
       <AnimatePresence>
-  {modalContent && (
-    <div className="fixed inset-0 z-[100] flex justify-end">
-      <motion.div 
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        onClick={closeDrawer}
-        className="absolute inset-0 bg-background/80 backdrop-blur-md"
-      />
-      <motion.div 
-        initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="relative w-full max-w-xl bg-background border-l border-border h-full shadow-2xl flex flex-col"
-      >
-        <div className="p-8 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-3 font-black uppercase tracking-tighter text-xl">
-            <FileText className="text-red-600" />
-            {modalContent === "privacy" && "Privacy Policy"}
-            {modalContent === "terms" && "Terms of Service"}
-            {modalContent === "dpa" && "DPA Agreement"}
+        {modalContent && (
+          <div className="fixed inset-0 z-[100] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={closeDrawer}
+              className="absolute inset-0 bg-background/80 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-xl bg-background border-l border-border h-full shadow-2xl flex flex-col"
+            >
+              <div className="p-8 border-b border-border flex items-center justify-between">
+                <div className="flex items-center gap-3 font-black uppercase tracking-tighter text-xl">
+                  <FileText className="text-red-600" />
+                  {modalContent === "privacy" && t("docs.privacy_title", "Политика конфиденциальности")}
+                  {modalContent === "terms" && t("docs.terms_title", "Условия обслуживания")}
+                  {modalContent === "dpa" && t("docs.dpa_title", "Соглашение об обработке данных")}
+                </div>
+                <button onClick={closeDrawer} className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:scale-110 transition-transform">
+                  <X size={20} />
+                </button>
+              </div>
+              
+              <div className="p-8 overflow-y-auto flex-grow text-sm leading-relaxed text-muted-foreground space-y-6 scrollbar-thin scrollbar-thumb-red-600">
+                <p className="font-bold text-foreground italic">{t("docs.updated", "Последнее обновление: 8 марта 2026 г.")}</p>
+
+                {/* PRIVACY POLICY */}
+                {modalContent === "privacy" && (
+                  <div className="space-y-4">
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.privacy_1_title", "1. Сбор данных")}</h4>
+                      <p>{t("docs.privacy_1_desc", "Мы собираем ФИО, номер телефона и адрес объекта исключительно для обработки заявок и оказания услуг по установке систем безопасности.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.privacy_2_title", "2. Использование данных")}</h4>
+                      <p>{t("docs.privacy_2_desc", "Данные используются для связи с клиентом, подготовки коммерческих предложений и технической поддержки установленного оборудования.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.privacy_3_title", "3. Защита информации")}</h4>
+                      <p>{t("docs.privacy_3_desc", "Ваши данные хранятся на защищенных серверах. Мы не передаем информацию третьим лицам, за исключением случаев, предусмотренных законодательством РК.")}</p>
+                    </section>
+                  </div>
+                )}
+
+                {/* TERMS OF SERVICE */}
+                {modalContent === "terms" && (
+                  <div className="space-y-4">
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.terms_1_title", "1. Общие положения")}</h4>
+                      <p>{t("docs.terms_1_desc", "Использование данного сайта означает ваше согласие с условиями оказания услуг компании SBA.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.terms_2_title", "2. Оказание услуг")}</h4>
+                      <p>{t("docs.terms_2_desc", "Все работы по монтажу и настройке систем производятся на основании отдельного договора подряда. Информация на сайте носит ознакомительный характер.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.terms_3_title", "3. Ответственность")}</h4>
+                      <p>{t("docs.terms_3_desc", "SBA не несет ответственности за перебои в работе систем, вызванные отсутствием интернета на стороне клиента или неисправностью стороннего оборудования.")}</p>
+                    </section>
+                  </div>
+                )}
+
+                {/* DPA AGREEMENT */}
+                {modalContent === "dpa" && (
+                  <div className="space-y-4">
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.dpa_1_title", "1. Предмет DPA")}</h4>
+                      <p>{t("docs.dpa_1_desc", "Настоящее соглашение регулирует обработку персональных данных (включая видеопотоки) в рамках эксплуатации систем видеонаблюдения.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.dpa_2_title", "2. Обязанности обработчика")}</h4>
+                      <p>{t("docs.dpa_2_desc", "SBA обязуется обеспечить конфиденциальность доступа к облачным сервисам видеомониторинга и ограничивать доступ сотрудников к архивам клиента.")}</p>
+                    </section>
+                    <section>
+                      <h4 className="text-foreground font-bold uppercase text-xs mb-2">{t("docs.dpa_3_title", "3. Биометрические данные")}</h4>
+                      <p>{t("docs.dpa_3_desc", "Клиент подтверждает, что получил согласие субъектов (сотрудников/посетителей) на ведение видеосъемки на объекте согласно Закону РК «О персональных данных».")}</p>
+                    </section>
+                  </div>
+                )}
+
+                <div className="pt-6 border-t border-border">
+                  <p className="text-[10px] uppercase tracking-widest opacity-50">
+                    {t("docs.footer_note", "Документация подготовлена для проекта «Система Безопасности Актау» группой разработки RS STUDIO.")}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           </div>
-          <button onClick={closeDrawer} className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:scale-110 transition-transform">
-            <X size={20} />
-          </button>
-        </div>
-        
-        <div className="p-8 overflow-y-auto flex-grow text-sm leading-relaxed text-muted-foreground space-y-6 scrollbar-thin scrollbar-thumb-red-600">
-          <p className="font-bold text-foreground italic">Последнее обновление: 8 марта 2026 г.</p>
-
-          {/* PRIVACY POLICY */}
-          {modalContent === "privacy" && (
-            <div className="space-y-4">
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">1. Сбор данных</h4>
-                <p>Мы собираем ФИО, номер телефона и адрес объекта исключительно для обработки заявок и оказания услуг по установке систем безопасности.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">2. Использование данных</h4>
-                <p>Данные используются для связи с клиентом, подготовки коммерческих предложений и технической поддержки установленного оборудования.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">3. Защита информации</h4>
-                <p>Ваши данные хранятся на защищенных серверах. Мы не передаем информацию третьим лицам, за исключением случаев, предусмотренных законодательством РК.</p>
-              </section>
-            </div>
-          )}
-
-          {/* TERMS OF SERVICE */}
-          {modalContent === "terms" && (
-            <div className="space-y-4">
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">1. Общие положения</h4>
-                <p>Использование данного сайта означает ваше согласие с условиями оказания услуг компании SBA.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">2. Оказание услуг</h4>
-                <p>Все работы по монтажу и настройке систем производятся на основании отдельного договора подряда. Информация на сайте носит ознакомительный характер.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">3. Ответственность</h4>
-                <p>SBA не несет ответственности за перебои в работе систем, вызванные отсутствием интернета на стороне клиента или неисправностью стороннего оборудования.</p>
-              </section>
-            </div>
-          )}
-
-          {/* DPA AGREEMENT */}
-          {modalContent === "dpa" && (
-            <div className="space-y-4">
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">1. Предмет DPA</h4>
-                <p>Настоящее соглашение регулирует обработку персональных данных (включая видеопотоки) в рамках эксплуатации систем видеонаблюдения.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">2. Обязанности обработчика</h4>
-                <p>SBA обязуется обеспечить конфиденциальность доступа к облачным сервисам видеомониторинга и ограничивать доступ сотрудников к архивам клиента.</p>
-              </section>
-              <section>
-                <h4 className="text-foreground font-bold uppercase text-xs mb-2">3. Биометрические данные</h4>
-                <p>Клиент подтверждает, что получил согласие субъектов (сотрудников/посетителей) на ведение видеосъемки на объекте согласно Закону РК «О персональных данных».</p>
-              </section>
-            </div>
-          )}
-
-          <div className="pt-6 border-t border-border">
-            <p className="text-[10px] uppercase tracking-widest opacity-50">
-              Документация подготовлена для проекта «Система Безопасности Актау» группой разработки RS STUDIO.
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  )}
-</AnimatePresence>
+        )}
+      </AnimatePresence>
     </footer>
   )
 }
