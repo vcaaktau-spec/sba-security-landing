@@ -44,7 +44,7 @@ export const Cta = () => {
       <section
         id="cta"
         ref={containerRef}
-        className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden bg-background"
+        className="relative min-h-screen snap-start flex items-center justify-center py-24 overflow-hidden bg-background"
       >
         {/* ПРЕМИАЛЬНЫЙ BACKGROUND (SaaS Vibe) */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

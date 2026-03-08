@@ -88,7 +88,7 @@ export const HowItWorks = () => {
     <section
       id="howItWorks"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center py-24 overflow-hidden bg-background"
+      className="relative min-h-screen snap-start flex flex-col items-center justify-center py-24 overflow-hidden bg-background"
     >
       {/* Декоративный фон */}
       <div className="absolute inset-0 z-0 pointer-events-none">

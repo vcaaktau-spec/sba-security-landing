@@ -20,7 +20,7 @@ export const Hero = () => {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
+    <section className="relative min-h-screen snap-start flex items-center overflow-hidden bg-background">
       
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

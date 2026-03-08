@@ -141,7 +141,7 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative min-h-screen py-24 sm:py-32 bg-background overflow-hidden flex flex-col justify-center"
+      className="relative min-h-screen snap-start py-24 sm:py-32 bg-background overflow-hidden flex flex-col justify-center"
     >
       {/* BACKGROUND EFFECTS */}
       <div className="absolute inset-0 z-0 pointer-events-none">

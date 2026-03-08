@@ -202,7 +202,7 @@ export const Testimonials = () => {
     <section
       id="testimonials"
       ref={containerRef}
-      className="relative min-h-screen py-24 bg-background overflow-hidden flex flex-col justify-center"
+      className="relative min-h-screen snap-start py-24 bg-background overflow-hidden flex flex-col justify-center"
     >
       {/* ПЛАВНЫЕ АНИМАЦИИ ФОНА (Idle) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

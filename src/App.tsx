@@ -13,10 +13,10 @@ import "./App.css";
 
 function App() {
   return (
-    <>
+    <main className="h-screen overflow-y-auto snap-y snap-proximity scroll-smooth -webkit-overflow-scrolling-touch">
       <Navbar />
       <Hero />
-      <Statistics /> {/* Вставили нашу новую премиум-секцию вместо About */}
+      <Statistics />
       <HowItWorks />
       <Features />
       <Services />
@@ -25,7 +25,7 @@ function App() {
       <Cta />
       <Footer />
       <ScrollToTop />
-    </>
+    </main>
   );
 }
 

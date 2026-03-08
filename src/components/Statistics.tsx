@@ -73,7 +73,7 @@ export const Statistics = () => {
     <section 
       id="statistics" 
       ref={ref} 
-      className="relative min-h-screen flex flex-col justify-center py-24 overflow-hidden bg-background"
+      className="relative min-h-screen snap-start flex flex-col justify-center py-24 overflow-hidden bg-background"
     >
       {/* УНИКАЛЬНЫЙ BACKGROUND: Эффект сканера и глубокого свечения */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

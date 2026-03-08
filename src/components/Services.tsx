@@ -59,7 +59,7 @@ export const Services = () => {
   return (
     <section 
       id="services" 
-      className="relative min-h-screen flex flex-col pt-24 pb-12 overflow-hidden bg-background"
+      className="relative min-h-screen snap-start flex flex-col pt-24 pb-12 overflow-hidden bg-background"
     >
       {/* ЗАГОЛОВОК СЕКЦИИ */}
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6 mb-12">

@@ -89,7 +89,7 @@ export const Footer = () => {
   const closeDrawer = () => setModalContent(null)
 
   return (
-    <footer id="footer" className="relative bg-background border-t border-border">
+    <footer id="footer" className="relative snap-start bg-background border-t border-border">
       
       {/* 1. ULTRA-THIN BRANDS MARQUEE */}
       <div className="py-1 border-b border-border/40 bg-muted/10">

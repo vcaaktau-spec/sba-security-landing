@@ -31,11 +31,20 @@ export const Navbar = () => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-    const handleScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  setMounted(true)
+  
+  // Находим наш главный контейнер
+  const mainContent = document.querySelector('main')
+  if (!mainContent) return
+
+  const handleScroll = () => {
+    // Проверяем скролл внутри контейнера, а не окна
+    setScrolled(mainContent.scrollTop > 20)
+  }
+
+  mainContent.addEventListener("scroll", handleScroll)
+  return () => mainContent.removeEventListener("scroll", handleScroll)
+}, [])
 
   if (!mounted) return null
 
@@ -44,7 +53,7 @@ export const Navbar = () => {
 
   return (
     <header 
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         scrolled 
           ? "border-b bg-background/70 backdrop-blur-md py-3" 
           : "bg-transparent border-transparent py-5"
