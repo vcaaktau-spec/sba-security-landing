@@ -66,7 +66,13 @@ const TestimonialCard = ({ data, isCarouselHovered }: { data: TestimonialProps, 
         {/* АВАТАР ИЛИ ЗАГЛУШКА */}
         <div className="relative flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border border-transparent group-hover:border-red-500/50 transition-colors duration-500 bg-gradient-to-br from-neutral-800 to-neutral-900 flex items-center justify-center shadow-inner">
           {data.image ? (
-            <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
+            <img 
+              src={data.image} 
+              alt={data.name} 
+                loading="lazy"      // <--- ДОБАВИТЬ
+                decoding="async"    // <--- ДОБАВИТЬ
+                className="w-full h-full object-cover" 
+            />
           ) : (
             <span className="text-white font-bold text-lg drop-shadow-md">
               {data.name.charAt(0).toUpperCase()}

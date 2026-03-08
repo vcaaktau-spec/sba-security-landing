@@ -161,6 +161,8 @@ export const Projects = () => {
                   <motion.img
                     src={project.image}
                     alt={project.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover opacity-50 mix-blend-luminosity group-hover:opacity-70 group-hover:mix-blend-normal transition-all duration-700 ease-[0.22,1,0.36,1]"
                     variants={{
                       hover: { scale: 1.1 }
