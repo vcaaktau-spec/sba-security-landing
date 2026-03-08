@@ -86,11 +86,11 @@ export const Services = () => {
 
       {/* ИНТЕРАКТИВНЫЙ АККОРДЕОН */}
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6 flex-grow flex flex-col pb-12">
-        <div className="flex flex-col lg:flex-row w-full h-[800px] lg:h-[600px] gap-4">
+        <div className="flex flex-col lg:flex-row w-full h-auto lg:h-[650px] gap-4">
           
           {services.map((service, index) => {
             const isHovered = hoveredIndex === index;
-            const flexValue = hoveredIndex === null ? 1 : isHovered ? 3 : 0.8;
+            const flexValue = hoveredIndex === null ? 1 : isHovered ? 2.2 : 0.7;
             
             // Безопасный рендер иконки
             const Icon = service.icon;
@@ -139,51 +139,53 @@ export const Services = () => {
                     </motion.div>
                     
                     <div>
-                      <h3 className="text-2xl sm:text-3xl font-bold whitespace-nowrap mb-1">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm font-semibold tracking-wider text-red-600/80 dark:text-red-400/80 uppercase whitespace-nowrap">
-                        {service.subtitle}
-                      </p>
+                      <h3 className="text-xl sm:text-3xl font-bold mb-1 break-words whitespace-normal">
+  {service.title}
+</h3>
+<p className="text-xs sm:text-sm font-semibold tracking-wider text-red-600/80 dark:text-red-400/80 uppercase">
+  {service.subtitle}
+</p>
                     </div>
                   </div>
 
                   {/* Скрытый контент (Описание и Список), появляется при Hover */}
                   <div className="mt-8 flex-grow relative">
                     <AnimatePresence>
-                      {isHovered && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.5, delay: 0.1 }}
-                          className="absolute inset-0 flex flex-col justify-start"
-                        >
-                          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg whitespace-normal">
-                            {service.description}
-                          </p>
+  {isHovered && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }} // ОБЯЗАТЕЛЬНО: добавили высоту
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="overflow-hidden" // Убрали лишние позиционирования
+    >
+      <div className="pt-4 pb-6"> {/* Добавили внутренний отступ для красоты */}
+        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-lg">
+          {service.description}
+        </p>
 
-                          <div className="flex flex-col gap-4">
-                            {service.features.map((feature, i) => (
-                              <motion.div 
-                                key={i}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4, delay: 0.2 + (i * 0.1) }}
-                                className="flex items-center gap-3"
-                              >
-                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
-                                  <Check size={14} strokeWidth={3} />
-                                </div>
-                                <span className="font-medium text-foreground whitespace-nowrap">
-                                  {feature}
-                                </span>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+        <div className="flex flex-col gap-3">
+          {service.features.map((feature, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 + (i * 0.05) }}
+              className="flex items-center gap-3"
+            >
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+                <Check size={12} strokeWidth={3} />
+              </div>
+              <span className="font-medium text-sm sm:text-base text-foreground">
+                {feature}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
                   </div>
 
                 </div>
