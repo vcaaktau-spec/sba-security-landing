@@ -111,7 +111,6 @@ export const Hero = () => {
               </Button>
             </motion.div>
 
-            {/* Иконки */}
             <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-14 text-[15px] font-medium text-foreground/90">
               {[
                 { icon: Smartphone, text: "Удаленный доступ", delay: 0.1 },
@@ -136,10 +135,10 @@ export const Hero = () => {
                   <div className="relative bg-black rounded-[8px] sm:rounded-[12px] overflow-hidden border border-white/5 shadow-inner">
                     <div className="grid grid-cols-2 gap-0.5 sm:gap-[2px] bg-neutral-950">
                       {[
-                        "/cam1.webp",
-                        "/cam2.webp",
-                        "/cam3.webp",
-                        "/cam4.webp"
+                        "/cam1.webp?size=small",
+                        "/cam2.webp?size=small",
+                        "/cam3.webp?size=small",
+                        "/cam4.webp?size=small"
                       ].map((src, i) => (
                         <div key={i} className="relative overflow-hidden group/cam aspect-video sm:aspect-auto sm:h-[150px]">
                           <img src={src} alt="Camera Feed" className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" />
