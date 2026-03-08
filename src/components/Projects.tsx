@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { useInView } from "react-intersection-observer"
@@ -43,6 +43,15 @@ export const Projects = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
   const [[page, direction], setPage] = useState([0, 0])
 
+  // Автоматическое переключение слайдов каждые 4 секунды
+useEffect(() => {
+  const timer = setInterval(() => {
+    paginate(1);
+  }, 4000);
+
+  // Очистка таймера при размонтировании или смене слайда вручную
+  return () => clearInterval(timer);
+}, [page]); // Зависимость от page сбрасывает таймер при ручном переключении
   // Только твои проекты с правильными ключами для i18n
   const projectsData: ProjectProps[] = [
     {
@@ -187,9 +196,22 @@ export const Projects = () => {
     initial="enter"
     animate="center"
     exit="exit"
-    // flex-col для мобилок (один под другим), lg:flex-row для ПК
-    className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
-  >
+    // === ДОБАВЛЯЕМ ЭТИ СТРОКИ ДЛЯ СВАЙПА ===
+  drag="x" 
+  dragConstraints={{ left: 0, right: 0 }}
+  dragElastic={1}
+  onDragEnd={(e: any, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
+  const swipe = Math.abs(info.offset.x) * info.velocity.x;
+
+  if (swipe < -10000) {
+    paginate(1);
+  } else if (swipe > 10000) {
+    paginate(-1);
+  }
+}}
+  // ======================================
+  className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
+>
     {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
     {/* lg:h-full оставляем только для десктопа. На мобилках убираем h-1/2, чтобы блок растягивался по тексту */}
     <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
