@@ -54,7 +54,7 @@ const resources = {
         feature2: "Полный Контроль"
       },
       stats: {
-        title1: "Безопасность вашего бизнеса — ",
+        title1: "Безопасность вашего бизнеса",
         title2: "наша зона ответственности",
         desc: "Компания <strong>«Система безопасности Актау»</strong> — это более 10 лет опыта в проектировании, чистом монтаже и настройке систем видеонаблюдения. Мы не просто вешаем камеры, мы создаем безотказную инфраструктуру контроля.",
         stat1: "Установленных камер",
@@ -296,7 +296,7 @@ const resources = {
         feature2: "Толық бақылау"
       },
       stats: {
-        title1: "Сіздің бизнесіңіздің қауіпсіздігі — ",
+        title1: "Сіздің бизнесіңіздің қауіпсіздігі",
         title2: "біздің жауапкершілігіміз",
         desc: "<strong>«Ақтау қауіпсіздік жүйесі»</strong> компаниясы — бейнебақылау жүйелерін жобалау, таза монтаждау және баптау бойынша 10 жылдан астам тәжірибе. Біз жай ғана камераларды ілмейміз, біз мінсіз бақылау инфрақұрылымын жасаймыз.",
         stat1: "Орнатылған камералар",
@@ -538,7 +538,7 @@ const resources = {
         feature2: "Total Control"
       },
       stats: {
-        title1: "Your business security is — ",
+        title1: "Your business security is",
         title2: "our area of responsibility",
         desc: "The <strong>Aktau Security System</strong> company has over 10 years of experience in designing, clean installation, and configuring video surveillance systems. We don't just hang cameras; we create a flawless monitoring infrastructure.",
         stat1: "Cameras Installed",

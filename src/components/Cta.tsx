@@ -84,7 +84,7 @@ export const Cta = () => {
     <>
       <section
         id="cta"
-        className="relative min-h-screen snap-start flex items-center justify-center py-20 overflow-hidden bg-background"
+        className="magnet-section relative min-h-screen flex items-center justify-center py-20 overflow-hidden bg-background"
       >
         {/* === AURORA BACKGROUND (Гипнотический фон) === */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

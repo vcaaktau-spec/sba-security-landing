@@ -1,16 +1,71 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useTranslation } from "react-i18next" // <--- ДОБАВИЛИ ПЕРЕВОДЫ
+// 1. ДОБАВИЛИ useScroll и useTransform ИЗ FRAMER MOTION
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion" 
+import { useTranslation } from "react-i18next" 
 import { Button } from "@/components/ui/button"
 import { Smartphone, SlidersHorizontal, X } from "lucide-react"
 
 import { Calculator } from "./Calculator" 
 
+// === ОБНОВЛЕННЫЙ КОМПОНЕНТ АНИМАЦИИ (Идеальный перенос и посимвольное появление) ===
+const StaggerText = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
+  const words = text.split(" ");
+  let globalIndex = 0;
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+    visible: (i: number) => ({
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { 
+        duration: 0.8, 
+        ease: [0.22, 1, 0.36, 1] as any,
+        delay: delayOffset + (i * 0.035), 
+      }
+    }),
+  };
+
+  return (
+    <span className={`flex flex-wrap ${className}`}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-flex whitespace-nowrap mr-[0.25em] last:mr-0">
+          {Array.from(word).map((letter, letterIndex) => {
+            const currentIndex = globalIndex++; 
+            return (
+              <motion.span
+                key={letterIndex}
+                custom={currentIndex} 
+                variants={letterVariants}
+                initial="hidden"
+                animate="visible"
+                className="inline-block"
+              >
+                {letter}
+              </motion.span>
+            );
+          })}
+        </span>
+      ))}
+    </span>
+  );
+};
+// ==========================================
+
+
 export const Hero = () => {
-  const { t } = useTranslation() // <--- ИНИЦИАЛИЗАЦИЯ
+  const { t } = useTranslation() 
   const [isCalcOpen, setIsCalcOpen] = useState(false)
+
+  // === 2. НАСТРОЙКА ПАРАЛЛАКСА ===
+  const { scrollY } = useScroll()
+  // Фон уезжает вниз (создает глубину)
+  const backgroundY = useTransform(scrollY, [0, 1000], [0, 300])
+  // Монитор поднимается вверх (эффект 3D вылета)
+  const monitorY = useTransform(scrollY, [0, 1000], [0, -150])
+  // ===============================
 
   useEffect(() => {
     if (isCalcOpen) {
@@ -35,10 +90,10 @@ export const Hero = () => {
 
   return (
     <>
-      <section className="relative min-h-screen snap-start flex items-center overflow-hidden bg-background">
+      <section className="magnet-section relative min-h-screen flex items-center overflow-hidden bg-background">
         
-        {/* BACKGROUND */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* 3. ДОБАВИЛИ ПАРАЛЛАКС К ФОНУ (style={{ y: backgroundY }}) */}
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-muted/20" />
           
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-red-600/10 blur-[120px] rounded-full" />
@@ -76,26 +131,36 @@ export const Hero = () => {
               transition={{ duration: 5 + i * 1.5, repeat: Infinity, ease: "easeInOut" }}
             />
           ))}
-        </div>
+        </motion.div>
 
         <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-20 lg:py-0">
           
           {/* LEFT CONTENT */}
           <div className="flex flex-col">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.05]">
-              <motion.span custom={0.1} variants={textVariants} initial="hidden" animate="visible" className="block">
-                {t("hero.title1", "Система безопасности")}
-              </motion.span>
-              <motion.span custom={0.5} variants={textVariants} initial="hidden" animate="visible" className="block text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-red-800 drop-shadow-sm mt-1 sm:mt-2">
-                {t("hero.title2", "Актау")}
-              </motion.span>
+              <StaggerText 
+                text={t("hero.title_part1", "Система")} 
+                className="block" 
+                delayOffset={0.1} 
+              />
+              <StaggerText 
+                text={t("hero.title_part2", "Безопасности")} 
+                className="block" 
+                delayOffset={0.4} 
+              />
+              {/* 4. ИСПРАВИЛИ БАГ С ЦВЕТОМ ТЕКСТА "АКТАУ" */}
+              <StaggerText 
+                text={t("hero.title_part3", "Актау")} 
+                className="block text-red-600 drop-shadow-sm mt-1 sm:mt-2" 
+                delayOffset={0.8} 
+              />
             </h1>
 
-            <motion.p custom={1.1} variants={textVariants} initial="hidden" animate="visible" className="mt-6 text-base sm:text-lg text-muted-foreground max-w-[500px] leading-relaxed">
+            <motion.p custom={1.4} variants={textVariants} initial="hidden" animate="visible" className="mt-6 text-base sm:text-lg text-muted-foreground max-w-[500px] leading-relaxed">
               {t("hero.subtitle", "Проектируем и устанавливаем премиальные системы видеонаблюдения для домов, бизнеса и складов.")}
             </motion.p>
 
-            <motion.div custom={1.4} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10">
+            <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10">
               <Button 
                 onClick={() => setIsCalcOpen(true)}
                 size="lg" 
@@ -106,86 +171,93 @@ export const Hero = () => {
               </Button>
             </motion.div>
 
-            <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-14 text-[15px] font-medium text-foreground/90">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-14 text-[15px] font-medium text-foreground/90">
               {[
-                { icon: Smartphone, text: t("hero.feature1", "Удаленный доступ"), delay: 0.1 },
-                { icon: SlidersHorizontal, text: t("hero.feature2", "Полный Контроль"), delay: 0.2 }
+                { icon: Smartphone, text: t("hero.feature1", "Удаленный доступ"), delay: 2.0 },
+                { icon: SlidersHorizontal, text: t("hero.feature2", "Полный Контроль"), delay: 2.1 }
               ].map((item, i) => (
-                <motion.div key={i} className="flex items-center gap-3 group cursor-default" animate={{ y: [0, -4, 0] }} transition={{ duration: 4, delay: item.delay, repeat: Infinity, ease: "easeInOut" }}>
-                  <div className="flex items-center justify-center w-[42px] h-[42px] rounded-2xl bg-red-500/10 text-red-500 transition-all duration-300 group-hover:bg-red-500/20 group-hover:scale-105">
+                <motion.div 
+                  key={i} 
+                  custom={item.delay} 
+                  variants={textVariants} 
+                  initial="hidden" 
+                  animate="visible"
+                  className="flex items-center gap-3 group cursor-default"
+                >
+                  <motion.div 
+                    animate={{ y: [0, -4, 0] }} 
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="flex items-center justify-center w-[42px] h-[42px] rounded-2xl bg-red-500/10 text-red-500 transition-all duration-300 group-hover:bg-red-500/20 group-hover:scale-105"
+                  >
                     <item.icon size={20} />
-                  </div>
+                  </motion.div>
                   <span>{item.text}</span>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* RIGHT CONTENT (Монитор) */}
-          <motion.div 
-            className="flex justify-center lg:justify-end mt-8 lg:mt-0" 
-            initial={{ opacity: 0, y: 60, filter: "blur(10px)" }} 
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} 
-            transition={{ duration: 1.2, ease: smoothEase as any, delay: 0.3 }}
-          >
-            {/* Оставляем только мягкое парение (float), убираем тряску */}
+          {/* 5. ДОБАВИЛИ ПАРАЛЛАКС К МОНИТОРУ (style={{ y: monitorY }}) Обернули в отдельный div чтобы не сбить анимации появления */}
+          <motion.div style={{ y: monitorY }} className="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full z-10">
             <motion.div 
-              animate={{ y: [-8, 8, -8] }} 
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
-              className="w-full max-w-[540px]"
+              initial={{ opacity: 0, y: 60, filter: "blur(10px)" }} 
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} 
+              transition={{ duration: 1.2, ease: smoothEase as any, delay: 0.8 }} 
             >
-              {/* ПРЕМИУМ 3D HOVER: Вместо rotate делаем мягкий scale и усиление свечения */}
               <motion.div 
-                whileHover={{ scale: 1.03 }} 
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} 
-                className="relative group cursor-pointer"
+                animate={{ y: [-8, 8, -8] }} 
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
+                className="w-full max-w-[540px]"
               >
-                {/* Свечение за монитором (усиливается при наведении) */}
-                <div className="absolute -inset-4 sm:-inset-10 bg-gradient-to-r from-red-600/10 to-red-500/10 blur-[60px] sm:blur-[80px] rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
-                
-                {/* Корпус монитора */}
-                <div className="relative w-full bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-[12px] sm:rounded-[18px] p-1.5 sm:p-2 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-white/20">
-                  <div className="relative bg-black rounded-[8px] sm:rounded-[12px] overflow-hidden border border-white/5 shadow-inner">
-                    
-                    <div className="grid grid-cols-2 gap-0.5 sm:gap-[2px] bg-neutral-950">
-                      {[
-                        "/cam1.webp?size=small",
-                        "/cam2.webp?size=small",
-                        "/cam3.webp?size=small",
-                        "/cam4.webp?size=small"
-                      ].map((src, i) => (
-                        <div key={i} className="relative overflow-hidden group/cam aspect-video sm:aspect-auto sm:h-[150px] bg-neutral-900">
-                          {/* LIGHTHOUSE OPTIMIZATION: lazy load для всех кроме первой, явные размеры не нужны из-за w-full h-full, но object-cover спасет пропорции */}
-                          <img 
-                            src={src} 
-                            alt={`Camera View ${i + 1}`} 
-                            loading={i === 0 ? "eager" : "lazy"} 
-                            fetchPriority={i === 0 ? "high" : "low"} 
-                            decoding="async" 
-                            className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" 
-                          />
-                          <div className="absolute inset-0 bg-black/20 group-hover/cam:bg-transparent transition-colors duration-500" />
-                        </div>
-                      ))}
-                    </div>
+                <motion.div 
+                  whileHover={{ scale: 1.03 }} 
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} 
+                  className="relative group cursor-pointer"
+                >
+                  <div className="absolute -inset-4 sm:-inset-10 bg-gradient-to-r from-red-600/10 to-red-500/10 blur-[60px] sm:blur-[80px] rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
+                  
+                  <div className="relative w-full bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-[12px] sm:rounded-[18px] p-1.5 sm:p-2 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-white/20">
+                    <div className="relative bg-black rounded-[8px] sm:rounded-[12px] overflow-hidden border border-white/5 shadow-inner">
+                      
+                      <div className="grid grid-cols-2 gap-0.5 sm:gap-[2px] bg-neutral-950">
+                        {[
+                          "/cam1.webp?size=small",
+                          "/cam2.webp?size=small",
+                          "/cam3.webp?size=small",
+                          "/cam4.webp?size=small"
+                        ].map((src, i) => (
+                          <div key={i} className="relative overflow-hidden group/cam aspect-video sm:aspect-auto sm:h-[150px] bg-neutral-900">
+                            <img 
+                              src={src} 
+                              alt={`Camera View ${i + 1}`} 
+                              loading={i === 0 ? "eager" : "lazy"} 
+                              fetchPriority={i === 0 ? "high" : "low"} 
+                              decoding="async" 
+                              className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" 
+                            />
+                            <div className="absolute inset-0 bg-black/20 group-hover/cam:bg-transparent transition-colors duration-500" />
+                          </div>
+                        ))}
+                      </div>
 
-                    <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-                      <div className="absolute top-2 left-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-white flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
-                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,1)]" /> REC
+                      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+                        <div className="absolute top-2 left-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-white flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
+                          <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,1)]" /> REC
+                        </div>
+                        <div className="absolute top-2 right-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-green-400 flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
+                          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,1)]" /> ONLINE
+                        </div>
+                        <motion.div animate={{ translateY: ["-100%", "500%"] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-transparent via-red-500/10 to-red-500/20 border-b border-red-500/40 shadow-[0_2px_15px_rgba(239,68,68,0.3)]" />
                       </div>
-                      <div className="absolute top-2 right-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-green-400 flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
-                        <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,1)]" /> ONLINE
-                      </div>
-                      <motion.div animate={{ translateY: ["-100%", "500%"] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-transparent via-red-500/10 to-red-500/20 border-b border-red-500/40 shadow-[0_2px_15px_rgba(239,68,68,0.3)]" />
                     </div>
                   </div>
-                </div>
-                
-                {/* Ножка монитора */}
-                <div className="flex flex-col items-center relative z-[-1]">
-                  <div className="w-[20px] sm:w-[30px] h-[30px] sm:h-[45px] bg-gradient-to-b from-neutral-800 to-neutral-900 border-x border-white/10" />
-                  <div className="w-[120px] sm:w-[180px] h-[6px] sm:h-[8px] bg-gradient-to-b from-neutral-600 to-neutral-900 rounded-t-sm rounded-b-xl shadow-[0_15px_30px_rgba(0,0,0,0.8)] border-t border-white/20" />
-                </div>
+                  
+                  <div className="flex flex-col items-center relative z-[-1]">
+                    <div className="w-[20px] sm:w-[30px] h-[30px] sm:h-[45px] bg-gradient-to-b from-neutral-800 to-neutral-900 border-x border-white/10" />
+                    <div className="w-[120px] sm:w-[180px] h-[6px] sm:h-[8px] bg-gradient-to-b from-neutral-600 to-neutral-900 rounded-t-sm rounded-b-xl shadow-[0_15px_30px_rgba(0,0,0,0.8)] border-t border-white/20" />
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>

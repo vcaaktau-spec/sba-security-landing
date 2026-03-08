@@ -23,7 +23,6 @@ interface ProjectProps {
   image: string
 }
 
-// Компактные иконки (размер 14)
 const getBadgeIcon = (type: BadgeType) => {
   switch (type) {
     case "camera": return <Camera size={14} className="text-red-500" />
@@ -42,17 +41,8 @@ export const Projects = () => {
   
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
   const [[page, direction], setPage] = useState([0, 0])
+  const [isPaused, setIsPaused] = useState(false)
 
-  // Автоматическое переключение слайдов каждые 4 секунды
-useEffect(() => {
-  const timer = setInterval(() => {
-    paginate(1);
-  }, 4000);
-
-  // Очистка таймера при размонтировании или смене слайда вручную
-  return () => clearInterval(timer);
-}, [page]); // Зависимость от page сбрасывает таймер при ручном переключении
-  // Только твои проекты с правильными ключами для i18n
   const projectsData: ProjectProps[] = [
     {
       id: "01",
@@ -100,13 +90,21 @@ useEffect(() => {
     setPage([page + newDirection, newDirection])
   }
 
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      paginate(1);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [page, isPaused]);
+
   const smoothEase = [0.22, 1, 0.36, 1]
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 80 : -80,
+      x: direction > 0 ? 60 : -60,
       opacity: 0,
-      filter: "blur(8px)",
+      filter: "blur(4px)",
       scale: 0.98
     }),
     center: {
@@ -115,15 +113,15 @@ useEffect(() => {
       opacity: 1,
       filter: "blur(0px)",
       scale: 1,
-      transition: { duration: 0.5, ease: smoothEase as any }
+      transition: { duration: 0.6, ease: smoothEase as any }
     },
     exit: (direction: number) => ({
       z: 0,
-      x: direction < 0 ? 80 : -80,
+      x: direction < 0 ? 60 : -60,
       opacity: 0,
-      filter: "blur(8px)",
+      filter: "blur(4px)",
       scale: 0.98,
-      transition: { duration: 0.5, ease: smoothEase as any }
+      transition: { duration: 0.6, ease: smoothEase as any }
     })
   }
 
@@ -131,7 +129,7 @@ useEffect(() => {
     <section 
       id="projects" 
       ref={ref}
-      className="relative w-full min-h-screen snap-start flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-slate-50 dark:bg-background"
+      className="magnet-section relative w-full min-h-screen flex flex-col justify-center py-20 overflow-hidden bg-slate-50 dark:bg-background"
     >
       {/* ДИНАМИЧЕСКИЙ ФОН */}
       <AnimatePresence mode="popLayout">
@@ -146,131 +144,132 @@ useEffect(() => {
         />
       </AnimatePresence>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1240px] px-4 sm:px-6 flex flex-col items-center">
+      <div className="relative z-10 mx-auto w-full max-w-[1140px] px-4 sm:px-6 flex flex-col items-center">
         
-        {/* === ШАПКА СЕКЦИИ === */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 sm:mb-10">
+        {/* === ОТЦЕНТРОВАННАЯ ШАПКА === */}
+        <div className="w-full flex flex-col items-center text-center mb-10 sm:mb-14">
           <motion.div 
-            initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, ease: smoothEase as any }}
+            initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 1, ease: smoothEase as any }}
             className="max-w-2xl"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground mb-4">
-              {t("projects.title1")}
-              <span className="text-red-600 block sm:inline sm:ml-2">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-4">
+              <span className="block">{t("projects.title1")}</span>
+              <span className="text-red-600 block mt-1 sm:mt-2">
                 {t("projects.title2")}
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4">
               {t("projects.subtitle")}
             </p>
           </motion.div>
-
-          {/* НАВИГАЦИЯ */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, delay: 0.1, ease: smoothEase as any }}
-            className="flex items-center gap-3 shrink-0"
-          >
-            <button onClick={() => paginate(-1)} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center bg-white/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 backdrop-blur-md transition-all hover:scale-105 active:scale-95 text-foreground hover:text-red-600">
-              <ChevronLeft size={24} />
-            </button>
-            <button onClick={() => paginate(1)} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center bg-white/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 backdrop-blur-md transition-all hover:scale-105 active:scale-95 text-foreground hover:text-red-600">
-              <ChevronRight size={24} />
-            </button>
-          </motion.div>
         </div>
 
-        {/* === ГЛАВНАЯ КАРТОЧКА (С PREMIUM GLOW) === */}
-        <div className="relative w-full h-[650px] sm:h-[700px] lg:h-[500px] xl:h-[550px] group">
-          
-          {/* НЕОНОВОЕ СВЕЧЕНИЕ (Видно только в Dark Mode) */}
-          <div className="absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/30 to-red-600/0 rounded-[34px] lg:rounded-[42px] opacity-0 dark:opacity-100 blur-lg transition-opacity duration-1000 group-hover:opacity-100" />
-          <div className="absolute -inset-[1px] bg-gradient-to-r from-white/10 via-red-500/20 to-white/10 rounded-[34px] lg:rounded-[42px] opacity-0 dark:opacity-100 transition-opacity duration-1000" />
+        {/* === ГЛАВНАЯ КАРТОЧКА (МЕНЬШЕ И КОМПАКТНЕЕ) === */}
+        {/* Высота на ПК уменьшена до 420px */}
+        <div 
+          className="relative w-full h-[600px] sm:h-[650px] lg:h-[420px] xl:h-[460px] group"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {/* Свечение */}
+          <div className="absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/10 dark:via-red-600/30 to-red-600/0 rounded-[30px] lg:rounded-[36px] opacity-0 blur-xl transition-opacity duration-1000 group-hover:opacity-100" />
+          <div className="absolute -inset-[1px] bg-gradient-to-r from-black/5 via-red-500/10 to-black/5 dark:from-white/10 dark:via-red-500/20 dark:to-white/10 rounded-[30px] lg:rounded-[36px] transition-opacity duration-1000" />
 
-          {/* Контейнер карточки */}
-          <div className="relative w-full h-full rounded-[32px] lg:rounded-[40px] bg-white dark:bg-[#08080a] border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-[0_0_80px_rgba(220,38,38,0.05)] overflow-hidden">
+          {/* КОНТЕЙНЕР */}
+          <div className="relative w-full h-full rounded-[28px] lg:rounded-[32px] bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="wait">
-  <motion.div
-    key={page}
-    custom={direction}
-    variants={variants}
-    initial="enter"
-    animate="center"
-    exit="exit"
-    // === ДОБАВЛЯЕМ ЭТИ СТРОКИ ДЛЯ СВАЙПА ===
-  drag="x" 
-  dragConstraints={{ left: 0, right: 0 }}
-  dragElastic={1}
-  onDragEnd={(_e: any, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
-  const swipe = Math.abs(info.offset.x) * info.velocity.x;
+              <motion.div
+                key={page}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                drag="x" 
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(_e: any, info: any) => {
+                  const swipe = Math.abs(info.offset.x) * info.velocity.x;
+                  if (swipe < -10000) { paginate(1); } 
+                  else if (swipe > 10000) { paginate(-1); }
+                }}
+                className="absolute inset-0 w-full h-full flex flex-col lg:flex-row cursor-grab active:cursor-grabbing"
+              >
+                
+                {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
+                {/* Паддинги уменьшены (p-8 вместо p-12) */}
+                <div className="w-full lg:w-[45%] xl:w-[40%] p-6 sm:p-8 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
+                  <div>
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <span className="px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 dark:bg-red-500/10 rounded-lg border border-red-100 dark:border-red-500/20">
+                        {t(activeProject.categoryKey)}
+                      </span>
+                      <span className="text-2xl font-black text-black/5 dark:text-white/5 select-none font-mono">
+                        {activeProject.id}
+                      </span>
+                    </div>
 
-  if (swipe < -10000) {
-    paginate(1);
-  } else if (swipe > 10000) {
-    paginate(-1);
-  }
-}}
-  // ======================================
-  className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
->
-    {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
-    {/* lg:h-full оставляем только для десктопа. На мобилках убираем h-1/2, чтобы блок растягивался по тексту */}
-    <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
-      <div>
-        <div className="flex items-center justify-between mb-5">
-          <span className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-500/10 rounded-lg border border-red-500/20">
-            {t(activeProject.categoryKey)}
-          </span>
-          <span className="text-3xl font-black text-black/5 dark:text-white/5 select-none">
-            {activeProject.id}
-          </span>
-        </div>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-3 transition-colors group-hover:text-red-600 dark:group-hover:text-white duration-500">
+                      {activeProject.title}
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-5 line-clamp-3">
+                      {t(activeProject.descriptionKey)}
+                    </p>
 
-        {/* Уменьшаем шрифты на мобилках (text-xl), на ПК оставляем (lg:text-4xl) */}
-        <h3 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight mb-4">
-          {activeProject.title}
-        </h3>
-        
-        {/* Убираем line-clamp-3 на мобилках, чтобы текст выходил полностью */}
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
-          {t(activeProject.descriptionKey)}
-        </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {activeProject.badges.map((badge, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20 dark:group-hover:border-red-500/30 group-hover:bg-red-50/50 dark:group-hover:bg-red-500/5">
+                          {getBadgeIcon(badge.type)}
+                          <span className="text-xs font-semibold text-foreground">
+                            {badge.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {activeProject.badges.map((badge, idx) => (
-            <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20">
-              {getBadgeIcon(badge.type)}
-              <span className="text-xs font-semibold text-foreground">
-                {badge.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+                  <div className="pt-4 border-t border-black/5 dark:border-white/10 mt-auto">
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
+                      {t("projects.price_label", "Стоимость под ключ")}
+                    </div>
+                    <div className="text-xl sm:text-2xl font-black text-foreground">
+                      {activeProject.price}
+                    </div>
+                  </div>
+                </div>
 
-      <div className="pt-5 border-t border-black/5 dark:border-white/10 mt-auto">
-        <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
-          {t("projects.price_label")}
-        </div>
-        <div className="text-2xl sm:text-3xl font-black text-foreground">
-          {activeProject.price}
-        </div>
-      </div>
-    </div>
+                {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ + КНОПКИ */}
+                <div className="w-full lg:w-[55%] xl:w-[60%] flex-grow lg:h-full relative overflow-hidden bg-slate-100 dark:bg-neutral-900 min-h-[250px] border-t lg:border-t-0 lg:border-l border-black/5 dark:border-white/5">
+                  <img 
+                    src={activeProject.image} 
+                    alt={activeProject.title} 
+                    loading="eager" 
+                    draggable={false}
+                    className="w-full h-full object-cover transition-all duration-1000 ease-[0.22,1,0.36,1] blur-[2px] scale-105 group-hover:blur-0 group-hover:scale-100 opacity-90 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-black/5 dark:ring-white/10 rounded-b-[28px] lg:rounded-r-[32px] lg:rounded-bl-none pointer-events-none" />
+                  
+                  {/* === ПРОЗРАЧНЫЕ КНОПКИ НАВИГАЦИИ (ПОВЕРХ КАРТИНКИ) === */}
+                  <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2 z-20">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); paginate(-1); }} 
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 transition-all hover:scale-105 active:scale-95 text-white"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); paginate(1); }} 
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 transition-all hover:scale-105 active:scale-95 text-white"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </div>
 
-    {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ */}
-    {/* Используем flex-grow, чтобы картинка заняла всё свободное место после текста */}
-    <div className="w-full lg:w-1/2 flex-grow lg:h-full relative overflow-hidden bg-neutral-900 group min-h-[250px]">
-      <img 
-        src={activeProject.image} 
-        alt={activeProject.title} 
-        loading="eager" 
-        className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] blur-[3px] scale-105 group-hover:blur-0 group-hover:scale-100"
-      />
-      {/* Адаптивный градиент: снизу вверх на мобилках, слева направо на ПК */}
-      <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 lg:from-black/20 to-transparent pointer-events-none" />
-    </div>
-  </motion.div>
-</AnimatePresence>
+                </div>
+                
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 

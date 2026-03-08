@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+// === ДОБАВИЛИ useScroll и useTransform ===
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Star, Quote, X, Upload, CheckCircle2, Loader2, MessageSquarePlus } from "lucide-react"
 import { useInView } from "react-intersection-observer"
@@ -15,7 +16,6 @@ interface TestimonialProps {
   rating: number
 }
 
-// Оставили только 2 реальных отзыва
 const testimonials: TestimonialProps[] = [
   {
     id: "1",
@@ -60,20 +60,34 @@ const testimonials: TestimonialProps[] = [
     comment: "Спасибо! Установили все быстро и качественно. Оборудование работае отлично, полностью доволен результатом!",
     rating: 5,
   },
+    {
+    id: "7",
+    name: "Антон",
+    userName: "Kaz Tehno Service",
+    comment: "Очень квалифицированные специалисты. Не один раз обращались за помощью в решении разных вопросов - всегда все выполнялось оперативно и качественно. Спасибо вам!",
+    rating: 5,
+  }
 ]
 
 export const Testimonials = () => {
   const { t } = useTranslation()
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
-  
   const [activeId, setActiveId] = useState<string>(testimonials[0].id)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   
-  // Автоматическое переключение отзывов каждые 4 секунды
-  useEffect(() => {
-    // Останавливаем таймер, если открыта форма или секция не в поле зрения
-    if (isSidebarOpen || !inView) return;
+  // === ПАРАЛЛАКС И INVIEW ЛОГИКА ===
+  const containerRef = useRef<HTMLElement>(null)
+  const { ref: inViewRef, inView } = useInView({ triggerOnce: true, threshold: 0.15, rootMargin: "-10% 0px" })
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"])
+  const contentY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"])
 
+  // Автоматическое переключение
+  useEffect(() => {
+    if (isSidebarOpen || !inView) return;
     const timer = setInterval(() => {
       setActiveId((currentId) => {
         const currentIndex = testimonials.findIndex(t => t.id === currentId);
@@ -81,11 +95,9 @@ export const Testimonials = () => {
         return testimonials[nextIndex].id;
       });
     }, 4000);
-
     return () => clearInterval(timer);
   }, [activeId, isSidebarOpen, inView]);
 
-  // Состояния формы
   const [name, setName] = useState("")
   const [company, setCompany] = useState("")
   const [text, setText] = useState("")
@@ -100,7 +112,6 @@ export const Testimonials = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
     const formData = new FormData()
     formData.append("name", name); formData.append("company", company)
     formData.append("rating", rating.toString()); formData.append("text", text)
@@ -121,22 +132,51 @@ export const Testimonials = () => {
     }
   }
 
+  // === КИНЕМАТОГРАФИЧНЫЕ АНИМАЦИИ СБОРКИ (CHOREOGRAPHED ASSEMBLY) ===
+  const titleVariants = {
+    hidden: { opacity: 0, x: -60, y: -40, filter: "blur(10px)", scale: 0.95 },
+    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", scale: 1, transition: { duration: 1.2, ease: smoothEase as any, delay: 0.1 } }
+  }
+  const btnVariants = {
+    hidden: { opacity: 0, x: 60, y: -40, filter: "blur(10px)" },
+    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: smoothEase as any, delay: 0.2 } }
+  }
+  const listVariants = {
+    hidden: { opacity: 0, x: -80, y: 60, filter: "blur(10px)" },
+    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: smoothEase as any, delay: 0.3 } }
+  }
+  const cardVariants = {
+    hidden: { opacity: 0, x: 80, y: 80, filter: "blur(12px)", scale: 0.9 },
+    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", scale: 1, transition: { duration: 1.2, ease: smoothEase as any, delay: 0.4 } }
+  }
+
   return (
     <section 
       id="testimonials" 
-      className="relative min-h-screen snap-start flex flex-col justify-center py-20 lg:py-24 overflow-hidden bg-slate-50 dark:bg-background"
+      ref={containerRef}
+      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-24 overflow-hidden bg-slate-50 dark:bg-background"
     >
-      {/* Мягкий фон */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* === ПАРАЛЛАКС ФОН === */}
+      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-red-900/5 blur-[120px] rounded-full" />
-      </div>
+      </motion.div>
 
-      <div ref={ref} className="relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 flex flex-col h-full lg:min-h-[600px]">
+      {/* === ПАРАЛЛАКС КОНТЕНТ === */}
+      <motion.div 
+        ref={inViewRef} 
+        style={{ y: contentY }}
+        className="relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 flex flex-col h-full lg:min-h-[600px]"
+      >
         
         {/* === ВЕРХНЯЯ ЧАСТЬ: Заголовок и Кнопка === */}
-        <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-12">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 1, ease: smoothEase as any }} className="max-w-2xl">
+        <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-12 overflow-hidden px-2">
+          
+          {/* Заголовок вылетает сверху-слева */}
+          <motion.div 
+            variants={titleVariants} initial="hidden" animate={inView ? "visible" : "hidden"} 
+            className="max-w-2xl origin-top-left"
+          >
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-foreground leading-[1.1]">
               {t("testimonials.title1")}
               <span className="text-red-600 block mt-1">
@@ -148,9 +188,13 @@ export const Testimonials = () => {
             </p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 1, delay: 0.1, ease: smoothEase as any }}>
-            <button onClick={() => setIsSidebarOpen(true)} className="flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground font-semibold hover:shadow-lg hover:border-red-500/30 transition-all duration-300">
-              <MessageSquarePlus size={18} className="text-red-600" />
+          {/* Кнопка вылетает справа */}
+          <motion.div 
+            variants={btnVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            className="origin-right"
+          >
+            <button onClick={() => setIsSidebarOpen(true)} className="flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground font-semibold hover:shadow-[0_15px_30px_-10px_rgba(220,38,38,0.2)] hover:border-red-500/30 transition-all duration-300 group">
+              <MessageSquarePlus size={18} className="text-red-600 group-hover:scale-110 transition-transform duration-300" />
               {t("testimonials.btn")}
             </button>
           </motion.div>
@@ -159,13 +203,11 @@ export const Testimonials = () => {
         {/* === НИЖНЯЯ ЧАСТЬ: Список и Превью === */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 flex-grow h-[450px]">
           
-          {/* ЛЕВЫЙ БЛОК: Список (С кастомным скроллбаром) */}
+          {/* ЛЕВЫЙ БЛОК вытягивается снизу-слева */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, delay: 0.2, ease: smoothEase as any }}
+            variants={listVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="w-full lg:w-[35%] flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 pr-0 lg:pr-4 snap-x lg:snap-none
-            /* Кастомный скроллбар для ПК */
             [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-black/20 dark:hover:[&::-webkit-scrollbar-thumb]:bg-white/20
-            /* Скрытие скроллбара на мобилках */
             max-lg:[&::-webkit-scrollbar]:hidden max-lg:[-ms-overflow-style:none] max-lg:[scrollbar-width:none]"
           >
             {testimonials.map((data) => {
@@ -173,19 +215,17 @@ export const Testimonials = () => {
               return (
                 <div
                   key={data.id}
-                  onClick={() => setActiveId(data.id)} // Клик и на ПК и на Мобилках
-                  className={`group relative flex items-center gap-4 p-4 rounded-[20px] cursor-pointer transition-all duration-300 snap-start shrink-0 w-[280px] lg:w-full border ${
+                  onClick={() => setActiveId(data.id)}
+                  className={`group relative flex items-center gap-4 p-4 rounded-[20px] cursor-pointer transition-all duration-300 shrink-0 w-[280px] lg:w-full border ${
                     isActive 
-                      ? "bg-white dark:bg-white/[0.05] border-transparent shadow-sm" 
+                      ? "bg-white dark:bg-white/[0.05] border-transparent shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] dark:shadow-none" 
                       : "bg-white/40 dark:bg-white/[0.02] border-transparent hover:bg-white/80 dark:hover:bg-white/[0.04]"
                   }`}
                 >
-                  {/* Красная линия (Индикатор активности) */}
                   {isActive && (
-                    <motion.div layoutId="activeReviewIndicator" className="absolute left-0 top-3 bottom-3 w-1 bg-red-500 rounded-r-full" />
+                    <motion.div layoutId="activeReviewIndicator" className="absolute left-0 top-3 bottom-3 w-1 bg-red-500 rounded-r-full shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
                   )}
 
-                  {/* Аватарка */}
                   <div className="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 dark:bg-neutral-800 flex items-center justify-center shrink-0 border border-black/5 dark:border-white/5">
                     {data.image ? (
                       <img src={data.image} alt={data.name} loading="lazy" className="w-full h-full object-cover" />
@@ -194,7 +234,6 @@ export const Testimonials = () => {
                     )}
                   </div>
                   
-                  {/* Имя и Описание */}
                   <div className="flex flex-col flex-grow overflow-hidden">
                     <span className={`font-bold text-sm truncate transition-colors ${isActive ? "text-foreground" : "text-foreground/80"}`}>
                       {data.name}
@@ -204,7 +243,6 @@ export const Testimonials = () => {
                     </span>
                   </div>
 
-                  {/* Оценка */}
                   <div className="hidden lg:flex items-center gap-1 ml-auto">
                     <Star size={14} className="fill-red-500 text-red-500" />
                     <span className="text-xs font-bold text-foreground">{data.rating}.0</span>
@@ -214,12 +252,11 @@ export const Testimonials = () => {
             })}
           </motion.div>
 
-          {/* ПРАВЫЙ БЛОК: Превью отзыва */}
+          {/* ПРАВЫЙ БЛОК (Главная карточка) вылетает по диагонали снизу-справа */}
           <motion.div 
-            initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, delay: 0.3, ease: smoothEase as any }}
-            className="w-full lg:w-[65%] h-full relative bg-white dark:bg-[#0c0c0e] rounded-[32px] border border-black/5 dark:border-white/5 shadow-xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden h-auto lg:h-full flex flex-col"
+            variants={cardVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            className="w-full lg:w-[65%] h-full relative bg-white dark:bg-[#0c0c0e] rounded-[32px] border border-black/5 dark:border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden h-auto lg:h-full flex flex-col origin-bottom-right"
           >
-            {/* Водяной знак кавычки */}
             <div className="absolute top-8 right-8 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
               <Quote size={120} className="text-foreground" />
             </div>
@@ -227,25 +264,22 @@ export const Testimonials = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTestimonial.id}
-                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.4, ease: smoothEase as any }}
+                initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
+                transition={{ duration: 0.5, ease: smoothEase as any }}
                 className="relative z-10 p-8 sm:p-12 flex flex-col h-full"
               >
-                {/* Звезды */}
                 <div className="flex gap-1.5 mb-8">
                   {[...Array(activeTestimonial.rating)].map((_, i) => (
-                    <Star key={i} size={24} className="fill-red-500 text-red-500" />
+                    <Star key={i} size={24} className="fill-red-500 text-red-500 drop-shadow-sm" />
                   ))}
                 </div>
 
-                {/* Текст отзыва */}
                 <h3 className="text-lg sm:text-xl lg:text-3xl font-medium tracking-tight text-foreground leading-snug mb-6 lg:mb-10 min-h-0">
                   "{activeTestimonial.comment}"
                 </h3>
 
-                {/* Инфо об авторе (Внизу) */}
                 <div className="mt-auto flex items-center gap-4">
                   <div className="flex flex-col">
                     <span className="font-bold text-lg text-foreground">{activeTestimonial.name}</span>
@@ -257,9 +291,9 @@ export const Testimonials = () => {
           </motion.div>
         </div>
 
-      </div>
+      </motion.div>
 
-      {/* === БОКОВАЯ ПАНЕЛЬ ФОРМЫ (Осталась без изменений) === */}
+      {/* === БОКОВАЯ ПАНЕЛЬ ФОРМЫ === */}
       <AnimatePresence>
         {isSidebarOpen && (
           <>
@@ -301,7 +335,7 @@ export const Testimonials = () => {
                       <label className="text-sm font-semibold mb-2 block">{t("testimonials.form_rating")}</label>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
-                          <Star key={star} onClick={() => setRating(star)} className={`w-8 h-8 cursor-pointer transition-all ${rating >= star ? "fill-red-500 text-red-500 scale-110" : "text-muted-foreground/30 hover:text-red-400 hover:scale-110"}`} />
+                          <Star key={star} onClick={() => setRating(star)} className={`w-8 h-8 cursor-pointer transition-all ${rating >= star ? "fill-red-500 text-red-500 scale-110 drop-shadow-sm" : "text-muted-foreground/30 hover:text-red-400 hover:scale-110"}`} />
                         ))}
                       </div>
                     </div>

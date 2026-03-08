@@ -178,7 +178,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
   )
 
   return (
-    <section id="calculator" className="relative min-h-screen snap-start py-12 sm:py-24 bg-background overflow-hidden flex flex-col justify-center">
+    <section id="calculator" className="relative min-h-screen py-12 sm:py-24 bg-background overflow-hidden flex flex-col justify-center">
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-red-900/5 blur-[150px] rounded-full" />

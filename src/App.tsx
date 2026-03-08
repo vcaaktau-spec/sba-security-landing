@@ -8,24 +8,29 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { Services } from "./components/Services";
 import { Projects } from "./components/Projects";
 import { Testimonials } from "./components/Testimonials";
-import { Statistics } from "./components/Statistics"; // Добавили импорт новой секции
+import { Statistics } from "./components/Statistics";
+import { SmoothScroll } from "./components/smooth-scroll";
 import "./App.css";
 
 function App() {
   return (
-    <main className="h-screen overflow-y-auto snap-y snap-proximity scroll-smooth -webkit-overflow-scrolling-touch">
-      <Navbar />
-      <Hero />
-      <Statistics />
-      <HowItWorks />
-      <Features />
-      <Services />
-      <Projects />
-      <Testimonials />
-      <Cta />
-      <Footer />
-      <ScrollToTop />
-    </main>
+    <SmoothScroll>
+      {/* Убрали h-screen, overflow-y-auto и scroll-smooth */}
+      {/* Оставили просто flex flex-col и min-h-screen, чтобы контент шел естественно */}
+      <main className="flex flex-col min-h-screen">
+        <Navbar />
+        <Hero />
+        <Statistics />
+        <HowItWorks />
+        <Features />
+        <Services />
+        <Projects />
+        <Testimonials />
+        <Cta />
+        <Footer />
+        <ScrollToTop />
+      </main>
+    </SmoothScroll>
   );
 }
 
