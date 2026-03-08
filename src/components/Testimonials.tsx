@@ -72,9 +72,9 @@ const TestimonialCard = ({ data, isCarouselHovered }: { data: TestimonialProps, 
   <motion.div 
     // Если навели на любую часть карусели, карточка тускнеет. При ховере на саму карточку - она снова яркая.
     animate={{ opacity: isCarouselHovered ? 0.4 : 1 }}
-    whileHover={{ opacity: 1, y: -8 }}
-    transition={{ duration: 0.5, ease: "easeOut" }}
-    className="relative group w-[320px] sm:w-[420px] h-[320px] flex-shrink-0 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[32px] p-6 sm:p-8 flex flex-col gap-6 overflow-hidden transition-colors duration-500 hover:border-red-500/30 hover:bg-white/80 dark:hover:bg-[#0a0a0a]/80"
+    whileHover={{ opacity: 1, y: -5 }}
+    transition={{ duration: 0.3, ease: "easeOut" }}
+    className="relative group w-[320px] sm:w-[420px] h-[320px] flex-shrink-0 bg-white/60 dark:bg-[#0a0a0a]/60 sm:backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[32px] p-6 sm:p-8 flex flex-col gap-6 overflow-hidden transition-colors duration-500 hover:border-red-500/30 hover:bg-white/80 dark:hover:bg-[#0a0a0a]/80"
   >
     
     {/* ВНУТРЕННЯЯ АНИМАЦИЯ: Водяной знак */}
@@ -257,7 +257,7 @@ export const Testimonials = () => {
         {/* Анимированный контейнер ленты */}
         <motion.div
           ref={scrollerRef}
-          style={{ x: baseX }} // Подключаем наш кинематический x
+          style={{ x: baseX, willChange: "transform"}} // Подключаем наш кинематический x
           className="flex gap-6 sm:gap-8 w-max px-4 sm:px-8 py-8" // Добавил py-8 чтобы при hover y:-8 карточки не обрезались
         >
           {duplicatedTestimonials.map((testimonial, index) => (
