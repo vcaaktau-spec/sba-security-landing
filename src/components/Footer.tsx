@@ -86,6 +86,11 @@ export const Footer = () => {
   const [activeLang, setActiveLang] = useState(languages[0])
   const [modalContent, setModalContent] = useState<string | null>(null)
 
+  const [openFaq, setOpenFaq] = useState<string>("")
+  const midPoint = Math.ceil(FAQList.length / 2)
+  const leftFaq = FAQList.slice(0, midPoint)
+  const rightFaq = FAQList.slice(midPoint)
+
   const closeDrawer = () => setModalContent(null)
 
   return (
@@ -118,18 +123,57 @@ export const Footer = () => {
             <p className="text-muted-foreground font-medium">Кратко о самом важном</p>
           </div>
           
-          <Accordion type="single" collapsible className="grid md:grid-cols-2 gap-x-12 gap-y-2">
-            {FAQList.map(({ question, answer, value }) => (
-              <AccordionItem key={value} value={value} className="border-none">
-                <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
-                  {question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
-                  {answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <h2 className="text-3xl font-extrabold tracking-tight">
+              Вопрос<span className="text-red-600 ml-2">Ответ</span>
+            </h2>
+            <p className="text-muted-foreground font-medium">Кратко о самом важном</p>
+          </div>
+          
+          {/* НОВЫЙ БЛОК: Обертка Grid, внутри которой два независимых Аккордеона */}
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-2">
+            
+            {/* ЛЕВАЯ КОЛОНКА */}
+            <Accordion 
+              type="single" 
+              collapsible 
+              value={openFaq} 
+              onValueChange={setOpenFaq}
+              className="flex flex-col gap-2"
+            >
+              {leftFaq.map(({ question, answer, value }) => (
+                <AccordionItem key={value} value={value} className="border-none">
+                  <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
+                    {question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
+                    {answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+
+            {/* ПРАВАЯ КОЛОНКА */}
+            <Accordion 
+              type="single" 
+              collapsible 
+              value={openFaq} 
+              onValueChange={setOpenFaq}
+              className="flex flex-col gap-2"
+            >
+              {rightFaq.map(({ question, answer, value }) => (
+                <AccordionItem key={value} value={value} className="border-none">
+                  <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
+                    {question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
+                    {answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+            
+          </div>
         </div>
       </div>
 
