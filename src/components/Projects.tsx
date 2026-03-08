@@ -1,15 +1,13 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { useTranslation } from "react-i18next"
 import { useInView } from "react-intersection-observer"
-// Добавили кучу новых иконок для разных случаев
-import { Camera, HardDrive, ChevronDown, Clock, Flame, Shield, Network, Lock } from "lucide-react"
+import { Camera, HardDrive, Clock, Flame, Shield, Network, Lock, ChevronRight, ChevronLeft } from "lucide-react"
 
-// 1. Создаем список доступных типов бейджей
 export type BadgeType = "camera" | "storage" | "time" | "fire" | "network" | "access" | "shield"
 
-// 2. Описываем структуру одного бейджа
 export interface ProjectBadge {
   type: BadgeType
   value: string | number
@@ -18,231 +16,245 @@ export interface ProjectBadge {
 interface ProjectProps {
   id: string
   title: string
-  category: string
-  description: string
-  badges: ProjectBadge[] // Убрали cameras и storage, добавили гибкий массив
+  categoryKey: string
+  descriptionKey: string
+  badges: ProjectBadge[]
   price: string
   image: string
 }
 
-// Функция-распределитель иконок
+// Компактные иконки (размер 14)
 const getBadgeIcon = (type: BadgeType) => {
   switch (type) {
     case "camera": return <Camera size={14} className="text-red-500" />
     case "storage": return <HardDrive size={14} className="text-red-500" />
-    case "time": return <Clock size={14} className="text-red-500" />     // Время работ
-    case "fire": return <Flame size={14} className="text-red-500" />      // Пожарка
-    case "network": return <Network size={14} className="text-red-500" /> // Сети/СКС
-    case "access": return <Lock size={14} className="text-red-500" />     // СКУД/Доступ
-    case "shield": return <Shield size={14} className="text-red-500" />   // Охрана/Безопасность
+    case "time": return <Clock size={14} className="text-red-500" />
+    case "fire": return <Flame size={14} className="text-red-500" />
+    case "network": return <Network size={14} className="text-red-500" />
+    case "access": return <Lock size={14} className="text-red-500" />
+    case "shield": return <Shield size={14} className="text-red-500" />
     default: return null
   }
 }
 
-const projects: ProjectProps[] = [
-  {
-    id: "01",
-    title: "Tetys Blu",
-    category: "Аквапарк",
-    description: "Восстановлено 46 камер и установлено 18 новых, полностью модернизирована система видеонаблюдения объекта. Без оборудования.",
-    // Вот так теперь выглядит массив бейджей:
-    badges: [
-      { type: "camera", value: "64 камеры" },
-      { type: "time", value: "~30 дней" } // Можешь добавить третий, например { type: "network", value: "Оптика" }
-    ],
-    price: "960 000 ₸",
-    image: "/projects/tetys.webp",
-  },
-  {
-    id: "02",
-    title: "Entro",
-    category: "Салон дверей",
-    description: "Установлены IP-видеокамеры 2 Мп со звуком и смонтирована система пожарной сигнализации с дымовыми датчиками.",
-    badges: [
-      { type: "camera", value: "6 камер" },
-      { type: "fire", value: "12 датчиков" },
-      { type: "time", value: "3 дня" }
-    ],
-    price: "1 183 350 ₸",
-    image: "/projects/entro.webp",
-  },
-  {
-    id: "03",
-    title: "Автокраски 285",
-    category: "Магазин автокрасок",
-    description: "Установлена пожарная сигнализация «Гранит» и разработана проектная документация.",
-    badges: [
-      { type: "fire", value: "24 датчика" },
-      { type: "time", value: "7 дней" }
-    ],
-    price: "860 000 ₸",
-    image: "/projects/avtokraski.webp",
-  },
-]
-
 export const Projects = () => {
-  const [showAll, setShowAll] = useState(false)
-  const containerRef = useRef<HTMLElement>(null)
+  const { t } = useTranslation()
   
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 })
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
+  const [[page, direction], setPage] = useState([0, 0])
 
-  // Вычисляем, какие проекты показывать
-  const displayedProjects = showAll ? projects : projects.slice(0, 3)
+  // Только твои проекты с правильными ключами для i18n
+  const projectsData: ProjectProps[] = [
+    {
+      id: "01",
+      title: "Tetys Blu",
+      categoryKey: "projects.p1_cat",
+      descriptionKey: "projects.p1_desc",
+      badges: [
+        { type: "camera", value: "64 камеры" },
+        { type: "time", value: "~30 дней" }
+      ],
+      price: "960 000 ₸",
+      image: "/projects/tetys.webp",
+    },
+    {
+      id: "02",
+      title: "Entro",
+      categoryKey: "projects.p2_cat",
+      descriptionKey: "projects.p2_desc",
+      badges: [
+        { type: "camera", value: "6 камер" },
+        { type: "fire", value: "12 датчиков" },
+        { type: "time", value: "3 дня" }
+      ],
+      price: "1 183 350 ₸",
+      image: "/projects/entro.webp",
+    },
+    {
+      id: "03",
+      title: "Автокраски 285",
+      categoryKey: "projects.p3_cat",
+      descriptionKey: "projects.p3_desc",
+      badges: [
+        { type: "fire", value: "24 датчика" },
+        { type: "time", value: "7 дней" }
+      ],
+      price: "860 000 ₸",
+      image: "/projects/avtokraski.webp",
+    },
+  ]
 
-  // Параллакс для заголовка
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  })
-  const titleY = useTransform(scrollYProgress, [0, 1], [40, -40])
+  const activeIndex = Math.abs(page % projectsData.length)
+  const activeProject = projectsData[activeIndex]
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection])
+  }
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 80 : -80,
+      opacity: 0,
+      filter: "blur(8px)",
+      scale: 0.98
+    }),
+    center: {
+      z: 1,
+      x: 0,
+      opacity: 1,
       filter: "blur(0px)",
-      transition: { duration: 1, ease: smoothEase as any} 
-    }
+      scale: 1,
+      transition: { duration: 0.5, ease: smoothEase as any }
+    },
+    exit: (direction: number) => ({
+      z: 0,
+      x: direction < 0 ? 80 : -80,
+      opacity: 0,
+      filter: "blur(8px)",
+      scale: 0.98,
+      transition: { duration: 0.5, ease: smoothEase as any }
+    })
   }
 
   return (
-    <section
-      id="projects"
-      ref={containerRef}
-      className="relative min-h-screen snap-start py-24 sm:py-32 bg-background overflow-hidden flex flex-col justify-center"
+    <section 
+      id="projects" 
+      ref={ref}
+      className="relative w-full min-h-screen snap-start flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-slate-50 dark:bg-background"
     >
-      {/* BACKGROUND EFFECTS */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[20%] right-[-5%] w-[600px] h-[600px] bg-red-600/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[10%] left-[-10%] w-[800px] h-[800px] bg-red-900/5 blur-[150px] rounded-full" />
-      </div>
+      {/* ДИНАМИЧЕСКИЙ ФОН */}
+      <AnimatePresence mode="popLayout">
+        <motion.img
+          key={`bg-${activeProject.id}`}
+          src={activeProject.image}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.05 }} 
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 w-full h-full object-cover blur-[100px] pointer-events-none"
+        />
+      </AnimatePresence>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6">
+      <div className="relative z-10 mx-auto w-full max-w-[1240px] px-4 sm:px-6 flex flex-col items-center">
         
-        {/* HEADER (Без бейджа) */}
-        <motion.div 
-          ref={ref}
-          style={{ y: titleY }} 
-          initial="hidden" 
-          animate={inView ? "visible" : "hidden"}
-          variants={textVariants}
-          className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
-        >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-            Реализованные{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-red-800 drop-shadow-sm">
-              проекты
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Мы не просто устанавливаем камеры, мы решаем конкретные задачи бизнеса и частных лиц. Ознакомьтесь с примерами наших работ и сметами.
-          </p>
-        </motion.div>
+        {/* === ШАПКА СЕКЦИИ === */}
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 sm:mb-10">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, ease: smoothEase as any }}
+            className="max-w-2xl"
+          >
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground mb-4">
+              {t("projects.title1")}
+              <span className="text-red-600 block sm:inline sm:ml-2">
+                {t("projects.title2")}
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {t("projects.subtitle")}
+            </p>
+          </motion.div>
 
-        {/* PROJECTS GRID с анимацией изменения компоновки (layout) */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          <AnimatePresence mode="popLayout">
-            {displayedProjects.map((project, index) => (
+          {/* НАВИГАЦИЯ */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, delay: 0.1, ease: smoothEase as any }}
+            className="flex items-center gap-3 shrink-0"
+          >
+            <button onClick={() => paginate(-1)} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center bg-white/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 backdrop-blur-md transition-all hover:scale-105 active:scale-95 text-foreground hover:text-red-600">
+              <ChevronLeft size={24} />
+            </button>
+            <button onClick={() => paginate(1)} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center bg-white/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 backdrop-blur-md transition-all hover:scale-105 active:scale-95 text-foreground hover:text-red-600">
+              <ChevronRight size={24} />
+            </button>
+          </motion.div>
+        </div>
+
+        {/* === ГЛАВНАЯ КАРТОЧКА (С PREMIUM GLOW) === */}
+        <div className="relative w-full h-[650px] sm:h-[700px] lg:h-[500px] xl:h-[550px] group">
+          
+          {/* НЕОНОВОЕ СВЕЧЕНИЕ (Видно только в Dark Mode) */}
+          <div className="absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/30 to-red-600/0 rounded-[34px] lg:rounded-[42px] opacity-0 dark:opacity-100 blur-lg transition-opacity duration-1000 group-hover:opacity-100" />
+          <div className="absolute -inset-[1px] bg-gradient-to-r from-white/10 via-red-500/20 to-white/10 rounded-[34px] lg:rounded-[42px] opacity-0 dark:opacity-100 transition-opacity duration-1000" />
+
+          {/* Контейнер карточки */}
+          <div className="relative w-full h-full rounded-[32px] lg:rounded-[40px] bg-white dark:bg-[#08080a] border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-[0_0_80px_rgba(220,38,38,0.05)] overflow-hidden">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
-                layout // Позволяет сетке плавно перестраиваться
-                key={project.id}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
-                transition={{ duration: 0.6, ease: smoothEase as any, delay: index * 0.1 }}
-                whileHover="hover"
-                className="group relative h-[480px] rounded-[32px] overflow-hidden"
+                key={page}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
               >
-                {/* ФОНОВОЕ ИЗОБРАЖЕНИЕ */}
-                <div className="absolute inset-0 bg-black">
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover opacity-50 mix-blend-luminosity group-hover:opacity-70 group-hover:mix-blend-normal transition-all duration-700 ease-[0.22,1,0.36,1]"
-                    variants={{
-                      hover: { scale: 1.1 }
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
-                </div>
+                {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
+                <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-between h-1/2 lg:h-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <span className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-500/10 rounded-lg border border-red-500/20">
+                        {t(activeProject.categoryKey)}
+                      </span>
+                      <span className="text-3xl font-black text-black/5 dark:text-white/5 select-none">
+                        {activeProject.id}
+                      </span>
+                    </div>
 
-                {/* КОНТЕНТ КАРТОЧКИ */}
-                <div className="relative z-10 h-full flex flex-col p-6 sm:p-8">
-                  
-                  {/* Верх: Категория и ID */}
-                  <div className="flex justify-between items-start mb-auto">
-                    <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white/80 bg-white/10 backdrop-blur-md rounded-full border border-white/10">
-                      {project.category}
-                    </span>
-                    <span className="text-white/20 font-black text-xl">
-                      {project.id}
-                    </span>
-                  </div>
-
-                  {/* Середина: Заголовок и Технические данные */}
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors duration-300">
-                      {project.title}
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight mb-4">
+                      {activeProject.title}
                     </h3>
-                    <p className="text-sm text-neutral-400 line-clamp-3 mb-4 leading-relaxed">
-                      {project.description}
-                    </p>
                     
-                    {/* Иконки с характеристиками */}
-                    {/* ДИНАМИЧЕСКИЕ БЕЙДЖИ */}
-                    <div className="flex flex-wrap gap-3">
-                      {project.badges.map((badge, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 text-xs font-medium text-neutral-300 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5 whitespace-nowrap">
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 line-clamp-3 lg:line-clamp-none">
+                      {t(activeProject.descriptionKey)}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {activeProject.badges.map((badge, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20">
                           {getBadgeIcon(badge.type)}
-                          {badge.value}
+                          <span className="text-xs font-semibold text-foreground">
+                            {badge.value}
+                          </span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  {/* Низ: ЦЕНА (Стрелочка удалена) */}
-                  <div className="pt-5 border-t border-white/10">
-                    <div className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-1">
-                      Стоимость под ключ
+
+                  <div className="pt-5 border-t border-black/5 dark:border-white/10 mt-auto">
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
+                      {t("projects.price_label")}
                     </div>
-                    <div className="text-2xl font-black text-white group-hover:text-red-500 transition-colors duration-300">
-                      {project.price}
+                    <div className="text-2xl sm:text-3xl font-black text-foreground">
+                      {activeProject.price}
                     </div>
                   </div>
+                </div>
 
+                {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ */}
+                <div className="w-full lg:w-1/2 h-1/2 lg:h-full relative overflow-hidden bg-neutral-900">
+                  <img 
+                    src={activeProject.image} 
+                    alt={activeProject.title} 
+                    loading="eager" 
+                    className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] blur-[3px] scale-105 group-hover:blur-0 group-hover:scale-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
                 </div>
               </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
 
-        {/* КНОПКА СПОЙЛЕРА (ПОКАЗАТЬ/СКРЫТЬ) */}
-        <motion.div layout className="mt-12 flex justify-center">
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="group relative px-8 py-4 bg-transparent text-foreground font-semibold rounded-full overflow-hidden border border-border hover:border-red-500/50 transition-colors duration-300 flex items-center gap-3"
-          >
-            {/* Глянцевый блик при наведении */}
-            <div className="absolute inset-0 bg-red-500/5 translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-500 ease-[0.22,1,0.36,1]" />
-            
-            <span className="relative z-10 transition-colors duration-300 group-hover:text-red-600 dark:group-hover:text-red-400">
-              {showAll ? "Свернуть проекты" : "Смотреть все проекты"}
-            </span>
-            
-            <motion.div
-              animate={{ rotate: showAll ? 180 : 0 }}
-              transition={{ duration: 0.5, ease: smoothEase as any}}
-              className="relative z-10 text-red-500"
-            >
-              <ChevronDown size={20} />
-            </motion.div>
-          </button>
-        </motion.div>
-
+        {/* ТОЧКИ-ИНДИКАТОРЫ */}
+        <div className="flex justify-center items-center gap-2 mt-8 shrink-0">
+          {projectsData.map((_, idx) => (
+            <div 
+              key={idx} 
+              className={`h-1.5 rounded-full transition-all duration-500 ${activeIndex === idx ? "w-8 bg-red-600" : "w-2 bg-black/10 dark:bg-white/10"}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

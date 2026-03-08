@@ -2,11 +2,11 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useTranslation } from "react-i18next" // <--- ДОБАВИЛИ ИМПОРТ ПЕРЕВОДОВ
+import { useTranslation } from "react-i18next" 
 import { 
   Phone, MessageCircle,
   FileText, X, ChevronUp,
-  Scale, Lock
+  Scale, Lock, ChevronDown
 } from "lucide-react"
 import {
   Accordion,
@@ -30,10 +30,10 @@ const languages = [
 ]
 
 export const Footer = () => {
-  const { t, i18n } = useTranslation() // <--- ИНИЦИАЛИЗАЦИЯ ПЕРЕВОДОВ
+  const { t, i18n } = useTranslation() 
   const [langOpen, setLangOpen] = useState(false)
+  const [isFaqExpanded, setIsFaqExpanded] = useState(false) // <--- Состояние для раскрытия всего FAQ
   
-  // Автоматически определяем активный язык по состоянию i18n
   const activeLang = languages.find(l => l.code.toLowerCase() === i18n.language?.toLowerCase()) || languages[0]
   
   const [modalContent, setModalContent] = useState<string | null>(null)
@@ -41,7 +41,6 @@ export const Footer = () => {
 
   const closeDrawer = () => setModalContent(null)
 
-  // Перенесли FAQ внутрь компонента, чтобы он реагировал на смену языка
   const FAQList = [
     {
       question: t("faq.q1", "Сколько стоит установка видеонаблюдения?"),
@@ -119,47 +118,68 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* 2. FAQ SECTION (COMPACT) */}
-      <div className="container px-4 py-20 border-b border-border/40">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <h2 className="text-3xl font-extrabold tracking-tight">
-              {t("faq.title1", "Вопрос")}<span className="text-red-600 ml-2">{t("faq.title2", "Ответ")}</span>
-            </h2>
+      {/* 2. FAQ SECTION (COMPACT & COLLAPSIBLE) */}
+      <div className="container px-4 border-b border-border/40">
+        <div className="max-w-4xl mx-auto py-12 md:py-20">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div 
+              className="cursor-pointer group flex items-center gap-4"
+              onClick={() => setIsFaqExpanded(!isFaqExpanded)}
+            >
+              <h2 className="text-3xl font-extrabold tracking-tight">
+                {t("faq.title1", "Вопрос")}<span className="text-red-600 ml-2">{t("faq.title2", "Ответ")}</span>
+              </h2>
+              <motion.div
+                animate={{ rotate: isFaqExpanded ? 180 : 0 }}
+                className="p-2 rounded-full bg-muted group-hover:bg-red-600/10 transition-colors"
+              >
+                <ChevronDown size={20} className="text-red-600" />
+              </motion.div>
+            </div>
             <p className="text-muted-foreground font-medium">{t("faq.subtitle", "Кратко о самом важном")}</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-2">
-            
-            {/* ЛЕВАЯ КОЛОНКА */}
-            <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
-              {leftFaq.map(({ question, answer, value }) => (
-                <AccordionItem key={value} value={value} className="border-none">
-                  <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
-                    {question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
-                    {answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <AnimatePresence>
+            {isFaqExpanded && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-8">
+                  {/* ЛЕВАЯ КОЛОНКА */}
+                  <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
+                    {leftFaq.map(({ question, answer, value }) => (
+                      <AccordionItem key={value} value={value} className="border-none">
+                        <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
+                          {question}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
+                          {answer}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
 
-            {/* ПРАВАЯ КОЛОНКА */}
-            <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
-              {rightFaq.map(({ question, answer, value }) => (
-                <AccordionItem key={value} value={value} className="border-none">
-                  <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
-                    {question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
-                    {answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-            
-          </div>
+                  {/* ПРАВАЯ КОЛОНКА */}
+                  <Accordion type="single" collapsible value={openFaq} onValueChange={setOpenFaq} className="flex flex-col gap-2">
+                    {rightFaq.map(({ question, answer, value }) => (
+                      <AccordionItem key={value} value={value} className="border-none">
+                        <AccordionTrigger className="text-left font-bold text-base hover:no-underline py-4 px-4 rounded-xl hover:bg-muted/50 transition-all">
+                          {question}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground px-4 pt-2 pb-4 leading-relaxed border-l-2 border-red-600/20 ml-4 mt-1">
+                          {answer}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -182,7 +202,7 @@ export const Footer = () => {
             </p>
           </div>
 
-          {/* Navigation Col (ОТЦЕНТРОВАННО lg:justify-self-center) */}
+          {/* Navigation Col */}
           <div className="space-y-6 lg:justify-self-center">
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{t("footer.nav_title", "Навигация")}</h4>
             <ul className="space-y-3 text-sm font-bold">
@@ -193,7 +213,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Contacts Col (ОТЦЕНТРОВАННО lg:justify-self-center) */}
+          {/* Contacts Col */}
           <div className="space-y-6 lg:justify-self-center">
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{t("footer.contacts_title", "Контакты")}</h4>
             <ul className="space-y-4">
@@ -242,7 +262,7 @@ export const Footer = () => {
                         <button
                           key={l.code}
                           onClick={() => { 
-                            i18n.changeLanguage(l.code.toLowerCase()); // МЕНЯЕМ ЯЗЫК ЧЕРЕЗ i18n
+                            i18n.changeLanguage(l.code.toLowerCase()); 
                             setLangOpen(false); 
                           }}
                           className="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold hover:bg-muted transition-colors border-b border-border last:border-0"

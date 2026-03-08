@@ -2,177 +2,205 @@
 
 import { useState, useEffect } from "react"
 import { useTheme } from "@/components/theme-provider"
-import { motion } from "framer-motion"
-import { Menu, Cctv } from "lucide-react"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-
-interface RouteProps {
-  href: string
-  label: string
-}
-
-const routeList: RouteProps[] = [
-  { href: "#services", label: "Услуги" },
-  { href: "#projects", label: "Проекты" },
-  { href: "#testimonials", label: "Отзывы" },
-  { href: "#cta", label: "Контакты" },
-]
+import { motion, AnimatePresence } from "framer-motion"
+import { useTranslation } from "react-i18next"
+import { Menu, X, Cctv, Moon, Sun, Globe } from "lucide-react"
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [scrolled, setScrolled] = useState(false)
+  const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
+  
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
 
+  // Динамический список роутов с переводами
+  const routeList = [
+    { href: "#services", label: t("nav.services") },
+    { href: "#projects", label: t("nav.projects") },
+    { href: "#testimonials", label: t("nav.testimonials") },
+    { href: "#cta", label: t("nav.contacts") },
+  ]
+
   useEffect(() => {
-  setMounted(true)
-  
-  // Находим наш главный контейнер
-  const mainContent = document.querySelector('main')
-  if (!mainContent) return
+    setMounted(true)
+    const mainContent = document.querySelector('main')
+    if (!mainContent) return
 
-  const handleScroll = () => {
-    // Проверяем скролл внутри контейнера, а не окна
-    setScrolled(mainContent.scrollTop > 20)
-  }
+    const handleScroll = () => {
+      setScrolled(mainContent.scrollTop > 20)
+    }
 
-  mainContent.addEventListener("scroll", handleScroll)
-  return () => mainContent.removeEventListener("scroll", handleScroll)
-}, [])
+    mainContent.addEventListener("scroll", handleScroll)
+    return () => mainContent.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Блокировка скролла при открытом мобильном меню
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = "hidden"
+    else document.body.style.overflow = "unset"
+    return () => { document.body.style.overflow = "unset" }
+  }, [isOpen])
 
   if (!mounted) return null
 
   const isDark = theme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
 
+  // Логика цикличного переключения языков
+  const languages = ['ru', 'kz', 'en']
+  const toggleLanguage = () => {
+    const currentIndex = languages.indexOf(i18n.language || 'ru')
+    const nextIndex = (currentIndex + 1) % languages.length
+    i18n.changeLanguage(languages[nextIndex])
+  }
+
+  // Анимации
+  const menuVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as any} },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
+  }
+
+  const linkVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1, y: 0, transition: { delay: 0.1 + i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] as any }
+    })
+  }
+
   return (
-    <header 
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled 
-          ? "border-b bg-background/70 backdrop-blur-md py-3" 
-          : "bg-transparent border-transparent py-5"
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-6 flex justify-between items-center h-10">
-        
-        {/* VERCEL STYLE LOGO: No box, clean typography */}
-        <motion.a 
-          href="/" 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex items-center gap-2 group transition-opacity hover:opacity-70"
+    <>
+      {/* === DESKTOP NAVBAR (Floating Pill) === */}
+      <header className="fixed top-0 inset-x-0 z-50 flex justify-center mt-4 px-4 pointer-events-none hidden md:flex">
+        <motion.nav 
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className={`flex items-center gap-1 p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border ${
+            scrolled 
+              ? "bg-white/70 dark:bg-black/50 border-black/10 dark:border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]" 
+              : "bg-white/40 dark:bg-white/[0.02] border-transparent shadow-sm"
+          }`}
         >
-          <Cctv 
-            size={24} 
-            strokeWidth={1.5} 
-            className={isDark ? "text-white" : "text-black"} 
-          />
-          <span className="text-xl font-bold tracking-tight text-foreground uppercase">
-            SBA
-          </span>
-        </motion.a>
-
-        {/* DESKTOP NAVIGATION (Static as requested) */}
-        <nav className="hidden md:flex items-center gap-6">
-          {routeList.map((route) => (
-            <a
-              key={route.label}
-              href={route.href}
-              className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {route.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* VERCEL STYLE ACTIONS: Compact text buttons */}
-        <div className="hidden md:flex items-center gap-3">
-          
-          {/* THEME SWITCHER AS TEXT */}
-          <button
-            onClick={toggleTheme}
-            className="text-[14px] font-medium px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all active:scale-95 appearance-none"
-          >
-            {isDark ? "День" : "Ночь"}
-          </button>
-
-          {/* WHATSAPP AS COMPACT TEXT BUTTON */}
-          <a 
-            href="https://wa.me/77000000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`
-              text-[14px] font-medium px-4 py-1.5 rounded-md transition-all active:scale-95
-              ${isDark 
-                ? "bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 border border-[#25D366]/20"
-                : "bg-[#075E54] text-white hover:bg-[#075E54]/90 shadow-sm"}
-            `}
-          >
-            Связаться
+          {/* ЛОГОТИП */}
+          <a href="/" className="flex items-center justify-center w-12 h-12 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors group pl-1">
+            <Cctv size={22} strokeWidth={1.5} className="text-foreground group-hover:text-red-500 transition-colors" />
           </a>
-        </div>
 
-        {/* MOBILE TRIGGER */}
-        <div className="flex md:hidden items-center gap-4">
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <button 
-                className="text-muted-foreground hover:text-foreground"
-                aria-label="Открыть меню"
+          <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-2" />
+
+          {/* ССЫЛКИ */}
+          <div className="flex items-center px-2 gap-1">
+            {routeList.map((route) => (
+              <a
+                key={route.label}
+                href={route.href}
+                className="relative px-4 py-2 text-[14px] font-semibold text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
               >
-                <Menu className="h-6 w-6" />
-              </button>
-            </SheetTrigger>
+                {route.label}
+              </a>
+            ))}
+          </div>
 
-            <SheetContent side="right" className="w-[300px] border-l p-0 bg-background">
-              <div className="flex flex-col h-full">
-                <SheetHeader className="p-6 border-b text-left">
-                  <SheetTitle className="text-lg font-bold flex items-center gap-2">
-                    <Cctv size={20} /> SBA
-                  </SheetTitle>
-                </SheetHeader>
+          <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-2" />
 
-                <nav className="flex flex-col p-6 gap-4 flex-grow">
-                  {routeList.map(({ href, label }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className="text-[16px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {label}
-                    </a>
-                  ))}
-                </nav>
+          {/* КОНТРОЛЛЫ (Тема и Язык) */}
+          <div className="flex items-center gap-1">
+            <button onClick={toggleLanguage} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground font-bold text-xs uppercase tracking-wider">
+              {i18n.language || 'ru'}
+            </button>
+            <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground">
+              {isDark ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
+            </button>
+          </div>
 
-                <div className="p-6 border-t flex flex-col gap-3">
-                  <button 
-                    onClick={toggleTheme}
-                    className="w-full text-center py-2 text-sm font-medium border rounded-md"
-                  >
-                    {isDark ? "Switch to Light" : "Switch to Dark"}
-                  </button>
-                  <a 
-                    href="https://wa.me/77000000000"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full text-center py-2 text-sm font-medium bg-foreground text-background rounded-md"
-                  >
-                    WhatsApp
-                  </a>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+          {/* КНОПКА СВЯЗИ */}
+          <a 
+            href="https://wa.me/77779204988"
+            target="_blank" rel="noopener noreferrer"
+            className="ml-2 px-6 py-3 rounded-full bg-foreground text-background text-[14px] font-bold hover:scale-105 active:scale-95 transition-all shadow-md"
+          >
+            {t("nav.contact_btn")}
+          </a>
+        </motion.nav>
+      </header>
+
+      {/* === MOBILE NAVBAR === */}
+      <header className="fixed top-0 inset-x-0 z-50 p-4 md:hidden pointer-events-none">
+        <div className={`flex items-center justify-between p-3 rounded-3xl backdrop-blur-2xl pointer-events-auto transition-all border ${
+            scrolled || isOpen
+              ? "bg-white/80 dark:bg-[#0a0a0c]/80 border-black/10 dark:border-white/10 shadow-lg" 
+              : "bg-transparent border-transparent"
+          }`}
+        >
+          {/* ЛОГО */}
+          <a href="/" className="flex items-center gap-2 pl-2" onClick={() => setIsOpen(false)}>
+            <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+              <Cctv size={20} strokeWidth={2} />
+            </div>
+            <span className="text-lg font-bold tracking-tight uppercase">SBA</span>
+          </a>
+
+          {/* КНОПКА ГАМБУРГЕРА */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-foreground"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
+      </header>
 
-      </div>
-    </header>
+      {/* === MOBILE FULLSCREEN MENU === */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={menuVariants}
+            initial="hidden" animate="visible" exit="exit"
+            className="fixed inset-0 z-40 bg-white/95 dark:bg-[#0a0a0c]/95 backdrop-blur-3xl flex flex-col pt-28 pb-8 px-6 md:hidden overflow-y-auto"
+          >
+            {/* Ссылки (Крупная типографика) */}
+            <nav className="flex flex-col gap-6 mt-8">
+              {routeList.map((route, i) => (
+                <motion.a
+                  custom={i} variants={linkVariants} initial="hidden" animate="visible" exit="hidden"
+                  key={route.label}
+                  href={route.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-4xl font-extrabold tracking-tight text-foreground hover:text-red-500 transition-colors"
+                >
+                  {route.label}
+                </motion.a>
+              ))}
+            </nav>
+
+            <div className="mt-auto pt-10 flex flex-col gap-6">
+              
+              {/* Контроллы: Язык и Тема */}
+              <motion.div custom={4} variants={linkVariants} initial="hidden" animate="visible" exit="hidden" className="flex items-center gap-4 border-t border-black/5 dark:border-white/5 pt-8">
+                <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-black/5 dark:bg-white/5 font-bold uppercase tracking-wider">
+                  <Globe size={18} /> {i18n.language || 'ru'}
+                </button>
+                <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-black/5 dark:bg-white/5 font-bold">
+                  {isDark ? <Sun size={18} /> : <Moon size={18} />} {isDark ? "Light" : "Dark"}
+                </button>
+              </motion.div>
+
+              {/* Большая кнопка связи */}
+              <motion.a
+                custom={5} variants={linkVariants} initial="hidden" animate="visible" exit="hidden"
+                href="https://wa.me/77779204988"
+                target="_blank" rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="w-full h-16 flex items-center justify-center rounded-2xl bg-red-600 text-white font-bold text-xl shadow-[0_10px_30px_-10px_rgba(220,38,38,0.5)] active:scale-95 transition-transform"
+              >
+                {t("nav.contact_btn")}
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
