@@ -22,8 +22,8 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
-  storageKey = "vite-ui-theme",
+  defaultTheme = "light", // 1. Ставим светлую по умолчанию
+  storageKey = "sba-theme-v1", // 2. Меняем ключ, чтобы сбросить старый выбор "dark" у пользователей
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
