@@ -180,69 +180,75 @@ export const Projects = () => {
           {/* Контейнер карточки */}
           <div className="relative w-full h-full rounded-[32px] lg:rounded-[40px] bg-white dark:bg-[#08080a] border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-[0_0_80px_rgba(220,38,38,0.05)] overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={page}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
-              >
-                {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
-                <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-between h-1/2 lg:h-full">
-                  <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <span className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-500/10 rounded-lg border border-red-500/20">
-                        {t(activeProject.categoryKey)}
-                      </span>
-                      <span className="text-3xl font-black text-black/5 dark:text-white/5 select-none">
-                        {activeProject.id}
-                      </span>
-                    </div>
+  <motion.div
+    key={page}
+    custom={direction}
+    variants={variants}
+    initial="enter"
+    animate="center"
+    exit="exit"
+    // flex-col для мобилок (один под другим), lg:flex-row для ПК
+    className="absolute inset-0 w-full h-full flex flex-col lg:flex-row"
+  >
+    {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
+    {/* lg:h-full оставляем только для десктопа. На мобилках убираем h-1/2, чтобы блок растягивался по тексту */}
+    <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
+      <div>
+        <div className="flex items-center justify-between mb-5">
+          <span className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-500/10 rounded-lg border border-red-500/20">
+            {t(activeProject.categoryKey)}
+          </span>
+          <span className="text-3xl font-black text-black/5 dark:text-white/5 select-none">
+            {activeProject.id}
+          </span>
+        </div>
 
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight mb-4">
-                      {activeProject.title}
-                    </h3>
-                    
-                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 line-clamp-3 lg:line-clamp-none">
-                      {t(activeProject.descriptionKey)}
-                    </p>
+        {/* Уменьшаем шрифты на мобилках (text-xl), на ПК оставляем (lg:text-4xl) */}
+        <h3 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight mb-4">
+          {activeProject.title}
+        </h3>
+        
+        {/* Убираем line-clamp-3 на мобилках, чтобы текст выходил полностью */}
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
+          {t(activeProject.descriptionKey)}
+        </p>
 
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {activeProject.badges.map((badge, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20">
-                          {getBadgeIcon(badge.type)}
-                          <span className="text-xs font-semibold text-foreground">
-                            {badge.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {activeProject.badges.map((badge, idx) => (
+            <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20">
+              {getBadgeIcon(badge.type)}
+              <span className="text-xs font-semibold text-foreground">
+                {badge.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-                  <div className="pt-5 border-t border-black/5 dark:border-white/10 mt-auto">
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
-                      {t("projects.price_label")}
-                    </div>
-                    <div className="text-2xl sm:text-3xl font-black text-foreground">
-                      {activeProject.price}
-                    </div>
-                  </div>
-                </div>
+      <div className="pt-5 border-t border-black/5 dark:border-white/10 mt-auto">
+        <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
+          {t("projects.price_label")}
+        </div>
+        <div className="text-2xl sm:text-3xl font-black text-foreground">
+          {activeProject.price}
+        </div>
+      </div>
+    </div>
 
-                {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ */}
-                <div className="w-full lg:w-1/2 h-1/2 lg:h-full relative overflow-hidden bg-neutral-900">
-                  <img 
-                    src={activeProject.image} 
-                    alt={activeProject.title} 
-                    loading="eager" 
-                    className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] blur-[3px] scale-105 group-hover:blur-0 group-hover:scale-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
-                </div>
-              </motion.div>
-            </AnimatePresence>
+    {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ */}
+    {/* Используем flex-grow, чтобы картинка заняла всё свободное место после текста */}
+    <div className="w-full lg:w-1/2 flex-grow lg:h-full relative overflow-hidden bg-neutral-900 group min-h-[250px]">
+      <img 
+        src={activeProject.image} 
+        alt={activeProject.title} 
+        loading="eager" 
+        className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] blur-[3px] scale-105 group-hover:blur-0 group-hover:scale-100"
+      />
+      {/* Адаптивный градиент: снизу вверх на мобилках, слева направо на ПК */}
+      <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 lg:from-black/20 to-transparent pointer-events-none" />
+    </div>
+  </motion.div>
+</AnimatePresence>
           </div>
         </div>
 

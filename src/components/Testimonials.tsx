@@ -173,7 +173,7 @@ export const Testimonials = () => {
           {/* ПРАВЫЙ БЛОК: Превью отзыва */}
           <motion.div 
             initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 1, delay: 0.3, ease: smoothEase as any }}
-            className="w-full lg:w-[65%] h-full relative bg-white dark:bg-[#0c0c0e] rounded-[32px] border border-black/5 dark:border-white/5 shadow-xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
+            className="w-full lg:w-[65%] h-full relative bg-white dark:bg-[#0c0c0e] rounded-[32px] border border-black/5 dark:border-white/5 shadow-xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden h-auto lg:h-full flex flex-col"
           >
             {/* Водяной знак кавычки */}
             <div className="absolute top-8 right-8 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
@@ -197,7 +197,7 @@ export const Testimonials = () => {
                 </div>
 
                 {/* Текст отзыва */}
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground leading-snug mb-8 flex-grow">
+                <h3 className="text-lg sm:text-xl lg:text-3xl font-medium tracking-tight text-foreground leading-snug mb-6 lg:mb-10 min-h-0">
                   "{activeTestimonial.comment}"
                 </h3>
 
