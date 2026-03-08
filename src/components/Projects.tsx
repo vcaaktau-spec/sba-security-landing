@@ -3,109 +3,80 @@
 import { useRef, useState } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { Camera, HardDrive, ChevronDown } from "lucide-react"
+// Добавили кучу новых иконок для разных случаев
+import { Camera, HardDrive, ChevronDown, Clock, Flame, Shield, Network, Lock } from "lucide-react"
+
+// 1. Создаем список доступных типов бейджей
+export type BadgeType = "camera" | "storage" | "time" | "fire" | "network" | "access" | "shield"
+
+// 2. Описываем структуру одного бейджа
+export interface ProjectBadge {
+  type: BadgeType
+  value: string | number
+}
 
 interface ProjectProps {
   id: string
   title: string
   category: string
   description: string
-  cameras: number
-  storage: string
+  badges: ProjectBadge[] // Убрали cameras и storage, добавили гибкий массив
   price: string
   image: string
+}
+
+// Функция-распределитель иконок
+const getBadgeIcon = (type: BadgeType) => {
+  switch (type) {
+    case "camera": return <Camera size={14} className="text-red-500" />
+    case "storage": return <HardDrive size={14} className="text-red-500" />
+    case "time": return <Clock size={14} className="text-red-500" />     // Время работ
+    case "fire": return <Flame size={14} className="text-red-500" />      // Пожарка
+    case "network": return <Network size={14} className="text-red-500" /> // Сети/СКС
+    case "access": return <Lock size={14} className="text-red-500" />     // СКУД/Доступ
+    case "shield": return <Shield size={14} className="text-red-500" />   // Охрана/Безопасность
+    default: return null
+  }
 }
 
 const projects: ProjectProps[] = [
   {
     id: "01",
-    title: "Частный дом, 250 м²",
-    category: "Жилая недвижимость",
-    description: "Полный периметральный контроль участка. Установка камер с ColorVu (цветное ночное видение) и настройка детекции пересечения линии.",
-    cameras: 8,
-    storage: "1 ТБ (14 дней)",
-    price: "450 000 ₸",
-    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800",
+    title: "Tetys Blu",
+    category: "Аквапарк",
+    description: "Восстановлено 46 камер и установлено 18 новых, полностью модернизирована система видеонаблюдения объекта. Без оборудования.",
+    // Вот так теперь выглядит массив бейджей:
+    badges: [
+      { type: "camera", value: "64 камеры" },
+      { type: "time", value: "~30 дней" } // Можешь добавить третий, например { type: "network", value: "Оптика" }
+    ],
+    price: "960 000 ₸",
+    image: "/projects/tetys.webp",
   },
   {
     id: "02",
-    title: "Продуктовый Маркет",
-    category: "Ритейл",
-    description: "Контроль кассовой зоны (распознавание лиц и купюр), мониторинг торговых рядов и зоны разгрузки товаров. Удаленный доступ для владельца.",
-    cameras: 12,
-    storage: "2 ТБ (20 дней)",
-    price: "520 000 ₸",
-    image: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800",
+    title: "Entro",
+    category: "Салон дверей",
+    description: "Установлены IP-видеокамеры 2 Мп со звуком и смонтирована система пожарной сигнализации с дымовыми датчиками.",
+    badges: [
+      { type: "camera", value: "6 камер" },
+      { type: "fire", value: "12 датчиков" },
+      { type: "time", value: "3 дня" }
+    ],
+    price: "1 183 350 ₸",
+    image: "/projects/entro.webp",
   },
   {
     id: "03",
-    title: "Складской Комплекс",
-    category: "Логистика",
-    description: "Монтаж на высоте 8 метров. Перекрытие слепых зон между стеллажами, контроль ворот и распознавание автомобильных номеров.",
-    cameras: 24,
-    storage: "4 ТБ (30 дней)",
-    price: "1 250 000 ₸",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800",
-  },
-  {
-    id: "04",
-    title: "Офис IT-компании",
-    category: "Бизнес",
-    description: "Интеграция видеонаблюдения со СКУД (системой контроля доступа). Запись звука в переговорных комнатах, скрытый монтаж проводки.",
-    cameras: 10,
-    storage: "2 ТБ (30 дней)",
-    price: "680 000 ₸",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800",
-  },
-  {
-    id: "05",
-    title: "Ресторан премиум-класса",
-    category: "HoReCa",
-    description: "Эстетичные купольные камеры, вписанные в интерьер. Строгий контроль кухни, бара и гостевого зала. Микрофоны высокой чувствительности.",
-    cameras: 16,
-    storage: "4 ТБ (45 дней)",
-    price: "890 000 ₸",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800",
-  },
-  {
-    id: "06",
-    title: "Автомойка самообслуживания",
-    category: "Автобизнес",
-    description: "Установка влагозащищенных камер IP67. Круглосуточный мониторинг боксов и технической комнаты. Стойкость к прямому попаданию воды.",
-    cameras: 6,
-    storage: "1 ТБ (10 дней)",
-    price: "340 000 ₸",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800",
-  },
-  {
-    id: "07",
-    title: "Подземный паркинг ЖК",
-    category: "Жилые комплексы",
-    description: "Камеры с высокой светочувствительностью для работы в полумраке. Фиксация номеров въезжающих авто, защита от вандализма.",
-    cameras: 18,
-    storage: "4 ТБ (25 дней)",
-    price: "1 100 000 ₸",
-    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?q=80&w=800",
-  },
-  {
-    id: "08",
-    title: "Сеть аптек",
-    category: "Ритейл",
-    description: "Детализированная съемка кассовой зоны (читаемость чеков и номинала купюр). Единый сервер для удаленного мониторинга трех точек.",
-    cameras: 9,
-    storage: "2 ТБ (20 дней)",
-    price: "550 000 ₸",
-    image: "https://images.unsplash.com/photo-1556745757-8d76bdb6984b?q=80&w=800",
-  },
-  {
-    id: "09",
-    title: "Производственный цех",
-    category: "Промышленность",
-    description: "Масштабная система для контроля конвейерных линий. Защита кабельных трасс в металлических лотках, интеграция с пожарной тревогой.",
-    cameras: 32,
-    storage: "8 ТБ (40 дней)",
-    price: "2 800 000 ₸",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800",
+    title: "Автокраски 285",
+    category: "Магазин автокрасок",
+    description: "Установлена пожарная сигнализация «Гранит» и разработана проектная документация.",
+    badges: [
+      { type: "fire", value: "24 датчика" },
+      { type: "time", value: "7 дней" }
+    ],
+    price: "860 000 ₸",
+    image: "/projects/avtokraski.webp",
   },
 ]
 
@@ -221,18 +192,16 @@ export const Projects = () => {
                     </p>
                     
                     {/* Иконки с характеристиками */}
-                    <div className="flex gap-4">
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-300 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
-                        <Camera size={14} className="text-red-500" />
-                        {project.cameras} шт
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-300 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
-                        <HardDrive size={14} className="text-red-500" />
-                        {project.storage}
-                      </div>
+                    {/* ДИНАМИЧЕСКИЕ БЕЙДЖИ */}
+                    <div className="flex flex-wrap gap-3">
+                      {project.badges.map((badge, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 text-xs font-medium text-neutral-300 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5 whitespace-nowrap">
+                          {getBadgeIcon(badge.type)}
+                          {badge.value}
+                        </div>
+                      ))}
                     </div>
                   </div>
-
                   {/* Низ: ЦЕНА (Стрелочка удалена) */}
                   <div className="pt-5 border-t border-white/10">
                     <div className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-1">

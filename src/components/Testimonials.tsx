@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer"
 
 interface TestimonialProps {
   id: string
-  image: string
+  image?: string // <--- Добавили знак вопроса (фото теперь необязательно)
   name: string
   userName: string
   comment: string
@@ -17,50 +17,18 @@ interface TestimonialProps {
 const testimonials: TestimonialProps[] = [
   {
     id: "1",
-    image: "https://i.pravatar.cc/150?img=11",
-    name: "Алексей",
-    userName: "Владелец магазина",
-    comment: "Установили систему видеонаблюдения в магазине. Всё сделали аккуратно, настроили просмотр с телефона и объяснили как пользоваться.",
+    image: "/testimonials/viola.webp",
+    name: "Виолетта",
+    userName: "Квартира",
+    comment: "Спасибо большое ребятам, все установили чисто, аккуратно. Обьяснили и показали как пользоваться! Спасибо.",
     rating: 5,
   },
   {
     id: "2",
-    image: "https://i.pravatar.cc/150?img=12",
-    name: "Дмитрий",
-    userName: "Частный дом",
-    comment: "Поставили камеры по периметру дома. Качество отличное, запись работает стабильно. Теперь можно смотреть камеры прямо с телефона.",
-    rating: 5,
-  },
-  {
-    id: "3",
-    image: "https://i.pravatar.cc/150?img=13",
-    name: "Сергей",
-    userName: "Складской комплекс",
-    comment: "Нужно было видеонаблюдение для склада. Помогли подобрать оборудование и всё настроили. Работает без проблем.",
-    rating: 5,
-  },
-  {
-    id: "4",
-    image: "https://i.pravatar.cc/150?img=14",
-    name: "Ирина",
-    userName: "Офис",
-    comment: "Установили камеры в офисе и на парковке. Монтаж аккуратный, кабель проложен правильно, всё работает стабильно.",
-    rating: 5,
-  },
-  {
-    id: "5",
-    image: "https://i.pravatar.cc/150?img=15",
-    name: "Руслан",
-    userName: "Кафе",
-    comment: "Сделали систему видеонаблюдения в кафе. Всё подключили, настроили запись и удалённый доступ. Работой доволен.",
-    rating: 5,
-  },
-  {
-    id: "6",
-    image: "https://i.pravatar.cc/150?img=16",
-    name: "Арман",
-    userName: "Автосервис",
-    comment: "Установили камеры в автосервисе. Теперь можно контролировать рабочую зону и парковку. Всё работает отлично.",
+    // Поле image просто удаляем или комментируем
+    name: "Артем",
+    userName: "Коммерческое помещение",
+    comment: "Профессионалы своего дела — работают быстро, качественно и с полной отдачей. Рекомендую.",
     rating: 5,
   },
 ]
@@ -91,13 +59,28 @@ const TestimonialCard = ({ data, isCarouselHovered }: { data: TestimonialProps, 
         ))}
       </div>
       <p className="text-base sm:text-lg text-foreground/80 leading-relaxed flex-grow">"{data.comment}"</p>
+      
+      {/* Пользователь */}
       <div className="flex items-center gap-4 pt-6 border-t border-black/5 dark:border-white/10 mt-auto">
-        <div className="relative w-12 h-12 rounded-full overflow-hidden border border-transparent group-hover:border-red-500/50 transition-colors duration-500">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
+        
+        {/* АВАТАР ИЛИ ЗАГЛУШКА */}
+        <div className="relative flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border border-transparent group-hover:border-red-500/50 transition-colors duration-500 bg-gradient-to-br from-neutral-800 to-neutral-900 flex items-center justify-center shadow-inner">
+          {data.image ? (
+            <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-white font-bold text-lg drop-shadow-md">
+              {data.name.charAt(0).toUpperCase()}
+            </span>
+          )}
         </div>
+
         <div className="flex flex-col">
-          <span className="font-bold text-foreground group-hover:text-red-500 transition-colors duration-300">{data.name}</span>
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">{data.userName}</span>
+          <span className="font-bold text-foreground group-hover:text-red-500 transition-colors duration-300">
+            {data.name}
+          </span>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+            {data.userName}
+          </span>
         </div>
       </div>
     </div>
