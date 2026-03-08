@@ -136,10 +136,10 @@ export const Hero = () => {
                   <div className="relative bg-black rounded-[8px] sm:rounded-[12px] overflow-hidden border border-white/5 shadow-inner">
                     <div className="grid grid-cols-2 gap-0.5 sm:gap-[2px] bg-neutral-950">
                       {[
-                        "https://images.unsplash.com/photo-1503437313881-503a91226402?q=80&w=800",
-                        "https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?q=80&w=800",
-                        "https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=800",
-                        "https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=800"
+                        "/cam1.webp",
+                        "/cam2.webp",
+                        "/cam3.webp",
+                        "/cam4.webp"
                       ].map((src, i) => (
                         <div key={i} className="relative overflow-hidden group/cam aspect-video sm:aspect-auto sm:h-[150px]">
                           <img src={src} alt="Camera Feed" className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" />

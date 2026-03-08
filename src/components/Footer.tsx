@@ -123,13 +123,6 @@ export const Footer = () => {
             <p className="text-muted-foreground font-medium">Кратко о самом важном</p>
           </div>
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <h2 className="text-3xl font-extrabold tracking-tight">
-              Вопрос<span className="text-red-600 ml-2">Ответ</span>
-            </h2>
-            <p className="text-muted-foreground font-medium">Кратко о самом важном</p>
-          </div>
-          
           {/* НОВЫЙ БЛОК: Обертка Grid, внутри которой два независимых Аккордеона */}
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-2">
             
