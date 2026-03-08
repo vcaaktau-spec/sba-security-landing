@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Star, Quote, X, Upload, CheckCircle2, Loader2, MessageSquarePlus } from "lucide-react"
@@ -31,7 +31,35 @@ const testimonials: TestimonialProps[] = [
     userName: "Коммерческое помещение",
     comment: "Профессионалы своего дела — работают быстро, качественно и с полной отдачей. Однозначно рекомендую. Система работает без сбоев уже полгода.",
     rating: 5,
-  }
+  },
+  {
+    id: "3",
+    name: "Талгат",
+    userName: "Частное помещение",
+    comment: "Отличный сервис и профессиональный подход. Камеры работают стабильно, изображение качественное. Установку выполнили быстро и аккуратно. Спасибо!",
+    rating: 5,
+  },
+  {
+    id: "4",
+    name: "Рамазан",
+    userName: "Шанхай, Флаур",
+    comment: "Не первый год сотрудничаю с этой компанией - всегда на связи и оперативно реагируют. Работу выполняют на 100%, всегда держат слово. Лучше работать с надежной компанией, чем выбирать где дешевле!",
+    rating: 5,
+  },
+  {
+    id: "5",
+    name: "@remmaster_aktau",
+    userName: "Внутренняя отделка помещений",
+    comment: "Спасибо за качественную работу и профессиональный подход. Все пожелания были учтены, работа ввыполнена аккуратно и в срок. Видно, что ребята действительно знают свое дело. Рекомендую!",
+    rating: 5,
+  },
+  {
+    id: "6",
+    name: "Марат",
+    userName: "Владедлец магазина",
+    comment: "Спасибо! Установили все быстро и качественно. Оборудование работае отлично, полностью доволен результатом!",
+    rating: 5,
+  },
 ]
 
 export const Testimonials = () => {
@@ -41,6 +69,22 @@ export const Testimonials = () => {
   const [activeId, setActiveId] = useState<string>(testimonials[0].id)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   
+  // Автоматическое переключение отзывов каждые 4 секунды
+  useEffect(() => {
+    // Останавливаем таймер, если открыта форма или секция не в поле зрения
+    if (isSidebarOpen || !inView) return;
+
+    const timer = setInterval(() => {
+      setActiveId((currentId) => {
+        const currentIndex = testimonials.findIndex(t => t.id === currentId);
+        const nextIndex = (currentIndex + 1) % testimonials.length;
+        return testimonials[nextIndex].id;
+      });
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [activeId, isSidebarOpen, inView]);
+
   // Состояния формы
   const [name, setName] = useState("")
   const [company, setCompany] = useState("")
