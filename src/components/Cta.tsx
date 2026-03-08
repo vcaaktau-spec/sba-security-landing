@@ -2,11 +2,20 @@
 
 import { useRef, useState, useEffect } from "react"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { MessageCircle, X, ArrowRight, ShieldCheck, Zap } from "lucide-react"
+import { MessageCircle, X, ArrowRight, ShieldCheck, Zap, CheckCircle2, Loader2 } from "lucide-react"
 import { useInView } from "react-intersection-observer"
 
 export const Cta = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  
+  // Состояния для формы
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [service, setService] = useState("Видеонаблюдение")
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+
   const containerRef = useRef<HTMLElement>(null)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
@@ -37,6 +46,47 @@ export const Cta = () => {
       filter: "blur(0px)",
       transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
+  }
+
+  // ОБРАБОТЧИК ОТПРАВКИ ФОРМЫ
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    // Формируем текст сообщения для Telegram, используя наш существующий API
+    // Мы отправляем это как "отзыв", но текст формируем как "заявку"
+    const formData = new FormData()
+    formData.append("name", name)
+    formData.append("company", "ЗАЯВКА С САЙТА") // Используем поле company как маркер
+    formData.append("rating", "0") // Маркер, что это не отзыв
+    
+    // Формируем красивый текст внутри поля "text"
+    const messageText = `📞 Телефон: ${phone}\n🛠 Услуга: ${service}`
+    formData.append("text", messageText)
+
+    try {
+      const res = await fetch("/api/telegram", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!res.ok) throw new Error("Ошибка отправки")
+
+      setIsSuccess(true)
+      
+      // Плавно закрываем через 3 секунды
+      setTimeout(() => {
+        setIsModalOpen(false)
+        setTimeout(() => {
+          setIsSuccess(false)
+          setName(""); setPhone(""); setService("Видеонаблюдение");
+        }, 500)
+      }, 3000)
+    } catch (error) {
+      alert("Произошла ошибка при отправке. Попробуйте написать нам в WhatsApp.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -109,7 +159,6 @@ export const Cta = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="group relative w-full sm:w-auto px-8 h-16 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_rgba(239,68,68,0.3)] hover:shadow-[0_0_50px_rgba(239,68,68,0.5)] border border-red-500/50 hover:border-red-400 overflow-hidden flex items-center justify-center gap-3"
               >
-                {/* Блик на кнопке */}
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />
                 <span className="relative z-10">Рассчитать проект</span>
                 <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" size={20} />
@@ -117,7 +166,7 @@ export const Cta = () => {
 
               {/* Второстепенная кнопка (WhatsApp) */}
               <a
-                href="https://wa.me/77000000000" // Твоя ссылка
+                href="https://wa.me/77000000000"
                 target="_blank"
                 rel="noreferrer"
                 className="group relative w-full sm:w-auto px-8 h-16 bg-transparent text-foreground rounded-2xl font-bold text-lg transition-all duration-300 border border-black/10 dark:border-white/10 hover:border-foreground/30 flex items-center justify-center gap-3 overflow-hidden"
@@ -152,7 +201,7 @@ export const Cta = () => {
               animate={{ x: "0%", opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
               transition={{ duration: 0.5, ease: smoothEase as any}}
-              className="relative w-full max-w-md h-full bg-background border-l border-border shadow-2xl flex flex-col"
+              className="relative w-full max-w-md h-full bg-background border-l border-border shadow-2xl flex flex-col z-[51]" // Добавил z-[51] чтобы панель была точно поверх блюра
             >
               {/* Шапка панели */}
               <div className="flex items-center justify-between p-6 border-b border-border">
@@ -169,52 +218,73 @@ export const Cta = () => {
               </div>
 
               {/* Тело формы */}
-              <div className="p-6 flex-grow overflow-y-auto">
-                <p className="text-muted-foreground mb-8">
-                  Оставьте свои контактные данные, и наш инженер свяжется с вами для бесплатной консультации и точного расчета.
-                </p>
+              <div className="p-6 flex-grow overflow-y-auto flex flex-col justify-center">
+                {isSuccess ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center text-center">
+                    <CheckCircle2 size={80} className="text-red-500 mb-6" />
+                    <h4 className="text-2xl font-bold mb-3">Заявка принята!</h4>
+                    <p className="text-muted-foreground">Наш инженер свяжется с вами в ближайшее время для обсуждения деталей.</p>
+                  </motion.div>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground mb-8 text-sm">
+                      Оставьте свои контактные данные, и наш инженер свяжется с вами для бесплатной консультации и точного расчета.
+                    </p>
 
-                <form className="flex flex-col gap-5">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-foreground">Ваше имя</label>
-                    <input 
-                      type="text" 
-                      placeholder="Иван Иванов" 
-                      className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all"
-                    />
-                  </div>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-foreground">Ваше имя</label>
+                        <input 
+                          required
+                          type="text" 
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Иван Иванов" 
+                          className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all"
+                        />
+                      </div>
 
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-foreground">Номер телефона</label>
-                    <input 
-                      type="tel" 
-                      placeholder="+7 (___) ___-__-__" 
-                      className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all"
-                    />
-                  </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-foreground">Номер телефона</label>
+                        <input 
+                          required
+                          type="tel" 
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder="+7 (___) ___-__-__" 
+                          className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all"
+                        />
+                      </div>
 
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-foreground">Что вас интересует?</label>
-                    <select className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all appearance-none cursor-pointer">
-                      <option>Видеонаблюдение</option>
-                      <option>Охранно-пожарная сигнализация</option>
-                      <option>Локальные сети (СКС/Wi-Fi)</option>
-                      <option>IT Услуги / Разработка</option>
-                      <option>Комплексная безопасность</option>
-                    </select>
-                  </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-foreground">Что вас интересует?</label>
+                        <select 
+                          value={service}
+                          onChange={(e) => setService(e.target.value)}
+                          className="h-12 px-4 rounded-xl bg-muted/50 border border-border focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option>Видеонаблюдение</option>
+                          <option>Охранно-пожарная сигнализация</option>
+                          <option>Локальные сети (СКС/Wi-Fi)</option>
+                          <option>IT Услуги / Разработка</option>
+                          <option>Комплексная безопасность</option>
+                        </select>
+                      </div>
 
-                  <button 
-                    type="button" // Заглушка, позже поменяешь на submit
-                    className="mt-6 w-full h-14 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-lg transition-colors duration-300 shadow-lg shadow-red-500/20"
-                  >
-                    Отправить заявку
-                  </button>
-                </form>
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="mt-6 w-full h-14 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-xl font-bold text-lg transition-colors duration-300 shadow-lg shadow-red-500/20"
+                      >
+                        {isSubmitting ? <><Loader2 size={20} className="animate-spin" /> Отправка...</> : "Отправить заявку"}
+                      </button>
+                    </form>
 
-                <p className="text-xs text-center text-muted-foreground mt-6">
-                  Нажимая на кнопку, вы даете согласие на обработку персональных данных.
-                </p>
+                    <p className="text-xs text-center text-muted-foreground mt-6">
+                      Нажимая на кнопку, вы даете согласие на обработку персональных данных.
+                    </p>
+                  </>
+                )}
               </div>
 
             </motion.div>
