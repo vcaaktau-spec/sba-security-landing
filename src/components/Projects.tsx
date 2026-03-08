@@ -200,7 +200,7 @@ useEffect(() => {
   drag="x" 
   dragConstraints={{ left: 0, right: 0 }}
   dragElastic={1}
-  onDragEnd={(e: any, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
+  onDragEnd={(_e: any, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
   const swipe = Math.abs(info.offset.x) * info.velocity.x;
 
   if (swipe < -10000) {
