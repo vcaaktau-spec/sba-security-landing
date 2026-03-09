@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useTheme } from "@/components/theme-provider"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Menu, X, Cctv, Moon, Sun, Globe } from "lucide-react"
 
@@ -12,9 +12,21 @@ export const Navbar = () => {
   
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [mounted, setMounted] = useState(false)
 
-  // Динамический список роутов с переводами
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious()
+    if (previous && latest > previous && latest > 150) {
+      setHidden(true)
+    } else {
+      setHidden(false)
+    }
+    setScrolled(latest > 20)
+  })
+
   const routeList = [
     { href: "#services", label: t("nav.services") },
     { href: "#projects", label: t("nav.projects") },
@@ -24,18 +36,8 @@ export const Navbar = () => {
 
   useEffect(() => {
     setMounted(true)
-    const mainContent = document.querySelector('main')
-    if (!mainContent) return
-
-    const handleScroll = () => {
-      setScrolled(mainContent.scrollTop > 20)
-    }
-
-    mainContent.addEventListener("scroll", handleScroll)
-    return () => mainContent.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Блокировка скролла при открытом мобильном меню
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden"
     else document.body.style.overflow = "unset"
@@ -47,7 +49,6 @@ export const Navbar = () => {
   const isDark = theme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
 
-  // Логика цикличного переключения языков
   const languages = ['ru', 'kz', 'en']
   const toggleLanguage = () => {
     const currentIndex = languages.indexOf(i18n.language || 'ru')
@@ -55,7 +56,6 @@ export const Navbar = () => {
     i18n.changeLanguage(languages[nextIndex])
   }
 
-  // Анимации
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as any} },
@@ -74,9 +74,12 @@ export const Navbar = () => {
       {/* === DESKTOP NAVBAR (Floating Pill) === */}
       <header className="fixed top-0 inset-x-0 z-50 flex justify-center mt-4 px-4 pointer-events-none hidden md:flex">
         <motion.nav 
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          variants={{
+            visible: { y: 0, opacity: 1 },
+            hidden: { y: "-150%", opacity: 0 }
+          }}
+          animate={hidden ? "hidden" : "visible"}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
           className={`flex items-center gap-1 p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border ${
             scrolled 
               ? "bg-white/70 dark:bg-black/50 border-black/10 dark:border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]" 
@@ -128,7 +131,14 @@ export const Navbar = () => {
 
       {/* === MOBILE NAVBAR === */}
       <header className="fixed top-0 inset-x-0 z-50 p-4 md:hidden pointer-events-none">
-        <div className={`flex items-center justify-between p-3 rounded-3xl backdrop-blur-2xl pointer-events-auto transition-all border ${
+        <motion.div 
+          variants={{
+            visible: { y: 0, opacity: 1 },
+            hidden: { y: "-150%", opacity: 0 }
+          }}
+          animate={hidden && !isOpen ? "hidden" : "visible"}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className={`flex items-center justify-between p-3 rounded-3xl backdrop-blur-2xl pointer-events-auto transition-all border ${
             scrolled || isOpen
               ? "bg-white/80 dark:bg-[#0a0a0c]/80 border-black/10 dark:border-white/10 shadow-lg" 
               : "bg-transparent border-transparent"
@@ -149,7 +159,7 @@ export const Navbar = () => {
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-        </div>
+        </motion.div>
       </header>
 
       {/* === MOBILE FULLSCREEN MENU === */}

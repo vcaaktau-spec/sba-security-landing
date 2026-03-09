@@ -1,15 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-// 1. ДОБАВИЛИ useScroll и useTransform ИЗ FRAMER MOTION
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion" 
 import { useTranslation } from "react-i18next" 
 import { Button } from "@/components/ui/button"
 import { Smartphone, SlidersHorizontal, X } from "lucide-react"
 
 import { Calculator } from "./Calculator" 
+// === 1. ИМПОРТИРУЕМ МАГНИТ ===
+import Magnetic from "./ui/magnetic" 
 
-// === ОБНОВЛЕННЫЙ КОМПОНЕНТ АНИМАЦИИ (Идеальный перенос и посимвольное появление) ===
 const StaggerText = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
   const words = text.split(" ");
   let globalIndex = 0;
@@ -52,20 +52,15 @@ const StaggerText = ({ text, className, delayOffset = 0 }: { text: string, class
     </span>
   );
 };
-// ==========================================
 
 
 export const Hero = () => {
   const { t } = useTranslation() 
   const [isCalcOpen, setIsCalcOpen] = useState(false)
 
-  // === 2. НАСТРОЙКА ПАРАЛЛАКСА ===
   const { scrollY } = useScroll()
-  // Фон уезжает вниз (создает глубину)
   const backgroundY = useTransform(scrollY, [0, 1000], [0, 300])
-  // Монитор поднимается вверх (эффект 3D вылета)
   const monitorY = useTransform(scrollY, [0, 1000], [0, -150])
-  // ===============================
 
   useEffect(() => {
     if (isCalcOpen) {
@@ -92,7 +87,6 @@ export const Hero = () => {
     <>
       <section className="magnet-section relative min-h-screen flex items-center overflow-hidden bg-background">
         
-        {/* 3. ДОБАВИЛИ ПАРАЛЛАКС К ФОНУ (style={{ y: backgroundY }}) */}
         <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-muted/20" />
           
@@ -136,7 +130,7 @@ export const Hero = () => {
         <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-20 lg:py-0">
           
           {/* LEFT CONTENT */}
-          <div className="flex flex-col">
+          <div className="flex flex-col items-start">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.05]">
               <StaggerText 
                 text={t("hero.title_part1", "Система")} 
@@ -148,7 +142,6 @@ export const Hero = () => {
                 className="block" 
                 delayOffset={0.4} 
               />
-              {/* 4. ИСПРАВИЛИ БАГ С ЦВЕТОМ ТЕКСТА "АКТАУ" */}
               <StaggerText 
                 text={t("hero.title_part3", "Актау")} 
                 className="block text-red-600 drop-shadow-sm mt-1 sm:mt-2" 
@@ -161,14 +154,17 @@ export const Hero = () => {
             </motion.p>
 
             <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10">
-              <Button 
-                onClick={() => setIsCalcOpen(true)}
-                size="lg" 
-                className="relative group overflow-hidden bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto h-14 px-8 text-base transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_40px_rgba(220,38,38,0.5)] border border-red-500/50 hover:border-red-400 rounded-xl"
-              >
-                <span className="relative z-10 font-semibold tracking-wide">{t("hero.btn", "Рассчитать систему")}</span>
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />
-              </Button>
+              {/* === 2. ОБОРАЧИВАЕМ ГЛАВНУЮ КНОПКУ === */}
+              <Magnetic strength={0.3}>
+                <Button 
+                  onClick={() => setIsCalcOpen(true)}
+                  size="lg" 
+                  className="relative group overflow-hidden bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto h-14 px-8 text-base transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_40px_rgba(220,38,38,0.5)] border border-red-500/50 hover:border-red-400 rounded-xl"
+                >
+                  <span className="relative z-10 font-semibold tracking-wide">{t("hero.btn", "Рассчитать систему")}</span>
+                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />
+                </Button>
+              </Magnetic>
             </motion.div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-14 text-[15px] font-medium text-foreground/90">
@@ -184,13 +180,16 @@ export const Hero = () => {
                   animate="visible"
                   className="flex items-center gap-3 group cursor-default"
                 >
-                  <motion.div 
-                    animate={{ y: [0, -4, 0] }} 
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="flex items-center justify-center w-[42px] h-[42px] rounded-2xl bg-red-500/10 text-red-500 transition-all duration-300 group-hover:bg-red-500/20 group-hover:scale-105"
-                  >
-                    <item.icon size={20} />
-                  </motion.div>
+                  {/* === 3. ОБОРАЧИВАЕМ ИКОНКИ ФИЧ === */}
+                  <Magnetic strength={0.15}>
+                    <motion.div 
+                      animate={{ y: [0, -4, 0] }} 
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      className="flex items-center justify-center w-[42px] h-[42px] rounded-2xl bg-red-500/10 text-red-500 transition-all duration-300 group-hover:bg-red-500/20 group-hover:scale-105"
+                    >
+                      <item.icon size={20} />
+                    </motion.div>
+                  </Magnetic>
                   <span>{item.text}</span>
                 </motion.div>
               ))}
@@ -198,7 +197,6 @@ export const Hero = () => {
           </div>
 
           {/* RIGHT CONTENT (Монитор) */}
-          {/* 5. ДОБАВИЛИ ПАРАЛЛАКС К МОНИТОРУ (style={{ y: monitorY }}) Обернули в отдельный div чтобы не сбить анимации появления */}
           <motion.div style={{ y: monitorY }} className="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full z-10">
             <motion.div 
               initial={{ opacity: 0, y: 60, filter: "blur(10px)" }} 
@@ -275,12 +273,17 @@ export const Hero = () => {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] bg-background overflow-y-auto"
           >
-            <button
-              onClick={() => setIsCalcOpen(false)}
-              className="fixed top-4 right-4 sm:top-8 sm:right-8 z-[101] w-12 h-12 flex items-center justify-center rounded-full bg-muted/50 hover:bg-muted border border-border shadow-lg transition-colors"
-            >
-              <X size={24} className="text-foreground" />
-            </button>
+            {/* === 4. ОБОРАЧИВАЕМ КНОПКУ ЗАКРЫТИЯ === */}
+            <div className="fixed top-4 right-4 sm:top-8 sm:right-8 z-[101]">
+              <Magnetic strength={0.4}>
+                <button
+                  onClick={() => setIsCalcOpen(false)}
+                  className="w-12 h-12 flex items-center justify-center rounded-full bg-muted/50 hover:bg-muted border border-border shadow-lg transition-colors"
+                >
+                  <X size={24} className="text-foreground" />
+                </button>
+              </Magnetic>
+            </div>
             <Calculator onClose={() => setIsCalcOpen(false)} />
           </motion.div>
         )}
