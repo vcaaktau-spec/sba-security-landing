@@ -10,27 +10,33 @@ import { Projects } from "./components/Projects";
 import { Testimonials } from "./components/Testimonials";
 import { Statistics } from "./components/Statistics";
 import { SmoothScroll } from "./components/smooth-scroll";
+import { Preloader } from "./components/Preloader"; // <-- ДОБАВИЛИ ИМПОРТ
 import "./App.css";
 
 function App() {
   return (
-    <SmoothScroll>
-      {/* Убрали h-screen, overflow-y-auto и scroll-smooth */}
-      {/* Оставили просто flex flex-col и min-h-screen, чтобы контент шел естественно */}
-      <main className="flex flex-col min-h-screen">
-        <Navbar />
-        <Hero />
-        <Statistics />
-        <HowItWorks />
-        <Features />
-        <Services />
-        <Projects />
-        <Testimonials />
-        <Cta />
-        <Footer />
-        <ScrollToTop />
-      </main>
-    </SmoothScroll>
+    <>
+      {/* ПРЕЛОАДЕР СТАВИМ ВНЕ SMOOTH SCROLL ДЛЯ ИДЕАЛЬНОЙ РАБОТЫ */}
+      <Preloader /> 
+      
+      <SmoothScroll>
+        {/* Убрали h-screen, overflow-y-auto и scroll-smooth */}
+        {/* Оставили просто flex flex-col и min-h-screen, чтобы контент шел естественно */}
+        <main className="flex flex-col min-h-screen">
+          <Navbar />
+          <Hero />
+          <Statistics />
+          <HowItWorks />
+          <Features />
+          <Services />
+          <Projects />
+          <Testimonials />
+          <Cta />
+          <Footer />
+          <ScrollToTop />
+        </main>
+      </SmoothScroll>
+    </>
   );
 }
 

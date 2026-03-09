@@ -7,19 +7,19 @@ import { Button } from "@/components/ui/button"
 import { Smartphone, SlidersHorizontal, X } from "lucide-react"
 
 import { Calculator } from "./Calculator" 
-// === 1. ИМПОРТИРУЕМ МАГНИТ ===
 import Magnetic from "./ui/magnetic" 
 
+// 1. ОПТИМИЗИРОВАЛИ АНИМАЦИЮ ТЕКСТА (УБРАЛИ BLUR)
 const StaggerText = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
   const words = text.split(" ");
   let globalIndex = 0;
 
   const letterVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: 30 }, // Убран filter: blur
     visible: (i: number) => ({
       opacity: 1, 
       y: 0, 
-      filter: "blur(0px)",
+      // Убран filter: blur
       transition: { 
         duration: 0.8, 
         ease: [0.22, 1, 0.36, 1] as any,
@@ -73,12 +73,12 @@ export const Hero = () => {
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
+  // 2. ОПТИМИЗИРОВАЛИ ОБЩИЕ АНИМАЦИИ (УБРАЛИ BLUR)
   const textVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: 30 }, // Убран blur
     visible: (delay: number) => ({
       opacity: 1, 
       y: 0, 
-      filter: "blur(0px)",
       transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
   }
@@ -90,7 +90,8 @@ export const Hero = () => {
         <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-muted/20" />
           
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-red-600/10 blur-[120px] rounded-full" />
+          {/* 3. ОПТИМИЗИРОВАЛИ ФОНОВЫЙ ШАР: меньше блюра на мобилках */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-red-600/10 blur-[60px] md:blur-[120px] rounded-full" />
 
           <svg className="absolute inset-0 w-full h-full opacity-[0.35]">
             <defs>
@@ -116,18 +117,21 @@ export const Hero = () => {
             />
           </svg>
 
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-red-500/60 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
-              style={{ left: `${15 + Math.random() * 70}%`, top: `${15 + Math.random() * 70}%` }}
-              animate={{ y: [0, -30, 0], x: [0, Math.random() * 20 - 10, 0], scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }}
-              transition={{ duration: 5 + i * 1.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          ))}
+          {/* Отключаем парящие точки на мобилках для сохранения FPS */}
+          <div className="hidden md:block">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1.5 h-1.5 rounded-full bg-red-500/60 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                style={{ left: `${15 + Math.random() * 70}%`, top: `${15 + Math.random() * 70}%` }}
+                animate={{ y: [0, -30, 0], x: [0, Math.random() * 20 - 10, 0], scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 5 + i * 1.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            ))}
+          </div>
         </motion.div>
 
-        <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-20 lg:py-0">
+        <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-24 lg:py-0">
           
           {/* LEFT CONTENT */}
           <div className="flex flex-col items-start">
@@ -153,8 +157,7 @@ export const Hero = () => {
               {t("hero.subtitle", "Проектируем и устанавливаем премиальные системы видеонаблюдения для домов, бизнеса и складов.")}
             </motion.p>
 
-            <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10">
-              {/* === 2. ОБОРАЧИВАЕМ ГЛАВНУЮ КНОПКУ === */}
+            <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto">
               <Magnetic strength={0.3}>
                 <Button 
                   onClick={() => setIsCalcOpen(true)}
@@ -180,7 +183,6 @@ export const Hero = () => {
                   animate="visible"
                   className="flex items-center gap-3 group cursor-default"
                 >
-                  {/* === 3. ОБОРАЧИВАЕМ ИКОНКИ ФИЧ === */}
                   <Magnetic strength={0.15}>
                     <motion.div 
                       animate={{ y: [0, -4, 0] }} 
@@ -197,10 +199,11 @@ export const Hero = () => {
           </div>
 
           {/* RIGHT CONTENT (Монитор) */}
-          <motion.div style={{ y: monitorY }} className="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full z-10">
+          <motion.div style={{ y: monitorY }} className="flex justify-center lg:justify-end mt-12 lg:mt-0 w-full z-10">
+            {/* 4. УБРАЛИ BLUR ПРИ ПОЯВЛЕНИИ МОНИТОРА */}
             <motion.div 
-              initial={{ opacity: 0, y: 60, filter: "blur(10px)" }} 
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} 
+              initial={{ opacity: 0, y: 60 }} 
+              animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 1.2, ease: smoothEase as any, delay: 0.8 }} 
             >
               <motion.div 
@@ -213,7 +216,8 @@ export const Hero = () => {
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} 
                   className="relative group cursor-pointer"
                 >
-                  <div className="absolute -inset-4 sm:-inset-10 bg-gradient-to-r from-red-600/10 to-red-500/10 blur-[60px] sm:blur-[80px] rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
+                  {/* Уменьшен блюр свечения за монитором на мобилках */}
+                  <div className="absolute -inset-4 sm:-inset-10 bg-gradient-to-r from-red-600/10 to-red-500/10 blur-[40px] sm:blur-[80px] rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
                   
                   <div className="relative w-full bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-[12px] sm:rounded-[18px] p-1.5 sm:p-2 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-white/20">
                     <div className="relative bg-black rounded-[8px] sm:rounded-[12px] overflow-hidden border border-white/5 shadow-inner">
@@ -232,8 +236,9 @@ export const Hero = () => {
                               loading={i === 0 ? "eager" : "lazy"} 
                               fetchPriority={i === 0 ? "high" : "low"} 
                               decoding="async" 
-                              className="w-full h-full object-cover transition-all duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110 saturate-50 group-hover/cam:saturate-100 opacity-75 group-hover/cam:opacity-100" 
+                              className="w-full h-full object-cover transition-transform duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110" 
                             />
+                            {/* Убрана смена opacity/saturate на картинках (сильно бьет по GPU) */}
                             <div className="absolute inset-0 bg-black/20 group-hover/cam:bg-transparent transition-colors duration-500" />
                           </div>
                         ))}
@@ -241,12 +246,13 @@ export const Hero = () => {
 
                       <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
                         <div className="absolute top-2 left-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-white flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
-                          <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,1)]" /> REC
+                          <div className="w-1.5 h-1.5 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,1)]" /> REC
                         </div>
                         <div className="absolute top-2 right-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-green-400 flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
-                          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,1)]" /> ONLINE
+                          <div className="w-1.5 h-1.5 bg-green-400 rounded-full shadow-[0_0_8px_rgba(74,222,128,1)]" /> ONLINE
                         </div>
-                        <motion.div animate={{ translateY: ["-100%", "500%"] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-transparent via-red-500/10 to-red-500/20 border-b border-red-500/40 shadow-[0_2px_15px_rgba(239,68,68,0.3)]" />
+                        {/* Оптимизирована анимация сканера */}
+                        <motion.div animate={{ y: ["-100%", "400%"] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-transparent via-red-500/10 to-red-500/20 border-b border-red-500/40" />
                       </div>
                     </div>
                   </div>
@@ -273,7 +279,6 @@ export const Hero = () => {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] bg-background overflow-y-auto"
           >
-            {/* === 4. ОБОРАЧИВАЕМ КНОПКУ ЗАКРЫТИЯ === */}
             <div className="fixed top-4 right-4 sm:top-8 sm:right-8 z-[101]">
               <Magnetic strength={0.4}>
                 <button

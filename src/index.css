@@ -1,124 +1,82 @@
 html {
-  scroll-behavior: smooth;
-  /* Убираем задержку клика на мобилках */
+  /* Убираем scroll-behavior: smooth, так как у нас Lenis (SmoothScroll) */
+  /* Конфликт нативного скролла и Lenis вызывает жесткие лаги */
   touch-action: manipulation;
 }
 
 /* -------------------------------- */
-/* ПРЕМИАЛЬНОЕ СВЕЧЕНИЕ (HERO GLOW) */
+/* ПРЕМИАЛЬНОЕ СВЕЧЕНИЕ (ОПТИМИЗИРОВАНО) */
 /* -------------------------------- */
 
 .shadow {
   position: absolute;
-  /* Используем радиальный градиент для мягкости */
   background: radial-gradient(
     circle at center, 
     hsl(var(--primary) / 0.15) 0%, 
     transparent 70%
   );
-  border-radius: 50%; /* Круг лучше эллипса для свечения */
+  border-radius: 50%; 
   z-index: -1;
   width: 50vw;
   height: 50vw;
   top: 10%;
   right: -10%;
-  filter: blur(100px);
-  /* will-change выносит анимацию на видеокарту */
-  will-change: transform, opacity;
-  animation: shadow-float 8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  /* Уменьшаем blur, так как 100px убивает мобилки */
+  filter: blur(60px); 
+  /* Убрали will-change! Он жрал память */
+  animation: shadow-float 10s ease-in-out infinite alternate;
 }
 
 @keyframes shadow-float {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.4;
-  }
-  100% {
-    transform: translate(-10%, 10%) scale(1.2);
-    opacity: 0.8;
-  }
+  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  100% { transform: translate(-5%, 5%) scale(1.1); opacity: 0.7; }
 }
 
-/* -------------------------------- */
-/* СМУЗ-АНИМАЦИИ (CUBIC BEZIER) */
-/* -------------------------------- */
-
-/* Плавный подъем элементов */
-.hero-reveal {
-  opacity: 0;
-  will-change: transform, opacity;
-  animation: premium-fade-up 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes premium-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.98);
+/* На мобилках выключаем тяжелую анимацию свечения, оставляем статику */
+@media (max-width: 768px) {
+  .shadow {
+    animation: none;
+    filter: blur(40px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Левитация карточек с "физикой" */
-.hero-card {
-  will-change: transform;
-  animation: floating 8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-}
-
-@keyframes floating {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
 }
 
 /* -------------------------------- */
 /* МИКРО-ВЗАИМОДЕЙСТВИЯ */
 /* -------------------------------- */
 
-/* Кнопки с эффектом нажатия */
 .btn-hover {
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.btn-hover:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.5);
+/* Отключаем hover эффекты с трансформацией на мобилках, чтобы не лагало при скролле */
+@media (hover: hover) {
+  .btn-hover:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.5);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+  }
 }
 
-.btn-hover:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-/* Карточки услуг / проектов */
 .card-hover {
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  backface-visibility: hidden; /* Фикс мерцания в Safari */
-}
-
-.card-hover:hover {
-  transform: translateY(-10px);
-  /* Добавляем мягкую тень вместо увеличения */
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  /* GPU ускорение только во время взаимодействия */
+  transform: translateZ(0); 
 }
 
 /* -------------------------------- */
-/* БЕГУЩАЯ СТРОКА (ОПТИМИЗАЦИЯ) */
+/* БЕГУЩАЯ СТРОКА */
 /* -------------------------------- */
 
 .animate-marquee {
   display: flex;
-  will-change: transform;
-  animation: marquee 40s linear infinite; /* Замедляем до 40с для солидности */
+  animation: marquee 40s linear infinite;
 }
 
-/* Плавное затухание по бокам для Marquee */
 .marquee-mask {
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 15%,
-    black 85%,
-    transparent
-  );
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
