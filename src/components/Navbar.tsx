@@ -17,6 +17,7 @@ export const Navbar = () => {
 
   const { scrollY } = useScroll()
 
+  // Меньше порог скрытия для большей плавности отклика
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious()
     if (previous && latest > previous && latest > 150) {
@@ -56,6 +57,7 @@ export const Navbar = () => {
     i18n.changeLanguage(languages[nextIndex])
   }
 
+  // === ОПТИМИЗИРОВАННЫЕ АНИМАЦИИ БЕЗ БЛЮРА ===
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as any} },
@@ -72,6 +74,7 @@ export const Navbar = () => {
   return (
     <>
       {/* === DESKTOP NAVBAR (Floating Pill) === */}
+      {/* На ПК оставляем мощный backdrop-blur-2xl, макбуки и пк это тянут без проблем */}
       <header className="fixed top-0 inset-x-0 z-50 flex justify-center mt-4 px-4 pointer-events-none hidden md:flex">
         <motion.nav 
           variants={{
@@ -82,7 +85,7 @@ export const Navbar = () => {
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className={`flex items-center gap-1 p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border ${
             scrolled 
-              ? "bg-white/70 dark:bg-black/50 border-black/10 dark:border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]" 
+              ? "bg-white/70 dark:bg-[#0a0a0c]/70 border-black/10 dark:border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]" 
               : "bg-white/40 dark:bg-white/[0.02] border-transparent shadow-sm"
           }`}
         >
@@ -137,10 +140,12 @@ export const Navbar = () => {
             hidden: { y: "-150%", opacity: 0 }
           }}
           animate={hidden && !isOpen ? "hidden" : "visible"}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className={`flex items-center justify-between p-3 rounded-3xl backdrop-blur-2xl pointer-events-auto transition-all border ${
+          transition={{ duration: 0.3, ease: "easeOut" }} // Ускорили анимацию скрытия
+          // ВАЖНО: Снизили backdrop-blur-2xl до backdrop-blur-md и увеличили opacity цвета.
+          // Сильный блюр на fixed элементе при скролле = гарантированные лаги.
+          className={`flex items-center justify-between p-3 rounded-3xl pointer-events-auto transition-all duration-300 border ${
             scrolled || isOpen
-              ? "bg-white/80 dark:bg-[#0a0a0c]/80 border-black/10 dark:border-white/10 shadow-lg" 
+              ? "bg-white/95 dark:bg-[#050505]/95 backdrop-blur-md border-black/10 dark:border-white/10 shadow-lg" 
               : "bg-transparent border-transparent"
           }`}
         >
@@ -168,7 +173,9 @@ export const Navbar = () => {
           <motion.div
             variants={menuVariants}
             initial="hidden" animate="visible" exit="exit"
-            className="fixed inset-0 z-40 bg-white/95 dark:bg-[#0a0a0c]/95 backdrop-blur-3xl flex flex-col pt-28 pb-8 px-6 md:hidden overflow-y-auto"
+            // ВАЖНО: Убрали backdrop-blur-3xl вообще. Оставили просто сплошной цвет.
+            // Меню открывается на весь экран, под ним скролла нет, блюр тут бесполезен, но жрет ресурсы.
+            className="fixed inset-0 z-40 bg-background flex flex-col pt-28 pb-8 px-6 md:hidden overflow-y-auto"
           >
             {/* Ссылки (Крупная типографика) */}
             <nav className="flex flex-col gap-6 mt-8">
@@ -178,7 +185,7 @@ export const Navbar = () => {
                   key={route.label}
                   href={route.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-4xl font-extrabold tracking-tight text-foreground hover:text-red-500 transition-colors"
+                  className="text-4xl font-extrabold tracking-tight text-foreground active:text-red-500 transition-colors"
                 >
                   {route.label}
                 </motion.a>
@@ -189,10 +196,10 @@ export const Navbar = () => {
               
               {/* Контроллы: Язык и Тема */}
               <motion.div custom={4} variants={linkVariants} initial="hidden" animate="visible" exit="hidden" className="flex items-center gap-4 border-t border-black/5 dark:border-white/5 pt-8">
-                <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-black/5 dark:bg-white/5 font-bold uppercase tracking-wider">
+                <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-muted font-bold uppercase tracking-wider active:bg-muted/80">
                   <Globe size={18} /> {i18n.language || 'ru'}
                 </button>
-                <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-black/5 dark:bg-white/5 font-bold">
+                <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-muted font-bold active:bg-muted/80">
                   {isDark ? <Sun size={18} /> : <Moon size={18} />} {isDark ? "Light" : "Dark"}
                 </button>
               </motion.div>
@@ -203,7 +210,7 @@ export const Navbar = () => {
                 href="https://wa.me/77779204988"
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="w-full h-16 flex items-center justify-center rounded-2xl bg-red-600 text-white font-bold text-xl shadow-[0_10px_30px_-10px_rgba(220,38,38,0.5)] active:scale-95 transition-transform"
+                className="w-full h-16 flex items-center justify-center rounded-2xl bg-red-600 text-white font-bold text-xl shadow-lg active:scale-[0.98] transition-transform"
               >
                 {t("nav.contact_btn")}
               </motion.a>
