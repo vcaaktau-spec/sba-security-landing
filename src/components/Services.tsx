@@ -10,22 +10,30 @@ export const Services = () => {
   const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Определяем мобилку
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const { ref: inViewRef, inView } = useInView({
     triggerOnce: true,
     threshold: 0.15,
   })
 
-  // === ПАРАЛЛАКС ЛОГИКА ===
+  // === ПАРАЛЛАКС ЛОГИКА (ОТКЛЮЧЕНА ДЛЯ МОБИЛОК) ===
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"])
-  const contentY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"])
+  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"])
+  const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
-  // Вернули все 4 услуги!
   const servicesData = [
     {
       id: "01",
@@ -76,13 +84,13 @@ export const Services = () => {
   const activeService = servicesData[activeIndex]
   const ActiveIcon = activeService.icon
 
+  // ОПТИМИЗИРОВАННАЯ АНИМАЦИЯ ВЫЛЕТА БЕЗ BLUR
   const fadeVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(4px)" },
+    hidden: { opacity: 0, y: 30 },
     visible: (delay: number) => ({
       opacity: 1, 
       y: 0, 
-      filter: "blur(0px)",
-      transition: { duration: 1.2, ease: smoothEase as any, delay }
+      transition: { duration: 1, ease: smoothEase as any, delay }
     })
   }
 
@@ -90,12 +98,13 @@ export const Services = () => {
     <section 
       id="services" 
       ref={containerRef}
-      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-slate-50 dark:bg-background"
+      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-slate-50 dark:bg-background border-t border-border"
     >
       {/* === ПАРАЛЛАКС ФОН === */}
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-red-900/5 blur-[150px] rounded-full" />
+      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
+        {/* Шары скрыты на мобилках */}
+        <div className="hidden md:block absolute top-1/4 left-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
+        <div className="hidden md:block absolute bottom-0 right-0 w-[600px] h-[600px] bg-red-900/5 blur-[150px] rounded-full" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
       </motion.div>
 
@@ -109,19 +118,19 @@ export const Services = () => {
         {/* === ЛЕВАЯ ЧАСТЬ: Навигация === */}
         <div className="w-full lg:w-[40%] flex flex-col justify-center">
           
-          <div className="mb-10">
+          <div className="mb-10 text-center lg:text-left">
             <motion.h2 
-              custom={0.1} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+              custom={0} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
               className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-foreground"
             >
               <span className="block">{t("services.title1")}</span>
-              <span className="text-red-600 block mt-1 sm:mt-2">
+              <span className="text-red-600 block mt-1 sm:mt-2 italic">
                 {t("services.title2")}
               </span>
             </motion.h2>
             <motion.p 
-              custom={0.3} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
-              className="text-base text-muted-foreground max-w-md"
+              custom={0.2} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+              className="text-base text-muted-foreground font-medium max-w-md mx-auto lg:mx-0"
             >
               {t("services.subtitle")}
             </motion.p>
@@ -129,7 +138,7 @@ export const Services = () => {
 
           {/* СПИСОК УСЛУГ (Табы) */}
           <motion.div 
-            custom={0.5} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            custom={0.4} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="flex flex-col gap-2 relative"
           >
             <div className="hidden lg:block absolute left-[15px] top-4 bottom-4 w-[2px] bg-black/5 dark:bg-white/5 rounded-full" />
@@ -189,24 +198,26 @@ export const Services = () => {
         {/* === ПРАВАЯ ЧАСТЬ: Окно контента === */}
         <div className="w-full lg:w-[60%] flex items-center lg:py-12">
           <motion.div 
-            custom={0.7} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            custom={0.6} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             onMouseEnter={() => setIsAutoPlaying(false)} 
             className="relative w-full rounded-[32px] sm:rounded-[40px] bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden min-h-[480px] flex flex-col"
           >
-            <div className="absolute top-0 left-0 w-[200px] h-[200px] bg-gradient-to-br from-red-500/10 to-transparent rounded-full blur-[60px] pointer-events-none" />
+            {/* Глоу внутри карточки спрятан на мобилках */}
+            <div className="hidden md:block absolute top-0 left-0 w-[200px] h-[200px] bg-gradient-to-br from-red-500/10 to-transparent rounded-full blur-[60px] pointer-events-none" />
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
-                initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-                transition={{ duration: 0.5, ease: smoothEase as any }}
+                // === УБРАЛИ BLUR ИЗ СМЕНЫ ВКЛАДОК ===
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4, ease: smoothEase as any }}
                 className="relative z-10 p-8 sm:p-12 flex flex-col h-full"
               >
                 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] bg-red-50 dark:bg-white/[0.03] flex items-center justify-center text-red-600 dark:text-red-500 border border-red-100 dark:border-white/5 shadow-inner shrink-0 group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] bg-red-50 dark:bg-white/[0.03] flex items-center justify-center text-red-600 dark:text-red-500 border border-red-100 dark:border-white/5 shadow-inner shrink-0 lg:group-hover:scale-110 transition-transform duration-500">
                     <ActiveIcon size={36} strokeWidth={1.5} />
                   </div>
                   <div>
@@ -219,7 +230,7 @@ export const Services = () => {
                   </div>
                 </div>
 
-                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-10">
+                <p className="text-base sm:text-lg text-muted-foreground font-medium leading-relaxed mb-10">
                   {activeService.description}
                 </p>
 
@@ -229,7 +240,7 @@ export const Services = () => {
                       key={i}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.2 + (i * 0.1) }}
+                      transition={{ duration: 0.4, delay: 0.1 + (i * 0.05) }}
                       className="flex items-start gap-3"
                     >
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center text-red-600 mt-0.5">

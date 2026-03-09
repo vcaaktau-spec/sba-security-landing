@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-// === ДОБАВИЛИ useScroll и useTransform ===
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Star, Quote, X, Upload, CheckCircle2, Loader2, MessageSquarePlus } from "lucide-react"
@@ -81,7 +80,16 @@ export const Testimonials = () => {
   const { t } = useTranslation()
   const [activeId, setActiveId] = useState<string>(testimonials[0].id)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   
+  // Определяем мобилку для отключения параллакса
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   // === ПАРАЛЛАКС И INVIEW ЛОГИКА ===
   const containerRef = useRef<HTMLElement>(null)
   const { ref: inViewRef, inView } = useInView({ triggerOnce: true, threshold: 0.15, rootMargin: "-10% 0px" })
@@ -90,8 +98,10 @@ export const Testimonials = () => {
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"])
-  const contentY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"])
+  
+  // Отключаем параллакс на мобилках
+  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"])
+  const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
   // Автоматическое переключение
   useEffect(() => {
@@ -140,22 +150,22 @@ export const Testimonials = () => {
     }
   }
 
-  // === КИНЕМАТОГРАФИЧНЫЕ АНИМАЦИИ СБОРКИ (CHOREOGRAPHED ASSEMBLY) ===
+  // === ОПТИМИЗИРОВАННЫЕ АНИМАЦИИ (БЕЗ BLUR) ===
   const titleVariants = {
-    hidden: { opacity: 0, x: -60, y: -40, filter: "blur(10px)", scale: 0.95 },
-    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", scale: 1, transition: { duration: 1.2, ease: smoothEase as any, delay: 0.1 } }
+    hidden: { opacity: 0, x: -40, y: -20, scale: 0.95 },
+    visible: { opacity: 1, x: 0, y: 0, scale: 1, transition: { duration: 1, ease: smoothEase as any, delay: 0.1 } }
   }
   const btnVariants = {
-    hidden: { opacity: 0, x: 60, y: -40, filter: "blur(10px)" },
-    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: smoothEase as any, delay: 0.2 } }
+    hidden: { opacity: 0, x: 40, y: -20 },
+    visible: { opacity: 1, x: 0, y: 0, transition: { duration: 1, ease: smoothEase as any, delay: 0.2 } }
   }
   const listVariants = {
-    hidden: { opacity: 0, x: -80, y: 60, filter: "blur(10px)" },
-    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: smoothEase as any, delay: 0.3 } }
+    hidden: { opacity: 0, x: -40, y: 40 },
+    visible: { opacity: 1, x: 0, y: 0, transition: { duration: 1, ease: smoothEase as any, delay: 0.3 } }
   }
   const cardVariants = {
-    hidden: { opacity: 0, x: 80, y: 80, filter: "blur(12px)", scale: 0.9 },
-    visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", scale: 1, transition: { duration: 1.2, ease: smoothEase as any, delay: 0.4 } }
+    hidden: { opacity: 0, x: 40, y: 40, scale: 0.95 },
+    visible: { opacity: 1, x: 0, y: 0, scale: 1, transition: { duration: 1, ease: smoothEase as any, delay: 0.4 } }
   }
 
   return (
@@ -166,8 +176,9 @@ export const Testimonials = () => {
     >
       {/* === ПАРАЛЛАКС ФОН === */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-red-900/5 blur-[120px] rounded-full" />
+        {/* Скрываем тяжелые пятна на мобилках */}
+        <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
+        <div className="hidden md:block absolute bottom-0 left-0 w-[600px] h-[600px] bg-red-900/5 blur-[120px] rounded-full" />
       </motion.div>
 
       {/* === ПАРАЛЛАКС КОНТЕНТ === */}
@@ -180,7 +191,6 @@ export const Testimonials = () => {
         {/* === ВЕРХНЯЯ ЧАСТЬ: Заголовок и Кнопка === */}
         <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-12 overflow-hidden px-2">
           
-          {/* Заголовок вылетает сверху-слева */}
           <motion.div 
             variants={titleVariants} initial="hidden" animate={inView ? "visible" : "hidden"} 
             className="max-w-2xl origin-top-left"
@@ -191,17 +201,16 @@ export const Testimonials = () => {
                 {t("testimonials.title2")}
               </span>
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mt-6">
+            <p className="text-lg text-muted-foreground leading-relaxed mt-6 font-medium">
               {t("testimonials.subtitle")}
             </p>
           </motion.div>
 
-          {/* Кнопка вылетает справа */}
           <motion.div 
             variants={btnVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="origin-right"
           >
-            <button onClick={() => setIsSidebarOpen(true)} className="flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground font-semibold hover:shadow-[0_15px_30px_-10px_rgba(220,38,38,0.2)] hover:border-red-500/30 transition-all duration-300 group">
+            <button onClick={() => setIsSidebarOpen(true)} className="flex items-center justify-center lg:justify-start gap-3 w-full lg:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground font-semibold hover:shadow-[0_15px_30px_-10px_rgba(220,38,38,0.2)] hover:border-red-500/30 transition-all duration-300 group">
               <MessageSquarePlus size={18} className="text-red-600 group-hover:scale-110 transition-transform duration-300" />
               {t("testimonials.btn")}
             </button>
@@ -209,14 +218,14 @@ export const Testimonials = () => {
         </div>
 
         {/* === НИЖНЯЯ ЧАСТЬ: Список и Превью === */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 flex-grow h-[450px]">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 flex-grow lg:h-[450px]">
           
-          {/* ЛЕВЫЙ БЛОК вытягивается снизу-слева */}
+          {/* ЛЕВЫЙ БЛОК */}
           <motion.div 
             variants={listVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="w-full lg:w-[35%] flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 pr-0 lg:pr-4 snap-x lg:snap-none
-            [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-black/20 dark:hover:[&::-webkit-scrollbar-thumb]:bg-white/20
-            max-lg:[&::-webkit-scrollbar]:hidden max-lg:[-ms-overflow-style:none] max-lg:[scrollbar-width:none]"
+            [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-black/20 dark:hover:[&::-webkit-scrollbar-thumb]:bg-white/20
+            max-lg:[-ms-overflow-style:none] max-lg:[scrollbar-width:none]"
           >
             {testimonials.map((data) => {
               const isActive = activeId === data.id;
@@ -246,7 +255,7 @@ export const Testimonials = () => {
                     <span className={`font-bold text-sm truncate transition-colors ${isActive ? "text-foreground" : "text-foreground/80"}`}>
                       {data.name}
                     </span>
-                    <span className="text-xs text-muted-foreground truncate">
+                    <span className="text-xs text-muted-foreground font-medium truncate">
                       {data.userName}
                     </span>
                   </div>
@@ -260,7 +269,7 @@ export const Testimonials = () => {
             })}
           </motion.div>
 
-          {/* ПРАВЫЙ БЛОК (Главная карточка) вылетает по диагонали снизу-справа */}
+          {/* ПРАВЫЙ БЛОК (Главная карточка) */}
           <motion.div 
             variants={cardVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="w-full lg:w-[65%] h-full relative bg-white dark:bg-[#0c0c0e] rounded-[32px] border border-black/5 dark:border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden h-auto lg:h-full flex flex-col origin-bottom-right"
@@ -272,26 +281,27 @@ export const Testimonials = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTestimonial.id}
-                initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-                transition={{ duration: 0.5, ease: smoothEase as any }}
-                className="relative z-10 p-8 sm:p-12 flex flex-col h-full"
+                // === УБРАЛИ BLUR ПРИ СМЕНЕ ОТЗЫВА ===
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4, ease: smoothEase as any }}
+                className="relative z-10 p-8 sm:p-12 flex flex-col h-full min-h-[300px] lg:min-h-0"
               >
                 <div className="flex gap-1.5 mb-8">
                   {[...Array(activeTestimonial.rating)].map((_, i) => (
-                    <Star key={i} size={24} className="fill-red-500 text-red-500 drop-shadow-sm" />
+                    <Star key={i} size={20} className="fill-red-500 text-red-500 drop-shadow-sm" />
                   ))}
                 </div>
 
-                <h3 className="text-lg sm:text-xl lg:text-3xl font-medium tracking-tight text-foreground leading-snug mb-6 lg:mb-10 min-h-0">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight text-foreground leading-snug mb-6 lg:mb-10 min-h-0 flex-grow">
                   "{activeTestimonial.comment}"
                 </h3>
 
                 <div className="mt-auto flex items-center gap-4">
                   <div className="flex flex-col">
                     <span className="font-bold text-lg text-foreground">{activeTestimonial.name}</span>
-                    <span className="text-sm text-muted-foreground">{activeTestimonial.userName}</span>
+                    <span className="text-sm text-muted-foreground font-medium">{activeTestimonial.userName}</span>
                   </div>
                 </div>
               </motion.div>
@@ -301,7 +311,7 @@ export const Testimonials = () => {
 
       </motion.div>
 
-      {/* === БОКОВАЯ ПАНЕЛЬ ФОРМЫ === */}
+      {/* === БОКОВАЯ ПАНЕЛЬ ФОРМЫ (ОСТАВЛЕНА БЕЗ ИЗМЕНЕНИЙ) === */}
       <AnimatePresence>
         {isSidebarOpen && (
           <>
@@ -312,10 +322,10 @@ export const Testimonials = () => {
             />
             
             <motion.div
-              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.5, ease: smoothEase as any }}
+              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.4, ease: smoothEase as any }}
               className="fixed top-0 right-0 h-full w-full max-w-md bg-background border-l border-border z-[101] overflow-y-auto shadow-2xl flex flex-col"
             >
-              <div className="sticky top-0 bg-background/80 backdrop-blur-xl border-b border-border p-6 flex items-center justify-between z-10">
+              <div className="sticky top-0 bg-background/90 backdrop-blur-xl border-b border-border p-6 flex items-center justify-between z-10">
                 <h3 className="text-xl font-bold">{t("testimonials.form_title")}</h3>
                 <button onClick={() => setIsSidebarOpen(false)} className="w-10 h-10 rounded-full bg-muted/50 hover:bg-muted flex items-center justify-center transition-colors">
                   <X size={20} className="text-foreground" />

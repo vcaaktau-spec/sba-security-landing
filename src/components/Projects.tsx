@@ -38,7 +38,15 @@ const getBadgeIcon = (type: BadgeType) => {
 
 export const Projects = () => {
   const { t } = useTranslation()
+  const [isMobile, setIsMobile] = useState(false)
   
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
   const [[page, direction], setPage] = useState([0, 0])
   const [isPaused, setIsPaused] = useState(false)
@@ -91,37 +99,35 @@ export const Projects = () => {
   }
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || isMobile) return; // На мобилках лучше отключить автоскролл, чтобы не мешать читать
     const timer = setInterval(() => {
       paginate(1);
     }, 5000);
     return () => clearInterval(timer);
-  }, [page, isPaused]);
+  }, [page, isPaused, isMobile]);
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
+  // === ОПТИМИЗИРОВАННЫЕ ВАРИАНТЫ (УБРАН BLUR) ===
   const variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 60 : -60,
       opacity: 0,
-      filter: "blur(4px)",
       scale: 0.98
     }),
     center: {
       z: 1,
       x: 0,
       opacity: 1,
-      filter: "blur(0px)",
       scale: 1,
-      transition: { duration: 0.6, ease: smoothEase as any }
+      transition: { duration: 0.5, ease: smoothEase as any } // Чуть ускорили
     },
     exit: (direction: number) => ({
       z: 0,
       x: direction < 0 ? 60 : -60,
       opacity: 0,
-      filter: "blur(4px)",
       scale: 0.98,
-      transition: { duration: 0.6, ease: smoothEase as any }
+      transition: { duration: 0.5, ease: smoothEase as any }
     })
   }
 
@@ -129,19 +135,21 @@ export const Projects = () => {
     <section 
       id="projects" 
       ref={ref}
-      className="magnet-section relative w-full min-h-screen flex flex-col justify-center py-20 overflow-hidden bg-slate-50 dark:bg-background"
+      className="magnet-section relative w-full min-h-screen flex flex-col justify-center py-20 overflow-hidden bg-slate-50 dark:bg-background border-t border-border"
     >
-      {/* ДИНАМИЧЕСКИЙ ФОН */}
+      {/* ДИНАМИЧЕСКИЙ ФОН (ТОЛЬКО ДЛЯ ПК) */}
       <AnimatePresence mode="popLayout">
-        <motion.img
-          key={`bg-${activeProject.id}`}
-          src={activeProject.image}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.05 }} 
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 w-full h-full object-cover blur-[100px] pointer-events-none"
-        />
+        {!isMobile && (
+          <motion.img
+            key={`bg-${activeProject.id}`}
+            src={activeProject.image}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.03 }} 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 w-full h-full object-cover blur-[80px] pointer-events-none"
+          />
+        )}
       </AnimatePresence>
 
       <div className="relative z-10 mx-auto w-full max-w-[1140px] px-4 sm:px-6 flex flex-col items-center">
@@ -154,26 +162,25 @@ export const Projects = () => {
           >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-4">
               <span className="block">{t("projects.title1")}</span>
-              <span className="text-red-600 block mt-1 sm:mt-2">
+              <span className="text-red-600 block italic mt-1 sm:mt-2">
                 {t("projects.title2")}
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 font-medium">
               {t("projects.subtitle")}
             </p>
           </motion.div>
         </div>
 
-        {/* === ГЛАВНАЯ КАРТОЧКА (МЕНЬШЕ И КОМПАКТНЕЕ) === */}
-        {/* Высота на ПК уменьшена до 420px */}
+        {/* === ГЛАВНАЯ КАРТОЧКА === */}
         <div 
           className="relative w-full h-[600px] sm:h-[650px] lg:h-[420px] xl:h-[460px] group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Свечение */}
-          <div className="absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/10 dark:via-red-600/30 to-red-600/0 rounded-[30px] lg:rounded-[36px] opacity-0 blur-xl transition-opacity duration-1000 group-hover:opacity-100" />
-          <div className="absolute -inset-[1px] bg-gradient-to-r from-black/5 via-red-500/10 to-black/5 dark:from-white/10 dark:via-red-500/20 dark:to-white/10 rounded-[30px] lg:rounded-[36px] transition-opacity duration-1000" />
+          {/* Свечение (Скрыто на мобилках) */}
+          <div className="hidden lg:block absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/10 dark:via-red-600/20 to-red-600/0 rounded-[30px] lg:rounded-[36px] opacity-0 blur-xl transition-opacity duration-1000 group-hover:opacity-100" />
+          <div className="hidden lg:block absolute -inset-[1px] bg-gradient-to-r from-black/5 via-red-500/10 to-black/5 dark:from-white/10 dark:via-red-500/10 dark:to-white/10 rounded-[30px] lg:rounded-[36px] transition-opacity duration-1000" />
 
           {/* КОНТЕЙНЕР */}
           <div className="relative w-full h-full rounded-[28px] lg:rounded-[32px] bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
@@ -186,18 +193,19 @@ export const Projects = () => {
                 animate="center"
                 exit="exit"
                 drag="x" 
+                // Блокируем drag по оси Y, чтобы не конфликтовал с обычным скроллом
+                dragDirectionLock
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={1}
+                dragElastic={0.8}
                 onDragEnd={(_e: any, info: any) => {
                   const swipe = Math.abs(info.offset.x) * info.velocity.x;
-                  if (swipe < -10000) { paginate(1); } 
-                  else if (swipe > 10000) { paginate(-1); }
+                  if (swipe < -8000) { paginate(1); } // Чуть снизили порог свайпа для мобилок
+                  else if (swipe > 8000) { paginate(-1); }
                 }}
                 className="absolute inset-0 w-full h-full flex flex-col lg:flex-row cursor-grab active:cursor-grabbing"
               >
                 
                 {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
-                {/* Паддинги уменьшены (p-8 вместо p-12) */}
                 <div className="w-full lg:w-[45%] xl:w-[40%] p-6 sm:p-8 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
                   <div>
                     <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -213,15 +221,15 @@ export const Projects = () => {
                       {activeProject.title}
                     </h3>
                     
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-5 line-clamp-3">
+                    <p className="text-[13px] sm:text-sm font-medium text-muted-foreground leading-relaxed mb-5 line-clamp-3">
                       {t(activeProject.descriptionKey)}
                     </p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {activeProject.badges.map((badge, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors group-hover:border-red-500/20 dark:group-hover:border-red-500/30 group-hover:bg-red-50/50 dark:group-hover:bg-red-500/5">
+                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors lg:group-hover:border-red-500/20 lg:dark:group-hover:border-red-500/30 lg:group-hover:bg-red-50/50 lg:dark:group-hover:bg-red-500/5">
                           {getBadgeIcon(badge.type)}
-                          <span className="text-xs font-semibold text-foreground">
+                          <span className="text-[11px] sm:text-xs font-semibold text-foreground uppercase tracking-wider">
                             {badge.value}
                           </span>
                         </div>
@@ -241,16 +249,17 @@ export const Projects = () => {
 
                 {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ + КНОПКИ */}
                 <div className="w-full lg:w-[55%] xl:w-[60%] flex-grow lg:h-full relative overflow-hidden bg-slate-100 dark:bg-neutral-900 min-h-[250px] border-t lg:border-t-0 lg:border-l border-black/5 dark:border-white/5">
+                  {/* УБРАЛИ BLUR С КАРТИНКИ */}
                   <img 
                     src={activeProject.image} 
                     alt={activeProject.title} 
                     loading="eager" 
                     draggable={false}
-                    className="w-full h-full object-cover transition-all duration-1000 ease-[0.22,1,0.36,1] blur-[2px] scale-105 group-hover:blur-0 group-hover:scale-100 opacity-90 group-hover:opacity-100"
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-[0.22,1,0.36,1] scale-105 lg:group-hover:scale-100"
                   />
                   <div className="absolute inset-0 ring-1 ring-inset ring-black/5 dark:ring-white/10 rounded-b-[28px] lg:rounded-r-[32px] lg:rounded-bl-none pointer-events-none" />
                   
-                  {/* === ПРОЗРАЧНЫЕ КНОПКИ НАВИГАЦИИ (ПОВЕРХ КАРТИНКИ) === */}
+                  {/* === ПРОЗРАЧНЫЕ КНОПКИ НАВИГАЦИИ === */}
                   <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2 z-20">
                     <button 
                       onClick={(e) => { e.stopPropagation(); paginate(-1); }} 

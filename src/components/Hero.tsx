@@ -9,21 +9,20 @@ import { Smartphone, SlidersHorizontal, X } from "lucide-react"
 import { Calculator } from "./Calculator" 
 import Magnetic from "./ui/magnetic" 
 
-// 1. ОПТИМИЗИРОВАЛИ АНИМАЦИЮ ТЕКСТА (УБРАЛИ BLUR)
+// 1. ВЕРНУЛИ STAGGER TEXT, НО БЕЗ БЛЮРА ДЛЯ ОПТИМИЗАЦИИ
 const StaggerText = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
   const words = text.split(" ");
   let globalIndex = 0;
 
   const letterVariants = {
-    hidden: { opacity: 0, y: 30 }, // Убран filter: blur
+    hidden: { opacity: 0, y: 40 }, // Только transform и opacity (дешево для GPU)
     visible: (i: number) => ({
       opacity: 1, 
       y: 0, 
-      // Убран filter: blur
       transition: { 
         duration: 0.8, 
         ease: [0.22, 1, 0.36, 1] as any,
-        delay: delayOffset + (i * 0.035), 
+        delay: delayOffset + (i * 0.03), // Чуть ускорили появление букв
       }
     }),
   };
@@ -73,15 +72,18 @@ export const Hero = () => {
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
-  // 2. ОПТИМИЗИРОВАЛИ ОБЩИЕ АНИМАЦИИ (УБРАЛИ BLUR)
+  // 2. ВЕРНУЛИ АНИМАЦИИ ПОДЗАГОЛОВКОВ И КНОПОК
   const textVariants = {
-    hidden: { opacity: 0, y: 30 }, // Убран blur
+    hidden: { opacity: 0, y: 30 },
     visible: (delay: number) => ({
       opacity: 1, 
       y: 0, 
       transition: { duration: 1.2, ease: smoothEase as any, delay }
     })
   }
+
+  // Общая задержка старта анимаций Hero, чтобы они начались, когда Preloader улетит (2.4s + 0.6s пауза = ~3s)
+  const initialDelay = 3.2; 
 
   return (
     <>
@@ -90,7 +92,6 @@ export const Hero = () => {
         <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-muted/20" />
           
-          {/* 3. ОПТИМИЗИРОВАЛИ ФОНОВЫЙ ШАР: меньше блюра на мобилках */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-red-600/10 blur-[60px] md:blur-[120px] rounded-full" />
 
           <svg className="absolute inset-0 w-full h-full opacity-[0.35]">
@@ -106,14 +107,14 @@ export const Hero = () => {
               stroke="url(#line-gradient)" strokeWidth="1.5" fill="none"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 12, ease: "linear" }}
+              transition={{ duration: 12, ease: "linear", delay: initialDelay }}
             />
             <motion.path
               d="M-200 600 Q500 400 900 650 T1800 500"
               stroke="url(#line-gradient)" strokeWidth="1.5" fill="none"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 15, ease: "linear", delay: 1 }}
+              transition={{ duration: 15, ease: "linear", delay: initialDelay + 1 }}
             />
           </svg>
 
@@ -124,8 +125,9 @@ export const Hero = () => {
                 key={i}
                 className="absolute w-1.5 h-1.5 rounded-full bg-red-500/60 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
                 style={{ left: `${15 + Math.random() * 70}%`, top: `${15 + Math.random() * 70}%` }}
+                initial={{ opacity: 0 }}
                 animate={{ y: [0, -30, 0], x: [0, Math.random() * 20 - 10, 0], scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }}
-                transition={{ duration: 5 + i * 1.5, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ opacity: { delay: initialDelay }, duration: 5 + i * 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
             ))}
           </div>
@@ -139,25 +141,25 @@ export const Hero = () => {
               <StaggerText 
                 text={t("hero.title_part1", "Система")} 
                 className="block" 
-                delayOffset={0.1} 
+                delayOffset={initialDelay + 0.1} // Старт после прелоадера
               />
               <StaggerText 
                 text={t("hero.title_part2", "Безопасности")} 
                 className="block" 
-                delayOffset={0.4} 
+                delayOffset={initialDelay + 0.4} 
               />
               <StaggerText 
                 text={t("hero.title_part3", "Актау")} 
                 className="block text-red-600 drop-shadow-sm mt-1 sm:mt-2" 
-                delayOffset={0.8} 
+                delayOffset={initialDelay + 0.7} 
               />
             </h1>
 
-            <motion.p custom={1.4} variants={textVariants} initial="hidden" animate="visible" className="mt-6 text-base sm:text-lg text-muted-foreground max-w-[500px] leading-relaxed">
+            <motion.p custom={initialDelay + 1.2} variants={textVariants} initial="hidden" animate="visible" className="mt-6 text-base sm:text-lg text-muted-foreground max-w-[500px] leading-relaxed">
               {t("hero.subtitle", "Проектируем и устанавливаем премиальные системы видеонаблюдения для домов, бизнеса и складов.")}
             </motion.p>
 
-            <motion.div custom={1.7} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto">
+            <motion.div custom={initialDelay + 1.5} variants={textVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto">
               <Magnetic strength={0.3}>
                 <Button 
                   onClick={() => setIsCalcOpen(true)}
@@ -172,8 +174,8 @@ export const Hero = () => {
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-14 text-[15px] font-medium text-foreground/90">
               {[
-                { icon: Smartphone, text: t("hero.feature1", "Удаленный доступ"), delay: 2.0 },
-                { icon: SlidersHorizontal, text: t("hero.feature2", "Полный Контроль"), delay: 2.1 }
+                { icon: Smartphone, text: t("hero.feature1", "Удаленный доступ"), delay: initialDelay + 1.8 },
+                { icon: SlidersHorizontal, text: t("hero.feature2", "Полный Контроль"), delay: initialDelay + 1.9 }
               ].map((item, i) => (
                 <motion.div 
                   key={i} 
@@ -200,11 +202,11 @@ export const Hero = () => {
 
           {/* RIGHT CONTENT (Монитор) */}
           <motion.div style={{ y: monitorY }} className="flex justify-center lg:justify-end mt-12 lg:mt-0 w-full z-10">
-            {/* 4. УБРАЛИ BLUR ПРИ ПОЯВЛЕНИИ МОНИТОРА */}
+            {/* Анимация появления монитора после прелоадера */}
             <motion.div 
               initial={{ opacity: 0, y: 60 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1.2, ease: smoothEase as any, delay: 0.8 }} 
+              transition={{ duration: 1.2, ease: smoothEase as any, delay: initialDelay + 0.8 }} 
             >
               <motion.div 
                 animate={{ y: [-8, 8, -8] }} 
@@ -216,7 +218,6 @@ export const Hero = () => {
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} 
                   className="relative group cursor-pointer"
                 >
-                  {/* Уменьшен блюр свечения за монитором на мобилках */}
                   <div className="absolute -inset-4 sm:-inset-10 bg-gradient-to-r from-red-600/10 to-red-500/10 blur-[40px] sm:blur-[80px] rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
                   
                   <div className="relative w-full bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-[12px] sm:rounded-[18px] p-1.5 sm:p-2 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-white/20">
@@ -238,7 +239,6 @@ export const Hero = () => {
                               decoding="async" 
                               className="w-full h-full object-cover transition-transform duration-700 ease-[0.22,1,0.36,1] group-hover/cam:scale-110" 
                             />
-                            {/* Убрана смена opacity/saturate на картинках (сильно бьет по GPU) */}
                             <div className="absolute inset-0 bg-black/20 group-hover/cam:bg-transparent transition-colors duration-500" />
                           </div>
                         ))}
@@ -251,7 +251,6 @@ export const Hero = () => {
                         <div className="absolute top-2 right-2 text-[9px] sm:text-[10px] font-bold tracking-wider text-green-400 flex gap-1.5 items-center bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
                           <div className="w-1.5 h-1.5 bg-green-400 rounded-full shadow-[0_0_8px_rgba(74,222,128,1)]" /> ONLINE
                         </div>
-                        {/* Оптимизирована анимация сканера */}
                         <motion.div animate={{ y: ["-100%", "400%"] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-transparent via-red-500/10 to-red-500/20 border-b border-red-500/40" />
                       </div>
                     </div>
