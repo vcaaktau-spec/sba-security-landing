@@ -17,6 +17,7 @@ import { GlobalBackground } from "./components/GlobalBackground";
 import { Calculator } from "./components/Calculator";
 import { X } from "lucide-react";
 import "./App.css";
+import { SbaPlanner } from "./components/SbaPlanner";
 
 const GlassWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -64,6 +65,12 @@ function App() {
           <GlassWrapper><HowItWorks /></GlassWrapper>
           <GlassWrapper><Features /></GlassWrapper>
           <GlassWrapper><Services /></GlassWrapper>
+          <GlassWrapper>
+            <div className="max-w-[1200px] mx-auto py-20 px-6">
+              <h2 className="text-3xl font-black uppercase mb-10">Конструктор объекта <span className="text-red-600">Beta</span></h2>
+              <SbaPlanner />
+            </div>
+          </GlassWrapper>
           <GlassWrapper><Projects /></GlassWrapper>
           <GlassWrapper><Testimonials /></GlassWrapper>
           <GlassWrapper><Cta /></GlassWrapper>
