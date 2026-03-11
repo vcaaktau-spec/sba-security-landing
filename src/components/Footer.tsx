@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next" 
 import { Phone, MessageCircle, FileText, X, Shield, ChevronUp, Star, Upload, CheckCircle2, Loader2, HelpCircle, MessageSquarePlus } from "lucide-react"
@@ -11,8 +12,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
-import { Calculator } from "./Calculator" 
 
 const sponsors = [
   { name: "Hikvision" }, { name: "Dahua" }, { name: "Hiwatch" }, 
@@ -28,12 +27,32 @@ const languages = [
   { code: "EN", label: "English", flag: "🇺🇸" },
 ]
 
-type ModalType = "privacy" | "terms" | "dpa" | "faq" | "review" | "calc" | null;
+type ModalType = "privacy" | "terms" | "dpa" | "faq" | "review" | null;
 
-export const Footer = () => {
+interface FooterProps {
+  onOpenCalc: () => void;
+}
+
+export const Footer = ({ onOpenCalc }: FooterProps) => {
   const { t, i18n } = useTranslation() 
   const [modalContent, setModalContent] = useState<ModalType>(null)
   const [langOpen, setLangOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Монтирование для портала
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Блокировка скролла при открытии ЛЮБОЙ модалки футера
+  useEffect(() => {
+    if (modalContent) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => { document.body.style.overflow = "unset" }
+  }, [modalContent])
 
   const currentLang = i18n?.language || 'ru'
   const activeLang = languages.find(l => l.code.toLowerCase() === currentLang.toLowerCase()) || languages[0]
@@ -48,7 +67,6 @@ export const Footer = () => {
     }
   }
 
-  // === ДАННЫЕ ДЛЯ FAQ ИЗ ПЕРЕВОДОВ ===
   const FAQList = [
     { question: t("faq.q1"), answer: t("faq.a1"), value: "item-1" },
     { question: t("faq.q2"), answer: t("faq.a2"), value: "item-2" },
@@ -62,7 +80,6 @@ export const Footer = () => {
     { question: t("faq.q10"), answer: t("faq.a10"), value: "item-10" },
   ]
 
-  // === СОСТОЯНИЯ ФОРМЫ ОТЗЫВА ===
   const [name, setName] = useState("")
   const [company, setCompany] = useState("")
   const [text, setText] = useState("")
@@ -94,7 +111,6 @@ export const Footer = () => {
   return (
     <footer id="footer" className="relative w-full bg-transparent flex flex-col z-20">
       
-      {/* 1. УЛЬТРАТОНКАЯ КОМПАКТНАЯ БЕГУЩАЯ СТРОКА */}
       <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 mt-10">
         <div className="w-full border-y border-border/30 bg-muted/5 py-1.5 overflow-hidden rounded-full">
           <div className="relative flex items-center w-full mask-edges">
@@ -116,19 +132,17 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* 2. СТРОГАЯ СЕТКА ССЫЛОК */}
       <div className="w-full mt-8 lg:mt-12">
         <div className="w-full max-w-[1300px] mx-auto px-6 py-12 lg:py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 lg:gap-8">
             
-            {/* Бренд */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center border border-border shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                   <Shield size={20} className="text-background" />
                 </div>
                 <span className="text-lg font-black tracking-tight uppercase">
-                  SBA <span className="text-muted-foreground font-medium">Актау</span>
+                  SBA <span className="text-muted-foreground font-medium">{t("footer.aktau", "Актау")}</span>
                 </span>
               </div>
               <p className="text-[14px] text-muted-foreground leading-relaxed max-w-[300px]">
@@ -136,19 +150,17 @@ export const Footer = () => {
               </p>
             </div>
 
-            {/* Навигация */}
             <div className="flex flex-col gap-5">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest">{t("footer.nav_title")}</h4>
               <ul className="space-y-4 text-[14px] font-medium text-muted-foreground">
                 <li><a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-foreground transition-colors">{t("nav.services")}</a></li>
                 <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="hover:text-foreground transition-colors">{t("nav.projects")}</a></li>
-                <li><button onClick={() => setModalContent("calc")} className="hover:text-foreground transition-colors">{t("calc.badge")}</button></li>
+                <li><button onClick={onOpenCalc} className="hover:text-foreground transition-colors">{t("calc.badge")}</button></li>
                 <li><button onClick={() => setModalContent("faq")} className="hover:text-foreground transition-colors">FAQ</button></li>
                 <li><button onClick={() => setModalContent("review")} className="hover:text-red-500 transition-colors text-foreground">{t("review_form.title")}</button></li>
               </ul>
             </div>
               
-            {/* Документация */}
             <div className="flex flex-col gap-5">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest">{t("footer.settings_title")}</h4>
               <ul className="space-y-4 text-[14px] font-medium text-muted-foreground">
@@ -158,7 +170,6 @@ export const Footer = () => {
               </ul>
             </div>
 
-            {/* Контакты & Язык */}
             <div className="flex flex-col gap-5 lg:items-end">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest lg:text-right w-full">{t("footer.contacts_title")}</h4>
               
@@ -179,7 +190,6 @@ export const Footer = () => {
                 </li>
               </ul>
 
-              {/* Язык */}
               <div className="relative w-full lg:w-auto flex lg:justify-end mt-auto">
                 <button 
                   onClick={() => setLangOpen(!langOpen)}
@@ -215,7 +225,6 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* 3. КОПИРАЙТ */}
       <div className="w-full border-t border-border/10 bg-background/80 backdrop-blur-md">
         <div className="w-full max-w-[1300px] mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] sm:text-[12px] text-muted-foreground/60 font-semibold tracking-wider uppercase">
           <p>{t("footer.copyright")}</p>
@@ -225,34 +234,24 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* === МОДАЛЬНЫЕ ОКНА (ДРАВЕР) === */}
-      <AnimatePresence>
-        {modalContent && (
-          <div className="fixed inset-0 z-[200] flex justify-center lg:justify-end text-foreground">
-            <motion.div 
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={closeDrawer}
-              className="absolute inset-0 bg-background/80 backdrop-blur-sm cursor-pointer"
-            />
-            
-            <motion.div 
-              initial={modalContent === "calc" ? { opacity: 0, scale: 0.95 } : { x: "100%" }} 
-              animate={modalContent === "calc" ? { opacity: 1, scale: 1 } : { x: 0 }} 
-              exit={modalContent === "calc" ? { opacity: 0, scale: 0.95 } : { x: "100%" }}
-              transition={{ duration: 0.4, ease: smoothEase as any}}
-              className={`relative ${modalContent === "calc" ? "w-full h-full lg:h-auto lg:m-auto lg:max-w-4xl lg:rounded-3xl" : "w-full max-w-lg h-full border-l"} bg-background border-border/50 shadow-2xl flex flex-col z-[201] overflow-hidden`}
-            >
-              {modalContent === "calc" ? (
-                <div className="w-full h-full relative">
-                  <div className="absolute top-4 right-4 z-50">
-                    <button onClick={closeDrawer} className="w-12 h-12 rounded-full bg-muted/80 hover:bg-muted flex items-center justify-center transition-colors border border-border">
-                      <X size={20} className="text-foreground" />
-                    </button>
-                  </div>
-                  <Calculator onClose={closeDrawer} />
-                </div>
-              ) : (
-                <>
+      {/* ПОРТАЛ ДЛЯ МОДАЛОК - ТЕПЕРЬ ОНИ БУДУТ ПОВЕРХ ВСЕГО САЙТА */}
+      {mounted && createPortal(
+        <AnimatePresence>
+          {modalContent && (
+            <div className="fixed inset-0 z-[9999] flex justify-center lg:justify-end text-foreground">
+              <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                onClick={closeDrawer}
+                className="absolute inset-0 bg-background/80 backdrop-blur-sm cursor-pointer"
+              />
+              
+              <motion.div 
+                initial={{ x: "100%" }} 
+                animate={{ x: 0 }} 
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.4, ease: smoothEase as any}}
+                className="relative w-full max-w-lg h-full border-l bg-background border-border/50 shadow-2xl flex flex-col z-[10000] overflow-hidden"
+              >
                   <div className="sticky top-0 bg-background/90 backdrop-blur-xl border-b border-border/50 p-6 sm:p-8 flex items-center justify-between z-10">
                     <div className="flex items-center gap-3 font-bold text-xl">
                       {modalContent === "faq" && <HelpCircle size={22} className="text-red-500" />}
@@ -274,7 +273,6 @@ export const Footer = () => {
                   
                   <div className="p-6 sm:p-8 overflow-y-auto flex-grow text-[15px] leading-relaxed text-muted-foreground space-y-8 scrollbar-thin scrollbar-thumb-border/50 scrollbar-track-transparent">
                     
-                    {/* === ДОКУМЕНТЫ (ПОЛНОЦЕННЫЕ И ПРОФЕССИОНАЛЬНЫЕ) === */}
                     {(modalContent === "privacy" || modalContent === "terms" || modalContent === "dpa") && (
                       <>
                         <p className="text-xs text-muted-foreground/60 tracking-widest uppercase mb-4">{t("docs.updated")}</p>
@@ -307,7 +305,6 @@ export const Footer = () => {
                       </>
                     )}
 
-                    {/* === FAQ === */}
                     {modalContent === "faq" && (
                       <Accordion type="single" collapsible className="w-full flex flex-col">
                         {FAQList.map(({ question, answer, value }) => (
@@ -323,7 +320,6 @@ export const Footer = () => {
                       </Accordion>
                     )}
 
-                    {/* === ФОРМА ОТЗЫВА === */}
                     {modalContent === "review" && (
                       isSuccess ? (
                         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center h-full py-20">
@@ -375,12 +371,12 @@ export const Footer = () => {
                     )}
 
                   </div>
-                </>
-              )}
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </footer>
   )
 }

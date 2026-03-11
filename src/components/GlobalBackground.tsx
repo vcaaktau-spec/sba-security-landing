@@ -5,97 +5,116 @@ import { motion, useScroll, useTransform } from "framer-motion"
 export const GlobalBackground = () => {
   const { scrollY } = useScroll()
   
-  // Легкий глобальный параллакс для фона, чтобы он немного реагировал на скролл страницы
-  const backgroundY = useTransform(scrollY, [0, 2000], [0, 150])
-  const gridY = useTransform(scrollY, [0, 2000], [0, 50])
+  // Параллакс эффект для глубины
+  const backgroundY = useTransform(scrollY, [0, 2000], [0, 100])
+  const gridY = useTransform(scrollY, [0, 2000], [0, 40])
 
-  // Точки для радара
-  const radarTargets = [
-    { top: "35%", left: "40%", delay: 0 },
-    { top: "60%", left: "65%", delay: 1.5 },
-    { top: "25%", left: "70%", delay: 3 },
-    { top: "75%", left: "30%", delay: 4.5 },
-    { top: "45%", left: "20%", delay: 6 },
-    { top: "15%", left: "50%", delay: 2.5 },
-    { top: "85%", left: "55%", delay: 5.5 },
-    { top: "50%", left: "80%", delay: 1 },
+  // Точки для радара в процентах (идеально для мобилок и ПК)
+  const cctvTargets = [
+    { top: "25%", left: "20%", delay: 0, code: "SYS-01" },
+    { top: "65%", left: "75%", delay: 1.2, code: "NET-44" },
+    { top: "15%", left: "70%", delay: 3.5, code: "SEC-9" },
+    { top: "80%", left: "30%", delay: 2.1, code: "DAT-2" },
+    { top: "45%", left: "85%", delay: 4.8, code: "UPL-5" },
+    { top: "55%", left: "15%", delay: 0.5, code: "CAM-3" },
   ]
 
   return (
-    <div className="fixed inset-0 z-[-1] overflow-hidden bg-background pointer-events-none">
+    <div className="fixed inset-0 z-[-1] overflow-hidden bg-background pointer-events-none select-none">
       
+      {/* Углы видоискателя камеры (CCTV Corners) */}
+      <div className="absolute inset-4 md:inset-8 opacity-40 dark:opacity-60 transition-opacity duration-700">
+        <div className="absolute top-0 left-0 w-8 h-8 md:w-16 md:h-16 border-t-2 border-l-2 border-foreground/50 rounded-tl-lg" />
+        <div className="absolute top-0 right-0 w-8 h-8 md:w-16 md:h-16 border-t-2 border-r-2 border-foreground/50 rounded-tr-lg" />
+        <div className="absolute bottom-0 left-0 w-8 h-8 md:w-16 md:h-16 border-b-2 border-l-2 border-foreground/50 rounded-bl-lg" />
+        <div className="absolute bottom-0 right-0 w-8 h-8 md:w-16 md:h-16 border-b-2 border-r-2 border-foreground/50 rounded-br-lg" />
+      </div>
+
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 flex items-center justify-center w-full h-full">
         
-        {/* Базовое пульсирующее свечение */}
+        {/* Базовое техно-свечение */}
         <motion.div 
-          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute w-[80vw] max-w-[800px] h-[80vw] max-h-[800px] bg-red-600/10 rounded-full blur-[100px]" 
+          animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute w-[120vw] max-w-[1000px] aspect-square bg-cyan-500/10 dark:bg-cyan-400/10 rounded-full blur-[100px] md:blur-[120px]" 
         />
 
-        {/* Надежная SVG Сетка */}
-        <motion.div style={{ y: gridY }} className="absolute inset-0 opacity-20 dark:opacity-30">
+        {/* Адаптивная IT Сетка */}
+        <motion.div style={{ y: gridY }} className="absolute inset-0">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="globalGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-                <circle cx="60" cy="60" r="1.5" fill="currentColor" opacity="0.8"/>
+              <pattern id="cctvGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                {/* Линии сетки */}
+                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-foreground/10 dark:text-foreground/20"/>
+                {/* Перекрестия на стыках (IT style) */}
+                <path d="M -3 0 L 3 0 M 0 -3 L 0 3" stroke="currentColor" strokeWidth="1" className="text-foreground/30 dark:text-foreground/40" />
               </pattern>
-              <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
-                <stop offset="10%" stopColor="white" stopOpacity="1" />
+              <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+                <stop offset="20%" stopColor="white" stopOpacity="1" />
                 <stop offset="100%" stopColor="white" stopOpacity="0" />
               </radialGradient>
             </defs>
-            <rect width="100%" height="100%" fill="url(#globalGrid)" mask="url(#mask)" />
+            <rect width="100%" height="100%" fill="url(#cctvGrid)" mask="url(#mask)" />
             <mask id="mask">
               <rect width="100%" height="100%" fill="url(#vignette)" />
             </mask>
           </svg>
         </motion.div>
 
-        {/* Радар */}
+        {/* Центральный Радар / Компас */}
         <motion.div 
           animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[800px] h-[800px] border border-red-500/10 rounded-full flex items-center justify-center opacity-70"
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          className="absolute w-[150vw] sm:w-[90vw] max-w-[700px] aspect-square border border-foreground/5 dark:border-foreground/10 rounded-full flex items-center justify-center opacity-60"
         >
-           <div className="w-[400px] h-[400px] border border-red-500/10 rounded-full" />
-           <div className="absolute top-0 w-[2px] h-[400px] bg-gradient-to-b from-transparent to-red-500/20" />
-           <div className="absolute right-0 h-[2px] w-[400px] bg-gradient-to-l from-transparent to-red-500/20" />
+           {/* Внутренние кольца */}
+           <div className="w-[60%] h-[60%] border border-foreground/5 dark:border-foreground/10 rounded-full border-dashed" />
+           <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+           <div className="absolute h-full w-[1px] bg-gradient-to-b from-transparent via-foreground/10 to-transparent" />
         </motion.div>
 
-        {/* Пульсирующие точки радара */}
-        <div className="absolute w-[800px] h-[800px]">
-          {radarTargets.map((target, index) => (
-            <motion.div
-              key={index}
-              className="absolute w-1.5 h-1.5 bg-red-500 rounded-full"
-              style={{ top: target.top, left: target.left }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 1, 0.8, 0],
-                scale: [0.5, 1.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: target.delay,
-                ease: "easeInOut",
-                repeatDelay: 1.5 
-              }}
-            >
-              <div className="absolute inset-0 w-full h-full bg-red-500 rounded-full animate-ping opacity-60" />
-            </motion.div>
+        {/* Захват целей (Target Locks) */}
+        <div className="absolute inset-0 max-w-7xl mx-auto">
+          {cctvTargets.map((target, index) => (
+            <div key={index} className="absolute" style={{ top: target.top, left: target.left }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 1.5 }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  scale: [1.2, 1, 1, 0.9],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  delay: target.delay,
+                  ease: "easeInOut",
+                  repeatDelay: 1 
+                }}
+                className="relative flex flex-col items-center justify-center"
+              >
+                {/* Рамка захвата */}
+                <div className="w-6 h-6 md:w-8 md:h-8 border border-cyan-500/40 dark:border-cyan-400/60 relative flex items-center justify-center">
+                  <div className="w-1 h-1 bg-cyan-600 dark:bg-cyan-400" />
+                  {/* Уголочки рамки */}
+                  <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-cyan-500 dark:border-cyan-400" />
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-cyan-500 dark:border-cyan-400" />
+                </div>
+                {/* Текст статуса */}
+                <div className="absolute top-full mt-1 text-[8px] md:text-[10px] font-mono text-cyan-600/70 dark:text-cyan-400/70 tracking-wider">
+                  {target.code}
+                </div>
+              </motion.div>
+            </div>
           ))}
         </div>
 
       </motion.div>
 
-      {/* Глобальный сканирующий лазер */}
+      {/* Линия сканирования (Smooth Scanner) */}
       <motion.div
         animate={{ y: ["-10vh", "110vh"] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        className="absolute top-0 left-0 right-0 h-[1px] bg-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.4)] z-20"
+        transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+        className="absolute top-0 left-0 right-0 h-16 md:h-32 bg-gradient-to-b from-transparent to-cyan-500/5 dark:to-cyan-400/10 border-b border-cyan-500/20 dark:border-cyan-400/30 z-20"
       />
     </div>
   )
