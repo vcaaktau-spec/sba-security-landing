@@ -1,7 +1,6 @@
 "use client"
 
 import { motion, useScroll, useTransform } from "framer-motion"
-import { useEffect, useState } from "react"
 
 export const GlobalBackground = () => {
   const { scrollY } = useScroll()
