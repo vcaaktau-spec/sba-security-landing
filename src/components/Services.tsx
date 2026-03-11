@@ -12,7 +12,6 @@ export const Services = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
 
-  // Определяем мобилку
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     checkMobile()
@@ -25,13 +24,12 @@ export const Services = () => {
     threshold: 0.15,
   })
 
-  // === ПАРАЛЛАКС ЛОГИКА (ОТКЛЮЧЕНА ДЛЯ МОБИЛОК) ===
+  // === ПАРАЛЛАКС ЛОГИКА (ТОЛЬКО ДЛЯ КОНТЕНТА) ===
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"])
   const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
   const servicesData = [
@@ -69,7 +67,6 @@ export const Services = () => {
     },
   ]
 
-  // === АВТОПЛЕЙ ТАБОВ ===
   useEffect(() => {
     if (!inView || !isAutoPlaying) return;
 
@@ -84,7 +81,6 @@ export const Services = () => {
   const activeService = servicesData[activeIndex]
   const ActiveIcon = activeService.icon
 
-  // ОПТИМИЗИРОВАННАЯ АНИМАЦИЯ ВЫЛЕТА БЕЗ BLUR
   const fadeVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (delay: number) => ({
@@ -98,17 +94,8 @@ export const Services = () => {
     <section 
       id="services" 
       ref={containerRef}
-      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-slate-50 dark:bg-background border-t border-border"
+      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-0 overflow-hidden bg-transparent border-t border-border/10"
     >
-      {/* === ПАРАЛЛАКС ФОН === */}
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-        {/* Шары скрыты на мобилках */}
-        <div className="hidden md:block absolute top-1/4 left-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
-        <div className="hidden md:block absolute bottom-0 right-0 w-[600px] h-[600px] bg-red-900/5 blur-[150px] rounded-full" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-      </motion.div>
-
-      {/* === ПАРАЛЛАКС КОНТЕНТ === */}
       <motion.div 
         ref={inViewRef}
         style={{ y: contentY }}
@@ -118,30 +105,25 @@ export const Services = () => {
         {/* === ЛЕВАЯ ЧАСТЬ: Навигация === */}
         <div className="w-full lg:w-[40%] flex flex-col justify-center">
           
+          {/* === ОРИГИНАЛЬНЫЙ ЗАГОЛОВОК ИЗ ТВОЕГО КОДА (СТАТИЧНЫЙ) === */}
           <div className="mb-10 text-center lg:text-left">
-            <motion.h2 
-              custom={0} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
-              className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-foreground"
-            >
-              <span className="block">{t("services.title1")}</span>
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-foreground">
+              <span className="block">{t("services.title1", "Больше, чем")}</span>
               <span className="text-red-600 block mt-1 sm:mt-2 italic">
-                {t("services.title2")}
+                {t("services.title2", "видеонаблюдение")}
               </span>
-            </motion.h2>
-            <motion.p 
-              custom={0.2} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
-              className="text-base text-muted-foreground font-medium max-w-md mx-auto lg:mx-0"
-            >
-              {t("services.subtitle")}
-            </motion.p>
+            </h2>
+            <p className="text-base text-muted-foreground font-medium max-w-md mx-auto lg:mx-0">
+              {t("services.subtitle", "Мы предоставляем полный спектр услуг: от прокладки кабеля до проектной документации и IT-решений. Ваш бизнес под нашей защитой.")}
+            </p>
           </div>
 
           {/* СПИСОК УСЛУГ (Табы) */}
           <motion.div 
-            custom={0.4} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            custom={0.2} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             className="flex flex-col gap-2 relative"
           >
-            <div className="hidden lg:block absolute left-[15px] top-4 bottom-4 w-[2px] bg-black/5 dark:bg-white/5 rounded-full" />
+            <div className="hidden lg:block absolute left-[15px] top-4 bottom-4 w-[2px] bg-border/30 rounded-full" />
 
             {servicesData.map((service, index) => {
               const isActive = activeIndex === index;
@@ -155,21 +137,21 @@ export const Services = () => {
                   }}
                   className={`relative flex items-center gap-4 sm:gap-6 p-4 sm:p-5 rounded-2xl text-left transition-all duration-500 group overflow-hidden ${
                     isActive 
-                      ? "bg-white dark:bg-white/[0.05] shadow-sm lg:shadow-none border border-black/5 dark:border-white/5 lg:border-transparent lg:bg-transparent" 
-                      : "hover:bg-black/5 dark:hover:bg-white/[0.02]"
+                      ? "bg-background/60 dark:bg-black/60 backdrop-blur-md shadow-sm lg:shadow-none border border-border/50 lg:border-transparent lg:bg-transparent" 
+                      : "hover:bg-background/40 dark:hover:bg-white/[0.02] backdrop-blur-sm"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeTabIndicator"
-                      className="absolute inset-0 bg-white dark:bg-white/[0.05] rounded-2xl border border-black/5 dark:border-white/5 shadow-sm hidden lg:block"
+                      className="absolute inset-0 bg-background/80 dark:bg-white/[0.05] backdrop-blur-md rounded-2xl border border-border/50 shadow-sm hidden lg:block"
                       transition={{ type: "spring", stiffness: 200, damping: 25 }}
                     />
                   )}
 
                   <div className="relative z-10 flex items-center gap-4 sm:gap-6 w-full">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-500 shrink-0 ${
-                      isActive ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]" : "bg-neutral-200 dark:bg-neutral-800 text-muted-foreground"
+                      isActive ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]" : "bg-muted dark:bg-neutral-800 text-muted-foreground"
                     }`}>
                       {isActive ? <ArrowRight size={14} /> : service.id}
                     </div>
@@ -186,7 +168,7 @@ export const Services = () => {
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ duration: 5, ease: "linear" }}
-                      className="absolute bottom-0 left-0 h-[2px] bg-red-500/30 lg:hidden"
+                      className="absolute bottom-0 left-0 h-[2px] bg-red-500/50 lg:hidden"
                     />
                   )}
                 </button>
@@ -198,17 +180,24 @@ export const Services = () => {
         {/* === ПРАВАЯ ЧАСТЬ: Окно контента === */}
         <div className="w-full lg:w-[60%] flex items-center lg:py-12">
           <motion.div 
-            custom={0.6} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
+            custom={0.4} variants={fadeVariants} initial="hidden" animate={inView ? "visible" : "hidden"}
             onMouseEnter={() => setIsAutoPlaying(false)} 
-            className="relative w-full rounded-[32px] sm:rounded-[40px] bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden min-h-[480px] flex flex-col"
+            className="relative w-full rounded-[32px] sm:rounded-[40px] bg-background/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border border-border/50 shadow-2xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden min-h-[480px] flex flex-col group"
           >
+            {/* Декоративные углы (HUD Corners) */}
+            <div className="absolute inset-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-500/50" />
+              <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-500/50" />
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-500/50" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-500/50" />
+            </div>
+
             {/* Глоу внутри карточки спрятан на мобилках */}
-            <div className="hidden md:block absolute top-0 left-0 w-[200px] h-[200px] bg-gradient-to-br from-red-500/10 to-transparent rounded-full blur-[60px] pointer-events-none" />
+            <div className="hidden md:block absolute top-0 left-0 w-[200px] h-[200px] bg-gradient-to-br from-red-500/5 to-transparent rounded-full blur-[60px] pointer-events-none" />
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
-                // === УБРАЛИ BLUR ИЗ СМЕНЫ ВКЛАДОК ===
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
@@ -217,7 +206,7 @@ export const Services = () => {
               >
                 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] bg-red-50 dark:bg-white/[0.03] flex items-center justify-center text-red-600 dark:text-red-500 border border-red-100 dark:border-white/5 shadow-inner shrink-0 lg:group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] bg-muted/50 dark:bg-white/[0.03] flex items-center justify-center text-red-600 dark:text-red-500 border border-border/50 shadow-inner shrink-0 lg:group-hover:scale-110 transition-transform duration-500">
                     <ActiveIcon size={36} strokeWidth={1.5} />
                   </div>
                   <div>
@@ -234,7 +223,7 @@ export const Services = () => {
                   {activeService.description}
                 </p>
 
-                <div className="mt-auto grid sm:grid-cols-2 gap-4 sm:gap-6 bg-slate-50 dark:bg-white/[0.02] p-6 sm:p-8 rounded-[24px] border border-black/5 dark:border-white/5">
+                <div className="mt-auto grid sm:grid-cols-2 gap-4 sm:gap-6 bg-background/50 dark:bg-white/[0.02] p-6 sm:p-8 rounded-[24px] border border-border/30">
                   {activeService.features.map((feature, i) => (
                     <motion.div 
                       key={i}

@@ -20,12 +20,11 @@ export const Features = () => {
   
   const isInView = useInView(containerRef, { once: true, margin: "-10%" })
 
-  // === ПАРАЛЛАКС ТОЛЬКО ДЛЯ ДЕСКТОПА ===
+  // === ПАРАЛЛАКС ТОЛЬКО ДЛЯ ДЕСКТОПА (Контент) ===
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"])
   const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
   const featuresData = [
@@ -33,33 +32,23 @@ export const Features = () => {
       title: t("features.f1_title", "Бескомпромиссная гарантия"),
       description: t("features.f1_desc", "Предоставляем официальную гарантию на оборудование и монтаж. Мы уверены в каждом соединении и несем личную ответственность."),
       icon: ShieldCheck,
-      delay: 0.2 // Ускорили задержки
+      delay: 0.1
     },
     {
       title: t("features.f2_title", "Мировые бренды"),
       description: t("features.f2_desc", "Никаких безымянных аналогов. Работаем исключительно с сертифицированным оборудованием от лидеров: Hikvision, Dahua, Ezviz."),
       icon: Cctv,
-      delay: 0.4
+      delay: 0.2
     },
     {
       title: t("features.f3_title", "Эстетика монтажа"),
       description: t("features.f3_desc", "Устанавливаем камеры без строительной пыли и висящих проводов. Скрытая прокладка кабеля и бережное отношение к интерьеру."),
       icon: Route,
-      delay: 0.6
+      delay: 0.3
     },
   ]
 
   const smoothEase = [0.22, 1, 0.36, 1]
-
-  // === АНИМАЦИИ БЕЗ БЛЮРА ===
-  const fadeVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (delay: number) => ({
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 1.2, ease: smoothEase as any, delay }
-    })
-  }
 
   const wrapperVariants = {
     hidden: { opacity: 0 },
@@ -83,33 +72,26 @@ export const Features = () => {
     <section
       id="features"
       ref={containerRef}
-      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-24 overflow-hidden bg-background"
+      // bg-transparent для просвечивания GlobalBackground
+      className="magnet-section relative min-h-screen flex flex-col justify-center py-20 lg:py-24 overflow-hidden bg-transparent"
     >
-      {/* === ФОН === */}
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-        {/* Прячем блюр на мобилках */}
-        <div className="hidden md:block absolute w-[600px] h-[600px] bg-red-600/5 blur-[150px] rounded-full" />
-      </motion.div>
-
       {/* === КОНТЕНТ === */}
       <motion.div style={{ y: contentY }} className="relative z-10 mx-auto w-full max-w-[1240px] px-4 sm:px-6 flex flex-col">
         
-        {/* ЗАГОЛОВОК */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 flex flex-col items-center justify-center w-full">
-          <motion.h2 
-            custom={0} variants={fadeVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
-            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-4 w-full text-center"
-          >
-            <span className="block">{t("features.title1", "Почему выбирают ")}</span>
-            <span className="block text-red-600 italic mt-1 sm:mt-2">{t("features.title2", "именно нас")}</span>
-          </motion.h2>
+        {/* ВЕРХНЯЯ ЧАСТЬ: Типографика (СТАТИЧНАЯ, СИНХРОНИЗИРОВАНА С ОСТАЛЬНЫМИ) */}
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-20 lg:mb-32">
+          <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-black tracking-tighter leading-[1.1] mb-6 flex flex-col items-center justify-center w-full">
+            <span className="block w-full text-foreground">
+              {t("features.title1", "Почему выбирают")}
+            </span>
+            <span className="block w-full text-red-600 mt-1 sm:mt-2">
+              {t("features.title2", "именно нас")}
+            </span>
+          </h2>
           
-          <motion.p
-            custom={0.2} variants={fadeVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
-            className="text-base sm:text-lg text-muted-foreground font-medium w-full text-center"
-          >
+          <div className="text-[16px] sm:text-[18px] text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
             {t("features.subtitle", "Узнайте, почему нам доверяют безопасность самых сложных объектов в Актау.")}
-          </motion.p>
+          </div>
         </div>
 
         {/* ВНУТРЕННИЙ ВДАВЛЕННЫЙ БЛОК */}
@@ -117,7 +99,8 @@ export const Features = () => {
           variants={wrapperVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="relative w-full rounded-[32px] sm:rounded-[48px] bg-slate-100/50 dark:bg-neutral-900/50 p-3 sm:p-5 lg:p-6 shadow-[inset_0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_4px_24px_rgba(0,0,0,0.4)] border border-black/5 dark:border-white/5"
+          // Полупрозрачный фон для интеграции с радаром
+          className="relative w-full rounded-[32px] sm:rounded-[48px] bg-background/40 dark:bg-black/40 backdrop-blur-sm p-3 sm:p-5 lg:p-6 shadow-[inset_0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_4px_24px_rgba(0,0,0,0.4)] border border-border/50"
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-6 h-full">
             {featuresData.map((feature) => (
@@ -127,18 +110,23 @@ export const Features = () => {
                 variants={cardVariants}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
-                // Отключаем hover-анимацию y-смещения на тач-устройствах
                 whileHover={!isMobile ? { y: -6, scale: 1.01 } : {}}
-                transition={{ duration: 0.4, ease: smoothEase as any }}
-                className="group relative bg-white dark:bg-[#0c0c0e] rounded-[24px] sm:rounded-[36px] p-8 sm:p-10 flex flex-col items-center text-center shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_20px_40px_-15px_rgba(220,38,38,0.2)] transition-all duration-500 border border-transparent dark:border-white/[0.02] overflow-hidden"
+                transition={{ duration: 0.4, ease: smoothEase as any}}
+                className="group relative bg-background/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md rounded-[24px] sm:rounded-[36px] p-8 sm:p-10 flex flex-col items-center text-center shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_20px_40px_-15px_rgba(220,38,38,0.2)] transition-all duration-500 border border-border/50 hover:border-red-500/30 overflow-hidden"
               >
-                
+                {/* Декоративные углы захвата цели (HUD Corners) */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-500/50" />
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-500/50" />
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-500/50" />
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-500/50" />
+                </div>
+
+                {/* Радиальное свечение при наведении */}
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 via-red-500/0 to-red-500/[0.05] opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
+
                 {/* ИКОНКА */}
-                <div className="relative w-20 h-20 rounded-[20px] bg-slate-50 dark:bg-white/[0.03] flex items-center justify-center mb-8 border border-black/5 dark:border-white/5 transition-all duration-500 group-hover:bg-red-50 dark:group-hover:bg-red-500/10 group-hover:border-red-100 dark:group-hover:border-red-500/20 group-hover:scale-110">
-                  
-                  {/* Заднее свечение иконки (Скрыто на мобилках) */}
-                  <div className="hidden md:block absolute inset-0 bg-red-500/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out pointer-events-none" />
-                  
+                <div className="relative z-10 w-20 h-20 rounded-[20px] bg-muted/50 dark:bg-white/[0.03] flex items-center justify-center mb-8 border border-border/50 transition-all duration-500 group-hover:bg-red-50 dark:group-hover:bg-red-500/10 group-hover:border-red-200 dark:group-hover:border-red-500/30 group-hover:scale-110">
                   <feature.icon 
                     size={32} 
                     strokeWidth={1.5} 
@@ -147,15 +135,15 @@ export const Features = () => {
                 </div>
 
                 {/* ТЕКСТ */}
-                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-foreground tracking-tight transition-colors duration-300 group-hover:text-red-600">
+                <h3 className="relative z-10 text-xl sm:text-2xl font-bold mb-4 text-foreground tracking-tight transition-colors duration-300 group-hover:text-red-600">
                   {feature.title}
                 </h3>
-                <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed flex-grow">
+                <p className="relative z-10 text-sm sm:text-base text-muted-foreground font-medium leading-relaxed flex-grow">
                   {feature.description}
                 </p>
 
-                {/* Декоративная линия */}
-                <div className="mt-8 h-[3px] w-12 bg-neutral-200 dark:bg-neutral-800 rounded-full group-hover:w-20 group-hover:bg-red-500 transition-all duration-500 ease-[0.22,1,0.36,1]" />
+                {/* Декоративная линия (Progress indicator) */}
+                <div className="relative z-10 mt-8 h-[3px] w-12 bg-border rounded-full group-hover:w-20 group-hover:bg-red-500 transition-all duration-500 ease-[0.22,1,0.36,1]" />
                 
               </motion.div>
             ))}

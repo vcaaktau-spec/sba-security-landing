@@ -43,10 +43,11 @@ const resources = {
         opt_outside: "Улица",
         opt_mix: "Микс",
         opt_standard: "Стандарт",
-        opt_complex: "Высота"
+        opt_complex: "Высота",
+        opt_hard: "Сложный"
       },
       hero: {
-        title1: "Система безопасности",
+        title1: "Система Безопасности",
         title2: "Актау",
         subtitle: "Проектируем и устанавливаем премиальные системы видеонаблюдения для домов, бизнеса и складов.",
         btn: "Рассчитать систему",
@@ -285,7 +286,8 @@ const resources = {
         opt_outside: "Сыртқы",
         opt_mix: "Микс",
         opt_standard: "Стандарт",
-        opt_complex: "Биіктік"
+        opt_complex: "Биіктік",
+        opt_hard: "Сложный"
       },
       hero: {
         title1: "Қауіпсіздік жүйесі",
@@ -527,7 +529,8 @@ const resources = {
         opt_outside: "Outside",
         opt_mix: "Mix",
         opt_standard: "Standard",
-        opt_complex: "Height"
+        opt_complex: "Height",
+        opt_hard: "Hard"
       },
       hero: {
         title1: "Security System",

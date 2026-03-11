@@ -20,12 +20,11 @@ export const HowItWorks = () => {
 
   const isInView = useInView(containerRef, { once: true, margin: "-10%" })
 
-  // === ПАРАЛЛАКС ТОЛЬКО ДЛЯ ДЕСКТОПА ===
+  // === ПАРАЛЛАКС ТОЛЬКО ДЛЯ ДЕСКТОПА (Контент) ===
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"])
   const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
   const features = [
@@ -34,42 +33,32 @@ export const HowItWorks = () => {
       icon: <PhoneCall size={26} strokeWidth={1.5} />,
       title: t("how.s1_title", "Оставляете заявку"),
       description: t("how.s1_desc", "Свяжитесь с нами по телефону или оставьте заявку на сайте. Мы уточним задачи и предложим оптимальное решение."),
-      delay: 0.2 // Уменьшили общие задержки для более быстрого восприятия
+      delay: 0.1
     },
     {
       step: "02",
       icon: <ClipboardList size={26} strokeWidth={1.5} />,
       title: t("how.s2_title", "Проектируем систему"),
       description: t("how.s2_desc", "Подбираем оборудование, рассчитываем точное количество камер и готовим индивидуальный проект."),
-      delay: 0.4
+      delay: 0.2
     },
     {
       step: "03",
       icon: <Truck size={26} strokeWidth={1.5} />,
       title: t("how.s3_title", "Привозим оборудование"),
       description: t("how.s3_desc", "Мы сами закупаем, проверяем и доставляем камеры, регистраторы и всё необходимое для монтажа."),
-      delay: 0.6
+      delay: 0.3
     },
     {
       step: "04",
       icon: <Settings size={26} strokeWidth={1.5} />,
       title: t("how.s4_title", "Монтаж и настройка"),
       description: t("how.s4_desc", "Устанавливаем камеры без грязи, прокладываем кабель, настраиваем систему и удалённый доступ на ваш смартфон."),
-      delay: 0.8
+      delay: 0.4
     },
   ]
 
   const smoothEase = [0.22, 1, 0.36, 1]
-
-  // === АНИМАЦИИ БЕЗ БЛЮРА ===
-  const textVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (delay: number) => ({
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 1, ease: smoothEase as any, delay }
-    })
-  }
 
   const flyInVariants = {
     hidden: { opacity: 0, y: 40, scale: 0.95 },
@@ -85,45 +74,35 @@ export const HowItWorks = () => {
     <section
       id="howItWorks"
       ref={containerRef}
-      className="magnet-section relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden bg-background"
+      className="magnet-section relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden bg-transparent"
     >
-      {/* === ФОН === */}
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-        {/* Прячем огромный шар на мобилках */}
-        <div className="hidden md:block absolute top-0 w-[800px] h-[400px] bg-red-600/5 blur-[120px] rounded-full" />
-      </motion.div>
-
       {/* === КОНТЕНТ === */}
       <motion.div style={{ y: contentY }} className="relative z-10 container mx-auto px-4 sm:px-6 max-w-[1400px]">
         
-        {/* ЗАГОЛОВОК */}
-        <div className="text-center mb-16 lg:mb-24 max-w-3xl mx-auto flex flex-col items-center justify-center w-full">
-          <motion.h2 
-            custom={0} variants={textVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
-            className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter mb-6 w-full text-center text-foreground"
-          >
-            {t("how.title1", "Как мы ")}
-            <span className="text-red-600 italic">
+        {/* ВЕРХНЯЯ ЧАСТЬ: Типографика (СТАТИЧНАЯ) */}
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-20 lg:mb-32">
+          <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-black tracking-tighter leading-[1.1] mb-6 flex flex-col items-center justify-center w-full">
+            <span className="block w-full text-foreground">
+              {t("how.title1", "Как мы")}
+            </span>
+            <span className="block w-full text-red-600 mt-1 sm:mt-2">
               {t("how.title2", "работаем")}
             </span>
-          </motion.h2>
+          </h2>
 
-          <motion.p 
-            custom={0.2} variants={textVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
-            className="text-base sm:text-lg text-muted-foreground font-medium leading-relaxed w-full text-center"
-          >
+          <div className="text-[16px] sm:text-[18px] text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
             {t("how.subtitle", "Полный цикл установки видеонаблюдения — от вашей первой заявки до полностью настроенной и работающей системы.")}
-          </motion.p>
+          </div>
         </div>
 
         {/* СЕТКА КАРТОЧЕК */}
         <div className="relative">
-          {/* Линия */}
+          {/* Линия связи шагов */}
           <motion.div 
             initial={{ scaleX: 0, opacity: 0 }}
             animate={isInView ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-            transition={{ duration: 1.5, ease: smoothEase as any, delay: 1 }}
-            className="absolute top-[52px] left-[12%] right-[12%] h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent hidden lg:block z-0 origin-left"
+            transition={{ duration: 1.5, ease: smoothEase as any, delay: 0.8 }}
+            className="absolute top-[52px] left-[12%] right-[12%] h-[1px] bg-gradient-to-r from-transparent via-red-500/30 to-transparent hidden lg:block z-0 origin-left"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative z-10">
@@ -134,16 +113,23 @@ export const HowItWorks = () => {
                 variants={flyInVariants}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
-                // Отключаем hover-анимацию y-смещения на тач-устройствах, чтобы не дергалось при скролле
                 whileHover={!isMobile ? { y: -6 } : {}}
                 transition={{ duration: 0.4, ease: smoothEase as any }}
-                className="group relative bg-white/70 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[28px] p-8 flex flex-col h-full shadow-sm hover:shadow-xl hover:shadow-red-900/5 transition-all duration-500 overflow-hidden"
+                className="group relative bg-background/60 dark:bg-[#0a0a0a]/60 backdrop-blur-md border border-border/50 rounded-[24px] p-8 flex flex-col h-full shadow-sm hover:border-red-500/30 transition-all duration-500 overflow-hidden"
               >
+                {/* Декоративные углы захвата цели (HUD Corners) */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
+                  <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-red-500/50" />
+                  <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-red-500/50" />
+                  <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-red-500/50" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-red-500/50" />
+                </div>
+
                 {/* Радиальное свечение */}
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 via-red-500/0 to-red-500/[0.03] opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 via-red-500/0 to-red-500/[0.05] opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
 
                 {/* Цифра на фоне */}
-                <div className="absolute -right-2 -top-4 text-[140px] font-black text-black/[0.02] dark:text-white/[0.02] pointer-events-none select-none transition-transform duration-700 group-hover:scale-105">
+                <div className="absolute -right-2 -top-4 text-[140px] font-black text-black/[0.03] dark:text-white/[0.02] pointer-events-none select-none transition-transform duration-700 group-hover:scale-105">
                   {feature.step}
                 </div>
 

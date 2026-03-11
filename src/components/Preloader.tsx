@@ -13,7 +13,7 @@ export const Preloader = () => {
 
     let start = 0;
     let animationFrameId: number;
-    const duration = 2000; // Немного ускорим до 2с для мобилок
+    const duration = 2000; // 2 секунды для комфортной загрузки
 
     const easeInOutQuart = (t: number) => t < .5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
 
@@ -30,7 +30,7 @@ export const Preloader = () => {
         setTimeout(() => {
           setIsLoading(false);
           document.body.style.overflow = "unset";
-        }, 500);
+        }, 400); // Небольшая пауза после заполнения полосы на 100%
       }
     };
 
@@ -43,10 +43,10 @@ export const Preloader = () => {
   }, [])
 
   const slideUp = {
-    initial: { top: 0 },
+    initial: { y: 0 },
     exit: {
-      top: "-100vh",
-      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.1 }
+      y: "-100vh",
+      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any}
     }
   }
 
@@ -54,8 +54,8 @@ export const Preloader = () => {
     initial: { opacity: 1, y: 0 },
     exit: { 
       opacity: 0, 
-      y: -40, // Уводим вверх для логики "взлета"
-      transition: { duration: 0.6, ease: "easeIn" as any } 
+      y: -40, // Взлет контента перед уходом фона
+      transition: { duration: 0.6, ease: "easeIn" as any} 
     }
   }
 
@@ -66,28 +66,43 @@ export const Preloader = () => {
           variants={slideUp}
           initial="initial"
           exit="exit"
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] text-white"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background text-foreground"
         >
-          {/* Сетка без блюра (маска сама по себе тяжелая) */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-10 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:40px_40px]" />
+          {/* Аккуратная SVG сетка, подстраивающаяся под тему */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] dark:opacity-5">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="preloaderGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#preloaderGrid)" />
+            </svg>
+          </div>
           
-          <motion.div variants={contentOut} className="relative z-10 w-full max-w-[300px] flex flex-col items-center">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-1.5 bg-red-600 rounded-full" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50">SBA SYSTEM</span>
+          <motion.div variants={contentOut} className="relative z-10 w-full max-w-[400px] flex flex-col items-center px-6">
+            
+            {/* Большой бейдж СБА */}
+            <div className="flex flex-col items-center">
+              <h1 className="text-[80px] sm:text-[120px] font-black tracking-tighter leading-none drop-shadow-sm">
+                СБА
+              </h1>
+              <div className="flex items-center gap-2 mt-2 sm:mt-4">
+                <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(220,38,38,0.8)]" />
+                <span className="text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.3em] text-muted-foreground">
+                  Система Безопасности
+                </span>
+              </div>
             </div>
             
-            <div className="text-[90px] sm:text-[130px] font-black tracking-tighter leading-none flex items-baseline tabular-nums">
-              {progress}
-              <span className="text-2xl sm:text-4xl text-white/10 ml-2">%</span>
-            </div>
-            
-            <div className="w-full h-[1px] bg-white/5 mt-10 overflow-hidden relative">
+            {/* Игровая полоса загрузки (Progress Bar) */}
+            <div className="w-full max-w-[200px] sm:max-w-[260px] h-[2px] sm:h-[3px] bg-foreground/10 mt-12 rounded-full overflow-hidden relative">
               <motion.div 
-                className="absolute top-0 left-0 bottom-0 bg-red-600"
+                className="absolute top-0 left-0 bottom-0 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"
                 style={{ width: `${progress}%` }}
               />
             </div>
+            
           </motion.div>
         </motion.div>
       )}

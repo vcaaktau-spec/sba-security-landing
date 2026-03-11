@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next"
-import { useInView } from "react-intersection-observer"
 import { Camera, HardDrive, Clock, Flame, Shield, Network, Lock, ChevronRight, ChevronLeft } from "lucide-react"
 
 export type BadgeType = "camera" | "storage" | "time" | "fire" | "network" | "access" | "shield"
@@ -47,7 +46,6 @@ export const Projects = () => {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "-10% 0px" })
   const [[page, direction], setPage] = useState([0, 0])
   const [isPaused, setIsPaused] = useState(false)
 
@@ -99,7 +97,7 @@ export const Projects = () => {
   }
 
   useEffect(() => {
-    if (isPaused || isMobile) return; // На мобилках лучше отключить автоскролл, чтобы не мешать читать
+    if (isPaused || isMobile) return;
     const timer = setInterval(() => {
       paginate(1);
     }, 5000);
@@ -108,7 +106,6 @@ export const Projects = () => {
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
-  // === ОПТИМИЗИРОВАННЫЕ ВАРИАНТЫ (УБРАН BLUR) ===
   const variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 60 : -60,
@@ -120,177 +117,165 @@ export const Projects = () => {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: smoothEase as any } // Чуть ускорили
+      transition: { duration: 0.6, ease: smoothEase as any }
     },
     exit: (direction: number) => ({
       z: 0,
       x: direction < 0 ? 60 : -60,
       opacity: 0,
       scale: 0.98,
-      transition: { duration: 0.5, ease: smoothEase as any }
+      transition: { duration: 0.6, ease: smoothEase as any }
     })
   }
 
   return (
     <section 
       id="projects" 
-      ref={ref}
-      className="magnet-section relative w-full min-h-screen flex flex-col justify-center py-20 overflow-hidden bg-slate-50 dark:bg-background border-t border-border"
+      className="magnet-section relative w-full flex flex-col justify-center py-16 lg:py-24 overflow-hidden bg-transparent border-t border-border/10"
     >
-      {/* ДИНАМИЧЕСКИЙ ФОН (ТОЛЬКО ДЛЯ ПК) */}
-      <AnimatePresence mode="popLayout">
-        {!isMobile && (
-          <motion.img
-            key={`bg-${activeProject.id}`}
-            src={activeProject.image}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.03 }} 
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute inset-0 w-full h-full object-cover blur-[80px] pointer-events-none"
-          />
-        )}
-      </AnimatePresence>
-
-      <div className="relative z-10 mx-auto w-full max-w-[1140px] px-4 sm:px-6 flex flex-col items-center">
+      <div className="relative z-10 mx-auto w-full max-w-[1240px] px-4 sm:px-6 flex flex-col items-center">
         
         {/* === ОТЦЕНТРОВАННАЯ ШАПКА === */}
-        <div className="w-full flex flex-col items-center text-center mb-10 sm:mb-14">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 1, ease: smoothEase as any }}
-            className="max-w-2xl"
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-4">
-              <span className="block">{t("projects.title1")}</span>
-              <span className="text-red-600 block italic mt-1 sm:mt-2">
-                {t("projects.title2")}
-              </span>
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 font-medium">
-              {t("projects.subtitle")}
-            </p>
-          </motion.div>
+        <div className="w-full flex flex-col items-center text-center max-w-4xl mx-auto mb-10 lg:mb-16">
+          <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-black tracking-tighter leading-[1.1] mb-4 lg:mb-6 flex flex-col items-center justify-center w-full">
+            <span className="block w-full text-foreground">
+              {t("projects.title1", "Реализованные")}
+            </span>
+            <span className="block w-full text-red-600 mt-1 sm:mt-2">
+              {t("projects.title2", "проекты")}
+            </span>
+          </h2>
+          
+          <div className="text-[15px] sm:text-[18px] text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
+            {t("projects.subtitle", "Примеры наших работ: от небольших офисов до крупных производственных складов.")}
+          </div>
         </div>
 
-        {/* === ГЛАВНАЯ КАРТОЧКА === */}
+        {/* === КАРТОЧКА ПРОЕКТА === */}
         <div 
-          className="relative w-full h-[600px] sm:h-[650px] lg:h-[420px] xl:h-[460px] group"
+          className="relative w-full h-[580px] sm:h-[500px] lg:h-[520px] group rounded-[28px] sm:rounded-[40px] overflow-hidden border border-border/50 shadow-2xl dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] bg-background/50 backdrop-blur-sm"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Свечение (Скрыто на мобилках) */}
-          <div className="hidden lg:block absolute -inset-[2px] bg-gradient-to-r from-red-600/0 via-red-600/10 dark:via-red-600/20 to-red-600/0 rounded-[30px] lg:rounded-[36px] opacity-0 blur-xl transition-opacity duration-1000 group-hover:opacity-100" />
-          <div className="hidden lg:block absolute -inset-[1px] bg-gradient-to-r from-black/5 via-red-500/10 to-black/5 dark:from-white/10 dark:via-red-500/10 dark:to-white/10 rounded-[30px] lg:rounded-[36px] transition-opacity duration-1000" />
+          {/* Декоративные углы захвата цели (Скругленные по радиусу карточки) */}
+          <div className="absolute inset-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-30">
+            <div className="absolute top-0 left-0 w-12 h-12 sm:w-16 sm:h-16 border-t-2 border-l-2 border-red-500/50 rounded-tl-[28px] sm:rounded-tl-[40px]" />
+            <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 border-t-2 border-r-2 border-red-500/50 rounded-tr-[28px] sm:rounded-tr-[40px]" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 border-b-2 border-l-2 border-red-500/50 rounded-bl-[28px] sm:rounded-bl-[40px]" />
+            <div className="absolute bottom-0 right-0 w-12 h-12 sm:w-16 sm:h-16 border-b-2 border-r-2 border-red-500/50 rounded-br-[28px] sm:rounded-br-[40px]" />
+          </div>
 
-          {/* КОНТЕЙНЕР */}
-          <div className="relative w-full h-full rounded-[28px] lg:rounded-[32px] bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={page}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                drag="x" 
-                // Блокируем drag по оси Y, чтобы не конфликтовал с обычным скроллом
-                dragDirectionLock
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.8}
-                onDragEnd={(_e: any, info: any) => {
-                  const swipe = Math.abs(info.offset.x) * info.velocity.x;
-                  if (swipe < -8000) { paginate(1); } // Чуть снизили порог свайпа для мобилок
-                  else if (swipe > 8000) { paginate(-1); }
-                }}
-                className="absolute inset-0 w-full h-full flex flex-col lg:flex-row cursor-grab active:cursor-grabbing"
-              >
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={page}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              drag="x" 
+              dragDirectionLock
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.8}
+              onDragEnd={(_e, info) => {
+                const swipe = Math.abs(info.offset.x) * info.velocity.x;
+                if (swipe < -6000) { paginate(1); } 
+                else if (swipe > 6000) { paginate(-1); }
+              }}
+              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+            >
+              
+              {/* ФОНОВОЕ ИЗОБРАЖЕНИЕ */}
+              <div className="absolute inset-0 w-full h-full bg-black">
+                <img 
+                  src={activeProject.image} 
+                  alt={activeProject.title} 
+                  className="w-full h-full object-cover opacity-70 lg:opacity-90 transition-transform duration-[10s] ease-linear scale-100 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/50 lg:to-transparent" />
+              </div>
+              
+              {/* КОНТЕНТ (HUD ПАНЕЛЬ) */}
+              <div className="absolute inset-0 p-5 sm:p-8 lg:p-14 flex flex-col justify-end lg:justify-center items-start z-10 w-full lg:w-[65%]">
                 
-                {/* ЛЕВАЯ ЧАСТЬ: ИНФОРМАЦИЯ */}
-                <div className="w-full lg:w-[45%] xl:w-[40%] p-6 sm:p-8 flex flex-col justify-between shrink-0 lg:h-full overflow-y-auto lg:overflow-visible">
-                  <div>
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <span className="px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 dark:bg-red-500/10 rounded-lg border border-red-100 dark:border-red-500/20">
-                        {t(activeProject.categoryKey)}
-                      </span>
-                      <span className="text-2xl font-black text-black/5 dark:text-white/5 select-none font-mono">
-                        {activeProject.id}
-                      </span>
-                    </div>
-
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-3 transition-colors group-hover:text-red-600 dark:group-hover:text-white duration-500">
-                      {activeProject.title}
-                    </h3>
-                    
-                    <p className="text-[13px] sm:text-sm font-medium text-muted-foreground leading-relaxed mb-5 line-clamp-3">
-                      {t(activeProject.descriptionKey)}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {activeProject.badges.map((badge, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-white/[0.03] rounded-lg border border-black/5 dark:border-white/5 transition-colors lg:group-hover:border-red-500/20 lg:dark:group-hover:border-red-500/30 lg:group-hover:bg-red-50/50 lg:dark:group-hover:bg-red-500/5">
-                          {getBadgeIcon(badge.type)}
-                          <span className="text-[11px] sm:text-xs font-semibold text-foreground uppercase tracking-wider">
-                            {badge.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-black/5 dark:border-white/10 mt-auto">
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">
-                      {t("projects.price_label", "Стоимость под ключ")}
-                    </div>
-                    <div className="text-xl sm:text-2xl font-black text-foreground">
-                      {activeProject.price}
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                  <span className="px-2.5 py-1 sm:px-3 sm:py-1.5 text-[9px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 rounded-md border border-red-500/30 backdrop-blur-md">
+                    {t(activeProject.categoryKey)}
+                  </span>
+                  <div className="h-[1px] w-6 sm:w-10 bg-white/20" />
+                  <span className="text-xs sm:text-sm font-mono text-white/50 font-bold tracking-widest">
+                    DATA.{activeProject.id}
+                  </span>
                 </div>
 
-                {/* ПРАВАЯ ЧАСТЬ: ИЗОБРАЖЕНИЕ + КНОПКИ */}
-                <div className="w-full lg:w-[55%] xl:w-[60%] flex-grow lg:h-full relative overflow-hidden bg-slate-100 dark:bg-neutral-900 min-h-[250px] border-t lg:border-t-0 lg:border-l border-black/5 dark:border-white/5">
-                  {/* УБРАЛИ BLUR С КАРТИНКИ */}
-                  <img 
-                    src={activeProject.image} 
-                    alt={activeProject.title} 
-                    loading="eager" 
-                    draggable={false}
-                    className="w-full h-full object-cover transition-transform duration-1000 ease-[0.22,1,0.36,1] scale-105 lg:group-hover:scale-100"
-                  />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-black/5 dark:ring-white/10 rounded-b-[28px] lg:rounded-r-[32px] lg:rounded-bl-none pointer-events-none" />
+                <h3 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-2 sm:mb-4 drop-shadow-lg line-clamp-2">
+                  {activeProject.title}
+                </h3>
+                
+                <p className="text-[13px] sm:text-base text-neutral-300 font-medium leading-relaxed mb-6 sm:mb-8 max-w-lg drop-shadow-md line-clamp-3 sm:line-clamp-4">
+                  {t(activeProject.descriptionKey)}
+                </p>
+
+                {/* Беджи и Цена */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-10 w-full p-4 sm:p-6 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10">
                   
-                  {/* === ПРОЗРАЧНЫЕ КНОПКИ НАВИГАЦИИ === */}
-                  <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2 z-20">
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); paginate(-1); }} 
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 transition-all hover:scale-105 active:scale-95 text-white"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); paginate(1); }} 
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 transition-all hover:scale-105 active:scale-95 text-white"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    {activeProject.badges.map((badge, idx) => (
+                      <div key={idx} className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 bg-white/5 rounded-lg border border-white/10 text-white">
+                        {getBadgeIcon(badge.type)}
+                        <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                          {badge.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="hidden sm:block w-px h-10 bg-white/20" />
+                  <div className="block sm:hidden w-full h-px bg-white/10" />
+
+                  <div className="flex flex-col">
+                    <span className="text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-widest font-bold mb-1">
+                      {t("projects.price_label", "Стоимость")}
+                    </span>
+                    <span className="text-lg sm:text-2xl font-black text-white whitespace-nowrap">
+                      {activeProject.price}
+                    </span>
                   </div>
 
                 </div>
-                
-              </motion.div>
-            </AnimatePresence>
+
+              </div>
+              
+            </motion.div>
+          </AnimatePresence>
+
+          {/* === НАВИГАЦИОННЫЕ КНОПКИ === */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:bottom-10 lg:top-auto flex items-center gap-2 sm:gap-3 z-30">
+            <button 
+              onClick={(e) => { e.stopPropagation(); paginate(-1); }} 
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-black/50 hover:bg-red-600 backdrop-blur-lg border border-white/10 hover:border-red-500 transition-all text-white group/btn"
+            >
+              <ChevronLeft size={20} className="sm:w-6 sm:h-6 transition-transform group-hover/btn:-translate-x-1" />
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); paginate(1); }} 
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-black/50 hover:bg-red-600 backdrop-blur-lg border border-white/10 hover:border-red-500 transition-all text-white group/btn"
+            >
+              <ChevronRight size={20} className="sm:w-6 sm:h-6 transition-transform group-hover/btn:translate-x-1" />
+            </button>
           </div>
         </div>
 
         {/* ТОЧКИ-ИНДИКАТОРЫ */}
-        <div className="flex justify-center items-center gap-2 mt-8 shrink-0">
+        <div className="flex justify-center items-center gap-2 mt-6 lg:mt-8 shrink-0">
           {projectsData.map((_, idx) => (
             <div 
               key={idx} 
-              className={`h-1.5 rounded-full transition-all duration-500 ${activeIndex === idx ? "w-8 bg-red-600" : "w-2 bg-black/10 dark:bg-white/10"}`}
+              className={`h-[4px] rounded-full transition-all duration-500 ${activeIndex === idx ? "w-8 sm:w-10 bg-red-600" : "w-3 sm:w-4 bg-muted-foreground/30"}`}
             />
           ))}
         </div>
+
       </div>
     </section>
   )
