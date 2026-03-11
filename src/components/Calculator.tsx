@@ -1,61 +1,84 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { 
-  Shield, Send, CheckCircle2, Loader2, Calculator as CalcIcon, HardDrive
+  Send, CheckCircle2, Loader2, Calculator as CalcIcon, HardDrive, 
+  Video, Activity, Settings2, ShieldCheck 
 } from "lucide-react"
 import { useInView } from "react-intersection-observer"
 
 // --- СТРОГИЕ ТИПЫ ДЛЯ TYPESCRIPT ---
 type Resolution = "2MP" | "4MP" | "8MP"
 type Channels = 4 | 8 | 16 | 32
-// Используем англ ключи для логики, чтобы не зависеть от перевода
 type CableLoc = "indoor" | "outdoor"
 type Conduit = "none" | "gofra" | "channel"
-type Archive = "7" | "14" | "30"
 type InstallLevel = "standard" | "complex" | "hard"
 
 // --- ПРОФЕССИОНАЛЬНЫЕ ПРАЙСЫ (АКТАУ 2026) ---
 const PRICES = {
-  cameraBase: 15000, 
+  cameraBase: 34000, 
   resAddon: {
     "2MP": 0,
     "4MP": 10000,
-    "8MP": 35000,
+    "8MP": 85000,
   } as Record<Resolution, number>,
 
   nvr: {
-    "2MP": { 4: 25000, 8: 35000, 16: 60000, 32: 110000 },
-    "4MP": { 4: 30000, 8: 42000, 16: 75000, 32: 130000 },
-    "8MP": { 4: 40000, 8: 55000, 16: 95000, 32: 160000 }
+    "2MP": { 4: 29000, 8: 37000, 16: 72000, 32: 160000 },
+    "4MP": { 4: 46000, 8: 73000, 16: 115000, 32: 1700000 },
+    "8MP": { 4: 71000, 8: 118000, 16: 172000, 32: 284000 }
   } as Record<Resolution, Record<Channels, number>>,
 
-  poe: { 4: 15000, 8: 28000, 16: 55000, 32: 95000 } as Record<Channels, number>,
+  poe: { 4: 21000, 8: 36000, 16: 87000 } as Record<number, number>,
 
-  cableIndoor: 180,
-  cableOutdoor: 250,
+  cableIndoor: 220,
+  cableOutdoor: 280,
 
   conduitNone: 0,
   conduitGofra: 150,
   conduitChannel: 350,
 
-  hddBase: {
-    "7": 22000,
-    "14": 38000,
-    "30": 65000,
-  } as Record<Archive, number>,
-
   install: {
-    "standard": 8000,
-    "complex": 12000,
-    "hard": 15000,
+    "standard": 30000,
+    "complex": 35000,
+    "hard": 45000,
   } as Record<InstallLevel, number>
 }
 
 const HDD_RATES = { "2MP": 20, "4MP": 40, "8MP": 80 } as Record<Resolution, number>
-const ARCHIVE_DAYS = { "7": 7, "14": 14, "30": 30 } as Record<Archive, number>
+
+// УМНЫЙ АЛГОРИТМ ПОДБОРА HDD (НОВЫЕ ЦЕНЫ - Без 3TB)
+const getHddCost = (tb: number): number => {
+  const drives = [
+    { cap: 1, price: 59000 },
+    { cap: 2, price: 70000 },
+    { cap: 4, price: 82500 },
+    { cap: 6, price: 127500 },
+    { cap: 8, price: 167500 },
+    { cap: 10, price: 225000 },
+  ];
+  
+  const maxCap = tb + 15; 
+  const dp = new Array(maxCap).fill(Infinity);
+  dp[0] = 0;
+  
+  for (let i = 0; i < maxCap; i++) {
+    if (dp[i] === Infinity) continue;
+    for (const d of drives) {
+      if (i + d.cap < maxCap) {
+        dp[i + d.cap] = Math.min(dp[i + d.cap], dp[i] + d.price);
+      }
+    }
+  }
+  
+  let minCost = Infinity;
+  for (let i = tb; i < maxCap; i++) {
+    minCost = Math.min(minCost, dp[i]);
+  }
+  return minCost;
+};
 
 interface CalculatorProps {
   onClose?: () => void;
@@ -71,52 +94,57 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
   const [resolution, setResolution] = useState<Resolution>("2MP")
   const [cableLoc, setCableLoc] = useState<CableLoc>("indoor")
   const [conduit, setConduit] = useState<Conduit>("channel")
-  const [archive, setArchive] = useState<Archive>("7")
+  const [archiveDays, setArchiveDays] = useState<number>(7)
   const [installLevel, setInstallLevel] = useState<InstallLevel>("hard")
-  
-  const [totalPrice, setTotalPrice] = useState<number>(0)
-  const [calculatedTB, setCalculatedTB] = useState<number>(1)
   
   const [phone, setPhone] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
-  // АЛГОРИТМ РАСЧЕТА
-  useEffect(() => {
-    let total = 0
-    total += (PRICES.cameraBase + PRICES.resAddon[resolution]) * cameras
+  // СИНХРОННЫЕ РАСЧЕТЫ
+  let nvrChannels: Channels = 4
+  if (cameras > 4) nvrChannels = 8
+  if (cameras > 8) nvrChannels = 16
+  if (cameras > 16) nvrChannels = 32
+  const nvrCost = PRICES.nvr[resolution][nvrChannels]
 
-    let channels: Channels = 4
-    if (cameras > 4) channels = 8
-    if (cameras > 8) channels = 16
-    if (cameras > 16) channels = 32
-    total += PRICES.nvr[resolution][channels]
-    total += PRICES.poe[channels]
+  let poeCost = 0;
+  let remainingCameras = cameras;
+  let poeCounts = { 16: 0, 8: 0, 4: 0 };
+  while (remainingCameras > 0) {
+    if (remainingCameras >= 16) { poeCost += PRICES.poe[16]; remainingCameras -= 16; poeCounts[16]++; }
+    else if (remainingCameras > 8) { poeCost += PRICES.poe[16]; remainingCameras -= 16; poeCounts[16]++; }
+    else if (remainingCameras > 4) { poeCost += PRICES.poe[8]; remainingCameras -= 8; poeCounts[8]++; }
+    else { poeCost += PRICES.poe[4]; remainingCameras -= 4; poeCounts[4]++; }
+  }
+  
+  const summaryArr = [];
+  if (poeCounts[16] > 0) summaryArr.push(`${poeCounts[16]}x 16-port`);
+  if (poeCounts[8] > 0) summaryArr.push(`${poeCounts[8]}x 8-port`);
+  if (poeCounts[4] > 0) summaryArr.push(`${poeCounts[4]}x 4-port`);
+  const poeSummary = summaryArr.join(' + ');
 
-    let baseMetersPrice = cableLoc === "indoor" ? PRICES.cableIndoor : PRICES.cableOutdoor
-    if (cable >= 100 && cable < 300) baseMetersPrice -= 20
-    if (cable >= 300) baseMetersPrice -= 40
-    total += cable * baseMetersPrice
+  let baseMetersPrice = cableLoc === "indoor" ? PRICES.cableIndoor : PRICES.cableOutdoor
+  if (cable >= 100 && cable < 300) baseMetersPrice -= 20
+  if (cable >= 300) baseMetersPrice -= 40
+  const cableCost = cable * baseMetersPrice
 
-    if (conduit === "gofra") total += cable * PRICES.conduitGofra
-    if (conduit === "channel") total += cable * PRICES.conduitChannel
+  let conduitCost = 0
+  if (conduit === "gofra") conduitCost = cable * PRICES.conduitGofra
+  if (conduit === "channel") conduitCost = cable * PRICES.conduitChannel
 
-    const gbPerDay = HDD_RATES[resolution]
-    const days = ARCHIVE_DAYS[archive]
-    const totalGB = cameras * gbPerDay * days
-    
-    let reqTB = Math.ceil(totalGB / 1000)
-    if (reqTB < 1) reqTB = 1
-    setCalculatedTB(reqTB)
-    
-    const pricePerTB = reqTB === 1 ? 22000 : 18000
-    total += reqTB * pricePerTB
+  const gbPerDay = HDD_RATES[resolution]
+  const totalGB = cameras * gbPerDay * archiveDays
+  let calculatedTB = Math.ceil(totalGB / 1000)
+  if (calculatedTB < 1) calculatedTB = 1
+  const hddCost = getHddCost(calculatedTB)
 
-    total += PRICES.install[installLevel] * cameras
-    total = total * 1.05
+  const installCost = PRICES.install[installLevel] * cameras
+  const baseCost = (PRICES.cameraBase + PRICES.resAddon[resolution]) * cameras
+  
+  const subtotal = baseCost + nvrCost + poeCost + cableCost + conduitCost + hddCost + installCost
+  const totalPrice = Math.round(subtotal * 1.05)
 
-    setTotalPrice(Math.round(total))
-  }, [cameras, cable, resolution, cableLoc, conduit, archive, installLevel])
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.replace(/\D/g, "")
@@ -134,20 +162,30 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
     if (phone.length !== 18) return
     setIsSubmitting(true)
 
-    const text = `
-⚡️ НОВЫЙ РАСЧЕТ СИСТЕМЫ:
-💰 Итого: ${totalPrice.toLocaleString()} ₸
-📞 Тел: ${phone}
+    // СТРУКТУРИРОВАННАЯ СМЕТА ДЛЯ ТЕЛЕГРАМА
+    const conduitNames = { none: "Без защиты", gofra: "Гофра", channel: "К-канал" }
+    const installNames = { standard: "Стандарт", complex: "Высота", hard: "Сложный" }
+    const locNames = { indoor: "Внутри", outdoor: "Улица" }
 
-🛠 ПАРАМЕТРЫ:
-• Камер: ${cameras} шт (${resolution})
-• Кабель: ${cable} м (${cableLoc})
-• Защита: ${conduit}
-• Монтаж: ${installLevel}
-• Архив: ${archive} дней (HDD ~${calculatedTB} ТБ)
+    const text = `
+⚡️ НОВЫЙ РАСЧЕТ СИСТЕМЫ (Калькулятор)
+
+📞 Тел: ${phone}
+💰 ИТОГО: ${totalPrice.toLocaleString('ru-RU')} ₸
+
+📊 ОБОРУДОВАНИЕ:
+• Камеры: ${cameras} шт. (${resolution})
+• Регистратор: На ${nvrChannels} каналов
+• PoE Свитчи: ${poeSummary || "Не требуется"}
+• Жесткий диск: ~${calculatedTB} ТБ (Архив ${archiveDays} дней)
+
+🛠 МОНТАЖ И МАТЕРИАЛЫ:
+• Кабель: ${cable} м. (${locNames[cableLoc]})
+• Защита трассы: ${conduitNames[conduit]}
+• Сложность работ: ${installNames[installLevel]}
     `
     const formData = new FormData()
-    formData.append("name", "Клиент с Калькулятора") 
+    formData.append("name", "Смета с Калькулятора") 
     formData.append("company", "КАЛЬКУЛЯТОР") 
     formData.append("text", text)
 
@@ -159,7 +197,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
         if (onClose) onClose() 
       }, 3000)
     } catch { 
-      alert(t("calc.err_send", "Ошибка отправки. Пожалуйста, напишите нам в WhatsApp."))
+      alert(t("calc.err_send"))
     } finally {
       setIsSubmitting(false)
     }
@@ -169,73 +207,71 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
     <button 
       type="button" 
       onClick={onClick} 
-      // Добавлены flex-1, break-words и min-h для идеального отображения длинных слов (KZ)
-      className={`flex-1 min-h-[48px] px-2 py-2 rounded-[14px] text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center text-center break-words leading-tight ${
+      className={`flex-1 py-1.5 px-2 rounded-md text-[11px] font-semibold tracking-wide transition-all duration-200 border ${
         active 
-          ? "bg-red-600 text-white shadow-[0_8px_20px_-6px_rgba(220,38,38,0.6)] border-red-600 scale-[1.02]" 
-          : "bg-white dark:bg-white/[0.02] text-foreground/70 border border-black/10 dark:border-white/10 hover:border-red-500/50 hover:text-foreground"
+          ? "bg-foreground text-background border-foreground shadow-sm" 
+          : "bg-transparent text-muted-foreground border-border hover:border-foreground/30 hover:text-foreground"
       }`}
     >
       {label}
     </button>
   )
 
-  return (
-    <section id="calculator" className="relative min-h-screen py-12 lg:py-24 bg-background flex flex-col justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-red-900/5 blur-[150px] rounded-full" />
+  const SectionGroup = ({ icon: Icon, title, children, className = "" }: { icon: any, title: string, children: React.ReactNode, className?: string }) => (
+    <div className={`bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-4 sm:p-5 space-y-4 shadow-sm flex flex-col justify-between ${className}`}>
+      <div className="flex items-center gap-2.5 text-foreground border-b border-gray-100 dark:border-[#222] pb-3 mb-1">
+        <Icon size={16} className="text-muted-foreground" />
+        <h4 className="text-sm font-semibold tracking-tight">{title}</h4>
       </div>
+      <div className="space-y-4 flex-grow">
+        {children}
+      </div>
+    </div>
+  )
 
-      <div className="container relative z-10 px-4 sm:px-6 mx-auto max-w-[1100px] mt-10">
+  return (
+    // overflow-x-hidden и max-w-[100vw] убивают горизонтальный скролл
+    <section id="calculator" className="relative py-8 md:py-16 bg-white dark:bg-[#000] text-foreground font-sans overflow-x-hidden max-w-[100vw] selection:bg-red-500/30">
+      
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl relative z-10 w-full">
         
         {/* === ЗАГОЛОВОК === */}
-        <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 font-bold text-xs uppercase tracking-widest mb-6 border border-red-100 dark:border-red-500/20">
+        <motion.div ref={ref} initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8 text-center lg:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-gray-100 dark:bg-white/10 text-foreground font-medium text-[10px] uppercase tracking-widest mb-3">
             <CalcIcon size={14} /> {t("calc.badge")}
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-5 text-foreground leading-[1.1]">
-            {t("calc.title1")}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">
-              {t("calc.title2")}
-            </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-foreground leading-tight">
+            {t("calc.title1")} <span className="text-red-600 dark:text-red-500">{t("calc.title2")}</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          <p className="text-muted-foreground max-w-xl text-sm lg:mx-0 mx-auto">
             {t("calc.subtitle")}
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch pb-10">
+        {/* СЕТКА (min-w-0 предотвращает распирание колонок) */}
+        <div className="grid lg:grid-cols-12 gap-5 items-start">
           
           {/* === ЛЕВАЯ ПАНЕЛЬ НАСТРОЕК === */}
           <motion.div 
-            initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}} 
-            className="flex-grow bg-white dark:bg-[#0c0c0e] border border-black/5 dark:border-white/5 rounded-[32px] sm:rounded-[40px] p-5 sm:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-none"
+            initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} 
+            className="lg:col-span-8 min-w-0 grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            
-            {/* ПОЛЗУНКИ */}
-            <div className="grid sm:grid-cols-2 gap-8 sm:gap-12 mb-10">
-              <div className="space-y-4">
-                <label className="font-black text-[11px] sm:text-xs uppercase tracking-widest flex justify-between items-center text-foreground/70">
+            {/* Группа 1: Камеры */}
+            <SectionGroup icon={Video} title={t("calc.group_cameras")}>
+              <div className="space-y-2">
+                <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
                   <span>{t("calc.cameras")}</span>
-                  <span className="text-red-600 text-sm">{cameras} {t("calc.pcs")}</span>
+                  <span className="text-foreground font-bold">{cameras} {t("calc.pcs")}</span>
                 </label>
-                <input type="range" min="1" max="32" value={cameras} onChange={(e) => setCameras(Number(e.target.value))} className="w-full h-1.5 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-red-600" />
+                <input 
+                  type="range" min="1" max="32" value={cameras} 
+                  onChange={(e) => setCameras(Number(e.target.value))} 
+                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                />
               </div>
-              <div className="space-y-4">
-                <label className="font-black text-[11px] sm:text-xs uppercase tracking-widest flex justify-between items-center text-foreground/70">
-                  <span>{t("calc.cable")}</span>
-                  <span className="text-red-600 text-sm">{cable} {t("calc.meters")}</span>
-                </label>
-                <input type="range" min="10" max="1000" step="10" value={cable} onChange={(e) => setCable(Number(e.target.value))} className="w-full h-1.5 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-red-600" />
-              </div>
-            </div>
-
-            {/* СЕТКА ПАРАМЕТРОВ (Заменены gap на меньшие для вместимости) */}
-            <div className="grid sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-8">
               
-              <div className="space-y-3 flex flex-col">
-                <label className="text-[10px] font-black uppercase text-foreground/50 tracking-widest">{t("calc.res")}</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.res")}</label>
                 <div className="flex gap-2 w-full">
                   <OptionBtn active={resolution === "2MP"} label={t("calc.opt_2mp")} onClick={() => setResolution("2MP")} />
                   <OptionBtn active={resolution === "4MP"} label={t("calc.opt_4mp")} onClick={() => setResolution("4MP")} />
@@ -243,92 +279,119 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
                 </div>
               </div>
 
-              <div className="space-y-3 flex flex-col">
-                <label className="text-[10px] font-black uppercase text-foreground/50 tracking-widest">{t("calc.placement")}</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.placement")}</label>
                 <div className="flex gap-2 w-full">
-                  <OptionBtn active={cableLoc === "indoor"} label={t("calc.inside")} onClick={() => setCableLoc("indoor")} />
-                  <OptionBtn active={cableLoc === "outdoor"} label={t("calc.outside")} onClick={() => setCableLoc("outdoor")} />
+                  <OptionBtn active={cableLoc === "indoor"} label={t("calc.opt_inside")} onClick={() => setCableLoc("indoor")} />
+                  <OptionBtn active={cableLoc === "outdoor"} label={t("calc.opt_outside")} onClick={() => setCableLoc("outdoor")} />
+                </div>
+              </div>
+            </SectionGroup>
+
+            {/* Группа 2: Трасса и Защита */}
+            <SectionGroup icon={ShieldCheck} title={t("calc.group_route")}>
+              <div className="space-y-2">
+                <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
+                  <span>{t("calc.cable")}</span>
+                  <span className="text-foreground font-bold">{cable} {t("calc.meters")}</span>
+                </label>
+                <input 
+                  type="range" min="10" max="1000" step="10" value={cable} 
+                  onChange={(e) => setCable(Number(e.target.value))} 
+                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.protection_route")}</label>
+                <div className="flex gap-2 w-full">
+                  <OptionBtn active={conduit === "none"} label={t("calc.opt_none")} onClick={() => setConduit("none")} />
+                  <OptionBtn active={conduit === "gofra"} label={t("calc.opt_gofra")} onClick={() => setConduit("gofra")} />
+                  <OptionBtn active={conduit === "channel"} label={t("calc.opt_channel")} onClick={() => setConduit("channel")} />
                 </div>
               </div>
 
-              <div className="space-y-3 flex flex-col">
-                <label className="text-[10px] font-black uppercase text-foreground/50 tracking-widest">{t("calc.protection_route", "Защита трассы")}</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.install")}</label>
                 <div className="flex gap-2 w-full">
-                  <OptionBtn active={conduit === "none"} label={t("calc.opt_none", "Без защиты")} onClick={() => setConduit("none")} />
-                  <OptionBtn active={conduit === "gofra"} label={t("calc.opt_gofra", "Гофра")} onClick={() => setConduit("gofra")} />
-                  <OptionBtn active={conduit === "channel"} label={t("calc.opt_channel", "К-Канал")} onClick={() => setConduit("channel")} />
+                  <OptionBtn active={installLevel === "standard"} label={t("calc.opt_standard")} onClick={() => setInstallLevel("standard")} />
+                  <OptionBtn active={installLevel === "complex"} label={t("calc.opt_complex")} onClick={() => setInstallLevel("complex")} />
+                  <OptionBtn active={installLevel === "hard"} label={t("calc.opt_hard")} onClick={() => setInstallLevel("hard")} />
                 </div>
               </div>
+            </SectionGroup>
 
-              <div className="space-y-3 flex flex-col">
-                <label className="text-[10px] font-black uppercase text-foreground/50 tracking-widest">{t("calc.install")}</label>
-                <div className="flex gap-2 w-full">
-                  <OptionBtn active={installLevel === "standard"} label={t("calc.standard")} onClick={() => setInstallLevel("standard")} />
-                  <OptionBtn active={installLevel === "complex"} label={t("calc.complex")} onClick={() => setInstallLevel("complex")} />
-                  <OptionBtn active={installLevel === "hard"} label={t("calc.opt_complex", "Сложный")} onClick={() => setInstallLevel("hard")} />
+            {/* Группа 3: Архив (На всю ширину левой колонки) */}
+            <SectionGroup icon={HardDrive} title={t("calc.group_archive")} className="md:col-span-2">
+              <div className="space-y-2">
+                <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
+                  <span>{t("calc.archive")}</span>
+                  <span className="text-foreground font-bold bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-md">{archiveDays} {t("calc.days")}</span>
+                </label>
+                <input 
+                  type="range" min="7" max="30" step="1" value={archiveDays} 
+                  onChange={(e) => setArchiveDays(Number(e.target.value))} 
+                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                />
+                <div className="flex justify-between text-[10px] text-muted-foreground font-medium pt-2 px-1">
+                  <span>7 {t("calc.days")}</span>
+                  <span>14 {t("calc.days")}</span>
+                  <span>30 {t("calc.days")}</span>
                 </div>
               </div>
+            </SectionGroup>
 
-              <div className="space-y-3 sm:col-span-2 flex flex-col">
-                <label className="text-[10px] font-black uppercase text-foreground/50 tracking-widest">{t("calc.archive")}</label>
-                <div className="flex gap-2 w-full">
-                  <OptionBtn active={archive === "7"} label={t("calc.days7")} onClick={() => setArchive("7")} />
-                  <OptionBtn active={archive === "14"} label={t("calc.days14")} onClick={() => setArchive("14")} />
-                  <OptionBtn active={archive === "30"} label={t("calc.days30")} onClick={() => setArchive("30")} />
-                </div>
-              </div>
-
-            </div>
           </motion.div>
 
           {/* === ПРАВАЯ ПАНЕЛЬ ИТОГА === */}
           <motion.div 
-            initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} 
-            className="w-full lg:w-[400px] shrink-0 bg-[#111113] text-white rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 flex flex-col shadow-2xl relative overflow-hidden border border-white/5"
+            initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} 
+            className="lg:col-span-4 min-w-0 sticky top-24 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-6 sm:p-7 flex flex-col shadow-sm"
           >
-            <div className="absolute top-0 right-0 w-48 h-48 bg-red-600/10 blur-[60px] rounded-full pointer-events-none" />
-            
-            <h3 className="text-xl font-black mb-8 flex items-center gap-3 uppercase tracking-wider text-white">
-              <Shield size={22} className="text-red-500" /> {t("calc.summary_title")}
+            <h3 className="text-sm font-semibold mb-5 flex items-center gap-2 uppercase tracking-wider text-muted-foreground">
+              <Activity size={16} className="text-foreground" /> {t("calc.summary_title")}
             </h3>
             
-            <div className="space-y-5 mb-10 text-[11px] font-bold uppercase tracking-widest text-white/60">
-              <div className="flex justify-between items-center gap-2">
-                <span>{t("calc.nvr_included", "Оборудование:")}</span> <span className="text-white text-right">{t("calc.included")}</span>
+            <div className="space-y-3 mb-6 text-xs font-medium text-foreground">
+              <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
+                <span className="text-muted-foreground">{t("calc.cameras")}</span> 
+                <span className="font-semibold">{cameras} {t("calc.pcs")}</span>
               </div>
-              <div className="flex justify-between items-center gap-2">
-                <span>{t("calc.cameras")} ({t(`calc.opt_${resolution.toLowerCase()}`)}):</span> <span className="text-white text-right">{cameras} {t("calc.pcs")}</span>
+              <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
+                <span className="text-muted-foreground">{t("calc.cable")}</span> 
+                <span className="font-semibold">{cable} {t("calc.meters")}</span>
               </div>
-              <div className="flex justify-between items-center gap-2">
-                <span>Трасса:</span> <span className="text-white text-right">{cable} {t("calc.meters")}</span>
+              <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
+                <span className="text-muted-foreground">PoE Свитчи:</span> 
+                <span className="font-semibold text-right">{poeSummary || "-"}</span>
               </div>
-              <div className="flex justify-between items-center text-red-400 gap-2">
-                <span className="flex items-center gap-1.5"><HardDrive size={14} className="shrink-0"/> {t("calc.archive")}:</span> 
-                <span className="text-red-400 text-right whitespace-nowrap">HDD ~{calculatedTB} ТБ</span>
+              <div className="flex justify-between items-center gap-2 pt-1">
+                <span className="flex items-center gap-1.5 text-muted-foreground"><Settings2 size={14}/> {t("calc.archive")}:</span> 
+                <span className="font-semibold whitespace-nowrap">HDD ~{calculatedTB} ТБ</span>
               </div>
             </div>
 
-            <div className="mb-10">
-              <p className="text-[10px] uppercase font-black tracking-[0.2em] text-white/40 mb-2">{t("calc.approx_cost")}</p>
-              <div className="text-4xl sm:text-5xl font-black flex items-baseline gap-2 tracking-tighter text-white">
-                {totalPrice.toLocaleString('ru-RU')} <span className="text-red-600 text-2xl font-bold">₸</span>
+            <div className="mb-6 bg-white dark:bg-black p-4 rounded-lg border border-gray-200 dark:border-[#222]">
+              <p className="text-[10px] uppercase font-semibold tracking-widest text-muted-foreground mb-1">{t("calc.approx_cost")}</p>
+              <div className="text-3xl xl:text-4xl font-extrabold tracking-tighter text-foreground flex items-baseline gap-2">
+                {totalPrice.toLocaleString('ru-RU')} <span className="text-red-600 dark:text-red-500 text-lg font-bold">₸</span>
               </div>
             </div>
 
             <AnimatePresence mode="wait">
               {isSuccess ? (
-                <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="bg-green-500/10 border border-green-500/20 rounded-2xl p-6 text-center mt-auto">
-                  <CheckCircle2 className="text-green-500 mx-auto mb-3" size={40} />
-                  <p className="text-green-400 font-bold text-lg leading-tight">{t("calc.success")}<br/><span className="text-xs font-medium text-green-400/80 mt-1 block">{t("calc.wait")}</span></p>
+                <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-lg p-4 text-center mt-auto">
+                  <CheckCircle2 className="text-green-600 dark:text-green-500 mx-auto mb-2" size={28} />
+                  <p className="text-green-800 dark:text-green-400 font-semibold text-xs leading-tight">{t("calc.success")}<br/><span className="text-[10px] font-medium opacity-80 mt-1 block">{t("calc.wait")}</span></p>
                 </motion.div>
               ) : (
-                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-4 mt-auto">
+                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-3 mt-auto">
                   <input 
                     required type="tel" value={phone} onChange={handlePhoneChange} maxLength={18} placeholder="+7 (___) ___" 
-                    className="w-full h-14 rounded-2xl bg-[#1c1c1e] border border-white/5 px-5 outline-none focus:border-red-600 transition-all font-mono text-base text-white placeholder:text-white/30" 
+                    className="w-full h-11 rounded-md bg-white dark:bg-black border border-gray-300 dark:border-[#333] px-3 outline-none focus:border-foreground dark:focus:border-white transition-colors font-mono text-xs text-foreground placeholder:text-muted-foreground" 
                   />
-                  <button disabled={isSubmitting || phone.length < 18} className="w-full h-14 bg-[#8b1c1c] hover:bg-red-600 disabled:opacity-50 rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all flex items-center justify-center gap-3 text-white shadow-lg">
-                    {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={16} /> {t("calc.btn")}</>}
+                  <button disabled={isSubmitting || phone.length < 18} className="w-full h-11 bg-foreground text-background hover:opacity-90 disabled:opacity-50 rounded-md font-semibold text-xs transition-all flex items-center justify-center gap-2">
+                    {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={14} /> {t("calc.btn")}</>}
                   </button>
                 </motion.form>
               )}
