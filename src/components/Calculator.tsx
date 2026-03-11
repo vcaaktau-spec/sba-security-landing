@@ -49,7 +49,7 @@ const PRICES = {
 
 const HDD_RATES = { "2MP": 20, "4MP": 40, "8MP": 80 } as Record<Resolution, number>
 
-// УМНЫЙ АЛГОРИТМ ПОДБОРА HDD (НОВЫЕ ЦЕНЫ - Без 3TB)
+// УМНЫЙ АЛГОРИТМ ПОДБОРА HDD
 const getHddCost = (tb: number): number => {
   const drives = [
     { cap: 1, price: 59000 },
@@ -162,7 +162,6 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
     if (phone.length !== 18) return
     setIsSubmitting(true)
 
-    // СТРУКТУРИРОВАННАЯ СМЕТА ДЛЯ ТЕЛЕГРАМА
     const conduitNames = { none: "Без защиты", gofra: "Гофра", channel: "К-канал" }
     const installNames = { standard: "Стандарт", complex: "Высота", hard: "Сложный" }
     const locNames = { indoor: "Внутри", outdoor: "Улица" }
@@ -218,22 +217,22 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
   )
 
   const SectionGroup = ({ icon: Icon, title, children, className = "" }: { icon: any, title: string, children: React.ReactNode, className?: string }) => (
-    <div className={`bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-4 sm:p-5 space-y-4 shadow-sm flex flex-col justify-between ${className}`}>
+    <div className={`bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-4 sm:p-5 flex flex-col gap-4 shadow-sm w-full max-w-full ${className}`}>
       <div className="flex items-center gap-2.5 text-foreground border-b border-gray-100 dark:border-[#222] pb-3 mb-1">
-        <Icon size={16} className="text-muted-foreground" />
+        <Icon size={16} className="text-muted-foreground shrink-0" />
         <h4 className="text-sm font-semibold tracking-tight">{title}</h4>
       </div>
-      <div className="space-y-4 flex-grow">
+      <div className="flex flex-col gap-4 flex-grow w-full max-w-full">
         {children}
       </div>
     </div>
   )
 
   return (
-    // overflow-x-hidden и max-w-[100vw] убивают горизонтальный скролл
-    <section id="calculator" className="relative py-8 md:py-16 bg-white dark:bg-[#000] text-foreground font-sans overflow-x-hidden max-w-[100vw] selection:bg-red-500/30">
+    // overflow-hidden жестко отрезает все, что пытается вылезти за пределы экрана по ширине
+    <section id="calculator" className="relative py-8 md:py-16 bg-white dark:bg-[#000] text-foreground font-sans selection:bg-red-500/30 overflow-hidden">
       
-      <div className="container px-4 sm:px-6 mx-auto max-w-6xl relative z-10 w-full">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 relative z-10 w-full max-w-full">
         
         {/* === ЗАГОЛОВОК === */}
         <motion.div ref={ref} initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8 text-center lg:text-left">
@@ -248,17 +247,17 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
           </p>
         </motion.div>
 
-        {/* СЕТКА (min-w-0 предотвращает распирание колонок) */}
-        <div className="grid lg:grid-cols-12 gap-5 items-start">
+        {/* СЕТКА */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           
           {/* === ЛЕВАЯ ПАНЕЛЬ НАСТРОЕК === */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} 
-            className="lg:col-span-8 min-w-0 grid grid-cols-1 md:grid-cols-2 gap-4"
+            className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-full"
           >
             {/* Группа 1: Камеры */}
             <SectionGroup icon={Video} title={t("calc.group_cameras")}>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
                   <span>{t("calc.cameras")}</span>
                   <span className="text-foreground font-bold">{cameras} {t("calc.pcs")}</span>
@@ -266,22 +265,22 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
                 <input 
                   type="range" min="1" max="32" value={cameras} 
                   onChange={(e) => setCameras(Number(e.target.value))} 
-                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                  className="w-full max-w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.res")}</label>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-2 w-full max-w-full">
                   <OptionBtn active={resolution === "2MP"} label={t("calc.opt_2mp")} onClick={() => setResolution("2MP")} />
                   <OptionBtn active={resolution === "4MP"} label={t("calc.opt_4mp")} onClick={() => setResolution("4MP")} />
                   <OptionBtn active={resolution === "8MP"} label={t("calc.opt_8mp")} onClick={() => setResolution("8MP")} />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.placement")}</label>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-2 w-full max-w-full">
                   <OptionBtn active={cableLoc === "indoor"} label={t("calc.opt_inside")} onClick={() => setCableLoc("indoor")} />
                   <OptionBtn active={cableLoc === "outdoor"} label={t("calc.opt_outside")} onClick={() => setCableLoc("outdoor")} />
                 </div>
@@ -290,7 +289,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
 
             {/* Группа 2: Трасса и Защита */}
             <SectionGroup icon={ShieldCheck} title={t("calc.group_route")}>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
                   <span>{t("calc.cable")}</span>
                   <span className="text-foreground font-bold">{cable} {t("calc.meters")}</span>
@@ -298,22 +297,22 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
                 <input 
                   type="range" min="10" max="1000" step="10" value={cable} 
                   onChange={(e) => setCable(Number(e.target.value))} 
-                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                  className="w-full max-w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.protection_route")}</label>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-2 w-full max-w-full">
                   <OptionBtn active={conduit === "none"} label={t("calc.opt_none")} onClick={() => setConduit("none")} />
                   <OptionBtn active={conduit === "gofra"} label={t("calc.opt_gofra")} onClick={() => setConduit("gofra")} />
                   <OptionBtn active={conduit === "channel"} label={t("calc.opt_channel")} onClick={() => setConduit("channel")} />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.install")}</label>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-2 w-full max-w-full">
                   <OptionBtn active={installLevel === "standard"} label={t("calc.opt_standard")} onClick={() => setInstallLevel("standard")} />
                   <OptionBtn active={installLevel === "complex"} label={t("calc.opt_complex")} onClick={() => setInstallLevel("complex")} />
                   <OptionBtn active={installLevel === "hard"} label={t("calc.opt_hard")} onClick={() => setInstallLevel("hard")} />
@@ -321,9 +320,9 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
               </div>
             </SectionGroup>
 
-            {/* Группа 3: Архив (На всю ширину левой колонки) */}
+            {/* Группа 3: Архив */}
             <SectionGroup icon={HardDrive} title={t("calc.group_archive")} className="md:col-span-2">
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2 w-full max-w-full">
                 <label className="font-semibold text-[11px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
                   <span>{t("calc.archive")}</span>
                   <span className="text-foreground font-bold bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-md">{archiveDays} {t("calc.days")}</span>
@@ -331,7 +330,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
                 <input 
                   type="range" min="7" max="30" step="1" value={archiveDays} 
                   onChange={(e) => setArchiveDays(Number(e.target.value))} 
-                  className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
+                  className="w-full max-w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" 
                 />
                 <div className="flex justify-between text-[10px] text-muted-foreground font-medium pt-2 px-1">
                   <span>7 {t("calc.days")}</span>
@@ -346,13 +345,13 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
           {/* === ПРАВАЯ ПАНЕЛЬ ИТОГА === */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} 
-            className="lg:col-span-4 min-w-0 sticky top-24 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-6 sm:p-7 flex flex-col shadow-sm"
+            className="lg:col-span-4 sticky top-24 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-6 sm:p-7 flex flex-col shadow-sm w-full max-w-full"
           >
             <h3 className="text-sm font-semibold mb-5 flex items-center gap-2 uppercase tracking-wider text-muted-foreground">
-              <Activity size={16} className="text-foreground" /> {t("calc.summary_title")}
+              <Activity size={16} className="text-foreground shrink-0" /> {t("calc.summary_title")}
             </h3>
             
-            <div className="space-y-3 mb-6 text-xs font-medium text-foreground">
+            <div className="space-y-3 mb-6 text-xs font-medium text-foreground w-full">
               <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
                 <span className="text-muted-foreground">{t("calc.cameras")}</span> 
                 <span className="font-semibold">{cameras} {t("calc.pcs")}</span>
@@ -366,12 +365,12 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
                 <span className="font-semibold text-right">{poeSummary || "-"}</span>
               </div>
               <div className="flex justify-between items-center gap-2 pt-1">
-                <span className="flex items-center gap-1.5 text-muted-foreground"><Settings2 size={14}/> {t("calc.archive")}:</span> 
+                <span className="flex items-center gap-1.5 text-muted-foreground shrink-0"><Settings2 size={14}/> {t("calc.archive")}:</span> 
                 <span className="font-semibold whitespace-nowrap">HDD ~{calculatedTB} ТБ</span>
               </div>
             </div>
 
-            <div className="mb-6 bg-white dark:bg-black p-4 rounded-lg border border-gray-200 dark:border-[#222]">
+            <div className="mb-6 bg-white dark:bg-black p-4 rounded-lg border border-gray-200 dark:border-[#222] w-full max-w-full">
               <p className="text-[10px] uppercase font-semibold tracking-widest text-muted-foreground mb-1">{t("calc.approx_cost")}</p>
               <div className="text-3xl xl:text-4xl font-extrabold tracking-tighter text-foreground flex items-baseline gap-2">
                 {totalPrice.toLocaleString('ru-RU')} <span className="text-red-600 dark:text-red-500 text-lg font-bold">₸</span>
@@ -380,17 +379,17 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
 
             <AnimatePresence mode="wait">
               {isSuccess ? (
-                <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-lg p-4 text-center mt-auto">
+                <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-lg p-4 text-center mt-auto w-full max-w-full">
                   <CheckCircle2 className="text-green-600 dark:text-green-500 mx-auto mb-2" size={28} />
                   <p className="text-green-800 dark:text-green-400 font-semibold text-xs leading-tight">{t("calc.success")}<br/><span className="text-[10px] font-medium opacity-80 mt-1 block">{t("calc.wait")}</span></p>
                 </motion.div>
               ) : (
-                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-3 mt-auto">
+                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-3 mt-auto w-full max-w-full">
                   <input 
                     required type="tel" value={phone} onChange={handlePhoneChange} maxLength={18} placeholder="+7 (___) ___" 
-                    className="w-full h-11 rounded-md bg-white dark:bg-black border border-gray-300 dark:border-[#333] px-3 outline-none focus:border-foreground dark:focus:border-white transition-colors font-mono text-xs text-foreground placeholder:text-muted-foreground" 
+                    className="w-full max-w-full h-11 rounded-md bg-white dark:bg-black border border-gray-300 dark:border-[#333] px-3 outline-none focus:border-foreground dark:focus:border-white transition-colors font-mono text-xs text-foreground placeholder:text-muted-foreground" 
                   />
-                  <button disabled={isSubmitting || phone.length < 18} className="w-full h-11 bg-foreground text-background hover:opacity-90 disabled:opacity-50 rounded-md font-semibold text-xs transition-all flex items-center justify-center gap-2">
+                  <button disabled={isSubmitting || phone.length < 18} className="w-full max-w-full h-11 bg-foreground text-background hover:opacity-90 disabled:opacity-50 rounded-md font-semibold text-xs transition-all flex items-center justify-center gap-2">
                     {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={14} /> {t("calc.btn")}</>}
                   </button>
                 </motion.form>
