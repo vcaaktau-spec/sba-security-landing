@@ -1,71 +1,69 @@
 "use client"
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Plus, Trash2, Video, Server, Network, ShieldAlert, Monitor, Box, Zap, ZoomIn, Pencil, Maximize, Printer, Wifi, Router, Expand, Circle as CircleIcon, Activity, RotateCcw, Radar, Globe, Download } from 'lucide-react';
+import { 
+  Plus, Trash2, Video, Server, Network, ShieldAlert, Monitor, Box, Zap, 
+  ZoomIn, Pencil, Maximize, Printer, Wifi, Router, Expand, Circle as CircleIcon, 
+  Activity, RotateCcw, Radar, Download, DoorClosed, Thermometer, ScanLine, 
+  BellRing, SquareTerminal, Hand, Lock, CreditCard, LogOut, Cpu 
+} from 'lucide-react';
 import { Stage, Layer, Rect, Text, Group, Transformer, Path, Line, Circle, Wedge } from 'react-konva';
 
 type PlannerRoom = { id: string; x: number; y: number; width: number; height: number; type: 'room' | 'circle' | 'radius' };
-type DeviceCategory = 'cctv' | 'lan' | 'fire' | 'arch';
-type DeviceType = 'camera' | 'nvr' | 'switch' | 'monitor' | 'rack' | 'socket' | 'smoke' | 'panel' | 'pc' | 'router' | 'printer' | 'wifi' | 'lan_switch';
-type PlannerDevice = { id: string; x: number; y: number; rotation: number; type: DeviceType; category: DeviceCategory; label: string };
-type DrawnLine = { id: string; points: number[]; type: 'trunk' | 'corrugation' | 'cable'; category: DeviceCategory };
-type Lang = 'ru' | 'en' | 'kz';
+type DeviceCategory = 'cctv' | 'lan' | 'fire' | 'arch' | 'acs';
+type DeviceType = 'camera' | 'nvr' | 'switch' | 'monitor' | 'rack' | 'socket' | 'smoke' | 'panel' | 'pc' | 'router' | 'printer' | 'wifi' | 'lan_switch' | 'door' | 'heat' | 'linear' | 'siren' | 'tableau' | 'call_point' | 'lock' | 'reader' | 'acs_switch' | 'exit_btn' | 'controller';
+type PlannerDevice = { id: string; x: number; y: number; rotation: number; scaleX?: number; scaleY?: number; type: DeviceType; category: DeviceCategory; label: string; radius?: number };
+type DrawnLine = { id: string; points: number[]; type: 'trunk' | 'corrugation' | 'cable'; category: DeviceCategory; x?: number; y?: number };
 
 const M_PER_PX = 0.1;
-const SNAP_SIZE = 20; // Размер ячейки сетки для магнита
+const SNAP_SIZE = 10;
+const SNAP_DISTANCE = 5;
 
-const translations = {
-  ru: {
-    arch: 'Архитектура', cctv: 'Видеонаблюдение', lan: 'ЛВС & Сеть', fire: 'ОПС (Пожарка)',
-    block: 'Блок', circle: 'Круг', radiusZone: 'Зона/Радиус', trunk: 'К/Канал', corrugation: 'Гофра',
-    camera: 'Камера', switch: 'Switch', nvr: 'NVR', monitor: 'Монитор', line: 'Трасса',
-    router: 'Роутер', rack: 'Шкаф', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Точка', pc: 'Раб. Место', printer: 'Принтер', socket: 'Розетка',
-    smoke: 'Датчик Дыма', panel: 'ППКП',
-    undo: 'Назад', autoRoute: 'Авто-Трасса', cancelDraw: 'Отменить рисование',
-    drawHint: '[РЕЖИМ РИСОВАНИЯ] КЛИКНИТЕ ДЛЯ НАЧАЛА ЛИНИИ, ЗАТЕМ КЛИКНИТЕ ДЛЯ ЗАВЕРШЕНИЯ',
-    emptyHint: 'ДОБАВЬТЕ БЛОК ИЛИ УСТРОЙСТВО ДЛЯ НАЧАЛА ПРОЕКТИРОВАНИЯ',
-    betaHint: 'Продукт создан для ознакомительных целей',
-    controlsHint: 'С ЗАЖАТЫМ CTRL + КОЛЕСИКО ДЛЯ ЗУМА | ЛКМ ДЛЯ ПАНОРАМЫ',
-    autoMeters: 'Авто-Трасса', manualMeters: 'Ручная (Линии)', radius: 'РАДИУС',
-    savePng: 'Сохранить PNG',
-    magnet: 'Магнит'
-  },
-  en: {
-    arch: 'Architecture', cctv: 'CCTV', lan: 'LAN & Network', fire: 'Fire Alarm',
-    block: 'Block', circle: 'Circle', radiusZone: 'Zone/Radius', trunk: 'Trunking', corrugation: 'Corrugation',
-    camera: 'Camera', switch: 'Switch', nvr: 'NVR', monitor: 'Monitor', line: 'Cable',
-    router: 'Router', rack: 'Rack', lan_switch: 'Network Switch', wifi: 'Wi-Fi AP', pc: 'Workstation', printer: 'Printer', socket: 'Socket',
-    smoke: 'Smoke Detector', panel: 'FACP',
-    undo: 'Undo', autoRoute: 'Auto-Route', cancelDraw: 'Cancel Drawing',
-    drawHint: '[DRAW MODE] CLICK TO START LINE, CLICK AGAIN TO FINISH',
-    emptyHint: 'ADD A BLOCK OR DEVICE TO START DESIGNING',
-    betaHint: 'This product is created for informational purposes only',
-    controlsHint: 'HOLD CTRL + MOUSE WHEEL TO ZOOM | LMB TO PAN',
-    autoMeters: 'Auto-Route', manualMeters: 'Manual (Lines)', radius: 'RADIUS',
-    savePng: 'Save PNG',
-    magnet: 'Snap'
-  },
-  kz: {
-    arch: 'Сәулет', cctv: 'Бейнебақылау', lan: 'ЖЕЖ & Желі', fire: 'Өрт дабылы',
-    block: 'Блок', circle: 'Шеңбер', radiusZone: 'Аймақ/Радиус', trunk: 'Кабель-канал', corrugation: 'Гофра',
-    camera: 'Камера', switch: 'Свитч', nvr: 'NVR', monitor: 'Монитор', line: 'Трасса',
-    router: 'Роутер', rack: 'Шкаф', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Нүктесі', pc: 'Жұмыс орны', printer: 'Принтер', socket: 'Розетка',
-    smoke: 'Түтін датчигі', panel: 'ӨБҚА',
-    undo: 'Артқа', autoRoute: 'Авто-Трасса', cancelDraw: 'Сызуды болдырмау',
-    drawHint: '[СЫЗУ РЕЖИМІ] СЫЗЫҚТЫ БАСТАУ ҮШІН БАСЫҢЫЗ, АЯҚТАУ ҮШІН ҚАЙТА БАСЫҢЫЗ',
-    emptyHint: 'ЖОБАЛАУДЫ БАСТАУ ҮШІН БЛОК НЕМЕСЕ ҚҰРЫЛҒЫ ҚОСЫҢЫЗ',
-    betaHint: 'Өнім таныстыру мақсатында жасалған',
-    controlsHint: 'МАСШТАБТАУ ҮШІН CTRL + ТІНТУІР ДОҢҒАЛАҒЫ | ЖЫЛЖЫТУ ҮШІН ТІНТУІРДІҢ СОЛ ЖАҚ БАТЫРМАСЫ',
-    autoMeters: 'Авто-Трасса', manualMeters: 'Қолмен (Сызықтар)', radius: 'РАДИУС',
-    savePng: 'PNG сақтау',
-    magnet: 'Магнит'
-  }
+const t = {
+  arch: 'Архитектура', cctv: 'Видеонаблюдение', lan: 'Локалка (ЛВС)', fire: 'ОПС (Пожарная)', acs: 'СКУД IP',
+  block: 'Блок', circle: 'Круг', radiusZone: 'Зона/Радиус', trunk: 'К/Канал', corrugation: 'Гофра', door: 'Дверь',
+  camera: 'Камера', switch: 'Свитч', nvr: 'Регистратор', monitor: 'Монитор', line: 'Трасса', rack: 'Шкаф',
+  router: 'Роутер', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Точка', pc: 'Раб. Место', printer: 'Принтер', socket: 'Розетка',
+  smoke: 'Датчик Дымовой', heat: 'Датчик Тепловой', linear: 'Датчик Линейный', siren: 'Сирена', tableau: 'Табло', call_point: 'ИПР', panel: 'ППК',
+  lock: 'Замок', reader: 'Считыватель', exit_btn: 'Кнопка Выхода', controller: 'Контроллер', acs_switch: 'Свитч',
+  undo: 'Назад', autoRoute: 'Авто-Трасса', cancelDraw: 'Отменить рисование',
+  drawHint: '[РЕЖИМ РИСОВАНИЯ] КЛИКНИТЕ ДЛЯ НАЧАЛА ЛИНИИ, ЗАТЕМ КЛИКНИТЕ ДЛЯ ЗАВЕРШЕНИЯ',
+  emptyHint: 'ДОБАВЬТЕ БЛОК ИЛИ УСТРОЙСТВО ДЛЯ НАЧАЛА ПРОЕКТИРОВАНИЯ',
+  betaHint: 'Продукт создан для ознакомительных целей',
+  controlsHint: 'С ЗАЖАТЫМ CTRL + КОЛЕСИКО ДЛЯ ЗУМА | ЛКМ ДЛЯ ПАНОРАМЫ',
+  autoMeters: 'Авто-Трасса', manualMeters: 'Ручная (Линии)', totalMeters: 'Общая', radius: 'РАДИУС',
+  savePng: 'Сохранить PNG',
+  magnet: 'Магнит',
+  largeIcons: 'Крупные иконки'
+};
+
+const DEVICE_PATHS: Record<string, string> = {
+  camera: "M-10,-6 H6 V6 H-10 Z M6,-4 L16,-8 V8 L6,4 Z",
+  nvr: "M-14,-10 H14 V10 H-14 Z M-10,-4 H10 M-10,0 H10 M-10,4 H10",
+  switch: "M-14,-8 H14 V8 H-14 Z M-8,-2 H-4 M-2,-2 H2 M4,-2 H8",
+  lan_switch: "M-14,-8 H14 V8 H-14 Z M-8,-2 H-4 M-2,-2 H2 M4,-2 H8",
+  acs_switch: "M-14,-8 H14 V8 H-14 Z M-8,-2 H-4 M-2,-2 H2 M4,-2 H8",
+  monitor: "M-14,-12 H14 V8 H-14 Z M-6,8 V14 M6,8 V14 M-8,14 H8",
+  router: "M-12,-6 H12 V8 H-12 Z M-8,-6 V-12 M0,-6 V-12 M8,-6 V-12",
+  rack: "M-12,-20 H12 V20 H-12 Z M-12,-10 H12 M-12,0 H12 M-12,10 H12 M-8,-20 L-8,20 M8,-20 L8,20",
+  pc: "M-10,-12 H10 V4 H-10 Z M-14,8 H14 V12 H-14 Z M-4,4 V8 M4,4 V8",
+  printer: "M-12,-4 H12 V8 H-12 Z M-8,-10 H8 V-4 H-8 Z M-6,8 H6 V12 H-6 Z",
+  socket: "M-8,0 A8,8 0 0,1 8,0 Z M0,0 V-10",
+  wifi: "M-2,2 A2,2 0 1,1 2,2 Z M-6,-2 A6,6 0 0,1 6,-2 M-10,-6 A10,10 0 0,1 10,-6",
+  smoke: "M-10,-10 H10 V10 H-10 Z M-2,0 A2,2 0 1,1 2,0 A2,2 0 1,1 -2,0",
+  heat: "M-10,-10 H10 V10 H-10 Z M-4,-5 V5 M4,-5 V5",
+  linear: "M-12,-6 H12 V6 H-12 Z M-12,0 L-6,-6 V6 Z M12,0 L6,-6 V6 Z",
+  siren: "M-4,-4 L8,-10 V10 L-4,4 Z M-8,-4 H-4 V4 H-8 Z",
+  tableau: "M-14,-8 H14 V8 H-14 Z M-8,-4 L-2,0 L-8,4 M2,-4 V4 M8,-4 V4 M4,0 H8",
+  call_point: "M-10,-10 H10 V10 H-10 Z M-4,-4 H4 V4 H-4 Z M0,-4 V4 M-4,0 H4",
+  panel: "M-14,-16 H14 V16 H-14 Z M-14,-8 L14,16 M-14,-2 H14 M-14,6 H14",
+  lock: "M-6,-10 H6 V10 H-6 Z M-6,-2 H6",
+  reader: "M-8,-12 H8 V12 H-8 Z M-3,-6 A3,3 0 0,1 3,-6 M-1,-2 A1,1 0 0,1 1,-2",
+  exit_btn: "M-8,-8 H8 V8 H-8 Z M-3,0 A3,3 0 1,1 3,0 A3,3 0 1,1 -3,0",
+  controller: "M-14,-18 H14 V18 H-14 Z M-10,-12 H10 V-4 H-10 Z M-10,2 H10 V10 H-10 Z",
 };
 
 export const SbaPlanner = () => {
-  const [lang, setLang] = useState<Lang>('ru');
-  const t = translations[lang];
-
   const [rooms, setRooms] = useState<PlannerRoom[]>([]);
   const [devices, setDevices] = useState<PlannerDevice[]>([]);
   const [drawnLines, setDrawnLines] = useState<DrawnLine[]>([]);
@@ -74,15 +72,15 @@ export const SbaPlanner = () => {
 
   const [history, setHistory] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'arch' | 'cctv' | 'lan' | 'fire'>('arch');
+  const [activeTab, setActiveTab] = useState<'arch' | 'cctv' | 'lan' | 'fire' | 'acs'>('arch');
   
-  // ТУМБЛЕРЫ
   const [isAutoCable, setIsAutoCable] = useState(true);
   const [isMagnetEnabled, setIsMagnetEnabled] = useState(true);
-  
+  const [isLargeIcons, setIsLargeIcons] = useState(false);
+  const iconScale = isLargeIcons ? 1 : 0.5;
   const [isFullscreen, setIsFullscreen] = useState(false);
-  
   const [isMounted, setIsMounted] = useState(false);
+  
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -122,31 +120,36 @@ export const SbaPlanner = () => {
 
   useEffect(() => {
     setIsMounted(true);
-    const handleResize = () => { if (containerRef.current) setStageSize({ width: containerRef.current.offsetWidth, height: isFullscreen ? window.innerHeight - 150 : 600 }); };
+    const handleResize = () => { if (containerRef.current) setStageSize({ width: containerRef.current.offsetWidth, height: isFullscreen ? window.innerHeight - 190 : 600 }); };
     handleResize(); window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [isFullscreen]);
 
   useEffect(() => {
     if (selectedId && trRef.current) {
-      if (selectedId.startsWith('line')) { trRef.current.nodes([]); trRef.current.getLayer().batchDraw(); return; }
+      if (selectedId.startsWith('line')) { 
+        trRef.current.nodes([]); 
+        trRef.current.getLayer().batchDraw(); 
+        return; 
+      }
       
       let node = stageRef.current.findOne('#' + selectedId);
-      if (selectedId.includes('camera')) {
-         node = stageRef.current.findOne('#cam_body_' + selectedId); 
+      if (selectedId.startsWith('dev-')) {
+         node = stageRef.current.findOne('#dev_body_' + selectedId); 
       }
 
       if (node) {
         trRef.current.nodes([node]);
         const isRoom = selectedId.startsWith('room');
-        const isCamera = selectedId.includes('camera');
-        if (isRoom) {
+        const isDoor = selectedId.startsWith('dev-door');
+        
+        if (isRoom || isDoor) {
             trRef.current.enabledAnchors(['top-left', 'top-right', 'bottom-left', 'bottom-right', 'top-center', 'bottom-center', 'left-center', 'right-center']);
-            trRef.current.rotateEnabled(false);
-        } else if (isCamera) {
-            trRef.current.enabledAnchors([]); trRef.current.rotateEnabled(true);
+            trRef.current.rotateEnabled(true);
+            if (isRoom) trRef.current.rotateEnabled(false);
         } else {
-            trRef.current.enabledAnchors([]); trRef.current.rotateEnabled(false);
+            trRef.current.enabledAnchors([]); 
+            trRef.current.rotateEnabled(true);
         }
         trRef.current.getLayer().batchDraw();
       }
@@ -181,7 +184,15 @@ export const SbaPlanner = () => {
   const addDevice = (type: DeviceType, category: DeviceCategory, label: string) => {
     saveToHistory();
     const centerX = (stageSize.width / 2 - position.x) / scale; const centerY = (stageSize.height / 2 - position.y) / scale;
-    const newDev: PlannerDevice = { id: `dev-${type}-${Date.now()}`, x: centerX, y: centerY, rotation: 0, type, category, label };
+    
+    let defaultRadius = undefined;
+    if (type === 'wifi') defaultRadius = 100; // 10m
+    if (type === 'smoke') defaultRadius = 85; // 8.5m
+    if (type === 'heat') defaultRadius = 50;  // 5m
+
+    const newDev: PlannerDevice = { 
+        id: `dev-${type}-${Date.now()}`, x: centerX, y: centerY, rotation: 0, scaleX: 1, scaleY: 1, type, category, label, radius: defaultRadius 
+    };
     setDevices([...devices, newDev]); setSelectedId(newDev.id);
   };
 
@@ -192,26 +203,30 @@ export const SbaPlanner = () => {
   const getRelativePointerPosition = (node: any) => {
     const transform = node.getAbsoluteTransform().copy();
     transform.invert();
-    const pos = node.getStage().getPointerPosition();
-    return transform.point(pos);
+    return transform.point(node.getStage().getPointerPosition());
+  };
+
+  const getSnapPos = (x: number, y: number) => {
+    let finalX = x; let finalY = y;
+    if (isMagnetEnabled) {
+       const snapX = Math.round(x / SNAP_SIZE) * SNAP_SIZE;
+       const snapY = Math.round(y / SNAP_SIZE) * SNAP_SIZE;
+       if (Math.abs(x - snapX) < SNAP_DISTANCE) finalX = snapX;
+       if (Math.abs(y - snapY) < SNAP_DISTANCE) finalY = snapY;
+    }
+    return { x: finalX, y: finalY };
   };
 
   const handleStagePointerDown = (e: any) => {
     if (drawMode.active) {
       const pos = getRelativePointerPosition(e.target.getStage());
-      
-      // Магнит для точек линий
-      let finalX = pos.x; let finalY = pos.y;
-      if (isMagnetEnabled) {
-         finalX = Math.round(pos.x / SNAP_SIZE) * SNAP_SIZE;
-         finalY = Math.round(pos.y / SNAP_SIZE) * SNAP_SIZE;
-      }
+      const { x: finalX, y: finalY } = getSnapPos(pos.x, pos.y);
 
       if (!currentLinePoints) { 
         setCurrentLinePoints([finalX, finalY, finalX, finalY]); 
       } else {
         saveToHistory();
-        setDrawnLines([...drawnLines, { id: `line-${Date.now()}`, points: [currentLinePoints[0], currentLinePoints[1], finalX, finalY], type: drawMode.type, category: drawMode.category }]);
+        setDrawnLines([...drawnLines, { id: `line-${Date.now()}`, points: [currentLinePoints[0], currentLinePoints[1], finalX, finalY], type: drawMode.type, category: drawMode.category, x: 0, y: 0 }]);
         setCurrentLinePoints(null); setDrawMode({ active: false, type: 'cable', category: 'arch' });
       }
       return;
@@ -222,15 +237,52 @@ export const SbaPlanner = () => {
   const handleStagePointerMove = (e: any) => {
     if (drawMode.active && currentLinePoints) {
       const pos = getRelativePointerPosition(e.target.getStage());
-      let finalX = pos.x; let finalY = pos.y;
-      if (isMagnetEnabled) {
-         finalX = Math.round(pos.x / SNAP_SIZE) * SNAP_SIZE;
-         finalY = Math.round(pos.y / SNAP_SIZE) * SNAP_SIZE;
-      }
+      const { x: finalX, y: finalY } = getSnapPos(pos.x, pos.y);
       setCurrentLinePoints([currentLinePoints[0], currentLinePoints[1], finalX, finalY]);
     } else if (!drawMode.active && !selectedId && e.evt.buttons === 1) {
       setPosition({ x: position.x + e.evt.movementX, y: position.y + e.evt.movementY });
     }
+  };
+
+  // Вспомогательная функция для рендера профессиональных типов трасс
+  const renderCustomLine = (points: number[], type: string, color: string, isSelected: boolean) => {
+    const [x1, y1, x2, y2] = points;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    if (len === 0) return null;
+
+    if (type === 'trunk') { // Кабель-канал (2 параллельные линии)
+        const nx = -dy / len;
+        const ny = dx / len;
+        const offset = 2.5; 
+        return (
+            <Group>
+                <Line points={[x1 + nx*offset, y1 + ny*offset, x2 + nx*offset, y2 + ny*offset]} stroke={color} strokeWidth={1} opacity={isSelected ? 1 : 0.8} listening={false} />
+                <Line points={[x1 - nx*offset, y1 - ny*offset, x2 - nx*offset, y2 - ny*offset]} stroke={color} strokeWidth={1} opacity={isSelected ? 1 : 0.8} listening={false} />
+            </Group>
+        )
+    }
+    
+    if (type === 'corrugation') { // Гофра (волнистая линия)
+        const nx = -dy / len;
+        const ny = dx / len;
+        const wavePoints = [];
+        const step = 8; 
+        const steps = Math.max(2, Math.floor(len / step));
+        
+        for(let i=0; i<=steps; i++) {
+            const t = i / steps;
+            const bx = x1 + dx * t;
+            const by = y1 + dy * t;
+            const wave = (i === 0 || i === steps) ? 0 : (i % 2 === 0 ? 1 : -1) * 3; 
+            wavePoints.push(bx + nx * wave, by + ny * wave);
+        }
+        return <Line points={wavePoints} stroke={color} strokeWidth={1.5} tension={0.4} opacity={isSelected ? 1 : 0.8} listening={false} />
+    }
+    
+    // Обычный кабель
+    return <Line points={points} stroke={color} strokeWidth={1.5} dash={[5, 5]} opacity={isSelected ? 1 : 0.8} listening={false} />
   };
 
   const computedCables = useMemo(() => {
@@ -253,9 +305,17 @@ export const SbaPlanner = () => {
       if (lanHead) lanSwitches.forEach(sw => { totalAuto += (Math.abs(sw.x - lanHead.x) + Math.abs(sw.y - lanHead.y)) * M_PER_PX; lines.push({ points: [sw.x, sw.y, lanHead.x, sw.y, lanHead.x, lanHead.y], color: '#16a34a', dash: [5, 5] }); });
 
       const firePanel = devices.find(d => d.type === 'panel' && d.category === 'fire');
-      if (firePanel) devices.filter(d => d.category === 'fire' && d.type === 'smoke').forEach(dev => {
+      if (firePanel) devices.filter(d => d.category === 'fire' && (d.type === 'smoke' || d.type === 'heat' || d.type === 'linear' || d.type === 'siren' || d.type === 'tableau' || d.type === 'call_point')).forEach(dev => {
           totalAuto += (Math.abs(dev.x - firePanel.x) + Math.abs(dev.y - firePanel.y)) * M_PER_PX; lines.push({ points: [dev.x, dev.y, firePanel.x, dev.y, firePanel.x, firePanel.y], color: '#ef4444', dash: [5, 5] });
       });
+
+      const acsController = devices.find(d => d.type === 'controller' && d.category === 'acs'); const acsSwitches = devices.filter(d => d.type === 'acs_switch' && d.category === 'acs');
+      devices.filter(d => d.category === 'acs' && (d.type === 'lock' || d.type === 'reader' || d.type === 'exit_btn')).forEach(dev => {
+          let target = acsController; let minDist = target ? Math.hypot(dev.x - target.x, dev.y - target.y) : Infinity;
+          acsSwitches.forEach(sw => { const d = Math.hypot(dev.x - sw.x, dev.y - sw.y); if (d < minDist) { minDist = d; target = sw; } });
+          if (target) { totalAuto += (Math.abs(dev.x - target.x) + Math.abs(dev.y - target.y)) * M_PER_PX; lines.push({ points: [dev.x, dev.y, target.x, dev.y, target.x, target.y], color: '#eab308', dash: [5, 5] }); }
+      });
+      if (acsController) acsSwitches.forEach(sw => { totalAuto += (Math.abs(sw.x - acsController.x) + Math.abs(sw.y - acsController.y)) * M_PER_PX; lines.push({ points: [sw.x, sw.y, acsController.x, sw.y, acsController.x, acsController.y], color: '#d97706', dash: [5, 5] }); });
     }
     return { lines, totalAuto: Math.round(totalAuto) };
   }, [devices, isAutoCable]);
@@ -265,127 +325,187 @@ export const SbaPlanner = () => {
     return Math.round(total);
   }, [drawnLines]);
 
+  const watermarkGrid = useMemo(() => {
+      const grid = [];
+      for (let i = -5; i <= 5; i++) {
+          for (let j = -5; j <= 5; j++) {
+              grid.push({ x: i * 800, y: j * 800 });
+          }
+      }
+      return grid;
+  }, []);
+
   if (!isMounted) return <div className="h-[600px] w-full bg-muted/20 animate-pulse rounded-md" />;
 
   return (
     <div ref={containerRef} className={`flex flex-col w-full bg-background dark:bg-[#0d1117] overflow-hidden border border-border shadow-sm transition-all duration-300 ${isFullscreen ? 'fixed inset-0 z-50 rounded-none h-screen' : 'rounded-md'}`}>
       
-      {/* TABS - GITHUB STYLE */}
+      {/* 1. СТРОКА ВКЛАДОК */}
       <div className="flex bg-muted/20 border-b border-border text-xs sm:text-sm font-medium overflow-x-auto custom-scrollbar">
         <button onClick={() => setActiveTab('arch')} className={`px-4 py-3 transition-colors whitespace-nowrap border-b-2 ${activeTab === 'arch' ? 'border-[#fd8c73] text-foreground font-semibold' : 'border-transparent text-muted-foreground hover:bg-muted/50'}`}>{t.arch}</button>
         <button onClick={() => setActiveTab('cctv')} className={`px-4 py-3 transition-colors whitespace-nowrap border-b-2 ${activeTab === 'cctv' ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400 font-semibold' : 'border-transparent text-muted-foreground hover:bg-muted/50'}`}>{t.cctv}</button>
         <button onClick={() => setActiveTab('lan')} className={`px-4 py-3 transition-colors whitespace-nowrap border-b-2 ${activeTab === 'lan' ? 'border-green-500 text-green-600 dark:text-green-400 font-semibold' : 'border-transparent text-muted-foreground hover:bg-muted/50'}`}>{t.lan}</button>
         <button onClick={() => setActiveTab('fire')} className={`px-4 py-3 transition-colors whitespace-nowrap border-b-2 ${activeTab === 'fire' ? 'border-red-500 text-red-600 dark:text-red-400 font-semibold' : 'border-transparent text-muted-foreground hover:bg-muted/50'}`}>{t.fire}</button>
+        <button onClick={() => setActiveTab('acs')} className={`px-4 py-3 transition-colors whitespace-nowrap border-b-2 ${activeTab === 'acs' ? 'border-amber-500 text-amber-600 dark:text-amber-400 font-semibold' : 'border-transparent text-muted-foreground hover:bg-muted/50'}`}>{t.acs}</button>
       </div>
 
-      {/* TOOLBAR - GITHUB STYLE */}
-      <div className="flex flex-wrap items-center justify-between p-3 bg-muted/10 border-b border-border gap-3">
-        <div className="flex flex-wrap gap-2">
+      {/* 2. СТРОКА УСТРОЙСТВ */}
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 p-2 sm:p-3 bg-muted/10 border-b border-border min-h-[56px] overflow-y-auto max-h-[120px] sm:max-h-none custom-scrollbar">
           {activeTab === 'arch' && (
             <>
-             <button onClick={() => addRoom('room')} className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-xs font-medium"><Plus size={14} /> {t.block}</button>
-             <button onClick={() => addRoom('circle')} className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-xs font-medium"><CircleIcon size={14} /> {t.circle}</button>
-             <button onClick={() => addRoom('radius')} className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 border border-blue-700 rounded-md transition-all text-xs font-medium shadow-sm"><Radar size={14} /> {t.radiusZone}</button>
-             <div className="w-px h-6 bg-border mx-1" />
-             <button onClick={() => startDrawMode('trunk', 'arch')} className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md transition-all text-xs font-medium ${drawMode.active && drawMode.type === 'trunk' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Box size={14} /> {t.trunk}</button>
-             <button onClick={() => startDrawMode('corrugation', 'arch')} className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md transition-all text-xs font-medium ${drawMode.active && drawMode.type === 'corrugation' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Activity size={14} /> {t.corrugation}</button>
+             <button onClick={() => addRoom('room')} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Plus size={14} /> {t.block}</button>
+             <button onClick={() => addRoom('circle')} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><CircleIcon size={14} /> {t.circle}</button>
+             <button onClick={() => addRoom('radius')} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 border border-blue-700 rounded-md transition-all text-[10px] sm:text-xs font-medium shadow-sm whitespace-nowrap"><Radar size={14} /> {t.radiusZone}</button>
+             <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+             <button onClick={() => addDevice('door', 'arch', t.door)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><DoorClosed size={14} /> {t.door}</button>
+             <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+             <button onClick={() => startDrawMode('trunk', 'arch')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.type === 'trunk' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Box size={14} /> {t.trunk}</button>
+             <button onClick={() => startDrawMode('corrugation', 'arch')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.type === 'corrugation' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Activity size={14} /> {t.corrugation}</button>
             </>
           )}
           {activeTab === 'cctv' && (
             <>
-              <button onClick={() => addDevice('camera', 'cctv', t.camera)} className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-xs font-medium"><Video size={14} /> {t.camera}</button>
-              <button onClick={() => addDevice('switch', 'cctv', t.switch)} className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-xs font-medium"><Network size={14} /> {t.switch}</button>
-              <button onClick={() => addDevice('nvr', 'cctv', t.nvr)} className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-xs font-medium"><Server size={14} /> {t.nvr}</button>
-              <button onClick={() => addDevice('monitor', 'cctv', t.monitor)} className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-xs font-medium"><Monitor size={14} /> {t.monitor}</button>
-              <div className="w-px h-6 bg-border mx-1" />
-              <button onClick={() => startDrawMode('cable', 'cctv')} className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md transition-all text-xs font-medium ${drawMode.active && drawMode.category === 'cctv' ? 'bg-cyan-600 text-white border-cyan-700 shadow-inner' : 'bg-transparent border-transparent text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-950/30'}`}><Pencil size={14} /> {t.line}</button>
+              <button onClick={() => addDevice('camera', 'cctv', t.camera)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Video size={14} /> {t.camera}</button>
+              <button onClick={() => addDevice('switch', 'cctv', t.switch)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Network size={14} /> {t.switch}</button>
+              <button onClick={() => addDevice('monitor', 'cctv', t.monitor)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Monitor size={14} /> {t.monitor}</button>
+              <button onClick={() => addDevice('nvr', 'cctv', t.nvr)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Server size={14} /> {t.nvr}</button>
+              <button onClick={() => addDevice('rack', 'cctv', t.rack)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Box size={14} /> {t.rack}</button>
+              <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+              <button onClick={() => startDrawMode('cable', 'cctv')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.category === 'cctv' ? 'bg-cyan-600 text-white border-cyan-700 shadow-inner' : 'bg-transparent border-transparent text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-950/30'}`}><Pencil size={14} /> {t.line}</button>
             </>
           )}
           {activeTab === 'lan' && (
              <>
-               <button onClick={() => addDevice('router', 'lan', t.router)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Router size={14} /> {t.router}</button>
-               <button onClick={() => addDevice('rack', 'lan', t.rack)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Box size={14} /> {t.rack}</button>
-               <button onClick={() => addDevice('lan_switch', 'lan', t.lan_switch)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Network size={14} /> {t.lan_switch}</button>
-               <button onClick={() => addDevice('wifi', 'lan', t.wifi)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Wifi size={14} /> {t.wifi}</button>
-               <button onClick={() => addDevice('pc', 'lan', t.pc)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Monitor size={14} /> {t.pc}</button>
-               <button onClick={() => addDevice('printer', 'lan', t.printer)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Printer size={14} /> {t.printer}</button>
-               <button onClick={() => addDevice('socket', 'lan', t.socket)} className="flex items-center gap-1.5 px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-xs font-medium"><Zap size={14} /> {t.socket}</button>
-               <div className="w-px h-6 bg-border mx-1" />
-               <button onClick={() => startDrawMode('cable', 'lan')} className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md transition-all text-xs font-medium ${drawMode.active && drawMode.category === 'lan' ? 'bg-green-600 text-white border-green-700 shadow-inner' : 'bg-transparent border-transparent text-green-600 hover:bg-green-50 dark:hover:bg-green-950/30'}`}><Pencil size={14} /> {t.line}</button>
+               <button onClick={() => addDevice('router', 'lan', t.router)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Router size={14} /> {t.router}</button>
+               <button onClick={() => addDevice('rack', 'lan', t.rack)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Box size={14} /> {t.rack}</button>
+               <button onClick={() => addDevice('lan_switch', 'lan', t.lan_switch)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Network size={14} /> {t.lan_switch}</button>
+               <button onClick={() => addDevice('wifi', 'lan', t.wifi)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Wifi size={14} /> {t.wifi}</button>
+               <button onClick={() => addDevice('pc', 'lan', t.pc)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Monitor size={14} /> {t.pc}</button>
+               <button onClick={() => addDevice('printer', 'lan', t.printer)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Printer size={14} /> {t.printer}</button>
+               <button onClick={() => addDevice('socket', 'lan', t.socket)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Zap size={14} /> {t.socket}</button>
+               <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+               <button onClick={() => startDrawMode('cable', 'lan')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.category === 'lan' ? 'bg-green-600 text-white border-green-700 shadow-inner' : 'bg-transparent border-transparent text-green-600 hover:bg-green-50 dark:hover:bg-green-950/30'}`}><Pencil size={14} /> {t.line}</button>
              </>
           )}
           {activeTab === 'fire' && (
              <>
-               <button onClick={() => addDevice('smoke', 'fire', t.smoke)} className="flex items-center gap-1.5 px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-xs font-medium"><ShieldAlert size={14} /> {t.smoke}</button>
-               <button onClick={() => addDevice('panel', 'fire', t.panel)} className="flex items-center gap-1.5 px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-xs font-medium"><Server size={14} /> {t.panel}</button>
-               <div className="w-px h-6 bg-border mx-1" />
-               <button onClick={() => startDrawMode('cable', 'fire')} className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md transition-all text-xs font-medium ${drawMode.active && drawMode.category === 'fire' ? 'bg-red-600 text-white border-red-700 shadow-inner' : 'bg-transparent border-transparent text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30'}`}><Pencil size={14} /> {t.line}</button>
+               <button onClick={() => addDevice('smoke', 'fire', t.smoke)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><ShieldAlert size={14} /> {t.smoke}</button>
+               <button onClick={() => addDevice('heat', 'fire', t.heat)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Thermometer size={14} /> {t.heat}</button>
+               <button onClick={() => addDevice('linear', 'fire', t.linear)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><ScanLine size={14} /> {t.linear}</button>
+               <button onClick={() => addDevice('siren', 'fire', t.siren)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><BellRing size={14} /> {t.siren}</button>
+               <button onClick={() => addDevice('tableau', 'fire', t.tableau)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><SquareTerminal size={14} /> {t.tableau}</button>
+               <button onClick={() => addDevice('call_point', 'fire', t.call_point)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Hand size={14} /> {t.call_point}</button>
+               <button onClick={() => addDevice('panel', 'fire', t.panel)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Server size={14} /> {t.panel}</button>
+               <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+               <button onClick={() => startDrawMode('cable', 'fire')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.category === 'fire' ? 'bg-red-600 text-white border-red-700 shadow-inner' : 'bg-transparent border-transparent text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30'}`}><Pencil size={14} /> {t.line}</button>
              </>
           )}
-        </div>
-        
-        <div className="flex items-center gap-3 ml-auto">
-          {history.length > 0 && (
-              <button onClick={handleUndo} className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-xs font-medium" title={t.undo}>
-                 <RotateCcw size={14} /> {t.undo}
-              </button>
+          {activeTab === 'acs' && (
+             <>
+               <button onClick={() => addDevice('lock', 'acs', t.lock)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Lock size={14} /> {t.lock}</button>
+               <button onClick={() => addDevice('reader', 'acs', t.reader)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><CreditCard size={14} /> {t.reader}</button>
+               <button onClick={() => addDevice('acs_switch', 'acs', t.acs_switch)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Network size={14} /> {t.acs_switch}</button>
+               <button onClick={() => addDevice('exit_btn', 'acs', t.exit_btn)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><LogOut size={14} /> {t.exit_btn}</button>
+               <button onClick={() => addDevice('controller', 'acs', t.controller)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><Cpu size={14} /> {t.controller}</button>
+               <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
+               <button onClick={() => startDrawMode('cable', 'acs')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.category === 'acs' ? 'bg-amber-600 text-white border-amber-700 shadow-inner' : 'bg-transparent border-transparent text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/30'}`}><Pencil size={14} /> {t.line}</button>
+             </>
           )}
+      </div>
 
-          {/* ТУМБЛЕРЫ (МАГНИТ И АВТО-ТРАССА) */}
-          <div className="flex items-center gap-4 px-3 py-1.5 border border-border rounded-md bg-secondary/50">
-            <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-muted-foreground">{t.magnet}</span>
-                <button onClick={() => setIsMagnetEnabled(!isMagnetEnabled)} className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors focus:outline-none ${isMagnetEnabled ? 'bg-blue-600' : 'bg-muted-foreground/30'}`}>
-                  <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${isMagnetEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
+      {/* 3. СТРОКА НАСТРОЕК И УПРАВЛЕНИЯ */}
+      <div className="flex flex-wrap items-center justify-between p-2 sm:p-3 bg-muted/5 border-b border-border gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          
+          <button onClick={handleUndo} disabled={history.length === 0} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border rounded-md transition-all text-[10px] sm:text-xs font-medium ${history.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-muted'}`} title={t.undo}>
+              <RotateCcw size={14} /> <span className="hidden sm:inline">{t.undo}</span>
+          </button>
+
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 px-2.5 sm:px-3 py-1.5 border border-border rounded-md bg-secondary/50">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground hidden lg:inline">{t.magnet}</span>
+                <button onClick={() => setIsMagnetEnabled(!isMagnetEnabled)} className={`relative inline-flex h-3 w-6 sm:h-4 sm:w-8 items-center rounded-full transition-colors focus:outline-none ${isMagnetEnabled ? 'bg-blue-600' : 'bg-muted-foreground/30'}`}>
+                  <span className={`inline-block h-2 w-2 sm:h-3 sm:w-3 transform rounded-full bg-white transition-transform ${isMagnetEnabled ? 'translate-x-3.5 sm:translate-x-4' : 'translate-x-1'}`} />
                 </button>
             </div>
-            <div className="w-px h-4 bg-border" />
-            <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-muted-foreground">{t.autoRoute}</span>
-                <button onClick={() => setIsAutoCable(!isAutoCable)} className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors focus:outline-none ${isAutoCable ? 'bg-blue-600' : 'bg-muted-foreground/30'}`}>
-                  <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${isAutoCable ? 'translate-x-4' : 'translate-x-1'}`} />
+            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground hidden lg:inline">{t.autoRoute}</span>
+                <button onClick={() => setIsAutoCable(!isAutoCable)} className={`relative inline-flex h-3 w-6 sm:h-4 sm:w-8 items-center rounded-full transition-colors focus:outline-none ${isAutoCable ? 'bg-blue-600' : 'bg-muted-foreground/30'}`}>
+                  <span className={`inline-block h-2 w-2 sm:h-3 sm:w-3 transform rounded-full bg-white transition-transform ${isAutoCable ? 'translate-x-3.5 sm:translate-x-4' : 'translate-x-1'}`} />
+                </button>
+            </div>
+            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground hidden lg:inline">{t.largeIcons}</span>
+                <button onClick={() => setIsLargeIcons(!isLargeIcons)} className={`relative inline-flex h-3 w-6 sm:h-4 sm:w-8 items-center rounded-full transition-colors focus:outline-none ${isLargeIcons ? 'bg-blue-600' : 'bg-muted-foreground/30'}`}>
+                  <span className={`inline-block h-2 w-2 sm:h-3 sm:w-3 transform rounded-full bg-white transition-transform ${isLargeIcons ? 'translate-x-3.5 sm:translate-x-4' : 'translate-x-1'}`} />
                 </button>
             </div>
           </div>
           
           {drawMode.active && (
-              <button onClick={() => { setDrawMode({active: false, type: 'cable', category: 'arch'}); setCurrentLinePoints(null); }} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 dark:bg-red-900/20 dark:border-red-900 rounded-md text-xs font-medium animate-pulse shrink-0">
-                  {t.cancelDraw}
+              <button onClick={() => { setDrawMode({active: false, type: 'cable', category: 'arch'}); setCurrentLinePoints(null); }} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 dark:bg-red-900/20 dark:border-red-900 rounded-md text-[10px] sm:text-xs font-medium animate-pulse shrink-0">
+                  <span className="hidden sm:inline">{t.cancelDraw}</span>
+                  <span className="sm:hidden">X</span>
               </button>
           )}
-          
-          <div className="flex items-center gap-1 bg-secondary rounded-md border border-border p-0.5 shrink-0">
-             <button onClick={handleExportPng} className="flex items-center justify-center p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title={t.savePng}>
-                <Download size={14} />
-              </button>
-             <button onClick={toggleFullscreen} className="flex items-center justify-center p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title="Fullscreen">
-                {isFullscreen ? <Expand size={14} /> : <Maximize size={14} />}
-              </button>
-             <button onClick={resetView} className="flex items-center justify-center p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title="Reset View">
-                <ZoomIn size={14} />
-              </button>
-              <div className="px-2 py-1 text-[10px] font-mono text-muted-foreground border-l border-border cursor-pointer hover:text-foreground transition-colors" onClick={resetView}>
-                  {Math.round(scale * 100)}%
-              </div>
-          </div>
+        </div>
+        
+        <div className="flex items-center gap-0.5 sm:gap-1 bg-secondary rounded-md border border-border p-0.5 shrink-0">
+            <button onClick={handleExportPng} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title={t.savePng}>
+              <Download size={14} />
+            </button>
+            <button onClick={toggleFullscreen} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title="На весь экран">
+              {isFullscreen ? <Expand size={14} /> : <Maximize size={14} />}
+            </button>
+            <button onClick={resetView} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title="Сбросить зум">
+              <ZoomIn size={14} />
+            </button>
+            <div className="px-1.5 sm:px-2 py-1 text-[9px] sm:text-[10px] font-mono text-muted-foreground border-l border-border cursor-pointer hover:text-foreground transition-colors" onClick={resetView}>
+                {Math.round(scale * 100)}%
+            </div>
         </div>
       </div>
       
       {drawMode.active && (
-         <div className="bg-yellow-50 dark:bg-yellow-900/20 border-y border-yellow-200 dark:border-yellow-900/50 text-yellow-800 dark:text-yellow-500 text-xs text-center py-1.5 font-medium shadow-inner">
+         <div className="bg-yellow-50 dark:bg-yellow-900/20 border-y border-yellow-200 dark:border-yellow-900/50 text-yellow-800 dark:text-yellow-500 text-[10px] sm:text-xs text-center py-1.5 font-medium shadow-inner">
             {t.drawHint}
          </div>
       )}
 
       {/* ХОЛСТ */}
-      <div className={`relative bg-[#f6f8fa] dark:bg-[#0d1117] overflow-hidden flex justify-center border-b border-border ${drawMode.active ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'} h-full min-h-[500px]`}>
-        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[linear-gradient(to_right,#888_1px,transparent_1px),linear-gradient(to_bottom,#888_1px,transparent_1px)] [background-size:20px_20px]" />
+      <div className={`relative bg-[#f6f8fa] dark:bg-[#0d1117] overflow-hidden flex justify-center border-b border-border ${drawMode.active ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'} h-[500px] sm:h-full`}>
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[linear-gradient(to_right,#888_1px,transparent_1px),linear-gradient(to_bottom,#888_1px,transparent_1px)] [background-size:10px_10px]" />
         
         <Stage ref={stageRef} width={stageSize.width} height={stageSize.height} scaleX={scale} scaleY={scale} x={position.x} y={position.y}
           onWheel={handleWheel}
           onPointerDown={handleStagePointerDown}
           onPointerMove={handleStagePointerMove}
+          onTouchStart={handleStagePointerDown}
+          onTouchMove={handleStagePointerMove}
         >
+          {/* Слой с Вотермарками (на самом дне) */}
+          <Layer listening={false}>
+             <Group listening={false}>
+                {watermarkGrid.map((pos, idx) => (
+                    <Text 
+                       key={`wm-${idx}`} 
+                       x={pos.x} y={pos.y} 
+                       rotation={-30} 
+                       text="RS STUDIO" 
+                       fontSize={60} 
+                       fontFamily="monospace" 
+                       fontWeight="bold"
+                       fill="#888" 
+                       opacity={0.03} 
+                       listening={false} 
+                    />
+                ))}
+             </Group>
+          </Layer>
+
+          {/* Основной Слой (Комнаты, Линии, Оборудование) */}
           <Layer>
             {/* АВТО-ЛИНИИ */}
             {computedCables.lines.map((l, i) => (
@@ -394,41 +514,42 @@ export const SbaPlanner = () => {
 
             {/* ЛИНИЯ В ПРОЦЕССЕ РИСОВАНИЯ */}
             {currentLinePoints && (
-               <Line 
-                  points={currentLinePoints} 
-                  stroke={drawMode.category === 'cctv' ? '#06b6d4' : drawMode.category === 'lan' ? '#22c55e' : drawMode.category === 'fire' ? '#ef4444' : '#a3a3a3'} 
-                  strokeWidth={drawMode.type === 'cable' ? 1 : drawMode.type === 'corrugation' ? 3 : 5} 
-                  dash={drawMode.type === 'cable' ? [5, 5] : drawMode.type === 'corrugation' ? [6, 4] : []}
-                  opacity={0.8} 
-                  lineCap="round" 
-               />
+               renderCustomLine(
+                  currentLinePoints, 
+                  drawMode.type, 
+                  drawMode.category === 'cctv' ? '#06b6d4' : drawMode.category === 'lan' ? '#22c55e' : drawMode.category === 'fire' ? '#ef4444' : drawMode.category === 'acs' ? '#eab308' : '#a3a3a3', 
+                  true
+               )
             )}
 
             {/* НАРИСОВАННЫЕ ЛИНИИ */}
             {drawnLines.map((line) => {
                const isArchLine = line.type === 'trunk' || line.type === 'corrugation';
-               const color = isArchLine ? '#a3a3a3' : (line.category === 'cctv' ? '#06b6d4' : line.category === 'lan' ? '#22c55e' : '#ef4444');
-               const strokeWidth = line.type === 'cable' ? 1 : line.type === 'corrugation' ? 3 : 5;
-               const dash = line.type === 'cable' ? [5, 5] : line.type === 'corrugation' ? [6, 4] : [];
+               const color = isArchLine ? '#a3a3a3' : (line.category === 'cctv' ? '#06b6d4' : line.category === 'lan' ? '#22c55e' : line.category === 'acs' ? '#eab308' : '#ef4444');
                
                return (
-                  <Group key={line.id} id={line.id}>
-                      <Line points={line.points} stroke="transparent" strokeWidth={20} onPointerDown={(e) => { if(!drawMode.active) { e.cancelBubble = true; setSelectedId(line.id); } }} />
-                      <Line points={line.points} stroke={color} strokeWidth={strokeWidth} dash={dash} opacity={selectedId === line.id ? 1 : 0.8} lineCap="round" listening={false} />
+                  <Group key={line.id} id={line.id} x={line.x || 0} y={line.y || 0} draggable={!drawMode.active}
+                     onPointerDown={(e) => { if(!drawMode.active) { e.cancelBubble = true; setSelectedId(line.id); } }}
+                     onDragStart={() => saveToHistory()}
+                     onDragEnd={(e) => { 
+                       e.cancelBubble = true; 
+                       setDrawnLines(prev => prev.map(l => l.id === line.id ? { ...l, x: e.target.x(), y: e.target.y() } : l)); 
+                     }}
+                  >
+                      {/* Невидимая толстая линия для удобного клика/выделения */}
+                      <Line points={line.points} stroke="transparent" strokeWidth={20} hitStrokeWidth={20} />
+                      {/* Сама визуальная линия (кабель, гофра, или лоток) */}
+                      {renderCustomLine(line.points, line.type, color, selectedId === line.id)}
                   </Group>
                )
             })}
 
             {/* КОМНАТЫ И РАДИУСЫ */}
             {rooms.map((room) => {
-              // МАГНИТ ДЛЯ КОМНАТ (SNAP_SIZE)
               const handleDragMove = (e: any) => {
-                 if (isMagnetEnabled) {
-                     const node = e.target;
-                     const finalX = Math.round(node.x() / SNAP_SIZE) * SNAP_SIZE;
-                     const finalY = Math.round(node.y() / SNAP_SIZE) * SNAP_SIZE;
-                     node.position({ x: finalX, y: finalY });
-                 }
+                 const node = e.target;
+                 const { x, y } = getSnapPos(node.x(), node.y());
+                 node.position({ x, y });
               };
 
               return (
@@ -444,8 +565,10 @@ export const SbaPlanner = () => {
                       let newH = Math.max(40, node.height() * node.scaleY());
                       
                       if (isMagnetEnabled) {
-                         newW = Math.round(newW / SNAP_SIZE) * SNAP_SIZE;
-                         newH = Math.round(newH / SNAP_SIZE) * SNAP_SIZE;
+                         const snapW = Math.round(newW / SNAP_SIZE) * SNAP_SIZE;
+                         const snapH = Math.round(newH / SNAP_SIZE) * SNAP_SIZE;
+                         if (Math.abs(newW - snapW) < SNAP_DISTANCE) newW = snapW;
+                         if (Math.abs(newH - snapH) < SNAP_DISTANCE) newH = snapH;
                       }
 
                       node.setAttrs({ width: newW, height: newH, scaleX: 1, scaleY: 1 });
@@ -453,14 +576,14 @@ export const SbaPlanner = () => {
                     }}
                   >
                     {room.type === 'room' && (
-                       <Rect width={room.width} height={room.height} fill="#a3a3a3" opacity={0.05} stroke={selectedId === room.id ? "#2563eb" : "#d1d5db"} strokeWidth={selectedId === room.id ? 2 : 1} />
+                       <Rect width={room.width} height={room.height} fill="rgba(163, 163, 163, 0.05)" stroke={selectedId === room.id ? "#2563eb" : "#a3a3a3"} strokeWidth={selectedId === room.id ? 4 : 2} />
                     )}
                     {room.type === 'circle' && (
-                       <Circle x={room.width/2} y={room.height/2} radius={room.width/2} fill="#a3a3a3" opacity={0.05} stroke={selectedId === room.id ? "#2563eb" : "#d1d5db"} strokeWidth={selectedId === room.id ? 2 : 1} />
+                       <Circle x={room.width/2} y={room.height/2} radius={room.width/2} fill="rgba(163, 163, 163, 0.05)" stroke={selectedId === room.id ? "#2563eb" : "#a3a3a3"} strokeWidth={selectedId === room.id ? 4 : 2} />
                     )}
                     {room.type === 'radius' && (
                        <Group>
-                           <Circle x={room.width/2} y={room.height/2} radius={room.width/2} fill="#3b82f6" opacity={0.05} stroke={selectedId === room.id ? "#2563eb" : "#3b82f6"} strokeWidth={1} dash={[5,5]} />
+                           <Circle x={room.width/2} y={room.height/2} radius={room.width/2} fill="rgba(59, 130, 246, 0.05)" stroke={selectedId === room.id ? "#2563eb" : "#3b82f6"} strokeWidth={2} dash={[5,5]} />
                            <Text text={`${t.radius}: ${((room.width/2) * M_PER_PX).toFixed(1)} М`} x={0} y={room.height + 5} width={room.width} align="center" fill="#3b82f6" opacity={0.8} fontSize={10} fontStyle="bold" listening={false} />
                        </Group>
                     )}
@@ -474,16 +597,16 @@ export const SbaPlanner = () => {
 
             {/* ПРОФЕССИОНАЛЬНЫЕ ИКОНКИ */}
             {devices.map((dev) => {
-               const color = dev.category === 'cctv' ? '#06b6d4' : dev.category === 'lan' ? '#22c55e' : '#ef4444';
+               const color = dev.category === 'cctv' ? '#06b6d4' : dev.category === 'lan' ? '#22c55e' : dev.category === 'acs' ? '#eab308' : dev.category === 'fire' ? '#ef4444' : '#a3a3a3';
                
                const handleDragMove = (e: any) => {
-                 if (isMagnetEnabled) {
-                     const node = e.target;
-                     const finalX = Math.round(node.x() / SNAP_SIZE) * SNAP_SIZE;
-                     const finalY = Math.round(node.y() / SNAP_SIZE) * SNAP_SIZE;
-                     node.position({ x: finalX, y: finalY });
-                 }
+                 const node = e.target;
+                 const { x, y } = getSnapPos(node.x(), node.y());
+                 node.position({ x, y });
                };
+
+               const radiusColor = dev.type === 'wifi' ? '#22c55e' : '#ef4444';
+               const radiusFill = dev.type === 'wifi' ? 'rgba(34, 197, 94, 0.05)' : 'rgba(239, 68, 68, 0.05)';
 
                return (
                   <Group key={dev.id} id={dev.id} draggable={!drawMode.active} x={dev.x} y={dev.y}
@@ -492,93 +615,170 @@ export const SbaPlanner = () => {
                     onDragMove={handleDragMove}
                     onDragEnd={(e) => { e.cancelBubble = true; setDevices(prev => prev.map(d => d.id === dev.id ? { ...d, x: e.target.x(), y: e.target.y() } : d)); }}
                   >
-                    
-                    {/* ЗОНА ОБЗОРА КАМЕРЫ (Не выделяется рамкой Трансформера) */}
+                    {/* ЗОНА ОБЗОРА КАМЕРЫ */}
                     {dev.type === 'camera' && (
-                       <Group rotation={dev.rotation}>
+                       <Group rotation={dev.rotation} scaleX={iconScale} scaleY={iconScale}>
                            <Wedge radius={140} angle={60} rotation={-30} fill="#06b6d4" opacity={0.15} x={10} y={0} listening={false}/>
                        </Group>
                     )}
 
-                    {/* САМ БЛОК УСТРОЙСТВА (Вращается и выделяется Трансформером) */}
-                    <Group id={dev.type === 'camera' ? `cam_body_${dev.id}` : undefined} rotation={dev.type === 'camera' ? dev.rotation : 0}
+                    {/* РАДИУСЫ (WI-FI, ПОЖАРКА) */}
+                    {['wifi', 'smoke', 'heat'].includes(dev.type) && (
+                       <Group rotation={dev.rotation}>
+                           <Circle radius={dev.radius || 100} fill={radiusFill} stroke={radiusColor} strokeWidth={1} dash={[5,5]} listening={false} />
+                           {selectedId === dev.id && (
+                              <Circle 
+                                 x={dev.radius || 100} y={0} r={6} fill="#ffffff" stroke="#2563eb" strokeWidth={2} draggable
+                                 onDragStart={(e) => { e.cancelBubble = true; saveToHistory(); }}
+                                 onDragMove={(e) => {
+                                    e.cancelBubble = true;
+                                    const node = e.target;
+                                    const newRadius = Math.max(20, Math.hypot(node.x(), node.y()));
+                                    node.position({ x: newRadius, y: 0 }); // Фиксируем ручку строго по оси X
+                                    setDevices(prev => prev.map(d => d.id === dev.id ? { ...d, radius: newRadius } : d));
+                                 }}
+                                 onDragEnd={(e) => { e.cancelBubble = true; }}
+                              />
+                           )}
+                       </Group>
+                    )}
+
+                    {/* САМ БЛОК УСТРОЙСТВА */}
+                    <Group id={`dev_body_${dev.id}`} rotation={dev.rotation} 
+                       scaleX={dev.type === 'door' ? (dev.scaleX || 1) : iconScale} 
+                       scaleY={dev.type === 'door' ? (dev.scaleY || 1) : iconScale}
                        onTransformStart={() => saveToHistory()}
-                       onTransform={(e) => setDevices(prev => prev.map(d => d.id === dev.id ? { ...d, rotation: e.target.rotation() } : d))}
+                       onTransform={(e) => {
+                           const node = e.target;
+                           setDevices(prev => prev.map(d => d.id === dev.id ? { 
+                               ...d, 
+                               rotation: node.rotation(),
+                               scaleX: d.type === 'door' ? node.scaleX() : d.scaleX,
+                               scaleY: d.type === 'door' ? node.scaleY() : d.scaleY
+                           } : d))
+                       }}
                     >
-                        {selectedId === dev.id && dev.type !== 'camera' && <Circle r={24} fill="#2563eb" opacity={0.1} listening={false} />}
-                        {selectedId === dev.id && dev.type === 'camera' && <Circle r={16} fill="#2563eb" opacity={0.1} listening={false} />}
+                        {selectedId === dev.id && dev.type !== 'camera' && <Circle r={24} fill="rgba(37, 99, 235, 0.1)" listening={false} />}
+                        {selectedId === dev.id && dev.type === 'camera' && <Circle r={16} fill="rgba(37, 99, 235, 0.1)" listening={false} />}
 
-                        {/* CCTV */}
-                        {dev.type === 'camera' && <Group><Rect width={20} height={12} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={3} x={-10} y={-6}/><Path data="M 10,-4 L 16,-8 L 16,8 L 10,4 Z" fill={color}/><Circle r={2} fill="#ef4444" x={14} y={0}/></Group>}
-                        {dev.type === 'nvr' && <Group><Rect width={28} height={20} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-14} y={-10}/><Rect width={18} height={3} fill={color} x={-9} y={-5} cornerRadius={1}/><Circle r={1.5} fill="#22c55e" x={-9} y={4}/><Circle r={1.5} fill="#3b82f6" x={-4} y={4}/></Group>}
-                        {dev.type === 'switch' && <Group><Rect width={32} height={16} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-16} y={-8}/><Rect width={4} height={4} fill={color} x={-12} y={-2}/><Rect width={4} height={4} fill={color} x={-5} y={-2}/><Rect width={4} height={4} fill={color} x={2} y={-2}/><Rect width={4} height={4} fill={color} x={9} y={-2}/></Group>}
-                        {dev.type === 'monitor' && <Group><Rect width={28} height={20} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-14} y={-12}/><Rect width={22} height={14} fill={color} opacity={0.2} x={-11} y={-9}/><Line points={[-6,8, -10,14, 10,14, 6,8]} fill={color} closed/></Group>}
-
-                        {/* LAN */}
-                        {dev.type === 'router' && <Group><Rect width={24} height={14} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={3} x={-12} y={-7}/><Line points={[-6,-7, -8,-14]} stroke={color} strokeWidth={2} lineCap="round"/><Line points={[6,-7, 8,-14]} stroke={color} strokeWidth={2} lineCap="round"/><Circle r={1.5} fill={color} x={-6} y={1}/><Circle r={1.5} fill={color} x={-1} y={1}/><Circle r={1.5} fill={color} x={4} y={1}/></Group>}
-                        {dev.type === 'rack' && <Group><Rect width={30} height={46} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-15} y={-23}/><Rect width={24} height={6} fill={color} opacity={0.4} x={-12} y={-18}/><Rect width={24} height={6} fill={color} opacity={0.4} x={-12} y={-10}/><Rect width={24} height={6} fill={color} opacity={0.4} x={-12} y={-2}/><Rect width={24} height={6} fill={color} opacity={0.4} x={-12} y={10}/></Group>}
-                        {dev.type === 'lan_switch' && <Group><Rect width={32} height={16} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-16} y={-8}/><Rect width={4} height={4} fill={color} x={-12} y={-2}/><Rect width={4} height={4} fill={color} x={-5} y={-2}/><Rect width={4} height={4} fill={color} x={2} y={-2}/><Rect width={4} height={4} fill={color} x={9} y={-2}/></Group>}
-                        {dev.type === 'wifi' && <Group><Circle r={90} fill="#22c55e" opacity={0.08} stroke="#22c55e" strokeWidth={1} dash={[5,5]} listening={false} /><Rect width={16} height={16} x={-8} y={-8} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={8} /><Circle r={3} fill={color} /><Path data="M-6,-10 Q0,-16 6,-10 M-10,-14 Q0,-24 10,-14" stroke={color} strokeWidth={2} fill="transparent" strokeLineCap="round"/></Group>}
-                        {dev.type === 'pc' && <Group><Rect width={22} height={14} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-11} y={-12}/><Rect width={26} height={6} fill={color} x={-13} y={6} cornerRadius={1}/><Line points={[-8,9, 8,9]} stroke="#ffffff" strokeWidth={1}/></Group>}
-                        {dev.type === 'printer' && <Group><Rect width={24} height={12} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-12} y={-2}/><Rect width={16} height={8} fill={color} opacity={0.4} x={-8} y={-10}/><Rect width={12} height={6} fill={color} opacity={0.7} x={-6} y={10}/></Group>}
-                        {dev.type === 'socket' && <Group><Rect width={18} height={18} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={4} x={-9} y={-9}/><Circle r={1.5} fill={color} x={-3} y={0}/><Circle r={1.5} fill={color} x={3} y={0}/></Group>}
-
-                        {/* FIRE */}
-                        {dev.type === 'smoke' && <Group><Circle r={60} fill="#ef4444" opacity={0.08} stroke="#ef4444" strokeWidth={1} dash={[5,5]} listening={false} /><Rect width={16} height={16} x={-8} y={-8} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={8} /><Circle r={4} fill={color} opacity={0.5} /><Circle r={1.5} fill="#ff0000" x={4} y={-4} shadowColor="#ff0000" shadowBlur={4} /></Group>}
-                        {dev.type === 'panel' && <Group><Rect width={26} height={36} fill="#ffffff" stroke={color} strokeWidth={2} cornerRadius={2} x={-13} y={-18}/><Rect width={18} height={8} fill={color} opacity={0.3} x={-9} y={-14}/><Circle r={2} fill={color} x={-5} y={0}/><Circle r={2} fill={color} x={5} y={0}/><Circle r={2} fill={color} x={0} y={6}/></Group>}
+                        {dev.type === 'door' ? (
+                           <Group>
+                              <Path data="M 0,0 L 0,-30 A 30,30 0 0,1 30,0 Z" stroke={color} strokeWidth={2} fill="transparent" />
+                              <Rect width={30} height={3} x={0} y={-1.5} fill={color} />
+                              <Line points={[0,0, 0,-30]} stroke={color} strokeWidth={3} />
+                           </Group>
+                        ) : (
+                           <Path 
+                              data={DEVICE_PATHS[dev.type] || "M-10,-10 H10 V10 H-10 Z"} 
+                              fill={dev.type === 'wifi' ? "transparent" : "#ffffff"} 
+                              stroke={color} 
+                              strokeWidth={2} 
+                              strokeLineCap="round" 
+                              strokeLineJoin="round" 
+                           />
+                        )}
                     </Group>
 
-                    {/* Текст не вращается (вынесен за пределы вращающейся группы) */}
-                    <Text text={dev.label} y={dev.type === 'rack' || dev.type === 'panel' ? 30 : 20} x={-40} width={80} align="center" fill="#6b7280" opacity={0.9} fontSize={10} fontStyle="bold" listening={false} />
+                    {/* Текст (Скрыт для двери) */}
+                    {dev.type !== 'door' && (
+                       <Text text={dev.label} y={(dev.type === 'rack' || dev.type === 'panel' || dev.type === 'controller' ? 30 : 20) * iconScale} x={-40} width={80} align="center" fill="#6b7280" opacity={0.9} fontSize={10} fontStyle="bold" listening={false} />
+                    )}
                   </Group>
                )
             })}
 
             <Transformer ref={trRef} flipEnabled={false} anchorFill="#ffffff" anchorStroke="#2563eb" anchorSize={8} borderStroke="#2563eb" keepRatio={false} />
           </Layer>
+
+          {/* Слой с Футером (Поверх всего, привязан к правому нижнему углу) */}
+          <Layer listening={false}>
+               <Text 
+                  text="DEVELOPED BY RS STUDIO FROM TOO SBA"
+                  x={-position.x / scale}
+                  y={(-position.y + stageSize.height - 25) / scale}
+                  width={stageSize.width / scale - 15}
+                  align="right"
+                  fontSize={12 / scale}
+                  fontFamily="monospace"
+                  fontWeight="bold"
+                  fill="#6b7280"
+                  opacity={0.8}
+                  listening={false}
+               />
+          </Layer>
         </Stage>
 
-        <div className="absolute bottom-6 right-6 flex items-center gap-3">
-          <div className="flex bg-background/90 backdrop-blur-md border border-border rounded-lg p-3 shadow-sm items-center gap-4 pointer-events-none">
+        <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3 max-w-[calc(100vw-32px)]">
+          <div className="flex flex-wrap sm:flex-nowrap bg-background/90 backdrop-blur-md border border-border rounded-lg p-2 sm:p-3 shadow-sm items-center gap-3 sm:gap-4 pointer-events-none">
             <div className="text-right">
-                <p className="text-[10px] text-muted-foreground uppercase font-semibold">{t.autoMeters}</p>
-                <p className="text-green-600 dark:text-green-500 font-bold text-lg font-mono">{computedCables.totalAuto} М</p>
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-semibold">{t.autoMeters}</p>
+                <p className="text-green-600 dark:text-green-500 font-bold text-base sm:text-lg font-mono">{computedCables.totalAuto} М</p>
             </div>
-            <div className="text-right border-l border-border pl-4">
-                <p className="text-[10px] text-muted-foreground uppercase font-semibold">{t.manualMeters}</p>
-                <p className="text-yellow-600 dark:text-yellow-500 font-bold text-lg font-mono">{totalMeters} М</p>
+            <div className="text-right border-l border-border pl-3 sm:pl-4">
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-semibold">{t.manualMeters}</p>
+                <p className="text-yellow-600 dark:text-yellow-500 font-bold text-base sm:text-lg font-mono">{totalMeters} М</p>
+            </div>
+            <div className="text-right border-l border-border pl-3 sm:pl-4">
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase font-semibold">{t.totalMeters}</p>
+                <p className="text-blue-600 dark:text-blue-500 font-bold text-base sm:text-lg font-mono">{computedCables.totalAuto + totalMeters} М</p>
             </div>
           </div>
 
           {selectedId && !drawMode.active && (
-            <button onClick={() => { 
-                saveToHistory();
-                setRooms(rooms.filter(r => r.id !== selectedId)); 
-                setDevices(devices.filter(d => d.id !== selectedId)); 
-                setDrawnLines(drawnLines.filter(l => l.id !== selectedId)); 
-                setSelectedId(null); 
-              }}
-              className="p-3 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-900/50 border border-red-200 dark:border-red-900 rounded-lg transition-all shadow-sm">
-              <Trash2 size={20} />
-            </button>
+            <div className="flex bg-background/90 backdrop-blur-md border border-border rounded-lg p-1.5 shadow-sm items-center gap-2 pointer-events-auto max-w-full overflow-hidden">
+                {/* Редактирование Названия */}
+                {devices.find(d => d.id === selectedId) && (
+                    <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 border-r border-border shrink-0">
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase">Модель:</span>
+                        <input 
+                            type="text" 
+                            placeholder="Напр. Hikvision"
+                            value={devices.find(d => d.id === selectedId)?.label || ''}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setDevices(prev => prev.map(d => d.id === selectedId ? { ...d, label: val } : d));
+                            }}
+                            onFocus={() => saveToHistory()}
+                            className="text-xs sm:text-sm font-medium bg-transparent border-b border-dashed border-muted-foreground/50 outline-none w-20 sm:w-32 text-foreground focus:border-blue-500 py-0.5"
+                        />
+                    </div>
+                )}
+                
+                {/* Настройка радиуса (только для Wi-Fi и Пожарки) */}
+                {['wifi', 'smoke', 'heat'].includes(devices.find(d => d.id === selectedId)?.type || '') && (
+                     <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 border-r border-border shrink-0">
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase">Радиус (М):</span>
+                        <input 
+                            type="number" 
+                            value={Math.round((devices.find(d => d.id === selectedId)?.radius || 100) * M_PER_PX)}
+                            onChange={(e) => {
+                                const val = parseFloat(e.target.value) || 0;
+                                setDevices(prev => prev.map(d => d.id === selectedId ? { ...d, radius: val / M_PER_PX } : d));
+                            }}
+                            className="text-xs sm:text-sm font-medium bg-transparent border-b border-dashed border-muted-foreground/50 outline-none w-10 sm:w-12 text-center text-foreground focus:border-blue-500 py-0.5"
+                        />
+                    </div>
+                )}
+                
+                <button onClick={() => { 
+                    saveToHistory();
+                    setRooms(rooms.filter(r => r.id !== selectedId)); 
+                    setDevices(devices.filter(d => d.id !== selectedId)); 
+                    setDrawnLines(drawnLines.filter(l => l.id !== selectedId)); 
+                    setSelectedId(null); 
+                  }}
+                  className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30 rounded-md transition-all flex items-center justify-center shrink-0">
+                  <Trash2 size={16} />
+                </button>
+            </div>
           )}
-        </div>
-        
-        {/* ВЫБОР ЯЗЫКА */}
-        <div className="absolute bottom-6 left-6 flex items-center gap-2 bg-background/90 backdrop-blur-md border border-border rounded-lg p-1.5 shadow-sm">
-           <Globe size={14} className="text-muted-foreground ml-1" />
-           <select value={lang} onChange={(e) => setLang(e.target.value as Lang)} className="bg-transparent text-xs font-medium text-foreground outline-none cursor-pointer border-none py-1 pr-2">
-              <option value="ru">Русский</option>
-              <option value="kz">Қазақша</option>
-              <option value="en">English</option>
-           </select>
         </div>
 
         {position.x === 0 && scale === 1 && rooms.length === 0 && devices.length === 0 && drawnLines.length === 0 && !drawMode.active && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/40 text-center pointer-events-none">
-                <p className="font-mono text-sm font-bold uppercase">{t.emptyHint}</p>
-                <p className="text-xs mt-1 opacity-70 italic">{t.betaHint}</p>
-                <p className="text-[10px] mt-4 font-mono">{t.controlsHint}</p>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/40 text-center pointer-events-none px-4">
+                <p className="font-mono text-xs sm:text-sm font-bold uppercase">{t.emptyHint}</p>
+                <p className="text-[10px] sm:text-xs mt-1 opacity-70 italic">{t.betaHint}</p>
+                <p className="text-[9px] sm:text-[10px] mt-4 font-mono">{t.controlsHint}</p>
             </div>
         )}
       </div>
