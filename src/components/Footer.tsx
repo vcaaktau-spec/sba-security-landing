@@ -38,6 +38,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
   const [modalContent, setModalContent] = useState<ModalType>(null)
   const [langOpen, setLangOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isFabOpen, setIsFabOpen] = useState(false)
 
   // Монтирование для портала
   useEffect(() => {
@@ -152,7 +153,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
 
             <div className="flex flex-col gap-5">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest">{t("footer.nav_title")}</h4>
-              <ul className="space-y-4 text-[14px] font-medium text-muted-foreground">
+              <ul className="space-y-4 text-[14px] font-medium text-foreground/80">
                 <li><a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-foreground transition-colors">{t("nav.services")}</a></li>
                 <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="hover:text-foreground transition-colors">{t("nav.projects")}</a></li>
                 <li><button onClick={onOpenCalc} className="hover:text-foreground transition-colors">{t("calc.badge")}</button></li>
@@ -163,7 +164,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
               
             <div className="flex flex-col gap-5">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest">{t("footer.settings_title")}</h4>
-              <ul className="space-y-4 text-[14px] font-medium text-muted-foreground">
+              <ul className="space-y-4 text-[14px] font-medium text-foreground/80">
                 <li><button onClick={() => setModalContent("privacy")} className="hover:text-foreground transition-colors">{t("docs.privacy")}</button></li>
                 <li><button onClick={() => setModalContent("terms")} className="hover:text-foreground transition-colors">{t("docs.terms")}</button></li>
                 <li><button onClick={() => setModalContent("dpa")} className="hover:text-foreground transition-colors">{t("docs.dpa")}</button></li>
@@ -173,7 +174,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
             <div className="flex flex-col gap-5 lg:items-end">
               <h4 className="text-[11px] font-bold text-foreground uppercase tracking-widest lg:text-right w-full">{t("footer.contacts_title")}</h4>
               
-              <ul className="space-y-4 text-[14px] font-medium text-muted-foreground lg:text-right w-full mb-4">
+              <ul className="space-y-4 text-[14px] font-medium text-foreground/80 lg:text-right w-full mb-4">
                 <li>
                   <Magnetic strength={0.1}>
                     <a href="tel:+77779204988" className="hover:text-foreground transition-colors inline-flex items-center gap-2 justify-start lg:justify-end w-full">
@@ -334,12 +335,12 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                           <p className="text-sm mb-2">{t("review_form.desc")}</p>
                           
                           <div className="relative group">
-                            <input required type="text" value={name} onChange={e => setName(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-base placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
+                            <input required type="text" value={name} inputMode="text" enterKeyHint="next" onChange={e => setName(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-base placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
                             <label className="absolute left-0 -top-3.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest transition-all peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-muted-foreground/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[10px] peer-focus:text-red-600 pointer-events-none">{t("review_form.name")}</label>
                           </div>
                           
                           <div className="relative group">
-                            <input required type="text" value={company} onChange={e => setCompany(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-base placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
+                            <input required type="text" value={company} inputMode="text" enterKeyHint="next" onChange={e => setCompany(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-base placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
                             <label className="absolute left-0 -top-3.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest transition-all peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-muted-foreground/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[10px] peer-focus:text-red-600 pointer-events-none">{t("review_form.company")}</label>
                           </div>
                           
@@ -377,6 +378,35 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
         </AnimatePresence>,
         document.body
       )}
+
+      {/* ПЛАВАЮЩАЯ КНОПКА СВЯЗИ (Mobile FAB) */}
+      <div className="fixed bottom-6 right-6 z-50 md:hidden flex flex-col items-end gap-4 pointer-events-none">
+        <AnimatePresence>
+          {isFabOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.5 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.5 }}
+              transition={{ duration: 0.4, ease: smoothEase as any }}
+              className="flex flex-col gap-3 pointer-events-auto"
+            >
+              <a href="https://wa.me/77779204988" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-lg shadow-green-500/20 hover:scale-110 transition-transform">
+                <MessageCircle size={22} />
+              </a>
+              <a href="tel:+77779204988" className="w-12 h-12 bg-foreground rounded-full flex items-center justify-center text-background shadow-lg shadow-white/10 hover:scale-110 transition-transform">
+                <Phone size={22} />
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        <button
+          onClick={() => setIsFabOpen(!isFabOpen)}
+          className={`w-14 h-14 rounded-full flex items-center justify-center text-white shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-all duration-500 pointer-events-auto ${isFabOpen ? "bg-zinc-800 rotate-[-45deg] shadow-none" : "bg-red-600 hover:bg-red-700 hover:scale-105"}`}
+        >
+          {isFabOpen ? <X size={24} /> : <MessageSquarePlus size={24} />}
+        </button>
+      </div>
     </footer>
   )
 }
