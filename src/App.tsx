@@ -18,6 +18,8 @@ import { Calculator } from "./components/Calculator";
 import { X } from "lucide-react";
 import "./App.css";
 import { SbaPlanner } from "./components/SbaPlanner";
+import NotFound from "./components/NotFound";
+import { SeoBlock } from "./components/SeoBlock";
 
 const GlassWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -44,6 +46,12 @@ function App() {
       document.body.style.overflow = "unset";
     }
   }, [isCalcOpen]);
+
+  // --- НАТИВНЫЙ ПЕРЕХВАТЧИК ДЛЯ 404 СТРАНИЦЫ ---
+  const currentPath = window.location.pathname;
+  if (currentPath !== "/" && currentPath !== "/index.html") {
+    return <NotFound />;
+  }
 
   return (
     <>
@@ -74,9 +82,10 @@ function App() {
           <GlassWrapper><Projects /></GlassWrapper>
           <GlassWrapper><Testimonials /></GlassWrapper>
           <GlassWrapper><Cta /></GlassWrapper>
-          
           <GlassWrapper>
-            {/* Передаем функцию открытия в Footer */}
+            <SeoBlock />
+          </GlassWrapper>
+          <GlassWrapper>
             <Footer onOpenCalc={() => setIsCalcOpen(true)} />
           </GlassWrapper>
 
