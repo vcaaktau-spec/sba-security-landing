@@ -21,6 +21,7 @@ import { SbaPlanner } from "./components/SbaPlanner";
 import NotFound from "./components/NotFound";
 import { SeoBlock } from "./components/SeoBlock";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const GlassWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -127,6 +128,7 @@ function App() {
           </div>
         )}
         <Analytics />
+        <SpeedInsights/>
       </AnimatePresence>
     </>
   );
