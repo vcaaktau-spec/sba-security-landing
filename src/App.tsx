@@ -20,8 +20,10 @@ import "./App.css";
 import { SbaPlanner } from "./components/SbaPlanner";
 import NotFound from "./components/NotFound";
 import { SeoBlock } from "./components/SeoBlock";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
+// ИСПРАВЛЕНИЕ: Меняем /next на /react
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const GlassWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -127,9 +129,11 @@ function App() {
             </motion.div>
           </div>
         )}
-        <Analytics />
-        <SpeedInsights/>
       </AnimatePresence>
+      
+      {/* ИСПРАВЛЕНИЕ: Вынесли компоненты Vercel за пределы AnimatePresence */}
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }
