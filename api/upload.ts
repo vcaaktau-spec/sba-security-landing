@@ -2,7 +2,6 @@ import { put } from '@vercel/blob';
 import { db } from '../src/db/index';
 import { documents } from '../src/db/schema';
 
-export const config = { runtime: 'edge' };
 
 export default async function handler(req: Request) {
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
