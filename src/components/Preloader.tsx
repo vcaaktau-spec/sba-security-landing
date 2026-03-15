@@ -2,12 +2,24 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useLocation } from "react-router-dom"
 
 export const Preloader = () => {
+  const location = useLocation()
+  // Проверяем, находимся ли мы на странице дашборда
+  const isDashboard = location.pathname.startsWith("/dashboard")
+
   const [progress, setProgress] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  // Если это дашборд, изначально ставим false, чтобы прелоадер не появился вообще
+  const [isLoading, setIsLoading] = useState(!isDashboard)
 
   useEffect(() => {
+    // Если мы на дашборде, сразу выходим из useEffect и возвращаем скролл
+    if (isDashboard) {
+      document.body.style.overflow = "unset"
+      return
+    }
+
     document.body.style.overflow = "hidden"
     window.scrollTo(0, 0)
 
@@ -40,7 +52,10 @@ export const Preloader = () => {
       cancelAnimationFrame(animationFrameId);
       document.body.style.overflow = "unset";
     }
-  }, [])
+  }, [isDashboard])
+
+  // Если это дашборд, возвращаем null, чтобы полностью исключить рендер
+  if (isDashboard) return null;
 
   const slideUp = {
     initial: { y: 0 },

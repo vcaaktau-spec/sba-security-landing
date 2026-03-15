@@ -209,7 +209,10 @@ const resources = {
         projects: "Проекты",
         testimonials: "Отзывы",
         contacts: "Контакты",
-        contact_btn: "Связаться"
+        contact_btn: "Связаться",
+        login: "Войти",
+        login_mobile: "Войти в кабинет",
+        dashboard: "Личный кабинет"
       },
       projects: {
         title1: "Реализованные ",
@@ -480,7 +483,10 @@ const resources = {
         projects: "Жобалар",
         testimonials: "Пікірлер",
         contacts: "Байланыс",
-        contact_btn: "Байланысу"
+        contact_btn: "Байланысу",
+        login: "Кіру",
+        login_mobile: "Жеке кабинетке кіру",
+        dashboard: "Жеке кабинет"
       },
       projects: {
         title1: "Іске асырылған ",
@@ -751,7 +757,10 @@ const resources = {
         projects: "Projects",
         testimonials: "Reviews",
         contacts: "Contacts",
-        contact_btn: "Contact Us"
+        contact_btn: "Contact Us",
+        login: "Sign In",
+        login_mobile: "Sign In to Dashboard",
+        dashboard: "Dashboard"
       },
       projects: {
         title1: "Completed ",
