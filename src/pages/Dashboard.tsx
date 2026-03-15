@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Navbar } from "../components/Navbar";
-import { motion } from "framer-motion";
 import { 
-  FileText, Download, Wrench, Server, MapPin, 
+  Server, MapPin, 
   Key, Eye, EyeOff, Cctv, Network, ShieldCheck, 
   Info, Flame, CheckCircle2, AlertTriangle, Loader2 
 } from "lucide-react";

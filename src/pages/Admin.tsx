@@ -199,7 +199,7 @@ export const Admin = () => {
                     {isLoadingProjects ? (
                       <div className="flex justify-center mt-20"><Loader2 className="animate-spin text-red-600" size={32}/></div>
                     ) : userProjects.length > 0 ? (
-                      userProjects.map((p: any) => (
+                      (Array.isArray(userProjects) ? userProjects : []).map((p: any) => (
                         <div key={p.id} className="bg-muted/30 border border-border p-5 md:p-6 rounded-[24px] hover:border-border/80 transition-all group relative overflow-hidden">
                           <div className="flex justify-between items-start relative z-10">
                             <div>
