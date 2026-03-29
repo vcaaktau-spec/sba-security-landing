@@ -40,19 +40,23 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
   const [mounted, setMounted] = useState(false)
   const [isFabOpen, setIsFabOpen] = useState(false)
 
-  // Монтирование для портала
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Блокировка скролла при открытии ЛЮБОЙ модалки футера
+  // Жесткая блокировка скролла для всех устройств, включая iOS
   useEffect(() => {
     if (modalContent) {
       document.body.style.overflow = "hidden"
+      document.body.style.touchAction = "none" // Фикс для iOS
     } else {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = ""
+      document.body.style.touchAction = ""
     }
-    return () => { document.body.style.overflow = "unset" }
+    return () => { 
+      document.body.style.overflow = ""
+      document.body.style.touchAction = "" 
+    }
   }, [modalContent])
 
   const currentLang = i18n?.language || 'ru'
@@ -235,11 +239,11 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
         </div>
       </div>
 
-      {/* ПОРТАЛ ДЛЯ МОДАЛОК - ТЕПЕРЬ ОНИ БУДУТ ПОВЕРХ ВСЕГО САЙТА */}
       {mounted && createPortal(
         <AnimatePresence>
           {modalContent && (
-            <div className="fixed inset-0 z-[9999] flex justify-center lg:justify-end text-foreground">
+            // ИСПРАВЛЕНИЕ ТУТ: fixed inset-0 и overflow-hidden чтобы сама обертка не скроллилась
+            <div className="fixed inset-0 z-[9999] flex justify-end text-foreground overflow-hidden">
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 onClick={closeDrawer}
@@ -251,9 +255,9 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                 animate={{ x: 0 }} 
                 exit={{ x: "100%" }}
                 transition={{ duration: 0.4, ease: smoothEase as any}}
-                className="relative w-full max-w-lg h-full border-l bg-background border-border/50 shadow-2xl flex flex-col z-[10000] overflow-hidden"
+                className="relative w-full max-w-lg h-full bg-background border-l border-border/50 shadow-2xl flex flex-col z-[10000]"
               >
-                  <div className="sticky top-0 bg-background/90 backdrop-blur-xl border-b border-border/50 p-6 sm:p-8 flex items-center justify-between z-10">
+                  <div className="flex-shrink-0 bg-background/90 backdrop-blur-xl border-b border-border/50 p-6 sm:p-8 flex items-center justify-between z-10">
                     <div className="flex items-center gap-3 font-bold text-xl">
                       {modalContent === "faq" && <HelpCircle size={22} className="text-red-500" />}
                       {modalContent === "review" && <MessageSquarePlus size={22} className="text-red-500" />}
@@ -272,7 +276,8 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                     </button>
                   </div>
                   
-                  <div className="p-6 sm:p-8 overflow-y-auto flex-grow text-[15px] leading-relaxed text-muted-foreground space-y-8 scrollbar-thin scrollbar-thumb-border/50 scrollbar-track-transparent">
+                  {/* ИСПРАВЛЕНИЕ ТУТ: flex-grow и overflow-y-auto, чтобы скроллился только этот блок, а не вся страница */}
+                  <div className="flex-grow overflow-y-auto p-6 sm:p-8 text-[15px] leading-relaxed text-muted-foreground space-y-8 scrollbar-thin scrollbar-thumb-border/50 scrollbar-track-transparent pb-24">
                     
                     {(modalContent === "privacy" || modalContent === "terms" || modalContent === "dpa") && (
                       <>
@@ -379,7 +384,6 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
         document.body
       )}
 
-      {/* ПЛАВАЮЩАЯ КНОПКА СВЯЗИ (Mobile FAB) */}
       <div className="fixed bottom-6 right-6 z-50 md:hidden flex flex-col items-end gap-4 pointer-events-none">
         <AnimatePresence>
           {isFabOpen && (
