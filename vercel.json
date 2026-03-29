@@ -5,7 +5,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/(dashboard|sign-in|sign-up)(.*)",
       "destination": "/index.html"
     }
   ]
