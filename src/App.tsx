@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
-import { Admin } from "./pages/Admin";
 import NotFound from "./components/NotFound";
 import { GlobalBackground } from "./components/GlobalBackground";
 import { Preloader } from "./components/Preloader";
@@ -40,7 +39,6 @@ function App() {
           element={
             <>
               <SignedIn>
-                <Admin />
               </SignedIn>
               <SignedOut>
                 <Navigate to="/" replace />
