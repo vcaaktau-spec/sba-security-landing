@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { useTranslation } from "react-i18next"
-import { Menu, X, Cctv, Moon, Sun, Globe, LayoutDashboard, ArrowRight } from "lucide-react"
+import { Menu, X, Cctv, Moon, Sun, Globe, LayoutDashboard, ArrowRight, User } from "lucide-react"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react"
 
 export const Navbar = () => {
@@ -18,7 +18,6 @@ export const Navbar = () => {
 
   const { scrollY } = useScroll()
 
-  // Логика скрытия при скролле вниз, показа при скролле вверх
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious()
     if (previous && latest > previous && latest > 150) {
@@ -28,8 +27,6 @@ export const Navbar = () => {
     }
     setScrolled(latest > 20)
   })
-
-  // Убрали routeList со всеми ссылками-якорями!
 
   useEffect(() => {
     setMounted(true)
@@ -55,9 +52,9 @@ export const Navbar = () => {
 
   const smoothEase = [0.22, 1, 0.36, 1]
 
-  // Стилизация аватара для премиального вида
+  // Стилизация аватара для премиального вида (размер подогнан под новые тумблеры)
   const CustomUserButton = () => (
-    <UserButton afterSignOutUrl="/" appearance={{ elements: { userButtonAvatarBox: "w-9 h-9 border-2 border-border/50 shadow-inner" } }}>
+    <UserButton afterSignOutUrl="/" appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 border border-border/50 shadow-sm" } }}>
       <UserButton.MenuItems>
         <UserButton.Link
           label={t("nav.dashboard")}
@@ -70,66 +67,66 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* === ДЕСКТОП: ПРЕМИАЛЬНЫЙ КОНТРОЛЬНЫЙ БАР (md and up) === */}
+      {/* === ДЕСКТОП: ПРЕМИАЛЬНЫЙ КОНТРОЛЬНЫЙ БАР === */}
       <header className="fixed top-6 inset-x-0 z-50 flex justify-center px-4 pointer-events-none hidden md:flex">
         <motion.nav 
           variants={{
             visible: { y: 0, opacity: 1 },
-            hidden: { y: "-200%", opacity: 0 } // Прячем сильнее
+            hidden: { y: "-200%", opacity: 0 }
           }}
           animate={hidden ? "hidden" : "visible"}
           transition={{ duration: 0.5, ease: smoothEase as any }}
-          className="flex items-center gap-1.5 p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border bg-background/70 dark:bg-black/70 border-border/50 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.1)] dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.4)]"
+          className="flex items-center p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border bg-background/80 dark:bg-black/80 border-border/50 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5)]"
         >
           {/* Логотип */}
-          <a href="/" className="flex items-center justify-center w-11 h-11 rounded-full bg-muted/30 hover:bg-muted/60 transition-colors pl-1">
-            <Cctv size={22} strokeWidth={1.5} className="text-foreground transition-colors group-hover:text-red-500" />
+          <a href="/" className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors ml-1">
+            <Cctv size={22} strokeWidth={1.5} className="text-foreground transition-colors group-hover:text-red-600" />
           </a>
 
-          {/* Разделитель */}
-          <div className="w-[1px] h-7 bg-border/50 mx-1.5" />
-
-          {/* КОНТРОЛЫ: Язык, Тема, Clerk */}
-          <div className="flex items-center gap-1">
-            <button onClick={toggleLanguage} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted/60 transition-colors text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-wider">
+          {/* ЕДИНЫЙ БЛОК КОНТРОЛОВ (Тумблеры + Логин) */}
+          <div className="flex items-center bg-muted/40 p-1 rounded-full border border-border/30 mx-3">
+            {/* Язык */}
+            <button onClick={toggleLanguage} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-wider">
               {i18n.language || 'ru'}
             </button>
-            <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted/60 transition-colors text-muted-foreground hover:text-foreground">
-              {isDark ? <Sun size={17} strokeWidth={2} /> : <Moon size={17} strokeWidth={2} />}
+
+            <div className="w-[1px] h-4 bg-border/50 mx-1" />
+
+            {/* Тема */}
+            <button onClick={toggleTheme} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground">
+              {isDark ? <Sun size={15} strokeWidth={2.5} /> : <Moon size={15} strokeWidth={2.5} />}
             </button>
             
+            <div className="w-[1px] h-4 bg-border/50 mx-1" />
+
             {/* Клерк Вход/Аватар */}
-            <div className="flex items-center ml-1">
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="px-4 py-2 text-[14px] font-semibold text-foreground hover:text-red-500 transition-colors rounded-full hover:bg-muted/60">
-                    {t("nav.login", "Войти")}
-                  </button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
-                <div className="px-1 flex items-center justify-center">
-                  <CustomUserButton />
-                </div>
-              </SignedIn>
-            </div>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="h-8 px-3 flex items-center gap-1.5 rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-widest">
+                  <User size={14} strokeWidth={2.5} />
+                  <span>{t("nav.login", "Войти")}</span>
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <div className="px-1 flex items-center justify-center">
+                <CustomUserButton />
+              </div>
+            </SignedIn>
           </div>
 
-          {/* Разделитель */}
-          <div className="w-[1px] h-7 bg-border/50 mx-1.5" />
-
-          {/* Единственная CTA кнопка */}
+          {/* СТРОГО КРАСНАЯ CTA КНОПКА */}
           <a 
             href="https://wa.me/77779204988"
             target="_blank" rel="noopener noreferrer"
-            className="ml-1 px-6 py-3 rounded-full bg-foreground text-background text-[13px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="mr-1 px-6 py-2.5 rounded-full bg-red-600 text-white hover:bg-red-700 text-[12px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-md hover:shadow-red-600/20"
           >
             {t("nav.contact_btn", "Связаться")}
           </a>
         </motion.nav>
       </header>
 
-      {/* === МОБИЛКА: КОМПАКТНАЯ ТАБЛЕТКА (md hidden) === */}
+      {/* === МОБИЛКА: КОМПАКТНАЯ ТАБЛЕТКА === */}
       <header className="fixed top-0 inset-x-0 z-50 p-4 md:hidden pointer-events-none">
         <motion.div 
           variants={{
@@ -145,13 +142,12 @@ export const Navbar = () => {
           }`}
         >
           <a href="/" className="flex items-center gap-2 pl-2" onClick={() => setIsOpen(false)}>
-            <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20">
+            <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/20">
               <Cctv size={20} strokeWidth={2} />
             </div>
-            <span className="text-lg font-bold tracking-tight uppercase text-foreground">SBA</span>
+            <span className="text-lg font-black tracking-tight uppercase text-foreground">SBA</span>
           </a>
 
-          {/* На мобилке только Клерк (если залогинен) и кнопка меню */}
           <div className="flex items-center gap-2">
             <SignedIn>
               <div className="scale-90"><CustomUserButton /></div>
@@ -166,7 +162,7 @@ export const Navbar = () => {
         </motion.div>
       </header>
 
-      {/* === ЭЛЕГАНТНЫЙ DRAWER МЕНЮ (down from md) === */}
+      {/* === ЭЛЕГАНТНЫЙ DRAWER МЕНЮ === */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -174,49 +170,46 @@ export const Navbar = () => {
             className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col pt-24 pb-12 px-6 md:hidden overflow-y-auto"
             onClick={(e) => { if (e.target === e.currentTarget) setIsOpen(false); }}
           >
-            {/* ОЧИЩЕННОЕ ВЫЕЗЖАЮЩЕЕ МЕНЮ: УБРАЛИ НАВИГАЦИЮ! */}
             <div className="flex flex-col gap-6 w-full max-w-sm mx-auto flex-grow h-full pt-10">
               
-              {/* ХЕДЕР МЕНЮ */}
               <div className="flex items-center justify-between mb-8 pb-8 border-b border-border/50">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-600 border border-red-500/20">
+                  <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/20">
                     <Cctv size={24} />
                   </div>
-                  <h3 className="text-lg font-bold uppercase tracking-tight">Панель управления</h3>
+                  <h3 className="text-lg font-black uppercase tracking-tight">Управление</h3>
                 </div>
               </div>
 
-              {/* ТОЛЬКО КОНТРОЛЫ (СЕТКА) */}
-              <motion.div custom={1} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden" className="flex items-center gap-4">
-                <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted font-bold uppercase tracking-wider text-sm active:scale-[0.98] transition-all border border-border/50">
-                  <Globe size={18} className="text-muted-foreground"/> {i18n.language || 'ru'}
-                </button>
-                <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted font-bold text-sm active:scale-[0.98] transition-all border border-border/50">
-                  {isDark ? <Sun size={18} className="text-muted-foreground"/> : <Moon size={18} className="text-muted-foreground"/>} {isDark ? "Светлая" : "Темная"}
-                </button>
-              </motion.div>
+              {/* УНИФИЦИРОВАННЫЕ КОНТРОЛЫ НА МОБИЛКЕ */}
+              <motion.div custom={1} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden" className="flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted/50 font-bold uppercase tracking-wider text-sm active:scale-[0.98] transition-all border border-border/50">
+                    <Globe size={18} className="text-muted-foreground"/> {i18n.language || 'ru'}
+                  </button>
+                  <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted/50 font-bold text-sm active:scale-[0.98] transition-all border border-border/50">
+                    {isDark ? <Sun size={18} className="text-muted-foreground"/> : <Moon size={18} className="text-muted-foreground"/>} {isDark ? "Светлая" : "Темная"}
+                  </button>
+                </div>
 
-              {/* Кабинет / Вход */}
-              <SignedOut>
-                <motion.div custom={2} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden" className="mt-4">
+                <SignedOut>
                   <SignInButton mode="modal">
-                    <button onClick={() => setIsOpen(false)} className="w-full h-16 rounded-2xl border-2 border-border text-foreground font-bold text-lg active:scale-[0.98] transition-all">
+                    <button onClick={() => setIsOpen(false)} className="w-full h-16 flex items-center justify-center gap-2 rounded-2xl border border-border/50 bg-muted/50 text-foreground font-bold text-sm uppercase tracking-widest active:scale-[0.98] transition-all">
+                      <User size={18} className="text-muted-foreground" />
                       {t("nav.login", "Личный кабинет")}
                     </button>
                   </SignInButton>
-                </motion.div>
-              </SignedOut>
+                </SignedOut>
+              </motion.div>
 
-              {/* Единственная Кнопка Связи в самом низу */}
               <motion.a
                 custom={3} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden"
                 href="https://wa.me/77779204988"
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="w-full h-20 mt-auto flex items-center justify-center rounded-2xl bg-red-600 text-white font-black text-xl uppercase tracking-widest shadow-lg active:scale-[0.98] transition-transform"
+                className="w-full h-20 mt-auto flex items-center justify-center rounded-2xl bg-red-600 text-white font-black text-[15px] uppercase tracking-widest shadow-lg shadow-red-600/20 active:scale-[0.98] transition-transform"
               >
-                {t("nav.contact_btn", "Связаться")} <ArrowRight size={22} className="ml-2"/>
+                {t("nav.contact_btn", "Связаться с нами")} <ArrowRight size={22} className="ml-2"/>
               </motion.a>
             </div>
           </motion.div>
