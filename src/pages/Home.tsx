@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Calculator } from "../components/Calculator";
 import { Cta } from "../components/Cta";
+import { DotMatrix } from "../components/DotMatrix";
 import { Features } from "../components/Features";
 import { Footer } from "../components/Footer";
 import { Hero } from "../components/Hero";
@@ -17,18 +18,29 @@ import { SmoothScroll } from "../components/smooth-scroll";
 import { Statistics } from "../components/Statistics";
 import { Testimonials } from "../components/Testimonials";
 
-const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/* Section reveal — large y movement + scale for visible scroll animation */
 const FadeSection = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 36 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.85, ease, delay }}
+    initial={{ opacity: 0, y: 70, scale: 0.985 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 1.0, ease, delay }}
     className="relative z-10 w-full"
   >
     {children}
   </motion.div>
+);
+
+/* Dot matrix accent between sections */
+const SectionAccent = ({ side = "right" }: { side?: "left" | "right" }) => (
+  <div className={`relative h-0 overflow-visible pointer-events-none ${side === "right" ? "flex justify-end" : "flex justify-start"}`}>
+    <DotMatrix
+      cols={9} rows={5}
+      className={`relative -top-6 ${side === "right" ? "mr-6 lg:mr-16" : "ml-6 lg:ml-16"} text-white/[0.18]`}
+    />
+  </div>
 );
 
 export const Home = () => {
@@ -48,12 +60,17 @@ export const Home = () => {
           <Hero onOpenCalc={() => setIsCalcOpen(true)} />
 
           <FadeSection><Statistics /></FadeSection>
+          <SectionAccent side="right" />
           <FadeSection><PainSection /></FadeSection>
+          <SectionAccent side="left" />
           <FadeSection><HowItWorks /></FadeSection>
+          <SectionAccent side="right" />
           <FadeSection><Features /></FadeSection>
           <FadeSection><Services /></FadeSection>
+          <SectionAccent side="left" />
           <FadeSection><Projects /></FadeSection>
           <FadeSection><Testimonials /></FadeSection>
+          <SectionAccent side="right" />
           <FadeSection><Cta /></FadeSection>
           <FadeSection><SeoBlock /></FadeSection>
           <FadeSection><Footer onOpenCalc={() => setIsCalcOpen(true)} /></FadeSection>

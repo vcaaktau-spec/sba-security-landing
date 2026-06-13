@@ -12,7 +12,7 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 function RadarRing({ radius, delay }: { radius: number; delay: number }) {
   return (
     <motion.div
-      className="absolute rounded-full border border-red-500/10"
+      className="absolute rounded-full"
       style={{
         width: radius * 2,
         height: radius * 2,
@@ -20,9 +20,10 @@ function RadarRing({ radius, delay }: { radius: number; delay: number }) {
         left: "50%",
         x: "-50%",
         y: "-50%",
+        border: "1px solid rgba(239, 68, 68, 0.35)",
       }}
-      animate={{ scale: [1, 1.35], opacity: [0.5, 0] }}
-      transition={{ duration: 3.5, repeat: Infinity, ease: "easeOut", delay }}
+      animate={{ scale: [1, 1.4], opacity: [0.75, 0] }}
+      transition={{ duration: 3.8, repeat: Infinity, ease: "easeOut", delay }}
     />
   )
 }
@@ -112,7 +113,7 @@ export const Cta = () => {
         {/* ── Animated radar background ── */}
         <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
           {/* Ambient glow orb */}
-          <div className="absolute w-[600px] h-[600px] rounded-full bg-red-600/8 blur-[100px]" />
+          <div className="absolute w-[700px] h-[700px] rounded-full bg-red-600/[0.12] blur-[90px]" />
           {/* Pulsing rings */}
           {[120, 200, 300, 420, 550].map((r, i) => (
             <RadarRing key={r} radius={r} delay={i * 0.65} />
