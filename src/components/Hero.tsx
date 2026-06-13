@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { ArrowRight, MessageCircle, Shield, Flame, Cpu } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
+import Magnetic from "./ui/magnetic"
 
 interface HeroProps {
   onOpenCalc: () => void
@@ -12,11 +13,11 @@ interface HeroProps {
 const E = [0.22, 1, 0.36, 1] as const
 
 /* ─────────────────────────────────────────
-   usePreciseCounter
-   Slow, deliberate ease-out-quart.
-   No flashing — feels expensive & precise.
-───────────────────────────────────────── */
-function usePreciseCounter(end: number, duration = 2600, startDelay = 0) {
+   useSbaCounter
+   Slow, deliberate ease-out-quint.
+   Smooth deceleration for a premium settled feel.
+ ───────────────────────────────────────── */
+function useSbaCounter(end: number, duration = 3200, startDelay = 0) {
   const [value, setValue] = useState(0)
   const [triggered, setTriggered] = useState(false)
 
@@ -30,14 +31,17 @@ function usePreciseCounter(end: number, duration = 2600, startDelay = 0) {
     const origin = performance.now()
     let raf: number
 
-    /** cubic ease-out-quart — steep initial acceleration, very soft landing */
-    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4)
+    // Quintic ease-out - starts fast and has a very soft, smooth deceleration tail
+    const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5)
 
     const step = (now: number) => {
-      const t = Math.min((now - origin) / duration, 1)
-      setValue(Math.round(easeOutQuart(t) * end))
-      if (t < 1) raf = requestAnimationFrame(step)
-      else setValue(end)
+      const progress = Math.min((now - origin) / duration, 1)
+      setValue(Math.round(easeOutQuint(progress) * end))
+      if (progress < 1) {
+        raf = requestAnimationFrame(step)
+      } else {
+        setValue(end)
+      }
     }
 
     raf = requestAnimationFrame(step)
@@ -49,233 +53,218 @@ function usePreciseCounter(end: number, duration = 2600, startDelay = 0) {
 
 /* ─────────────────────────────────────────
    StatCard
-───────────────────────────────────────── */
+ ───────────────────────────────────────── */
 function StatCard({
+  index,
   end,
   label,
   suffix = "+",
   delay,
 }: {
+  index: number
   end: number
   label: string
   suffix?: string
   delay: number
 }) {
-  const raw = usePreciseCounter(end, 2600, delay)
+  const raw = useSbaCounter(end, 3200, delay)
 
   const formatted =
     end >= 1000
-      ? `${Math.floor(raw / 1000)} ${String(raw % 1000).padStart(3, "0")}`
+      ? String(raw).replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       : raw
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 22, filter: "blur(6px)" }}
+      initial={{ opacity: 0, x: 24, filter: "blur(6px)" }}
       animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.85, ease: E, delay: 0.72 + delay / 1000 }}
+      transition={{ duration: 0.9, ease: E, delay: delay / 1000 }}
+      className="flex items-center justify-between"
     >
-      <div
-        className="font-black tracking-tight leading-none tabular-nums text-white"
-        style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
-      >
-        {formatted}
-        {suffix}
+      <div className="flex flex-col gap-1.5">
+        <span className="font-mono text-[9px] tracking-widest text-muted-foreground/40 uppercase">
+          METRIC // 0{index}
+        </span>
+        <span className="text-xs font-mono font-semibold text-muted-foreground/80 tracking-wider uppercase">
+          {label}
+        </span>
       </div>
-      <div
-        className="text-[10px] font-mono uppercase tracking-widest mt-2"
-        style={{ color: "rgba(255,255,255,0.22)" }}
-      >
-        {label}
+
+      <div className="flex items-center gap-3">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-25 dark:opacity-35" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+        </span>
+        <div
+          className="font-mono font-black tracking-tighter leading-none tabular-nums text-foreground flex items-baseline"
+          style={{ fontSize: "clamp(2rem, 3.8vw, 3rem)" }}
+        >
+          {formatted}
+          <span className="text-primary dark:text-red-500 ml-0.5 text-2xl lg:text-3xl font-bold">{suffix}</span>
+        </div>
       </div>
     </motion.div>
   )
 }
 
 /* ─────────────────────────────────────────
-   Shared Framer variants — blur-up stagger
-───────────────────────────────────────── */
-const container = {
+   Shared Framer Motion variants
+ ───────────────────────────────────────── */
+const containerVariants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.11, delayChildren: 0.08 } },
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
 }
 
-const item = {
-  hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
-  show: {
+const itemVariants = {
+  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
+  visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.85, ease: E },
+    transition: { duration: 0.9, ease: E },
   },
 }
 
 /* ─────────────────────────────────────────
-   Hero
-───────────────────────────────────────── */
+   Hero Component
+ ───────────────────────────────────────── */
 export const Hero = ({ onOpenCalc }: HeroProps) => {
   const { t } = useTranslation()
   const sectionRef = useRef<HTMLElement>(null)
 
-  /* Parallax on background orbs only — text stays fixed */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   })
-  const orbY1 = useTransform(scrollYProgress, [0, 1], ["0px", "90px"])
-  const orbY2 = useTransform(scrollYProgress, [0, 1], ["0px", "-55px"])
+  
+  const orbY1 = useTransform(scrollYProgress, [0, 1], ["0px", "100px"])
+  const orbY2 = useTransform(scrollYProgress, [0, 1], ["0px", "-60px"])
 
   const features = [
-    { Icon: Shield, label: "Видеонаблюдение" },
-    { Icon: Flame,  label: "Пожарная охрана" },
-    { Icon: Cpu,    label: "Умный доступ" },
+    { Icon: Shield, key: "hero.feature1" },
+    { Icon: Flame,  key: "hero.feature2" },
+    { Icon: Cpu,    key: "hero.feature3" },
   ]
 
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex flex-col overflow-hidden"
-      style={{ background: "#030303", color: "#fff" }}
+      className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-background text-foreground transition-colors duration-500"
     >
-
-      {/* ───────────── Background ───────────── */}
-      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden>
-
-        {/* Red atmosphere — top-left */}
+      {/* ───────────── Background Layers ───────────── */}
+      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+        {/* Top-left soft red atmosphere orb */}
         <motion.div style={{ y: orbY1 }} className="absolute inset-0">
           <div
-            className="absolute rounded-full"
+            className="absolute rounded-full opacity-20 dark:opacity-40"
             style={{
-              width: 900, height: 900,
-              top: "-22%", left: "-22%",
-              background: "radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 65%)",
+              width: 800, height: 800,
+              top: "-20%", left: "-20%",
+              background: "radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%)",
               filter: "blur(60px)",
             }}
           />
         </motion.div>
 
-        {/* Red atmosphere — bottom-right */}
+        {/* Bottom-right soft red atmosphere orb */}
         <motion.div style={{ y: orbY2 }} className="absolute inset-0">
           <div
-            className="absolute rounded-full"
+            className="absolute rounded-full opacity-10 dark:opacity-35"
             style={{
               width: 600, height: 600,
-              bottom: "-18%", right: "-10%",
-              background: "radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 65%)",
+              bottom: "-15%", right: "-10%",
+              background: "radial-gradient(circle, rgba(220,38,38,0.12) 0%, transparent 70%)",
               filter: "blur(80px)",
             }}
           />
         </motion.div>
 
-        {/* Fine engineering grid */}
+        {/* Technical Engineering Grid */}
         <div
-          className="absolute inset-0"
-          style={{
-            opacity: 0.022,
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px)," +
-              "linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
+          className="absolute inset-0 opacity-[0.035] dark:opacity-[0.02] bg-[linear-gradient(rgba(0,0,0,1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,1)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:80px_80px]"
         />
 
-        {/* Radial vignette */}
+        {/* Radial Vignette */}
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 100% 90% at 50% 50%, transparent 35%, rgba(3,3,3,0.75) 100%)",
-          }}
+          className="absolute inset-0 bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(255,255,255,0.7)_100%)] dark:bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(3,3,3,0.85)_100%)]"
         />
 
-        {/* Ambient scan sweep — repeats every ~8 s */}
+        {/* Ambient Scan sweep line */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            style={{
-              position: "absolute",
-              top: 0, left: 0,
-              width: "26%", height: "100%",
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.011) 50%, transparent 100%)",
-            }}
-            animate={{ x: ["-26%", "130%"] }}
+            className="absolute top-0 left-0 w-[30%] h-full bg-gradient-to-r from-transparent via-black/[0.008] dark:via-white/[0.012] to-transparent"
+            animate={{ x: ["-30%", "130%"] }}
             transition={{
-              duration: 2.6,
+              duration: 2.8,
               repeat: Infinity,
-              repeatDelay: 8,
+              repeatDelay: 7,
               ease: [0.4, 0, 0.6, 1],
             }}
           />
         </div>
       </div>
 
-      {/* ───────────── Status bar ───────────── */}
+      {/* ───────────── Header Diagnostic Bar ───────────── */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: E }}
-        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-3.5 text-[10px] font-mono"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+        transition={{ duration: 0.65, ease: E }}
+        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 text-[10px] font-mono border-b border-black/[0.06] dark:border-white/[0.06] bg-background/5"
       >
         <div className="flex items-center gap-2.5">
           <span className="relative flex h-[7px] w-[7px]">
-            <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-50" />
+            <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-60" />
             <span className="relative rounded-full h-[7px] w-[7px] bg-emerald-500" />
           </span>
-          <span className="tracking-widest uppercase text-white/25">SBA Security · Актау</span>
+          <span className="tracking-widest uppercase text-muted-foreground/60">SBA Security · Актау</span>
         </div>
-        <div className="hidden sm:flex items-center gap-6 text-white/[0.09] tracking-widest uppercase">
+        <div className="hidden sm:flex items-center gap-8 text-muted-foreground/40 tracking-widest uppercase">
           <span>Мониторинг 24 / 7</span>
           <span>v 2.4</span>
         </div>
       </motion.div>
 
-      {/* ───────────── Main layout ───────────── */}
-      <div className="relative z-10 flex-1 grid lg:grid-cols-[1fr_auto] items-center gap-12 lg:gap-24 px-6 sm:px-10 lg:px-16 py-14 lg:py-0">
-
-        {/* ── LEFT: Copy ── */}
+      {/* ───────────── Main Content Grid ───────────── */}
+      <div className="relative z-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0">
+        {/* ── LEFT: Typography & CTAs (col-span-7) ── */}
         <motion.div
-          variants={container}
+          variants={containerVariants}
           initial="hidden"
-          animate="show"
-          className="flex flex-col"
+          animate="visible"
+          className="flex flex-col lg:col-span-7"
         >
-
           {/* Eyebrow */}
-          <motion.div variants={item} className="flex items-center gap-3 mb-10">
-            <span
-              className="shrink-0"
-              style={{ display: "block", width: 28, height: 1, background: "rgba(220,38,38,0.7)" }}
-            />
-            <span
-              className="text-[10px] font-mono font-semibold uppercase tracking-[0.24em]"
-              style={{ color: "rgba(220,38,38,0.62)" }}
-            >
+          <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6 sm:mb-8">
+            <span className="w-8 h-[1px] bg-primary dark:bg-red-500 opacity-70" />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-primary dark:text-red-500">
               Системы безопасности
             </span>
           </motion.div>
 
-          {/* Headline — clip-reveal per word */}
-          <h1 className="mb-12 flex flex-col" style={{ gap: "0.04em" }}>
-            {(
-              [
-                ["ОХРАНА",   "#ffffff",              0.12],
-                ["КАЖДОГО",  "rgba(255,255,255,0.58)", 0.26],
-                ["ОБЪЕКТА.", "#dc2626",              0.40],
-              ] as [string, string, number][]
-            ).map(([word, color, d]) => (
-              <div key={word} className="overflow-hidden">
+          {/* Headline (Dynamic lines) */}
+          <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.03em" }}>
+            {[
+              { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.1 },
+              { text: t("hero.titleLine2"), colorClass: "text-foreground/45 dark:text-white/45", delay: 0.25 },
+              { text: t("hero.titleLine3"), colorClass: "text-primary dark:text-red-500", delay: 0.4 },
+            ].map(({ text, colorClass, delay }) => (
+              <div key={text} className="overflow-hidden">
                 <motion.span
-                  initial={{ y: "110%", opacity: 0 }}
-                  animate={{ y: "0%", opacity: 1 }}
-                  transition={{ duration: 1.0, ease: E, delay: d }}
-                  className="block font-black tracking-tighter leading-[0.88]"
+                  initial={{ y: "115%", opacity: 0, filter: "blur(8px)" }}
+                  animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 1.0, ease: E, delay }}
+                  className={`block font-black leading-[0.9] tracking-tighter ${colorClass}`}
                   style={{
-                    fontSize: "clamp(4rem, 11vw, 10rem)",
-                    color,
+                    fontSize: "clamp(3.2rem, 9.5vw, 8.5rem)",
                   }}
                 >
-                  {word}
+                  {text}
                 </motion.span>
               </div>
             ))}
@@ -283,140 +272,122 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
 
           {/* Subtitle */}
           <motion.p
-            variants={item}
-            className="text-[15px] leading-[1.72] mb-8 max-w-[380px]"
-            style={{ color: "rgba(255,255,255,0.37)" }}
+            variants={itemVariants}
+            className="text-[14px] sm:text-[15px] leading-relaxed mb-6 sm:mb-8 max-w-[500px] text-muted-foreground/80"
           >
             {t("hero.subtitle")}
           </motion.p>
 
-          {/* Feature chips — Vercel/Linear style */}
-          <motion.div variants={item} className="flex flex-wrap items-center gap-2 mb-10">
-            {features.map(({ Icon, label }) => (
+          {/* Feature tags */}
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-2 mb-8">
+            {features.map(({ Icon, key }) => (
               <span
-                key={label}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono tracking-wide"
-                style={{
-                  color: "rgba(255,255,255,0.36)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  background: "rgba(255,255,255,0.025)",
-                }}
+                key={key}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wide border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.015] dark:bg-white/[0.015] text-muted-foreground/75"
               >
-                <Icon size={11} style={{ color: "rgba(220,38,38,0.6)", flexShrink: 0 }} />
-                {label}
+                <Icon size={11} className="text-primary dark:text-red-500/80 shrink-0" />
+                {t(key)}
               </span>
             ))}
           </motion.div>
 
-          {/* CTA buttons */}
-          <motion.div variants={item} className="flex flex-col sm:flex-row items-start gap-3">
-            <button
-              onClick={onOpenCalc}
-              className="group relative flex items-center gap-2 px-6 h-11 text-sm font-semibold rounded-xl overflow-hidden text-white shrink-0"
-              style={{
-                background: "#dc2626",
-                boxShadow:
-                  "0 0 28px rgba(220,38,38,0.24), inset 0 1px 0 rgba(255,255,255,0.1)",
-              }}
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.13] to-transparent group-hover:translate-x-full transition-transform duration-700" />
-              <span className="relative">{t("hero.btn")}</span>
-              <ArrowRight
-                size={14}
-                className="relative group-hover:translate-x-0.5 transition-transform duration-200"
-              />
-            </button>
+          {/* Interactive Calculator CTA Control Panel */}
+          <motion.div
+            variants={itemVariants}
+            className="border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md p-5 rounded-2xl relative overflow-hidden shadow-sm max-w-[580px] w-full"
+          >
+            {/* Panel Diagnostics header */}
+            <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-black/[0.06] dark:border-white/[0.06] text-[9px] font-mono tracking-widest text-muted-foreground/50 uppercase">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                SYSTEM_CALCULATOR_SCRIPT // v2.4
+              </span>
+              <span>ALGORITHM_ACTIVE</span>
+            </div>
 
-            <a
-              href="https://wa.me/77779204988"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 h-11 text-sm font-medium rounded-xl shrink-0 transition-colors duration-200 hover:text-white/60"
-              style={{
-                color: "rgba(255,255,255,0.38)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                background: "rgba(255,255,255,0.02)",
-              }}
-            >
-              <MessageCircle size={14} style={{ color: "#4ade80", flexShrink: 0 }} />
-              WhatsApp
-            </a>
+            {/* Explanation Note */}
+            <p className="text-xs sm:text-[13px] leading-relaxed text-muted-foreground/75 font-mono mb-5">
+              {t("hero.calcHint")}
+            </p>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Magnetic strength={0.15}>
+                <button
+                  onClick={onOpenCalc}
+                  className="group relative flex items-center justify-center gap-2 px-6 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl overflow-hidden text-white bg-red-600 hover:bg-red-700 transition-all duration-300 w-full sm:w-auto shadow-md shadow-red-600/10 hover:shadow-red-600/20"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.15] to-transparent group-hover:translate-x-full transition-transform duration-700" />
+                  <span className="relative">{t("hero.btn")}</span>
+                  <ArrowRight
+                    size={14}
+                    className="relative group-hover:translate-x-0.5 transition-transform duration-200"
+                  />
+                </button>
+              </Magnetic>
+
+              <Magnetic strength={0.15}>
+                <a
+                  href="https://wa.me/77779204988"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-muted-foreground hover:text-foreground border border-black/[0.08] dark:border-white/[0.08] w-full sm:w-auto"
+                >
+                  <MessageCircle size={14} className="text-emerald-500 shrink-0" />
+                  WhatsApp
+                </a>
+              </Magnetic>
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* ── RIGHT: Stats column ── */}
-        <div
-          className="hidden lg:flex flex-col"
-          style={{
-            borderLeft: "1px solid rgba(255,255,255,0.04)",
-            paddingLeft: 52,
-            gap: 0,
-          }}
+        {/* ── RIGHT: Technical Stats (col-span-5) ── */}
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col border-t lg:border-t-0 lg:border-l border-black/[0.06] dark:border-white/[0.06] pt-10 lg:pt-0 lg:pl-12 w-full max-w-[480px] lg:max-w-none mx-auto lg:mx-0 select-none lg:col-span-5"
         >
           {[
-            { end: 5000, label: t("hero.stat1"), delay: 900 },
-            { end: 300,  label: t("hero.stat2"), delay: 1050 },
-            { end: 10,   label: t("hero.stat3"), delay: 1200 },
+            { end: 5000, label: t("hero.stat1"), delay: 850 },
+            { end: 300,  label: t("hero.stat2"), delay: 1000 },
+            { end: 10,   label: t("hero.stat3"), delay: 1150 },
           ].map((s, i) => (
             <div
               key={i}
-              className="py-8"
-              style={{
-                borderBottom:
-                  i < 2 ? "1px solid rgba(255,255,255,0.04)" : undefined,
-              }}
+              className="py-6 sm:py-7 border-b border-black/[0.06] dark:border-white/[0.06] last:border-b-0"
             >
-              <StatCard {...s} />
+              <StatCard index={i + 1} {...s} />
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {/* ───────────── Bottom bar ───────────── */}
+      {/* ───────────── Bottom Diagnostic Bar ───────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.3, duration: 0.55, ease: E }}
-        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        transition={{ delay: 1.4, duration: 0.6, ease: E }}
+        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 border-t border-black/[0.06] dark:border-white/[0.06] text-muted-foreground/45 font-mono text-[9px] tracking-widest uppercase bg-background/5"
       >
-        {/* Brand accent dash */}
-        <div
-          style={{ width: 28, height: 1, background: "rgba(220,38,38,0.45)" }}
-        />
+        <div className="w-8 h-[1px] bg-red-500/50" />
 
-        {/* Animated scroll cue */}
-        <div
-          className="flex items-center gap-2.5"
-          style={{ color: "rgba(255,255,255,0.14)" }}
-        >
-          <div
-            className="relative overflow-hidden"
-            style={{ width: 1, height: 18, background: "rgba(255,255,255,0.07)" }}
-          >
+        <div className="flex items-center gap-2.5">
+          <div className="relative overflow-hidden w-[1px] h-4.5 bg-black/[0.1] dark:bg-white/[0.1]">
             <motion.div
-              className="absolute inset-x-0 top-0"
-              style={{ height: "38%", background: "rgba(255,255,255,0.55)" }}
-              animate={{ y: ["0%", "220%", "0%"] }}
+              className="absolute inset-x-0 top-0 h-[35%] bg-red-500"
+              animate={{ y: ["0%", "200%", "0%"] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
-          <span className="text-[9px] font-mono tracking-[0.24em] uppercase">
-            Scroll
-          </span>
+          <span>Scroll</span>
         </div>
 
-        {/* Live pulse */}
-        <div
-          className="flex items-center gap-2"
-          style={{ color: "rgba(255,255,255,0.14)" }}
-        >
-          <span className="text-[9px] font-mono tracking-widest uppercase">
-            Active 24 / 7
-          </span>
-          <span className="relative flex h-[6px] w-[6px]">
-            <span className="animate-ping absolute inset-0 rounded-full bg-red-500 opacity-50" />
-            <span className="relative rounded-full h-[6px] w-[6px] bg-red-500" />
+        <div className="flex items-center gap-2">
+          <span>Active 24/7</span>
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inset-0 rounded-full bg-red-500 opacity-60" />
+            <span className="relative rounded-full h-1.5 w-1.5 bg-red-500" />
           </span>
         </div>
       </motion.div>

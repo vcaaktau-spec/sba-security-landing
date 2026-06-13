@@ -11,7 +11,6 @@ import { HowItWorks } from "../components/HowItWorks";
 import { Navbar } from "../components/Navbar";
 import { PainSection } from "../components/PainSection";
 import { Projects } from "../components/Projects";
-import { ScrollToTop } from "../components/ScrollToTop";
 import { SeoBlock } from "../components/SeoBlock";
 import { Services } from "../components/Services";
 import { SmoothScroll } from "../components/smooth-scroll";
@@ -74,8 +73,6 @@ export const Home = () => {
           <FadeSection><Cta /></FadeSection>
           <FadeSection><SeoBlock /></FadeSection>
           <FadeSection><Footer onOpenCalc={() => setIsCalcOpen(true)} /></FadeSection>
-
-          <ScrollToTop />
         </main>
       </SmoothScroll>
 

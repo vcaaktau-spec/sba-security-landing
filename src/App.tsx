@@ -4,7 +4,6 @@ import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
 import NotFound from "./components/NotFound";
 import { GlobalBackground } from "./components/GlobalBackground";
-import { Preloader } from "./components/Preloader";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./App.css";
@@ -12,7 +11,6 @@ import "./App.css";
 function App() {
   return (
     <BrowserRouter>
-      <Preloader />
       <GlobalBackground />
       
       <Routes>

@@ -60,9 +60,14 @@ const resources = {
         btn: "Рассчитать систему",
         feature1: "Удалённый доступ",
         feature2: "Полный контроль",
+        feature3: "Умный доступ",
         stat1: "Установленных камер",
         stat2: "Объектов под защитой",
-        stat3: "Лет опыта"
+        stat3: "Лет опыта",
+        titleLine1: "ОХРАНА",
+        titleLine2: "КАЖДОГО",
+        titleLine3: "ОБЪЕКТА.",
+        calcHint: "Используйте наш калькулятор для моментального расчета сметы. Это профессиональный алгоритм, учитывающий тип кабеля, разрешение камер, глубину архива и сложность монтажа. Не просто игрушка, а точный сметный инструмент."
       },
       stats: {
         title1: "Безопасность вашего бизнеса",
@@ -360,7 +365,15 @@ const resources = {
         subtitle: "Үйлерге, бизнеске және қоймаларға арналған премиум бейнебақылау жүйелерін жобалаймыз және орнатамыз.",
         btn: "Жүйені есептеу",
         feature1: "Қашықтан қосылу",
-        feature2: "Толық бақылау"
+        feature2: "Толық бақылау",
+        feature3: "Ақылды бақылау",
+        stat1: "Орнатылған камералар",
+        stat2: "Қорғаудағы нысандар",
+        stat3: "Жыл жұмыс тәжірибесі",
+        titleLine1: "ӘРБІР",
+        titleLine2: "НЫСАНДЫ",
+        titleLine3: "ҚОРҒАУ.",
+        calcHint: "Сметаларды жылдам есептеу үшін калькуляторымызды қолданыңыз. Бұл кабель түрін, камера ажыратымдылығын, архив тереңдігін және монтаж күрделілігін ескеретін кәсіби алгоритм. Жай ойыншық емес, нақты сметалық құрал."
       },
       stats: {
         title1: "Сіздің бизнесіңіздің қауіпсіздігі",
@@ -658,7 +671,15 @@ const resources = {
         subtitle: "We design and install premium video surveillance systems for homes, businesses, and warehouses.",
         btn: "Calculate System",
         feature1: "Remote Access",
-        feature2: "Total Control"
+        feature2: "Total Control",
+        feature3: "Smart Access",
+        stat1: "Cameras Installed",
+        stat2: "Protected Facilities",
+        stat3: "Years of Experience",
+        titleLine1: "GUARDING",
+        titleLine2: "EVERY",
+        titleLine3: "FACILITY.",
+        calcHint: "Use our professional calculator to instantly calculate your estimate. It's a precisely designed script that factors in cable lengths, camera specs, and archives. A real estimator, not a toy."
       },
       stats: {
         title1: "Your business security is",
