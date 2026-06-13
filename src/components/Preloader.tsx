@@ -70,7 +70,7 @@ export const Preloader = () => {
     exit: { 
       opacity: 0, 
       y: -40, // Взлет контента перед уходом фона
-      transition: { duration: 0.6, ease: "easeIn" } 
+      transition: { duration: 0.6, ease: "easeIn" as const } 
     }
   }
 
