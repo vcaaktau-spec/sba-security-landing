@@ -28,7 +28,7 @@ const PRICES = {
 
   nvr: {
     "2MP": { 4: 29000, 8: 37000, 16: 72000, 32: 160000 },
-    "4MP": { 4: 46000, 8: 73000, 16: 115000, 32: 1700000 }, // Тут 1 700 000 в оригинале, оставил как есть
+    "4MP": { 4: 46000, 8: 73000, 16: 115000, 32: 17000 }, // Исправлена опечатка (170 000 вместо 1 700 000)
     "8MP": { 4: 71000, 8: 118000, 16: 172000, 32: 284000 }
   } as Record<Resolution, Record<Channels, number>>,
 
@@ -236,7 +236,7 @@ const text = `📞 Тел: ${phone}
     <button 
       type="button" 
       onClick={onClick} 
-      className={`flex-1 py-1.5 px-2 rounded-md text-[11px] font-semibold tracking-wide transition-all duration-200 border ${
+      className={`flex-1 py-3 px-3 rounded-lg text-xs md:text-sm font-semibold tracking-wide transition-all duration-200 border min-h-[44px] flex items-center justify-center ${
         active 
           ? "bg-foreground text-background border-foreground shadow-sm" 
           : "bg-transparent text-muted-foreground border-border hover:border-foreground/30 hover:text-foreground"
@@ -426,11 +426,18 @@ const text = `📞 Тел: ${phone}
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto w-full">
-                          <div className="relative">
+                          <div className="relative text-left">
+                            <label htmlFor="calc-phone" className="block text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-2 cursor-pointer">
+                              Номер телефона (WhatsApp)
+                            </label>
                             <input 
+                              id="calc-phone"
                               required type="tel" inputMode="tel" value={phone} onChange={handlePhoneChange} maxLength={18} placeholder="+7 (___) ___" 
                               className="w-full h-14 rounded-xl bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-[#333] px-4 outline-none focus:border-red-500 dark:focus:border-red-500 transition-colors font-mono text-base text-foreground placeholder:text-muted-foreground" 
                             />
+                            {phone.length > 2 && phone.length < 18 && (
+                              <p className="text-xs text-red-500 mt-2 font-medium">Пожалуйста, введите полный номер телефона</p>
+                            )}
                           </div>
                           <button disabled={isSubmitting || phone.length < 18} className="w-full h-14 bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg flex items-center justify-center gap-2 uppercase">
                             {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={16} /> Получить смету</>}

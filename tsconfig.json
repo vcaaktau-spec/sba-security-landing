@@ -26,5 +26,6 @@
     }
   },
   "include": ["src", "src/components/smooth-scroll.tsx"],
+  "exclude": ["node_modules", "src/skills"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -126,6 +126,17 @@ export const SbaPlanner = () => {
   }, [isFullscreen]);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setDrawMode({ active: false, type: 'cable', category: 'arch' });
+        setCurrentLinePoints(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
     if (selectedId && trRef.current) {
       if (selectedId.startsWith('line')) { 
         trRef.current.nodes([]); 

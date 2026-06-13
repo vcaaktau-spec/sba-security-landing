@@ -1,0 +1,13 @@
+{
+  "inference_provider": {
+    "type": "directml",
+    "device": "NPU",
+    "memory_allocation_mb": 16384,
+    "backend_flags": ["--xdna-v1.5", "--quant-int8"]
+  },
+  "skill_execution": {
+    "auto_optimize": true,
+    "target_dir": "src/skills/ui-ux-pro-max-skill",
+    "use_npu_for_rendering": true
+  }
+}

@@ -86,14 +86,22 @@ export const Navbar = () => {
           {/* ЕДИНЫЙ БЛОК КОНТРОЛОВ (Тумблеры + Логин) */}
           <div className="flex items-center bg-muted/40 p-1 rounded-full border border-border/30 mx-3">
             {/* Язык */}
-            <button onClick={toggleLanguage} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-wider">
+            <button 
+              onClick={toggleLanguage} 
+              aria-label="Сменить язык / Change language"
+              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-wider"
+            >
               {i18n.language || 'ru'}
             </button>
 
             <div className="w-[1px] h-4 bg-border/50 mx-1" />
 
             {/* Тема */}
-            <button onClick={toggleTheme} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground">
+            <button 
+              onClick={toggleTheme} 
+              aria-label={isDark ? "Включить светлую тему" : "Включить темную тему"}
+              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground"
+            >
               {isDark ? <Sun size={15} strokeWidth={2.5} /> : <Moon size={15} strokeWidth={2.5} />}
             </button>
             
