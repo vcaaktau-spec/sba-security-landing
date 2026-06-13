@@ -61,7 +61,7 @@ export const Preloader = () => {
     initial: { y: 0 },
     exit: {
       y: "-100vh",
-      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any}
+      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] }
     }
   }
 
@@ -70,7 +70,7 @@ export const Preloader = () => {
     exit: { 
       opacity: 0, 
       y: -40, // Взлет контента перед уходом фона
-      transition: { duration: 0.6, ease: "easeIn" as any} 
+      transition: { duration: 0.6, ease: "easeIn" } 
     }
   }
 

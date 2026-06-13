@@ -15,8 +15,9 @@ export const ScrollToTop = () => {
 
   const goToTop = () => {
     // ВАЖНО: Используем движок Lenis, чтобы магнит не пытался остановить скролл
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(0, { 
+    const win = window as unknown as { lenis?: { scrollTo: (target: number, options: { duration: number; easing: (t: number) => number }) => void } }
+    if (win.lenis) {
+      win.lenis.scrollTo(0, { 
         duration: 1.5, 
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
       })

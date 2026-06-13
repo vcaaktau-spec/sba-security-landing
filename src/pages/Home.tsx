@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Navbar } from "../components/Navbar";
-import { Hero } from "../components/Hero";
-import { Statistics } from "../components/Statistics";
-import { HowItWorks } from "../components/HowItWorks";
-import { Features } from "../components/Features";
-import { Services } from "../components/Services";
-import { Projects } from "../components/Projects";
-import { Testimonials } from "../components/Testimonials";
-import { Cta } from "../components/Cta";
-import { SeoBlock } from "../components/SeoBlock";
-import { Footer } from "../components/Footer";
-import { ScrollToTop } from "../components/ScrollToTop";
-import { SmoothScroll } from "../components/smooth-scroll";
-import { Calculator } from "../components/Calculator";
 import { X } from "lucide-react";
+import { Calculator } from "../components/Calculator";
+import { Cta } from "../components/Cta";
+import { Features } from "../components/Features";
+import { Footer } from "../components/Footer";
+import { Hero } from "../components/Hero";
+import { HowItWorks } from "../components/HowItWorks";
+import { Navbar } from "../components/Navbar";
+import { PainSection } from "../components/PainSection";
+import { Projects } from "../components/Projects";
+import { ScrollToTop } from "../components/ScrollToTop";
+import { SeoBlock } from "../components/SeoBlock";
+import { Services } from "../components/Services";
+import { SmoothScroll } from "../components/smooth-scroll";
+import { Statistics } from "../components/Statistics";
+import { Testimonials } from "../components/Testimonials";
 
 const GlassWrapper = ({ children }: { children: React.ReactNode }) => (
   <motion.div 
@@ -47,6 +48,7 @@ export const Home = () => {
           
           <GlassWrapper><Hero onOpenCalc={() => setIsCalcOpen(true)} /></GlassWrapper>
           <GlassWrapper><Statistics /></GlassWrapper>
+          <GlassWrapper><PainSection /></GlassWrapper>
           <GlassWrapper><HowItWorks /></GlassWrapper>
           <GlassWrapper><Features /></GlassWrapper>
           <GlassWrapper><Services /></GlassWrapper>

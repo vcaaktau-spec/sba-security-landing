@@ -50,7 +50,7 @@ export const Navbar = () => {
     i18n.changeLanguage(languages[nextIndex])
   }
 
-  const smoothEase = [0.22, 1, 0.36, 1]
+  const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
   // Стилизация аватара для премиального вида (размер подогнан под новые тумблеры)
   const CustomUserButton = () => (
@@ -75,7 +75,7 @@ export const Navbar = () => {
             hidden: { y: "-200%", opacity: 0 }
           }}
           animate={hidden ? "hidden" : "visible"}
-          transition={{ duration: 0.5, ease: smoothEase as any }}
+          transition={{ duration: 0.5, ease: smoothEase }}
           className="flex items-center p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border bg-background/80 dark:bg-black/80 border-border/50 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5)]"
         >
           {/* Логотип */}

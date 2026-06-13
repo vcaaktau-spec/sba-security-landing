@@ -12,8 +12,8 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
       touchMultiplier: 2, 
     })
 
-    // Делаем Lenis глобальным, чтобы кнопка "Наверх" и ссылки могли использовать его движок
-    ;(window as any).lenis = lenis;
+    const win = window as unknown as { lenis?: Lenis }
+    win.lenis = lenis
 
     function raf(time: number) {
       lenis.raf(time)
@@ -27,7 +27,7 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     const isMobile = window.innerWidth < 768;
 
     if (!isMobile && sections.length > 0) {
-      lenis.on('scroll', (e: any) => {
+      lenis.on('scroll', (e: { velocity: number }) => {
         // Если страница еще летит по инерции — ничего не делаем
         if (Math.abs(e.velocity) > 0.1) return;
 
@@ -67,7 +67,8 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     return () => {
       clearTimeout(scrollTimeout);
       lenis.destroy();
-      ;(window as any).lenis = undefined;
+      const win = window as unknown as { lenis?: Lenis }
+      win.lenis = undefined
     }
   }, [])
 

@@ -1,178 +1,180 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion, useAnimation, useInView, useScroll, useTransform } from "framer-motion"
+import React, { useState, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { Instagram, ExternalLink, Play } from "lucide-react"
-
-// Убрали тексты (caption), оставили только картинки и тип (видео/фото)
-const localInstaPosts = [
-  { id: 1, image: "/instagram/1.jpeg", isVideo: true },
-  { id: 2, image: "/instagram/2.jpeg", isVideo: false },
-  { id: 3, image: "/instagram/3.jpeg", isVideo: true },
-  { id: 4, image: "/instagram/4.jpeg", isVideo: false },
-  { id: 5, image: "/instagram/5.jpeg", isVideo: true },
-  { id: 6, image: "/instagram/6.jpeg", isVideo: false },
-]
+import { Instagram, Eye, ExternalLink } from "lucide-react"
+import { motion, useInView, useScroll, useTransform } from "framer-motion"
 
 export const Projects = () => {
   const { t } = useTranslation()
+  const [sliderPosition, setSliderPosition] = useState(50)
+  const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
+  const monitorRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
-  
+
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
     checkMobile()
     window.addEventListener("resize", checkMobile)
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  const isInView = useInView(containerRef, { once: false, amount: 0.1 })
-  const controls = useAnimation()
-  const [isHovered, setIsHovered] = useState(false)
+  const isInView = useInView(containerRef, { once: true, margin: "-10%" })
 
-  // Параллакс контента (взят из Features)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
+
   const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
-  // Анимация карусели
-  useEffect(() => {
-    if (isInView && !isHovered) {
-      controls.start({
-        x: ["0%", "-50%"],
-        transition: {
-          ease: "linear",
-          duration: localInstaPosts.length * 4, // Чуть ускорили
-          repeat: Infinity,
-        },
-      })
-    } else {
-      controls.stop()
-    }
-  }, [isInView, isHovered, controls])
+  const handleMove = (clientX: number) => {
+    if (!monitorRef.current) return
+    const rect = monitorRef.current.getBoundingClientRect()
+    const x = clientX - rect.left
+    const position = Math.max(0, Math.min(100, (x / rect.width) * 100))
+    setSliderPosition(position)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return
+    handleMove(e.clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return
+    handleMove(e.touches[0].clientX)
+  }
+
+  const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
   return (
     <section 
       id="projects" 
       ref={containerRef}
-      // Жестко ограничиваем высоту одним экраном
-      className="magnet-section relative w-full h-[100dvh] min-h-[600px] max-h-[900px] flex flex-col justify-center overflow-hidden bg-transparent border-t border-border/10"
+      className="magnet-section relative min-h-screen flex flex-col justify-center py-24 overflow-hidden bg-transparent border-t border-border/10"
     >
-      <motion.div style={{ y: contentY }} className="relative z-10 mx-auto w-full max-w-[1240px] px-4 sm:px-6 flex flex-col items-center justify-center h-full">
+      <motion.div style={{ y: contentY }} className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 flex flex-col items-center">
         
-        {/* === СТИЛЬ ШАПКИ ИЗ FEATURES === */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-8 sm:mb-12 lg:mb-16 shrink-0">
-          <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-black tracking-tighter leading-[1.1] mb-4 sm:mb-6 flex flex-col items-center justify-center w-full">
+        {/* HEADER */}
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-16">
+          <h2 className="text-[34px] sm:text-[46px] lg:text-[56px] font-black tracking-tighter leading-[1.1] mb-6 flex flex-col items-center justify-center w-full">
             <span className="block w-full text-foreground">
               {t("projects.insta_title1", "Процесс работы")}
             </span>
-            <span className="block w-full text-red-600 mt-1 sm:mt-2">
+            <span className="block w-full text-red-600 mt-2">
               {t("projects.insta_title2", "в реальном времени")}
             </span>
           </h2>
           
-          <div className="text-[15px] sm:text-[18px] text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
-            {t("projects.insta_subtitle", "Следите за нашими текущими объектами и бэкстейджем напрямую в Instagram.")}
+          <div className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
+            {t("projects.insta_subtitle", "Сравните качество: дешевое аналоговое оборудование с слепыми зонами против цифровых систем SBA 4K.")}
           </div>
         </div>
 
-        {/* === НОВЫЙ СКЕЛЕТ: ЕДИНОЕ ОКНО === */}
-        <div className="w-full bg-background/40 dark:bg-black/40 backdrop-blur-md rounded-[32px] sm:rounded-[48px] border border-border/50 shadow-[inset_0_4px_24px_rgba(0,0,0,0.06)] flex flex-col overflow-hidden relative shrink-0">
-          
-          {/* Инста-Хедер внутри окна */}
-          <div className="flex items-center justify-between p-4 sm:p-6 lg:px-8 lg:py-6 border-b border-border/50 bg-background/50">
-            <div className="flex items-center gap-4">
-              {/* Логотип с градиентом */}
-              <div className="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14">
-                <div className="absolute inset-[-2px] rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 animate-spin-slow" style={{ animationDuration: '3s' }} />
-                <div className="absolute inset-[2px] rounded-full border-2 border-background overflow-hidden bg-muted">
-                  {/* СЮДА ВСТАВЛЯЕШЬ СВОЙ ЛОГОТИП */}
-                  <img src="/instagram/logo.jpeg" alt="SBA Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=SBA&background=000&color=fff' }} />
-                </div>
-              </div>
-              
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5 font-bold text-sm sm:text-base text-foreground tracking-tight">
-                  toosba7292
-                  <svg aria-label="Подтвержденный" className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001.504a11.5 11.5 0 1 0 11.5 11.5 11.513 11.513 0 0 0-11.5-11.5Zm5.706 9.21-6.5 6.495a1 1 0 0 1-1.414-.001l-3.5-3.503a1 1 0 1 1 1.414-1.414l2.794 2.796 5.793-5.79a1 1 0 0 1 1.414 1.416Z"></path></svg>
-                </div>
-                <span className="text-[11px] sm:text-xs text-muted-foreground font-medium">СБА • Системы безопасности</span>
+        {/* COMPARISON SCREEN (Art Object / Interactive Monitor) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          transition={{ duration: 1, ease: smoothEase }}
+          className="relative w-full max-w-[900px] aspect-video bg-black border border-border/50 rounded-[28px] overflow-hidden shadow-2xl select-none cursor-ew-resize"
+          ref={monitorRef}
+          onMouseDown={() => setIsDragging(true)}
+          onMouseUp={() => setIsDragging(false)}
+          onMouseLeave={() => setIsDragging(false)}
+          onMouseMove={handleMouseMove}
+          onTouchStart={() => setIsDragging(true)}
+          onTouchEnd={() => setIsDragging(false)}
+          onTouchMove={handleTouchMove}
+        >
+          {/* Base Layer: CHEAP CAMERA (Blurred, low resolution, scanlines) */}
+          <div className="absolute inset-0 w-full h-full filter blur-[3px] grayscale saturate-50 brightness-[65%] contrast-125 z-0 bg-[#151515]">
+            {/* Simulated warehouse grid view */}
+            <div className="w-full h-full flex flex-col items-center justify-center relative">
+              {/* Scanline pattern overlay */}
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,6px_100%] pointer-events-none" />
+              <div className="text-center space-y-2 opacity-80">
+                <p className="text-xl font-mono tracking-widest text-neutral-500">// ANALOG_SIGNAL_LOST</p>
+                <p className="text-xs font-mono text-neutral-600">RESOLUTION: 240p @ 12FPS // EXPOSURE: AUTO_LOW</p>
               </div>
             </div>
-
-            <a 
-              href="https://instagram.com/toosba7292" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="px-4 py-2 sm:px-6 sm:py-2.5 bg-foreground text-background font-bold text-[10px] sm:text-xs uppercase tracking-widest rounded-full hover:scale-105 transition-transform flex items-center gap-2"
-            >
-              <span className="hidden sm:inline">{t("projects.insta_btn", "Перейти в профиль")}</span>
-              <span className="sm:hidden">Перейти</span>
-              <ExternalLink size={14} />
-            </a>
           </div>
 
-          {/* Карусель внутри окна */}
+          {/* Cheap HUD Overlays */}
+          <div className="absolute top-4 left-4 z-10 font-mono text-[10px] text-red-500 bg-red-950/40 px-2.5 py-1 rounded border border-red-500/20 tracking-wider">
+            ANALOG CAM // 240p // NO WDR
+          </div>
+
+          {/* Top Layer: SBA PREMIUM CAMERA (Sharp, active target lock, high contrast) */}
           <div 
-            className="w-full relative flex items-center justify-center overflow-hidden py-4 sm:py-6 lg:py-8 bg-muted/10"
-            onMouseEnter={() => !isMobile && setIsHovered(true)}
-            onMouseLeave={() => !isMobile && setIsHovered(false)}
-            onTouchStart={() => setIsHovered(true)}
-            onTouchEnd={() => setIsHovered(false)}
+            className="absolute inset-0 w-full h-full z-10 overflow-hidden bg-neutral-950"
+            style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
           >
-            <motion.div 
-              animate={controls}
-              className="flex gap-3 sm:gap-4 lg:gap-6 px-4"
-              style={{ width: "max-content" }}
-            >
-              {[...localInstaPosts, ...localInstaPosts, ...localInstaPosts].map((post, idx) => (
-                <a 
-                  key={`${post.id}-${idx}`}
-                  href="https://instagram.com/toosba7292"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  // Высота карточки адаптивная, чтобы влезть в экран
-                  className="relative shrink-0 w-[180px] sm:w-[240px] lg:w-[280px] aspect-[4/5] rounded-[20px] sm:rounded-[24px] overflow-hidden group cursor-pointer border border-border/50 bg-muted/20"
-                >
-                  <div className="w-full h-full bg-muted/50 flex items-center justify-center text-muted-foreground/30 font-bold text-xs absolute inset-0 z-0">
-                    Фото {post.id}.jpeg
-                  </div>
-                  
-                  <img 
-                    src={post.image} 
-                    alt="Instagram Post" 
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 relative z-10"
-                    onError={(e) => { e.currentTarget.style.opacity = '0' }}
-                  />
+            {/* Crisp Simulated View */}
+            <div className="w-full h-full flex flex-col items-center justify-center relative bg-gradient-to-br from-neutral-900 via-neutral-950 to-black">
+              {/* Thin digital HUD lines */}
+              <div className="absolute inset-8 border border-emerald-500/10 rounded-lg pointer-events-none">
+                <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-emerald-500" />
+                <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-emerald-500" />
+                <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-emerald-500" />
+                <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-emerald-500" />
+              </div>
 
-                  {post.isVideo && (
-                    <div className="absolute top-3 right-3 z-20 w-6 h-6 sm:w-8 sm:h-8 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white">
-                      <Play size={12} className="ml-0.5 sm:ml-1 sm:w-3.5 sm:h-3.5" fill="currentColor" />
-                    </div>
-                  )}
+              {/* Central Target Lock */}
+              <motion.div 
+                animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-28 h-28 border border-emerald-500/35 rounded-full flex items-center justify-center relative"
+              >
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                <div className="absolute -top-1 w-4 h-1 bg-emerald-500" />
+                <div className="absolute -bottom-1 w-4 h-1 bg-emerald-500" />
+              </motion.div>
 
-                  {/* МИНИМАЛИСТИЧНЫЙ ОВЕРЛЕЙ ПРИ НАВЕДЕНИИ */}
-                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center z-30">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <Instagram size={20} className="text-white" />
-                    </div>
-                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-white font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                      {t("projects.insta_watch", "Смотреть")}
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </motion.div>
-            
-            {/* Легкие градиенты по краям для красоты скролла */}
-            <div className="absolute top-0 bottom-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-background/40 to-transparent pointer-events-none z-20" />
-            <div className="absolute top-0 bottom-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-background/40 to-transparent pointer-events-none z-20" />
+              <div className="text-center mt-4 space-y-1 relative z-20">
+                <p className="text-base font-mono font-bold tracking-widest text-emerald-500">SBA DIGITAL 4K [LIVE]</p>
+                <p className="text-[10px] font-mono text-emerald-500/70">WDR: ON // 8MP @ 60FPS // COLOR_NIGHT: ON</p>
+              </div>
+            </div>
           </div>
 
+          {/* Premium HUD Overlays */}
+          <div className="absolute top-4 right-4 z-20 font-mono text-[10px] text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-500/30 tracking-wider">
+            SBA DIGITAL // 4K UHD // ENCRYPTED
+          </div>
+
+          {/* Target Indicators (Lock elements) */}
+          <div className="absolute bottom-4 left-4 z-20 font-mono text-[9px] text-foreground/50 tracking-wider">
+            // SLIDE MOUSE TO COMPARE QUALITY
+          </div>
+
+          {/* Split bar handle */}
+          <div 
+            className="absolute top-0 bottom-0 w-[2px] bg-red-600 z-30 pointer-events-none filter drop-shadow-[0_0_6px_rgba(220,38,38,0.8)]"
+            style={{ left: `${sliderPosition}%` }}
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-red-600 border border-red-400/50 flex items-center justify-center text-white shadow-2xl">
+              <Eye size={14} className="animate-pulse" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Instagram profile linkage */}
+        <div className="mt-12 flex flex-col items-center gap-4 text-center">
+          <div className="flex items-center gap-3">
+            <Instagram size={20} className="text-red-500" />
+            <span className="font-mono text-sm font-bold">@toosba7292</span>
+          </div>
+          <a 
+            href="https://instagram.com/toosba7292" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background font-bold text-xs uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-md"
+          >
+            <span>{t("projects.insta_watch", "Смотреть в Instagram")}</span>
+            <ExternalLink size={14} />
+          </a>
         </div>
 
       </motion.div>
