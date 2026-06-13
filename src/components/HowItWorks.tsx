@@ -1,176 +1,158 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { PhoneCall, ClipboardList, Truck, Settings, ArrowRight } from "lucide-react"
-import { motion, useInView, useScroll, useTransform } from "framer-motion"
+import { PhoneCall, ClipboardList, Truck, Settings } from "lucide-react"
+import { motion, useInView } from "framer-motion"
+
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+interface Step {
+  step: string
+  Icon: React.ElementType
+  title: string
+  description: string
+}
+
+function StepCard({ step, index, total }: { step: Step; index: number; total: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: "-15%" })
+  const isLast = index === total - 1
+
+  return (
+    <div ref={ref} className="relative flex flex-col items-center">
+
+      {/* ── Connector line (half from left edge to icon center + half from icon center to right edge) ── */}
+      <div className="absolute top-[27px] inset-x-0 pointer-events-none hidden lg:block">
+        {/* Left half-line (except first item) */}
+        {index > 0 && (
+          <div className="absolute top-0 left-0 right-1/2 h-px bg-white/[0.07]">
+            <motion.div
+              className="h-full bg-red-500/70 origin-right"
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.6, ease, delay: index * 0.15 }}
+            />
+          </div>
+        )}
+        {/* Right half-line (except last item) */}
+        {!isLast && (
+          <div className="absolute top-0 left-1/2 right-0 h-px bg-white/[0.07]">
+            <motion.div
+              className="h-full bg-red-500/70 origin-left"
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.6, ease, delay: index * 0.15 + 0.1 }}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* ── Mobile: vertical left-edge line ── */}
+      {!isLast && (
+        <div className="absolute top-[54px] left-[27px] w-px bottom-0 bg-white/[0.07] lg:hidden">
+          <motion.div
+            className="w-full bg-red-500/60 origin-top"
+            initial={{ scaleY: 0 }}
+            animate={inView ? { scaleY: 1 } : { scaleY: 0 }}
+            transition={{ duration: 0.7, ease, delay: 0.2 }}
+          />
+        </div>
+      )}
+
+      {/* ── Icon circle ── */}
+      <motion.div
+        initial={{ scale: 0.6, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.55, ease, delay: index * 0.12 }}
+        className="relative z-10 shrink-0"
+      >
+        <motion.div
+          animate={inView ? {
+            boxShadow: ["0 0 0px rgba(239,68,68,0)", "0 0 20px rgba(239,68,68,0.35)", "0 0 12px rgba(239,68,68,0.2)"],
+          } : {}}
+          transition={{ duration: 1.2, delay: index * 0.12 + 0.3 }}
+          className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${
+            inView
+              ? "bg-red-500/15 border-red-500/40 text-red-400"
+              : "bg-white/[0.04] border-white/[0.08] text-muted-foreground"
+          }`}
+        >
+          <step.Icon size={22} />
+        </motion.div>
+      </motion.div>
+
+      {/* ── Content card ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.65, ease, delay: index * 0.12 + 0.18 }}
+        className="mt-6 w-full text-center lg:text-left"
+      >
+        <div className="text-[10px] font-mono font-bold text-muted-foreground/35 uppercase tracking-[0.2em] mb-2.5">
+          {step.step}
+        </div>
+        <h3 className="text-base font-bold text-foreground mb-2 leading-snug">
+          {step.title}
+        </h3>
+        <p className="text-sm text-muted-foreground/80 leading-relaxed">
+          {step.description}
+        </p>
+      </motion.div>
+    </div>
+  )
+}
 
 export const HowItWorks = () => {
   const { t } = useTranslation()
-  const containerRef = useRef<HTMLElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const headerInView = useInView(headerRef, { once: true, margin: "-10%" })
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
-
-  const isInView = useInView(containerRef, { once: true, margin: "-10%" })
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  })
-
-  // Laser path drawing effect linked to scroll progress
-  const pathLength = useTransform(scrollYProgress, [0.25, 0.75], [0, 1])
-
-  const steps = [
-    {
-      step: "01",
-      icon: PhoneCall,
-      title: t("how.s1_title", "Оставляете заявку"),
-      description: t("how.s1_desc", "Свяжитесь с нами по телефону или оставьте заявку на сайте. Мы уточним задачи и предложим оптимальное решение."),
-      delay: 0.1
-    },
-    {
-      step: "02",
-      icon: ClipboardList,
-      title: t("how.s2_title", "Проектируем систему"),
-      description: t("how.s2_desc", "Подбираем оборудование, рассчитываем точное количество камер и готовим индивидуальный проект."),
-      delay: 0.2
-    },
-    {
-      step: "03",
-      icon: Truck,
-      title: t("how.s3_title", "Привозим оборудование"),
-      description: t("how.s3_desc", "Мы сами закупаем, проверяем и доставляем камеры, регистраторы и всё необходимое для монтажа."),
-      delay: 0.3
-    },
-    {
-      step: "04",
-      icon: Settings,
-      title: t("how.s4_title", "Монтаж и настройка"),
-      description: t("how.s4_desc", "Устанавливаем камеры без грязи, прокладываем кабель, настраиваем систему и удалённый доступ на ваш смартфон."),
-      delay: 0.4
-    },
+  const steps: Step[] = [
+    { step: "01", Icon: PhoneCall,     title: t("how.s1_title"), description: t("how.s1_desc") },
+    { step: "02", Icon: ClipboardList, title: t("how.s2_title"), description: t("how.s2_desc") },
+    { step: "03", Icon: Truck,         title: t("how.s3_title"), description: t("how.s3_desc") },
+    { step: "04", Icon: Settings,      title: t("how.s4_title"), description: t("how.s4_desc") },
   ]
 
-  const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
-
   return (
-    <section
-      id="howItWorks"
-      ref={containerRef}
-      className="relative py-24 lg:py-32 overflow-hidden"
-    >
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 max-w-[1200px]">
-        
-        {/* HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
+    <section id="howItWorks" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+      <div className="absolute top-0 inset-x-0 section-divider" />
+
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6">
+
+        {/* Header */}
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: smoothEase }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease }}
             className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5"
           >
-            {t("how.title1", "Как мы")}{" "}
-            <span className="text-red-500">{t("how.title2", "работаем")}</span>
+            {t("how.title1")}{" "}
+            <span className="text-red-500">{t("how.title2")}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.1, ease: smoothEase }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1, ease }}
             className="text-lg text-muted-foreground"
           >
             {t("how.subtitle")}
           </motion.p>
         </div>
 
-        {/* TIMELINE CARDS */}
-        <div className="relative">
-          
-          {/* Scroll-Linked SVG Connector Path (V-shaped on mobile, horizontal on desktop) */}
-          {!isMobile ? (
-            <div className="absolute top-[48px] left-[10%] right-[10%] h-[10px] z-0 pointer-events-none">
-              <svg width="100%" height="100%" viewBox="0 0 800 10" fill="none" preserveAspectRatio="none" className="overflow-visible">
-                {/* Background static line */}
-                <line x1="0" y1="5" x2="800" y2="5" stroke="currentColor" strokeWidth="1" className="text-foreground/10 dark:text-foreground/15" />
-                {/* Scroll-drawn laser line */}
-                <motion.line
-                  x1="0" y1="5" x2="800" y2="5"
-                  stroke="#ef4444"
-                  strokeWidth="2"
-                  style={{ pathLength }}
-                  className="filter drop-shadow-[0_0_8px_#ef4444]"
-                />
-              </svg>
-            </div>
-          ) : (
-            <div className="absolute left-[39px] top-[40px] bottom-[40px] w-[2px] z-0 pointer-events-none">
-              <svg width="100%" height="100%" viewBox="0 0 2 800" fill="none" preserveAspectRatio="none" className="overflow-visible">
-                <line x1="1" y1="0" x2="1" y2="800" stroke="currentColor" strokeWidth="1" className="text-foreground/10 dark:text-foreground/15" />
-                <motion.line
-                  x1="1" y1="0" x2="1" y2="800"
-                  stroke="#ef4444"
-                  strokeWidth="2"
-                  style={{ pathLength }}
-                  className="filter drop-shadow-[0_0_8px_#ef4444]"
-                />
-              </svg>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
-            {steps.map((feature, index) => {
-              const Icon = feature.icon
-
-              return (
-                <motion.div
-                  key={feature.step}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
-                  transition={{ duration: 0.8, ease: smoothEase, delay: feature.delay }}
-                  className="group relative bg-white/[0.03] dark:bg-white/[0.02] border border-white/[0.08] hover:border-white/[0.15] rounded-2xl p-6 flex flex-col justify-between h-full transition-all duration-400 overflow-hidden"
-                >
-                  {/* Hover gradient */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.05] to-transparent pointer-events-none" />
-
-                  {/* Step metadata */}
-                  <div className="flex items-center justify-between mb-5 relative z-10">
-                    <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all duration-400">
-                      <Icon size={19} />
-                    </div>
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground/40 uppercase">
-                      {t("how.step", "Шаг")} {feature.step}
-                    </span>
-                  </div>
-
-                  {/* Card Title & Desc */}
-                  <div className="relative z-10 flex-grow">
-                    <h3 className="text-base font-bold mb-2.5 text-foreground group-hover:text-foreground/90 transition-colors duration-300">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-
-                  {/* Micro-arrow indicators for horizontal steps */}
-                  {index !== steps.length - 1 && !isMobile && (
-                    <div className="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground z-20 shadow-sm opacity-50 group-hover:opacity-100 group-hover:text-red-500 group-hover:border-red-500/20 transition-all duration-300">
-                      <ArrowRight size={14} />
-                    </div>
-                  )}
-                </motion.div>
-              )
-            })}
-          </div>
+        {/* Steps — desktop: 4-col row | mobile: vertical stack */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-6">
+          {steps.map((step, i) => (
+            <StepCard key={step.step} step={step} index={i} total={steps.length} />
+          ))}
         </div>
 
       </div>
+
+      <div className="absolute bottom-0 inset-x-0 section-divider" />
     </section>
   )
 }
