@@ -2,121 +2,111 @@
 
 import { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { ArrowRight, MessageCircle } from "lucide-react"
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useInView,
-} from "framer-motion"
+import { ArrowRight, MessageCircle, Shield, Flame, Cpu } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 interface HeroProps {
   onOpenCalc: () => void
 }
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const E = [0.22, 1, 0.36, 1] as const
 
 /* ─────────────────────────────────────────
-   CountUp — slot flash → smooth ease-out
+   usePreciseCounter
+   Slow, deliberate ease-out-quart.
+   No flashing — feels expensive & precise.
 ───────────────────────────────────────── */
-function CountUp({
-  target,
-  suffix = "+",
-  triggered,
-}: {
-  target: number
-  suffix?: string
-  triggered: boolean
-}) {
-  const [display, setDisplay] = useState(0)
+function usePreciseCounter(end: number, duration = 2600, startDelay = 0) {
+  const [value, setValue] = useState(0)
+  const [triggered, setTriggered] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setTriggered(true), startDelay)
+    return () => clearTimeout(t)
+  }, [startDelay])
 
   useEffect(() => {
     if (!triggered) return
-    const DURATION = 1600
-    const startTime = performance.now()
-    let rafId: number
+    const origin = performance.now()
+    let raf: number
 
-    const tick = (now: number) => {
-      const t = Math.min((now - startTime) / DURATION, 1)
-      let value: number
+    /** cubic ease-out-quart — steep initial acceleration, very soft landing */
+    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4)
 
-      if (t < 0.3 && target >= 50) {
-        // Slot-machine random flash
-        value = Math.floor(Math.random() * target * 0.85)
-      } else {
-        const t2 = t < 0.3 ? 0 : (t - 0.3) / 0.7
-        const eased = 1 - Math.pow(1 - t2, 3)
-        value = Math.round(eased * target)
-      }
-
-      setDisplay(value)
-      if (t < 1) rafId = requestAnimationFrame(tick)
-      else setDisplay(target)
+    const step = (now: number) => {
+      const t = Math.min((now - origin) / duration, 1)
+      setValue(Math.round(easeOutQuart(t) * end))
+      if (t < 1) raf = requestAnimationFrame(step)
+      else setValue(end)
     }
 
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
-  }, [triggered, target])
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [triggered, end, duration])
 
-  const fmt =
-    target >= 1000
-      ? `${Math.floor(display / 1000)} ${String(display % 1000).padStart(3, "0")}`
-      : display
-
-  return <>{fmt}{suffix}</>
+  return value
 }
 
 /* ─────────────────────────────────────────
-   LineReveal — clip from below, time-based (не скролл)
+   StatCard
 ───────────────────────────────────────── */
-function LineReveal({
-  children,
+function StatCard({
+  end,
+  label,
+  suffix = "+",
   delay,
-  className = "",
 }: {
-  children: React.ReactNode
+  end: number
+  label: string
+  suffix?: string
   delay: number
-  className?: string
 }) {
+  const raw = usePreciseCounter(end, 2600, delay)
+
+  const formatted =
+    end >= 1000
+      ? `${Math.floor(raw / 1000)} ${String(raw % 1000).padStart(3, "0")}`
+      : raw
+
   return (
-    <div className={`overflow-hidden ${className}`}>
-      <motion.div
-        initial={{ y: "108%", opacity: 0 }}
-        animate={{ y: "0%", opacity: 1 }}
-        transition={{ duration: 0.95, ease: EASE, delay }}
+    <motion.div
+      initial={{ opacity: 0, x: 22, filter: "blur(6px)" }}
+      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.85, ease: E, delay: 0.72 + delay / 1000 }}
+    >
+      <div
+        className="font-black tracking-tight leading-none tabular-nums text-white"
+        style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
       >
-        {children}
-      </motion.div>
-    </div>
+        {formatted}
+        {suffix}
+      </div>
+      <div
+        className="text-[10px] font-mono uppercase tracking-widest mt-2"
+        style={{ color: "rgba(255,255,255,0.22)" }}
+      >
+        {label}
+      </div>
+    </motion.div>
   )
 }
 
 /* ─────────────────────────────────────────
-   ScanLine — периодический световой sweep
+   Shared Framer variants — blur-up stagger
 ───────────────────────────────────────── */
-function ScanLine() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
-      <motion.div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "28%",
-          height: "100%",
-          background:
-            "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.012) 50%, transparent 100%)",
-        }}
-        animate={{ x: ["-28%", "140%"] }}
-        transition={{
-          duration: 2.8,
-          repeat: Infinity,
-          repeatDelay: 6,
-          ease: [0.4, 0, 0.6, 1],
-        }}
-      />
-    </div>
-  )
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.11, delayChildren: 0.08 } },
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.85, ease: E },
+  },
 }
 
 /* ─────────────────────────────────────────
@@ -124,33 +114,20 @@ function ScanLine() {
 ───────────────────────────────────────── */
 export const Hero = ({ onOpenCalc }: HeroProps) => {
   const { t } = useTranslation()
-
-  /* Скролл-параллакс только для орбов — контент не двигается */
   const sectionRef = useRef<HTMLElement>(null)
+
+  /* Parallax on background orbs only — text stays fixed */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   })
-  const orbY1 = useTransform(scrollYProgress, [0, 1], [0, 100])
-  const orbY2 = useTransform(scrollYProgress, [0, 1], [0, -60])
+  const orbY1 = useTransform(scrollYProgress, [0, 1], ["0px", "90px"])
+  const orbY2 = useTransform(scrollYProgress, [0, 1], ["0px", "-55px"])
 
-  /* useInView для статистики (once:true — не реагирует на скролл назад) */
-  const statsRef = useRef<HTMLDivElement>(null)
-  const statsInView = useInView(statsRef, { once: true, margin: "-20%" })
-  const [statsTriggered, setStatsTriggered] = useState(false)
-
-  useEffect(() => {
-    if (statsInView && !statsTriggered) {
-      // небольшая задержка чтобы колонка успела войти
-      const t = setTimeout(() => setStatsTriggered(true), 200)
-      return () => clearTimeout(t)
-    }
-  }, [statsInView, statsTriggered])
-
-  const stats = [
-    { value: 5000, suffix: "+", label: t("hero.stat1") },
-    { value: 300,  suffix: "+", label: t("hero.stat2") },
-    { value: 10,   suffix: "+", label: t("hero.stat3") },
+  const features = [
+    { Icon: Shield, label: "Видеонаблюдение" },
+    { Icon: Flame,  label: "Пожарная охрана" },
+    { Icon: Cpu,    label: "Умный доступ" },
   ]
 
   return (
@@ -158,189 +135,194 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
       ref={sectionRef}
       id="hero"
       className="relative min-h-screen flex flex-col overflow-hidden"
-      style={{ background: "#050505", color: "#fff" }}
+      style={{ background: "#030303", color: "#fff" }}
     >
-      <ScanLine />
 
-      {/* ── Background ── */}
+      {/* ───────────── Background ───────────── */}
       <div className="absolute inset-0 pointer-events-none select-none" aria-hidden>
-        {/* Orb left */}
-        <motion.div
-          style={{ y: orbY1, position: "absolute" }}
-          className="inset-0"
-        >
-          <motion.div
-            className="absolute rounded-full"
-            animate={{ scale: [1, 1.08, 1], opacity: [1, 0.85, 1] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              width: 820, height: 820,
-              top: "-8%", left: "-18%",
-              background:
-                "radial-gradient(circle, rgba(239,68,68,0.10) 0%, transparent 68%)",
-              filter: "blur(50px)",
-            }}
-          />
-        </motion.div>
 
-        {/* Orb right */}
-        <motion.div
-          style={{ y: orbY2, position: "absolute" }}
-          className="inset-0"
-        >
-          <motion.div
+        {/* Red atmosphere — top-left */}
+        <motion.div style={{ y: orbY1 }} className="absolute inset-0">
+          <div
             className="absolute rounded-full"
-            animate={{ scale: [1, 1.06, 1], opacity: [1, 0.75, 1] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
             style={{
-              width: 560, height: 560,
-              bottom: "-6%", right: "-10%",
-              background:
-                "radial-gradient(circle, rgba(239,68,68,0.07) 0%, transparent 65%)",
+              width: 900, height: 900,
+              top: "-22%", left: "-22%",
+              background: "radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 65%)",
               filter: "blur(60px)",
             }}
           />
         </motion.div>
 
-        {/* Dot grid */}
+        {/* Red atmosphere — bottom-right */}
+        <motion.div style={{ y: orbY2 }} className="absolute inset-0">
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: 600, height: 600,
+              bottom: "-18%", right: "-10%",
+              background: "radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 65%)",
+              filter: "blur(80px)",
+            }}
+          />
+        </motion.div>
+
+        {/* Fine engineering grid */}
         <div
           className="absolute inset-0"
           style={{
-            opacity: 0.016,
+            opacity: 0.022,
             backgroundImage:
               "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px)," +
               "linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
+            backgroundSize: "80px 80px",
           }}
         />
 
-        {/* Vignette */}
+        {/* Radial vignette */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 38%, rgba(5,5,5,0.72) 100%)",
+              "radial-gradient(ellipse 100% 90% at 50% 50%, transparent 35%, rgba(3,3,3,0.75) 100%)",
           }}
         />
+
+        {/* Ambient scan sweep — repeats every ~8 s */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            style={{
+              position: "absolute",
+              top: 0, left: 0,
+              width: "26%", height: "100%",
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.011) 50%, transparent 100%)",
+            }}
+            animate={{ x: ["-26%", "130%"] }}
+            transition={{
+              duration: 2.6,
+              repeat: Infinity,
+              repeatDelay: 8,
+              ease: [0.4, 0, 0.6, 1],
+            }}
+          />
+        </div>
       </div>
 
-      {/* ── Status bar — появляется первым, без задержки ── */}
+      {/* ───────────── Status bar ───────────── */}
       <motion.div
-        initial={{ opacity: 0, y: -8 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: EASE, delay: 0 }}
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
-        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-3 text-[10px] font-mono"
+        transition={{ duration: 0.5, ease: E }}
+        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-3.5 text-[10px] font-mono"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
       >
         <div className="flex items-center gap-2.5">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-60" />
-            <span className="relative rounded-full h-1.5 w-1.5 bg-emerald-500" />
+          <span className="relative flex h-[7px] w-[7px]">
+            <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-50" />
+            <span className="relative rounded-full h-[7px] w-[7px] bg-emerald-500" />
           </span>
-          <span className="tracking-widest uppercase text-white/30">SBA Security · Актау</span>
+          <span className="tracking-widest uppercase text-white/25">SBA Security · Актау</span>
         </div>
-        <span className="hidden sm:block tracking-widest uppercase text-white/[0.11]">
-          Мониторинг 24 / 7
-        </span>
-        <span className="tracking-widest text-white/[0.06]">v 2.4</span>
+        <div className="hidden sm:flex items-center gap-6 text-white/[0.09] tracking-widest uppercase">
+          <span>Мониторинг 24 / 7</span>
+          <span>v 2.4</span>
+        </div>
       </motion.div>
 
-      {/* ── Main ── */}
-      <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-[1fr_220px] px-6 sm:px-10 lg:px-16">
+      {/* ───────────── Main layout ───────────── */}
+      <div className="relative z-10 flex-1 grid lg:grid-cols-[1fr_auto] items-center gap-12 lg:gap-24 px-6 sm:px-10 lg:px-16 py-14 lg:py-0">
 
-        {/* LEFT */}
-        <div
-          className="flex flex-col justify-center py-12 lg:py-0 lg:pr-14"
-          style={{ borderRight: "1px solid rgba(255,255,255,0.04)" }}
+        {/* ── LEFT: Copy ── */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex flex-col"
         >
+
           {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, x: -18 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.65, ease: EASE, delay: 0.06 }}
-            className="flex items-center gap-3 mb-10"
-          >
-            <div
+          <motion.div variants={item} className="flex items-center gap-3 mb-10">
+            <span
               className="shrink-0"
-              style={{ width: 36, height: 1, background: "rgba(239,68,68,0.65)" }}
+              style={{ display: "block", width: 28, height: 1, background: "rgba(220,38,38,0.7)" }}
             />
-            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.28em] text-red-400/60">
+            <span
+              className="text-[10px] font-mono font-semibold uppercase tracking-[0.24em]"
+              style={{ color: "rgba(220,38,38,0.62)" }}
+            >
               Системы безопасности
             </span>
-            {/* Terminal cursor blink */}
-            <motion.span
-              className="inline-block w-px h-3 bg-red-500/50 shrink-0"
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
-            />
           </motion.div>
 
-          {/* Headline — 3 staggered clip reveals */}
-          <h1 className="flex flex-col mb-12">
-            <LineReveal delay={0.13} className="mb-[0.05em]">
-              <span
-                className="block font-black tracking-tighter leading-none text-white"
-                style={{ fontSize: "clamp(4.5rem, 10.5vw, 10rem)" }}
-              >
-                ОХРАНА
-              </span>
-            </LineReveal>
-
-            <LineReveal delay={0.26} className="mb-[0.05em]">
-              <span
-                className="block font-black tracking-tighter leading-none text-white/[0.62]"
-                style={{ fontSize: "clamp(4.5rem, 10.5vw, 10rem)" }}
-              >
-                КАЖДОГО
-              </span>
-            </LineReveal>
-
-            <LineReveal delay={0.39}>
-              <span
-                className="block font-black tracking-tighter leading-none text-red-500"
-                style={{ fontSize: "clamp(4.5rem, 10.5vw, 10rem)" }}
-              >
-                ОБЪЕКТА
-                {/* Blinking period */}
+          {/* Headline — clip-reveal per word */}
+          <h1 className="mb-12 flex flex-col" style={{ gap: "0.04em" }}>
+            {(
+              [
+                ["ОХРАНА",   "#ffffff",              0.12],
+                ["КАЖДОГО",  "rgba(255,255,255,0.58)", 0.26],
+                ["ОБЪЕКТА.", "#dc2626",              0.40],
+              ] as [string, string, number][]
+            ).map(([word, color, d]) => (
+              <div key={word} className="overflow-hidden">
                 <motion.span
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+                  initial={{ y: "110%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 1.0, ease: E, delay: d }}
+                  className="block font-black tracking-tighter leading-[0.88]"
+                  style={{
+                    fontSize: "clamp(4rem, 11vw, 10rem)",
+                    color,
+                  }}
                 >
-                  .
+                  {word}
                 </motion.span>
-              </span>
-            </LineReveal>
+              </div>
+            ))}
           </h1>
 
           {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, ease: EASE, delay: 0.54 }}
-            className="text-base leading-relaxed mb-8 max-w-[340px] text-white/40"
+            variants={item}
+            className="text-[15px] leading-[1.72] mb-8 max-w-[380px]"
+            style={{ color: "rgba(255,255,255,0.37)" }}
           >
             {t("hero.subtitle")}
           </motion.p>
 
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, ease: EASE, delay: 0.66 }}
-            className="flex flex-col sm:flex-row items-start gap-3"
-          >
+          {/* Feature chips — Vercel/Linear style */}
+          <motion.div variants={item} className="flex flex-wrap items-center gap-2 mb-10">
+            {features.map(({ Icon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono tracking-wide"
+                style={{
+                  color: "rgba(255,255,255,0.36)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "rgba(255,255,255,0.025)",
+                }}
+              >
+                <Icon size={11} style={{ color: "rgba(220,38,38,0.6)", flexShrink: 0 }} />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* CTA buttons */}
+          <motion.div variants={item} className="flex flex-col sm:flex-row items-start gap-3">
             <button
               onClick={onOpenCalc}
-              className="group relative flex items-center gap-2.5 px-7 h-12 font-bold text-sm rounded-xl overflow-hidden text-white shrink-0"
+              className="group relative flex items-center gap-2 px-6 h-11 text-sm font-semibold rounded-xl overflow-hidden text-white shrink-0"
               style={{
                 background: "#dc2626",
-                boxShadow: "0 0 36px rgba(220,38,38,0.22)",
+                boxShadow:
+                  "0 0 28px rgba(220,38,38,0.24), inset 0 1px 0 rgba(255,255,255,0.1)",
               }}
             >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.14] to-transparent group-hover:translate-x-full transition-transform duration-700" />
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.13] to-transparent group-hover:translate-x-full transition-transform duration-700" />
               <span className="relative">{t("hero.btn")}</span>
               <ArrowRight
-                size={15}
+                size={14}
                 className="relative group-hover:translate-x-0.5 transition-transform duration-200"
               />
             </button>
@@ -349,76 +331,92 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               href="https://wa.me/77779204988"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 h-12 text-sm font-medium rounded-xl text-white/[0.42] shrink-0 transition-colors duration-200"
-              style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+              className="inline-flex items-center gap-2 px-5 h-11 text-sm font-medium rounded-xl shrink-0 transition-colors duration-200 hover:text-white/60"
+              style={{
+                color: "rgba(255,255,255,0.38)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.02)",
+              }}
             >
-              <MessageCircle size={15} className="text-green-400 shrink-0" />
+              <MessageCircle size={14} style={{ color: "#4ade80", flexShrink: 0 }} />
               WhatsApp
             </a>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* RIGHT — stats с CountUp */}
+        {/* ── RIGHT: Stats column ── */}
         <div
-          ref={statsRef}
-          className="hidden lg:flex flex-col justify-center pl-10"
+          className="hidden lg:flex flex-col"
+          style={{
+            borderLeft: "1px solid rgba(255,255,255,0.04)",
+            paddingLeft: 52,
+            gap: 0,
+          }}
         >
-          {stats.map((s, i) => (
-            <motion.div
+          {[
+            { end: 5000, label: t("hero.stat1"), delay: 900 },
+            { end: 300,  label: t("hero.stat2"), delay: 1050 },
+            { end: 10,   label: t("hero.stat3"), delay: 1200 },
+          ].map((s, i) => (
+            <div
               key={i}
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.78 + i * 0.12 }}
+              className="py-8"
               style={{
-                borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.05)" : undefined,
+                borderBottom:
+                  i < 2 ? "1px solid rgba(255,255,255,0.04)" : undefined,
               }}
-              className="py-7"
             >
-              <div
-                className="font-black leading-none tracking-tight text-white tabular-nums"
-                style={{ fontSize: "clamp(2.2rem, 3.2vw, 3rem)" }}
-              >
-                <CountUp target={s.value} suffix={s.suffix} triggered={statsTriggered} />
-              </div>
-              <div className="text-[10px] font-mono uppercase tracking-widest mt-2 text-white/[0.22]">
-                {s.label}
-              </div>
-            </motion.div>
+              <StatCard {...s} />
+            </div>
           ))}
         </div>
       </div>
 
-      {/* ── Bottom bar ── */}
+      {/* ───────────── Bottom bar ───────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: EASE, delay: 1.1 }}
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        transition={{ delay: 1.3, duration: 0.55, ease: E }}
         className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
       >
-        <div style={{ height: 1, width: 36, background: "rgba(239,68,68,0.42)" }} />
+        {/* Brand accent dash */}
+        <div
+          style={{ width: 28, height: 1, background: "rgba(220,38,38,0.45)" }}
+        />
 
         {/* Animated scroll cue */}
-        <div className="flex items-center gap-3 text-white/[0.15]">
+        <div
+          className="flex items-center gap-2.5"
+          style={{ color: "rgba(255,255,255,0.14)" }}
+        >
           <div
             className="relative overflow-hidden"
-            style={{ width: 1, height: 20, background: "rgba(255,255,255,0.07)" }}
+            style={{ width: 1, height: 18, background: "rgba(255,255,255,0.07)" }}
           >
             <motion.div
               className="absolute inset-x-0 top-0"
-              style={{ height: "40%", background: "rgba(255,255,255,0.5)" }}
+              style={{ height: "38%", background: "rgba(255,255,255,0.55)" }}
               animate={{ y: ["0%", "220%", "0%"] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
-          <span className="text-[9px] font-mono tracking-[0.25em] uppercase">Scroll</span>
+          <span className="text-[9px] font-mono tracking-[0.24em] uppercase">
+            Scroll
+          </span>
         </div>
 
-        <div className="flex items-center gap-2 text-white/[0.18]">
-          <span className="text-[9px] font-mono tracking-widest uppercase">Active 24/7</span>
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inset-0 rounded-full bg-red-500 opacity-55" />
-            <span className="relative rounded-full h-1.5 w-1.5 bg-red-500" />
+        {/* Live pulse */}
+        <div
+          className="flex items-center gap-2"
+          style={{ color: "rgba(255,255,255,0.14)" }}
+        >
+          <span className="text-[9px] font-mono tracking-widest uppercase">
+            Active 24 / 7
+          </span>
+          <span className="relative flex h-[6px] w-[6px]">
+            <span className="animate-ping absolute inset-0 rounded-full bg-red-500 opacity-50" />
+            <span className="relative rounded-full h-[6px] w-[6px] bg-red-500" />
           </span>
         </div>
       </motion.div>
