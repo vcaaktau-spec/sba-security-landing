@@ -11,248 +11,174 @@ interface HeroProps {
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
-/* ─────────────────────── Animated Security Scene ─────────────────────── */
+/* ──────────────────────────────────────────────────────────────────
+   Security Monitor Panel — выглядит как реальный NVR-интерфейс
+   ────────────────────────────────────────────────────────────────── */
 
-function SecurityScene() {
+const FEEDS = [
+  { id: 1, name: "ТЦ Атлас",      zone: "Вход / Выход",    rec: true,  motion: false, alert: false },
+  { id: 2, name: "Пр. Нурсултана", zone: "Торговая зона",   rec: true,  motion: true,  alert: true  },
+  { id: 3, name: "Мкр. 12",        zone: "Парковка · Сев.", rec: true,  motion: false, alert: false },
+  { id: 4, name: "Промзона",        zone: "Склад А · Ворота",rec: false, motion: false, alert: false },
+]
+
+function CameraFeed({
+  feed, index, inView,
+}: {
+  feed: typeof FEEDS[number]
+  index: number
+  inView: boolean
+}) {
+  const now = new Date()
+  const ts = `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}:${String(now.getSeconds()).padStart(2,"0")}`
+
+  return (
+    <motion.div
+      className="relative aspect-video overflow-hidden"
+      style={{ background: "linear-gradient(135deg, #0d0d0d 0%, #080808 100%)" }}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ delay: 0.25 + index * 0.1 }}
+    >
+      {/* Film grain overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.035] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage:
+            "url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4t5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92ZBaGqTAmBiZms6CIY41cvggXAV2Y8MlnOR+fdlj9GiTde92sUIXznfc5Esgng5V2WxlP8rWFMFXpCyEj/T7cFpSAYiAMhHInlNlS+lBdVrCJ0p3sLMl3k88ABXmk+BjCVXbFT7TMf+o3bE1+sY4dONNkL++wr5KuqntMd4LhSKPlA0LfRKmIkKj8BSPABOBMzEUABC5AACAiUSFAAAAABJRU5ErkJggg==\")",
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      {/* Vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%)" }}
+      />
+
+      {/* Scan line (first feed only) */}
+      {index === 0 && (
+        <motion.div
+          className="absolute inset-x-0 h-px pointer-events-none"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)" }}
+          animate={{ y: [0, 135, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        />
+      )}
+
+      {/* Motion detection flash border */}
+      {feed.alert && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ border: "1px solid rgba(251,191,36,0.5)" }}
+          animate={{ opacity: [0, 0.8, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 1.5 }}
+        />
+      )}
+
+      {/* Motion detected label */}
+      {feed.motion && (
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-2 py-0.5 rounded"
+          style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.35)" }}
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 1.5 }}
+        >
+          <span className="text-[7px] font-mono text-amber-400/90 uppercase tracking-widest">▲ Движение</span>
+        </motion.div>
+      )}
+
+      {/* CAM number */}
+      <div className="absolute top-1.5 left-1.5 text-[7px] font-mono text-white/25">
+        CAM{String(index + 1).padStart(2, "0")}
+      </div>
+
+      {/* REC indicator */}
+      {feed.rec && (
+        <div className="absolute top-1.5 right-1.5 flex items-center gap-0.5">
+          <motion.div
+            className="w-1 h-1 rounded-full bg-red-500"
+            animate={{ opacity: [1, 0.1, 1] }}
+            transition={{ duration: 1.2, repeat: Infinity }}
+          />
+          <span className="text-[6px] font-mono text-red-400/55">REC</span>
+        </div>
+      )}
+
+      {/* Bottom: location + timestamp */}
+      <div className="absolute bottom-1.5 left-2">
+        <div className="text-[7.5px] font-mono text-white/55 font-semibold leading-tight">{feed.name}</div>
+        <div className="text-[6.5px] font-mono text-white/25 leading-tight">{feed.zone}</div>
+      </div>
+      <div className="absolute bottom-1.5 right-2 text-[6px] font-mono text-white/18 tabular-nums">
+        {ts}
+      </div>
+    </motion.div>
+  )
+}
+
+function MonitorPanel() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true })
 
-  const fadeIn = (delay: number, dur = 0.6) => ({
-    initial: { opacity: 0 },
-    animate: inView ? { opacity: 1 } : { opacity: 0 },
-    transition: { duration: dur, ease: "easeOut" as const, delay },
-  })
+  const now = new Date()
+  const dateStr = `${String(now.getDate()).padStart(2,"0")}.${String(now.getMonth()+1).padStart(2,"0")}.${now.getFullYear()}`
 
   return (
-    <div ref={ref} className="relative w-full select-none">
-      <div className="relative w-full" style={{ maxWidth: 500 }}>
-
-        <svg viewBox="0 0 460 360" className="w-full" style={{ overflow: "visible" }}>
-
-          {/* Room outline */}
-          <motion.path
-            d="M 20 40 L 440 40 L 440 320 L 20 320 Z"
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth={1.5}
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={inView ? { pathLength: 1, opacity: 1 } : {}}
-            transition={{ duration: 1.0, ease: "easeOut", delay: 0.15 }}
-          />
-
-          {/* Ceiling tick marks */}
-          {[80, 160, 230, 300, 380].map((x, i) => (
-            <motion.line key={i} x1={x} y1={40} x2={x} y2={50}
-              stroke="rgba(255,255,255,0.04)" strokeWidth={1}
-              {...fadeIn(0.8 + i * 0.04)} />
-          ))}
-
-          {/* Floor shadow line */}
-          <motion.line x1={20} y1={319} x2={440} y2={319}
-            stroke="rgba(255,255,255,0.04)" strokeWidth={1}
-            {...fadeIn(0.85)} />
-
-          {/* ── CAMERA 1 (left ceiling, pointing right-down) ── */}
-          <motion.g
-            initial={{ opacity: 0, scale: 0 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            style={{ transformBox: "fill-box", transformOrigin: "center top" }}
-            transition={{ duration: 0.55, ease: [0.34, 1.56, 0.64, 1], delay: 0.6 }}
-          >
-            <line x1={110} y1={40} x2={110} y2={48}
-              stroke="rgba(255,255,255,0.3)" strokeWidth={2} />
-            <rect x={88} y={43} width={44} height={18} rx={4}
-              fill="rgba(25,25,25,0.95)" stroke="rgba(255,255,255,0.22)" strokeWidth={1} />
-            <circle cx={128} cy={52} r={8.5}
-              fill="rgba(8,8,8,1)" stroke="rgba(255,255,255,0.28)" strokeWidth={1} />
-            <circle cx={128} cy={52} r={4.5} fill="rgba(70,70,70,0.8)" />
-            <circle cx={126} cy={50} r={1.5} fill="rgba(255,255,255,0.12)" />
-            <motion.circle cx={93} cy={48} r={3} fill="rgb(239,68,68)"
-              animate={inView ? { opacity: [1, 0.1, 1] } : {}}
-              transition={{ duration: 1.3, repeat: Infinity, delay: 1.6, ease: "easeInOut" }} />
-          </motion.g>
-
-          {/* FOV cone 1 */}
-          <motion.path d="M 126 60 L 42 318 L 298 318 Z"
-            fill="rgba(239,68,68,0.055)" stroke="rgba(239,68,68,0.12)" strokeWidth={0.5}
-            {...fadeIn(1.0, 0.9)} />
-
-          {/* Angle arc 1 */}
-          <motion.g {...fadeIn(1.45, 0.4)}>
-            <path d="M 107 67 A 17 17 0 0 1 136 71"
-              fill="none" stroke="rgba(239,68,68,0.35)" strokeWidth={0.8} />
-            <text x={113} y={86} fontSize={7.5} fill="rgba(239,68,68,0.5)"
-              fontFamily="monospace" textAnchor="middle">110°</text>
-          </motion.g>
-
-          {/* ── CAMERA 2 (right ceiling, pointing left-down) ── */}
-          <motion.g
-            initial={{ opacity: 0, scale: 0 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            style={{ transformBox: "fill-box", transformOrigin: "center top" }}
-            transition={{ duration: 0.55, ease: [0.34, 1.56, 0.64, 1], delay: 1.05 }}
-          >
-            <line x1={350} y1={40} x2={350} y2={48}
-              stroke="rgba(255,255,255,0.3)" strokeWidth={2} />
-            <rect x={328} y={43} width={44} height={18} rx={4}
-              fill="rgba(25,25,25,0.95)" stroke="rgba(255,255,255,0.22)" strokeWidth={1} />
-            <circle cx={332} cy={52} r={8.5}
-              fill="rgba(8,8,8,1)" stroke="rgba(255,255,255,0.28)" strokeWidth={1} />
-            <circle cx={332} cy={52} r={4.5} fill="rgba(70,70,70,0.8)" />
-            <circle cx={330} cy={50} r={1.5} fill="rgba(255,255,255,0.12)" />
-            <motion.circle cx={367} cy={48} r={3} fill="rgb(239,68,68)"
-              animate={inView ? { opacity: [1, 0.1, 1] } : {}}
-              transition={{ duration: 1.3, repeat: Infinity, delay: 1.9, ease: "easeInOut" }} />
-          </motion.g>
-
-          {/* FOV cone 2 */}
-          <motion.path d="M 334 60 L 162 318 L 418 318 Z"
-            fill="rgba(239,68,68,0.055)" stroke="rgba(239,68,68,0.12)" strokeWidth={0.5}
-            {...fadeIn(1.5, 0.9)} />
-
-          {/* Overlap zone highlight */}
-          <motion.path d="M 162 318 L 298 318 L 280 210 L 180 210 Z"
-            fill="rgba(239,68,68,0.04)"
-            {...fadeIn(1.7, 0.7)} />
-
-          {/* ── Guard / Person ── */}
-          <motion.g
-            initial={{ opacity: 0, x: 38 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.85, ease, delay: 1.9 }}
-          >
-            <circle cx={238} cy={258} r={30} fill="rgba(239,68,68,0.055)" />
-            <circle cx={238} cy={222} r={14}
-              fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth={1.5} />
-            <line x1={238} y1={236} x2={238} y2={272}
-              stroke="rgba(255,255,255,0.4)" strokeWidth={1.5} />
-            <line x1={213} y1={252} x2={263} y2={252}
-              stroke="rgba(255,255,255,0.4)" strokeWidth={1.5} />
-            <line x1={213} y1={252} x2={208} y2={268}
-              stroke="rgba(255,255,255,0.28)" strokeWidth={1.2} />
-            <line x1={263} y1={252} x2={266} y2={268}
-              stroke="rgba(255,255,255,0.28)" strokeWidth={1.2} />
-            <line x1={238} y1={272} x2={226} y2={315}
-              stroke="rgba(255,255,255,0.4)" strokeWidth={1.5} />
-            <line x1={238} y1={272} x2={250} y2={315}
-              stroke="rgba(255,255,255,0.4)" strokeWidth={1.5} />
-          </motion.g>
-
-          {/* ── NVR Recorder ── */}
-          <motion.g
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, ease, delay: 2.1 }}
-          >
-            <rect x={330} y={283} width={90} height={28} rx={3}
-              fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" strokeWidth={1} />
-            {[0, 1, 2].map(i => (
-              <rect key={i} x={336 + i * 21} y={289} width={15} height={6} rx={1}
-                fill="rgba(255,255,255,0.09)" />
-            ))}
-            <motion.circle cx={412} cy={297} r={2.5} fill="rgb(52,211,153)"
-              animate={inView ? { opacity: [0.6, 1, 0.6] } : {}}
-              transition={{ duration: 2.2, repeat: Infinity, delay: 2.5 }} />
-          </motion.g>
-
-          {/* ── Technical labels ── */}
-
-          {/* Label: Camera 1 */}
-          <motion.g {...fadeIn(2.3, 0.45)}>
-            <line x1={88} y1={52} x2={52} y2={84}
-              stroke="rgba(255,255,255,0.1)" strokeWidth={0.5} strokeDasharray="3 3" />
-            <text x={24} y={96} fontSize={8.5} fill="rgba(255,255,255,0.38)"
-              fontFamily="monospace" fontWeight="600" letterSpacing="0.5">IP-камера 4K</text>
-            <text x={24} y={108} fontSize={7.5} fill="rgba(255,255,255,0.18)"
-              fontFamily="monospace">IR 30м · H.265</text>
-          </motion.g>
-
-          {/* Label: Camera 2 */}
-          <motion.g {...fadeIn(2.5, 0.45)}>
-            <line x1={372} y1={52} x2={408} y2={84}
-              stroke="rgba(255,255,255,0.1)" strokeWidth={0.5} strokeDasharray="3 3" />
-            <text x={385} y={96} fontSize={8.5} fill="rgba(255,255,255,0.38)"
-              fontFamily="monospace" fontWeight="600" letterSpacing="0.5">IP-камера 4K</text>
-            <text x={385} y={108} fontSize={7.5} fill="rgba(255,255,255,0.18)"
-              fontFamily="monospace">IR 30м · H.265</text>
-          </motion.g>
-
-          {/* Label: Guard */}
-          <motion.g {...fadeIn(2.4, 0.45)}>
-            <line x1={224} y1={232} x2={188} y2={208}
-              stroke="rgba(255,255,255,0.1)" strokeWidth={0.5} strokeDasharray="3 3" />
-            <text x={130} y={202} fontSize={8.5} fill="rgba(255,255,255,0.38)"
-              fontFamily="monospace" fontWeight="600">Сотрудник</text>
-            <text x={130} y={214} fontSize={7.5} fill="rgba(255,255,255,0.18)"
-              fontFamily="monospace">Зона контроля</text>
-          </motion.g>
-
-          {/* Label: NVR */}
-          <motion.g {...fadeIn(2.6, 0.45)}>
-            <text x={334} y={325} fontSize={7.5} fill="rgba(255,255,255,0.2)"
-              fontFamily="monospace">NVR · 8TB · 24/7</text>
-          </motion.g>
-
-          {/* ── SECURED badge ── */}
-          <g transform="translate(378,172)">
-            <motion.g
-              style={{ transformBox: "fill-box", transformOrigin: "center" }}
-              initial={{ opacity: 0, scale: 1.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1], delay: 2.9 }}
-            >
-              <circle cx={0} cy={0} r={36}
-                fill="rgba(52,211,153,0.07)" stroke="rgba(52,211,153,0.3)"
-                strokeWidth={1} strokeDasharray="5 2.5" />
-              <text y={-5} fontSize={8.5} fill="rgba(52,211,153,0.85)"
-                fontFamily="monospace" fontWeight="700" textAnchor="middle" letterSpacing="2">
-                SECURED
-              </text>
-              <text y={14} fontSize={18} fill="rgba(52,211,153,0.9)" textAnchor="middle">
-                ✓
-              </text>
-            </motion.g>
-          </g>
-
-        </svg>
-
-        {/* Viewfinder corner brackets (CSS) */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 w-5 h-5 border-t-[1.5px] border-l-[1.5px] border-white/[0.18]" />
-          <div className="absolute top-0 right-0 w-5 h-5 border-t-[1.5px] border-r-[1.5px] border-white/[0.18]" />
-          <div className="absolute bottom-0 left-0 w-5 h-5 border-b-[1.5px] border-l-[1.5px] border-white/[0.18]" />
-          <div className="absolute bottom-0 right-0 w-5 h-5 border-b-[1.5px] border-r-[1.5px] border-white/[0.18]" />
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 28, scale: 0.97 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.95, ease }}
+      className="w-full rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.6)]"
+      style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(0,0,0,0.5)" }}
+    >
+      {/* Title bar */}
+      <div
+        className="flex items-center justify-between px-4 py-2.5"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.025)" }}
+      >
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.12)" }} />
+          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)" }} />
+          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)" }} />
         </div>
-
-        {/* Online badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 3.1, duration: 0.4 }}
-          className="absolute top-2 left-6 flex items-center gap-1.5 px-2 py-1 rounded bg-black/65 backdrop-blur-sm border border-white/10"
-        >
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative rounded-full h-1.5 w-1.5 bg-emerald-500" />
-          </span>
-          <span className="text-[8px] font-mono text-emerald-400/80 uppercase tracking-wider">2 камеры · онлайн</span>
-        </motion.div>
-
-        {/* REC badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 3.2, duration: 0.4 }}
-          className="absolute top-2 right-6 flex items-center gap-1.5 px-2 py-1 rounded bg-black/65 backdrop-blur-sm border border-white/10"
-        >
-          <motion.span className="w-1.5 h-1.5 rounded-full bg-red-500"
-            animate={inView ? { opacity: [1, 0.15, 1] } : {}}
-            transition={{ duration: 1.0, repeat: Infinity, delay: 3 }} />
-          <span className="text-[8px] font-mono text-red-400/70 uppercase tracking-wider">REC</span>
-        </motion.div>
-
+        <span className="text-[9px] font-mono text-white/25 tracking-widest">
+          SBA Monitor Pro · {dateStr}
+        </span>
+        <div className="flex items-center gap-1.5">
+          <motion.div
+            className="w-1.5 h-1.5 rounded-full bg-red-500"
+            animate={{ opacity: [1, 0.15, 1] }}
+            transition={{ duration: 1.3, repeat: Infinity }}
+          />
+          <span className="text-[8px] font-mono text-red-400/60">REC</span>
+        </div>
       </div>
-    </div>
+
+      {/* 2×2 camera grid */}
+      <div className="grid grid-cols-2 gap-px" style={{ background: "rgba(255,255,255,0.035)" }}>
+        {FEEDS.map((feed, i) => (
+          <CameraFeed key={feed.id} feed={feed} index={i} inView={inView} />
+        ))}
+      </div>
+
+      {/* Footer status bar */}
+      <div
+        className="flex items-center justify-between px-4 py-2"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.015)" }}
+      >
+        <div className="flex items-center gap-1.5">
+          <motion.div
+            className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          <span className="text-[8px] font-mono text-white/30">4 / 4 камеры · онлайн</span>
+        </div>
+        <span className="text-[8px] font-mono text-white/18">HDD 2.1 TB · AES-256 · H.265</span>
+      </div>
+    </motion.div>
   )
 }
 
@@ -284,8 +210,8 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
     target: sectionRef,
     offset: ["start start", "end start"],
   })
-  const sceneY       = useTransform(scrollYProgress, [0, 1], ["0%", "16%"])
-  const sceneOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
+  const panelY       = useTransform(scrollYProgress, [0, 1], ["0%", "14%"])
+  const panelOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   return (
     <section
@@ -294,7 +220,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
       className="relative min-h-screen flex flex-col overflow-hidden border-b border-white/[0.06]"
     >
       {/* Ambient glow */}
-      <div className="absolute top-1/2 right-[35%] -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-red-600/[0.05] blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 right-[38%] -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-red-600/[0.045] blur-[150px] pointer-events-none" />
 
       {/* ── Status bar ── */}
       <div className="relative z-10 flex items-center justify-between px-6 lg:px-16 py-3 border-b border-white/[0.06] text-[11px] font-mono shrink-0">
@@ -310,9 +236,9 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
       </div>
 
       {/* ── Main split grid ── */}
-      <div className="relative z-10 flex-1 grid lg:grid-cols-[1fr_520px]">
+      <div className="relative z-10 flex-1 grid lg:grid-cols-[1fr_500px]">
 
-        {/* LEFT: Typography — Framer-style massive bold lines */}
+        {/* LEFT: Typography */}
         <div className="flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-14 lg:py-24 border-r border-white/[0.06]">
 
           {/* Eyebrow */}
@@ -328,19 +254,19 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             </span>
           </motion.div>
 
-          {/* Headline — 3 short lines, each massive */}
+          {/* Headline */}
           <h1 className="mb-10 flex flex-col">
-            <RevealLine delay={0} className="leading-[0.9]">
+            <RevealLine delay={0} className="leading-[0.88]">
               <span className="block text-[clamp(4rem,9vw,8rem)] font-black tracking-tighter text-foreground">
                 Охрана
               </span>
             </RevealLine>
-            <RevealLine delay={0.08} className="leading-[0.9]">
+            <RevealLine delay={0.08} className="leading-[0.88]">
               <span className="block text-[clamp(4rem,9vw,8rem)] font-black tracking-tighter text-foreground">
                 каждого
               </span>
             </RevealLine>
-            <RevealLine delay={0.16} className="leading-[0.9]">
+            <RevealLine delay={0.16} className="leading-[0.88]">
               <span className="block text-[clamp(4rem,9vw,8rem)] font-black tracking-tighter text-red-500">
                 объекта.
               </span>
@@ -357,7 +283,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             {t("hero.subtitle")}
           </motion.p>
 
-          {/* CTA buttons */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -382,7 +308,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             </a>
           </motion.div>
 
-          {/* Stats strip */}
+          {/* Stats */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -402,11 +328,12 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           </motion.div>
         </div>
 
-        {/* RIGHT: Animated Security Scene */}
-        <div className="relative hidden lg:flex items-center justify-center px-8 py-12 overflow-hidden">
-          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <motion.div className="w-full" style={{ y: sceneY, opacity: sceneOpacity }}>
-            <SecurityScene />
+        {/* RIGHT: Monitor panel */}
+        <div className="relative hidden lg:flex items-center justify-center px-8 py-10 overflow-hidden">
+          {/* Left-edge blend */}
+          <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <motion.div className="w-full" style={{ y: panelY, opacity: panelOpacity }}>
+            <MonitorPanel />
           </motion.div>
         </div>
       </div>
@@ -415,7 +342,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.7 }}
+        transition={{ delay: 1.4, duration: 0.7 }}
         className="relative z-10 flex justify-center items-center py-5 border-t border-white/[0.06] shrink-0"
       >
         <div className="flex flex-col items-center gap-2">
