@@ -67,7 +67,7 @@ const resources = {
         titleLine1: "ОХРАНА",
         titleLine2: "КАЖДОГО",
         titleLine3: "ОБЪЕКТА.",
-        calcHint: "Используйте наш калькулятор для моментального расчета сметы. Это профессиональный алгоритм, учитывающий тип кабеля, разрешение камер, глубину архива и сложность монтажа. Не просто игрушка, а точный сметный инструмент."
+        calcHint: "Используйте наш калькулятор для моментального расчета сметы. Это профессиональный алгоритм, учитывающий тип кабеля, разрешение камер, глубину архива и сложность монтажа."
       },
       stats: {
         title1: "Безопасность вашего бизнеса",
@@ -373,7 +373,7 @@ const resources = {
         titleLine1: "ӘРБІР",
         titleLine2: "НЫСАНДЫ",
         titleLine3: "ҚОРҒАУ.",
-        calcHint: "Сметаларды жылдам есептеу үшін калькуляторымызды қолданыңыз. Бұл кабель түрін, камера ажыратымдылығын, архив тереңдігін және монтаж күрделілігін ескеретін кәсіби алгоритм. Жай ойыншық емес, нақты сметалық құрал."
+        calcHint: "Сметаларды жылдам есептеу үшін калькуляторымызды қолданыңыз. Бұл кабель түрін, камера ажыратымдылығын, архив тереңдігін және монтаж күрделілігін ескеретін кәсіби алгоритм."
       },
       stats: {
         title1: "Сіздің бизнесіңіздің қауіпсіздігі",
@@ -679,7 +679,7 @@ const resources = {
         titleLine1: "GUARDING",
         titleLine2: "EVERY",
         titleLine3: "FACILITY.",
-        calcHint: "Use our professional calculator to instantly calculate your estimate. It's a precisely designed script that factors in cable lengths, camera specs, and archives. A real estimator, not a toy."
+        calcHint: "Use our professional calculator to instantly calculate your estimate. It's a precisely designed script that factors in cable lengths, camera specs, and archives."
       },
       stats: {
         title1: "Your business security is",

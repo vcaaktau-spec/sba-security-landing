@@ -15,9 +15,9 @@ const E = [0.22, 1, 0.36, 1] as const
 /* ─────────────────────────────────────────
    useSbaCounter
    Slow, deliberate ease-out-quint.
-   Smooth deceleration for a premium settled feel.
+   Settle extremely slowly at the end for precision.
  ───────────────────────────────────────── */
-function useSbaCounter(end: number, duration = 3200, startDelay = 0) {
+function useSbaCounter(end: number, duration = 3600, startDelay = 0) {
   const [value, setValue] = useState(0)
   const [triggered, setTriggered] = useState(false)
 
@@ -31,7 +31,7 @@ function useSbaCounter(end: number, duration = 3200, startDelay = 0) {
     const origin = performance.now()
     let raf: number
 
-    // Quintic ease-out - starts fast and has a very soft, smooth deceleration tail
+    // Quintic ease-out - starts fast, with a long, slow deceleration tail
     const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5)
 
     const step = (now: number) => {
@@ -67,7 +67,7 @@ function StatCard({
   suffix?: string
   delay: number
 }) {
-  const raw = useSbaCounter(end, 3200, delay)
+  const raw = useSbaCounter(end, 3600, delay)
 
   const formatted =
     end >= 1000
@@ -75,12 +75,7 @@ function StatCard({
       : raw
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 24, filter: "blur(6px)" }}
-      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: E, delay: delay / 1000 }}
-      className="flex items-center justify-between"
-    >
+    <div className="flex items-center justify-between">
       <div className="flex flex-col gap-1.5">
         <span className="font-mono text-[9px] tracking-widest text-muted-foreground/40 uppercase">
           METRIC // 0{index}
@@ -103,30 +98,30 @@ function StatCard({
           <span className="text-primary dark:text-red-500 ml-0.5 text-2xl lg:text-3xl font-bold">{suffix}</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 /* ─────────────────────────────────────────
-   Shared Framer Motion variants
+   Staggered entrance Framer Motion variants
  ───────────────────────────────────────── */
 const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
+      staggerChildren: 0.16,
+      delayChildren: 0.2,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 24, filter: "blur(12px)" },
   visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.9, ease: E },
+    transition: { duration: 1.5, ease: E },
   },
 }
 
@@ -201,9 +196,9 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             className="absolute top-0 left-0 w-[30%] h-full bg-gradient-to-r from-transparent via-black/[0.008] dark:via-white/[0.012] to-transparent"
             animate={{ x: ["-30%", "130%"] }}
             transition={{
-              duration: 2.8,
+              duration: 3.2,
               repeat: Infinity,
-              repeatDelay: 7,
+              repeatDelay: 8,
               ease: [0.4, 0, 0.6, 1],
             }}
           />
@@ -214,7 +209,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
       <motion.div
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.65, ease: E }}
+        transition={{ duration: 1.2, ease: E }}
         className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 text-[10px] font-mono border-b border-black/[0.06] dark:border-white/[0.06] bg-background/5"
       >
         <div className="flex items-center gap-2.5">
@@ -232,7 +227,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
 
       {/* ───────────── Main Content Grid ───────────── */}
       <div className="relative z-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0">
-        {/* ── LEFT: Typography & CTAs (col-span-7) ── */}
+        {/* ── LEFT: Typography & Features (col-span-7) ── */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -250,15 +245,15 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           {/* Headline (Dynamic lines) */}
           <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.03em" }}>
             {[
-              { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.1 },
-              { text: t("hero.titleLine2"), colorClass: "text-foreground/45 dark:text-white/45", delay: 0.25 },
-              { text: t("hero.titleLine3"), colorClass: "text-primary dark:text-red-500", delay: 0.4 },
+              { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.15 },
+              { text: t("hero.titleLine2"), colorClass: "text-foreground/45 dark:text-white/45", delay: 0.35 },
+              { text: t("hero.titleLine3"), colorClass: "text-primary dark:text-red-500", delay: 0.55 },
             ].map(({ text, colorClass, delay }) => (
               <div key={text} className="overflow-hidden">
                 <motion.span
-                  initial={{ y: "115%", opacity: 0, filter: "blur(8px)" }}
+                  initial={{ y: "115%", opacity: 0, filter: "blur(12px)" }}
                   animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.0, ease: E, delay }}
+                  transition={{ duration: 1.6, ease: E, delay }}
                   className={`block font-black leading-[0.9] tracking-tighter ${colorClass}`}
                   style={{
                     fontSize: "clamp(3.2rem, 9.5vw, 8.5rem)",
@@ -279,7 +274,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           </motion.p>
 
           {/* Feature tags */}
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-2 mb-8">
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-2">
             {features.map(({ Icon, key }) => (
               <span
                 key={key}
@@ -290,11 +285,40 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               </span>
             ))}
           </motion.div>
+        </motion.div>
 
-          {/* Interactive Calculator CTA Control Panel */}
+        {/* ── RIGHT: Technical Stats & Calculator Widget (col-span-5) ── */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col border-t lg:border-t-0 lg:border-l border-black/[0.06] dark:border-white/[0.06] pt-10 lg:pt-0 lg:pl-12 w-full max-w-[480px] lg:max-w-none mx-auto lg:mx-0 select-none lg:col-span-5"
+        >
+          {/* Stats list */}
+          {[
+            { end: 5000, label: t("hero.stat1"), delay: 850 },
+            { end: 300,  label: t("hero.stat2"), delay: 1000 },
+            { end: 10,   label: t("hero.stat3"), delay: 1150 },
+          ].map((s, i) => (
+            <motion.div
+              key={i}
+              variants={itemVariants}
+              className="py-6 border-b border-black/[0.06] dark:border-white/[0.06]"
+            >
+              <StatCard index={i + 1} {...s} />
+            </motion.div>
+          ))}
+
+          {/* Fine separator divider */}
           <motion.div
             variants={itemVariants}
-            className="border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md p-5 rounded-2xl relative overflow-hidden shadow-sm max-w-[580px] w-full"
+            className="my-6"
+          />
+
+          {/* Interactive Calculator CTA Control Panel Widget */}
+          <motion.div
+            variants={itemVariants}
+            className="border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md p-5 rounded-2xl relative overflow-hidden shadow-sm w-full"
           >
             {/* Panel Diagnostics header */}
             <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-black/[0.06] dark:border-white/[0.06] text-[9px] font-mono tracking-widest text-muted-foreground/50 uppercase">
@@ -340,34 +364,13 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             </div>
           </motion.div>
         </motion.div>
-
-        {/* ── RIGHT: Technical Stats (col-span-5) ── */}
-        <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col border-t lg:border-t-0 lg:border-l border-black/[0.06] dark:border-white/[0.06] pt-10 lg:pt-0 lg:pl-12 w-full max-w-[480px] lg:max-w-none mx-auto lg:mx-0 select-none lg:col-span-5"
-        >
-          {[
-            { end: 5000, label: t("hero.stat1"), delay: 850 },
-            { end: 300,  label: t("hero.stat2"), delay: 1000 },
-            { end: 10,   label: t("hero.stat3"), delay: 1150 },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="py-6 sm:py-7 border-b border-black/[0.06] dark:border-white/[0.06] last:border-b-0"
-            >
-              <StatCard index={i + 1} {...s} />
-            </div>
-          ))}
-        </motion.div>
       </div>
 
       {/* ───────────── Bottom Diagnostic Bar ───────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6, ease: E }}
+        transition={{ delay: 2.2, duration: 1.4, ease: E }}
         className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 border-t border-black/[0.06] dark:border-white/[0.06] text-muted-foreground/45 font-mono text-[9px] tracking-widest uppercase bg-background/5"
       >
         <div className="w-8 h-[1px] bg-red-500/50" />
