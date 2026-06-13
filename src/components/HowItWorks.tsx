@@ -64,24 +64,29 @@ export const HowItWorks = () => {
     <section
       id="howItWorks"
       ref={containerRef}
-      className="magnet-section relative min-h-screen flex flex-col items-center justify-center py-24 overflow-hidden bg-transparent"
+      className="relative py-24 lg:py-32 overflow-hidden"
     >
       <div className="relative z-10 container mx-auto px-4 sm:px-6 max-w-[1200px]">
         
         {/* HEADER */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-20 lg:mb-32">
-          <h2 className="text-[36px] sm:text-[48px] lg:text-[60px] font-black tracking-tighter leading-[1.1] mb-6 flex flex-col items-center justify-center w-full">
-            <span className="block w-full text-foreground">
-              {t("how.title1", "Как мы")}
-            </span>
-            <span className="block w-full text-red-600 mt-2">
-              {t("how.title2", "работаем")}
-            </span>
-          </h2>
-
-          <div className="text-[16px] sm:text-[18px] text-muted-foreground font-medium leading-relaxed max-w-2xl text-center">
-            {t("how.subtitle", "Полный цикл установки видеонаблюдения — от вашей первой заявки до полностью настроенной и работающей системы.")}
-          </div>
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: smoothEase }}
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5"
+          >
+            {t("how.title1", "Как мы")}{" "}
+            <span className="text-red-500">{t("how.title2", "работаем")}</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1, ease: smoothEase }}
+            className="text-lg text-muted-foreground"
+          >
+            {t("how.subtitle")}
+          </motion.p>
         </div>
 
         {/* TIMELINE CARDS */}
@@ -128,29 +133,24 @@ export const HowItWorks = () => {
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
                   transition={{ duration: 0.8, ease: smoothEase, delay: feature.delay }}
-                  className="group relative bg-card/40 backdrop-blur-md border border-border/40 hover:border-red-500/30 rounded-[24px] p-6 flex flex-col justify-between h-full shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-500 overflow-hidden"
+                  className="group relative bg-white/[0.03] dark:bg-white/[0.02] border border-white/[0.08] hover:border-white/[0.15] rounded-2xl p-6 flex flex-col justify-between h-full transition-all duration-400 overflow-hidden"
                 >
-                  {/* HUD corners */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
-                    <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-red-500/50" />
-                    <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-red-500/50" />
-                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-red-500/50" />
-                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-red-500/50" />
-                  </div>
+                  {/* Hover gradient */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.05] to-transparent pointer-events-none" />
 
                   {/* Step metadata */}
-                  <div className="flex items-center justify-between mb-6 relative z-10">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-red-500/10 text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors duration-500 relative z-20">
-                      <Icon size={20} />
+                  <div className="flex items-center justify-between mb-5 relative z-10">
+                    <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all duration-400">
+                      <Icon size={19} />
                     </div>
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground/60 uppercase">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground/40 uppercase">
                       {t("how.step", "Шаг")} {feature.step}
                     </span>
                   </div>
 
                   {/* Card Title & Desc */}
                   <div className="relative z-10 flex-grow">
-                    <h3 className="text-lg font-bold mb-3 text-foreground group-hover:text-red-500 transition-colors duration-300">
+                    <h3 className="text-base font-bold mb-2.5 text-foreground group-hover:text-foreground/90 transition-colors duration-300">
                       {feature.title}
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">

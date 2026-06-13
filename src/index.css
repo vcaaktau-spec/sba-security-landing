@@ -1,82 +1,219 @@
+/* -----------------------------------------------
+   GLOBAL: Smooth scroll handled by Lenis only
+   ----------------------------------------------- */
 html {
-  /* Убираем scroll-behavior: smooth, так как у нас Lenis (SmoothScroll) */
-  /* Конфликт нативного скролла и Lenis вызывает жесткие лаги */
   touch-action: manipulation;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* -------------------------------- */
-/* ПРЕМИАЛЬНОЕ СВЕЧЕНИЕ (ОПТИМИЗИРОВАНО) */
-/* -------------------------------- */
+/* -----------------------------------------------
+   LINEAR-STYLE DOT GRID BACKGROUND
+   ----------------------------------------------- */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
 
+.dark .dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+}
+
+/* -----------------------------------------------
+   PREMIUM GLOW ORBS (OPTIMIZED)
+   ----------------------------------------------- */
 .shadow {
   position: absolute;
   background: radial-gradient(
-    circle at center, 
-    hsl(var(--primary) / 0.15) 0%, 
+    circle at center,
+    hsl(var(--primary) / 0.12) 0%,
     transparent 70%
   );
-  border-radius: 50%; 
+  border-radius: 50%;
   z-index: -1;
   width: 50vw;
   height: 50vw;
   top: 10%;
   right: -10%;
-  /* Уменьшаем blur, так как 100px убивает мобилки */
-  filter: blur(60px); 
-  /* Убрали will-change! Он жрал память */
-  animation: shadow-float 10s ease-in-out infinite alternate;
+  filter: blur(80px);
+  animation: shadow-float 12s ease-in-out infinite alternate;
 }
 
 @keyframes shadow-float {
-  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-  100% { transform: translate(-5%, 5%) scale(1.1); opacity: 0.7; }
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  100% { transform: translate(-4%, 4%) scale(1.08); opacity: 0.6; }
 }
 
-/* На мобилках выключаем тяжелую анимацию свечения, оставляем статику */
 @media (max-width: 768px) {
   .shadow {
     animation: none;
-    filter: blur(40px);
+    filter: blur(50px);
+    opacity: 0.3;
   }
 }
 
-/* -------------------------------- */
-/* МИКРО-ВЗАИМОДЕЙСТВИЯ */
-/* -------------------------------- */
+/* -----------------------------------------------
+   LINEAR-STYLE GRADIENT BORDERS
+   ----------------------------------------------- */
+.linear-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
 
+.linear-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 50%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .linear-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* -----------------------------------------------
+   MICRO-INTERACTIONS
+   ----------------------------------------------- */
 .btn-hover {
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Отключаем hover эффекты с трансформацией на мобилках, чтобы не лагало при скролле */
 @media (hover: hover) {
   .btn-hover:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px hsl(var(--primary) / 0.4);
   }
-  
+
   .card-hover:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.35);
   }
 }
 
 .card-hover {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
-  /* GPU ускорение только во время взаимодействия */
-  transform: translateZ(0); 
+  transform: translateZ(0);
 }
 
-/* -------------------------------- */
-/* БЕГУЩАЯ СТРОКА */
-/* -------------------------------- */
-
+/* -----------------------------------------------
+   MARQUEE / TICKER
+   ----------------------------------------------- */
 .animate-marquee {
   display: flex;
   animation: marquee 40s linear infinite;
 }
 
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .marquee-mask {
-  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+/* -----------------------------------------------
+   SCROLL REVEAL VARIANTS
+   ----------------------------------------------- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* -----------------------------------------------
+   CUSTOM SCROLLBAR
+   ----------------------------------------------- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* -----------------------------------------------
+   SECTION GRADIENT SEPARATOR
+   ----------------------------------------------- */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.07) 30%, rgba(255,255,255,0.07) 70%, transparent);
+}
+
+/* -----------------------------------------------
+   STAT COUNTER TABULAR NUMS
+   ----------------------------------------------- */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* -----------------------------------------------
+   NEWS CARD HOVER GRADIENT
+   ----------------------------------------------- */
+.news-card-hover {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) {
+  .news-card-hover:hover {
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.15), 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* -----------------------------------------------
+   SHINE EFFECT ON BUTTONS
+   ----------------------------------------------- */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 70%
+  );
+  transform: skewX(-15deg);
+  transition: left 0.7s ease;
+}
+
+@media (hover: hover) {
+  .btn-shine:hover::after {
+    left: 130%;
+  }
 }

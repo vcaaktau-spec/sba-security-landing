@@ -16,6 +16,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -56,19 +60,37 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      transitionDuration: {
+        400: "400ms",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
-          to: { height: "var(--radix-accordion-content-height)" },
+          to:   { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 },
+          to:   { height: 0 },
+        },
+        marquee: {
+          "0%":   { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "fade-in-up": {
+          from: { opacity: 0, transform: "translateY(24px)" },
+          to:   { opacity: 1, transform: "translateY(0)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: 0.4 },
+          "50%":      { opacity: 0.7 },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-up":   "accordion-up 0.2s ease-out",
+        marquee:          "marquee 40s linear infinite",
+        "fade-in-up":     "fade-in-up 0.7s cubic-bezier(0.22,1,0.36,1) both",
+        "glow-pulse":     "glow-pulse 4s ease-in-out infinite",
       },
     },
   },

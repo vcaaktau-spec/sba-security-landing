@@ -15,10 +15,9 @@ import Magnetic from "./ui/magnetic"
 
 const sponsors = [
   { name: "Hikvision" }, { name: "Dahua" }, { name: "Hiwatch" }, 
-  { name: "Imou" }, { name: "Tiandy" }, { name: "Ezviz" },
-  { name: "Mikrotik" }, { name: "Ruijie" }, { name: "TP Link" },
-  { name: "Intel" }, { name: "Microsoft" }, { name: "Linux" },
-  { name: "WD" }, { name: "Seagate" }, { name: "Kingston" },
+  { name: "Uniview" }, { name: "Tiandy" }, { name: "Ezviz" },
+  { name: "Mikrotik" }, { name: "Ruijie" }, { name: "Ubiquiti" },
+  { name: "WD Purple" }, { name: "Seagate Skyhawk" }, { name: "CommScope" },
 ]
 
 const languages = [
@@ -128,26 +127,27 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
 
   return (
     <footer id="footer" className="relative w-full bg-transparent flex flex-col z-20">
-      
+
+      {/* Top divider */}
+      <div className="section-divider" />
+
       {/* Brands marquee */}
-      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 mt-10">
-        <div className="w-full border-y border-border/30 bg-card/20 py-2.5 overflow-hidden rounded-full">
-          <div className="relative flex items-center w-full mask-edges">
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none rounded-l-full" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none rounded-r-full" />
-            
-            <motion.div 
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-              className="flex gap-12 items-center whitespace-nowrap px-4"
-            >
-              {[...sponsors, ...sponsors].map((brand, i) => (
-                <span key={i} className="text-[9px] font-mono font-bold tracking-[0.2em] text-muted-foreground/45 uppercase hover:text-red-500 transition-colors cursor-default">
-                  {brand.name}
-                </span>
-              ))}
-            </motion.div>
-          </div>
+      <div className="w-full overflow-hidden py-4 border-b border-white/[0.06]">
+        <div className="relative marquee-mask">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
+            className="flex gap-14 items-center whitespace-nowrap px-8"
+          >
+            {[...sponsors, ...sponsors].map((brand, i) => (
+              <span
+                key={i}
+                className="text-[10px] font-mono font-bold tracking-[0.25em] text-muted-foreground/30 uppercase hover:text-muted-foreground/60 transition-colors duration-200 cursor-default"
+              >
+                {brand.name}
+              </span>
+            ))}
+          </motion.div>
         </div>
       </div>
 
@@ -247,11 +247,11 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
       </div>
 
       {/* Copyright segment */}
-      <div className="w-full border-t border-border/10 bg-background/80 backdrop-blur-md">
-        <div className="w-full max-w-[1200px] mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-muted-foreground/60 font-semibold tracking-wider uppercase">
+      <div className="w-full border-t border-white/[0.05]">
+        <div className="w-full max-w-[1200px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-muted-foreground/40 font-medium tracking-wide">
           <p>{t("footer.copyright")}</p>
-          <a href="https://wa.me/77064230090" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-red-500 transition-colors">
-            {t("footer.love")} <span className="text-foreground">RS STUDIO</span>
+          <a href="https://wa.me/77064230090" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-muted-foreground/70 transition-colors duration-200">
+            {t("footer.love")} <span className="text-muted-foreground/60">RS STUDIO</span>
           </a>
         </div>
       </div>
