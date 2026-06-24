@@ -1,0 +1,996 @@
+{
+  ".eslintrc.cjs": {
+    "publicContracts": [],
+    "internalExports": [
+      "root",
+      "env",
+      "es2020"
+    ],
+    "importedByCount": 0
+  },
+  "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java": {
+    "publicContracts": [],
+    "internalExports": [
+      "ExampleInstrumentedTest",
+      "useAppContext"
+    ],
+    "importedByCount": 0
+  },
+  "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java": {
+    "publicContracts": [],
+    "internalExports": [
+      "MainActivity"
+    ],
+    "importedByCount": 0
+  },
+  "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java": {
+    "publicContracts": [],
+    "internalExports": [
+      "ExampleUnitTest",
+      "addition_isCorrect"
+    ],
+    "importedByCount": 0
+  },
+  "api\\delete-project.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\get-all-projects.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\get-projects.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\projects.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\telegram.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\upload.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "api\\users.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "handler"
+    ],
+    "importedByCount": 0
+  },
+  "capacitor.config.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "clerk-react\\eslint.config.js": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "clerk-react\\src\\App.tsx": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "clerk-react\\src\\main.tsx": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "clerk-react\\vite.config.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "drizzle.config.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "ios\\App\\App\\AppDelegate.swift": {
+    "publicContracts": [],
+    "internalExports": [
+      "AppDelegate"
+    ],
+    "importedByCount": 0
+  },
+  "ios\\App\\CapApp-SPM\\Package.swift": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift": {
+    "publicContracts": [],
+    "internalExports": [
+      "isCapacitorApp"
+    ],
+    "importedByCount": 0
+  },
+  "postcss.config.js": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\App.tsx": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Calculator.tsx": {
+    "publicContracts": [
+      "Calculator"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Cta.tsx": {
+    "publicContracts": [
+      "Cta"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Features.tsx": {
+    "publicContracts": [
+      "Features"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Footer.tsx": {
+    "publicContracts": [
+      "Footer"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\GlobalBackground.tsx": {
+    "publicContracts": [
+      "GlobalBackground"
+    ],
+    "internalExports": [],
+    "importedByCount": 2
+  },
+  "src\\components\\Hero.tsx": {
+    "publicContracts": [
+      "Hero"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\HowItWorks.tsx": {
+    "publicContracts": [
+      "HowItWorks"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\mode-toggle.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "ModeToggle"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\Navbar.tsx": {
+    "publicContracts": [
+      "Navbar"
+    ],
+    "internalExports": [],
+    "importedByCount": 2
+  },
+  "src\\components\\NotFound.tsx": {
+    "publicContracts": [
+      "NotFound"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Preloader.tsx": {
+    "publicContracts": [
+      "Preloader"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Projects.tsx": {
+    "publicContracts": [
+      "Projects"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\SbaPlanner.tsx": {
+    "publicContracts": [
+      "SbaPlanner"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\ScrollToTop.tsx": {
+    "publicContracts": [
+      "ScrollToTop"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\SeoBlock.tsx": {
+    "publicContracts": [
+      "SeoBlock"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Services.tsx": {
+    "publicContracts": [
+      "Services"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\smooth-scroll.tsx": {
+    "publicContracts": [
+      "SmoothScroll"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Statistics.tsx": {
+    "publicContracts": [
+      "Statistics"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\Testimonials.tsx": {
+    "publicContracts": [
+      "Testimonials"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\theme-provider.tsx": {
+    "publicContracts": [
+      "ThemeProvider",
+      "useTheme"
+    ],
+    "internalExports": [],
+    "importedByCount": 3
+  },
+  "src\\components\\ui\\accordion.tsx": {
+    "publicContracts": [
+      "Accordion",
+      "AccordionItem",
+      "AccordionTrigger",
+      "AccordionContent"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\ui\\avatar.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "Avatar",
+      "AvatarImage",
+      "AvatarFallback"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\badge.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "Badge",
+      "badgeVariants",
+      "BadgeProps"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\button.tsx": {
+    "publicContracts": [
+      "Button",
+      "buttonVariants",
+      "ButtonProps"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\components\\ui\\card.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "Card",
+      "CardHeader",
+      "CardFooter",
+      "CardTitle",
+      "CardDescription",
+      "CardContent"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\dropdown-menu.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "DropdownMenu",
+      "DropdownMenuTrigger",
+      "DropdownMenuContent",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem",
+      "DropdownMenuLabel",
+      "DropdownMenuSeparator",
+      "DropdownMenuShortcut",
+      "DropdownMenuGroup",
+      "DropdownMenuPortal",
+      "DropdownMenuSub",
+      "DropdownMenuSubContent",
+      "DropdownMenuSubTrigger",
+      "DropdownMenuRadioGroup"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\input.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "Input",
+      "InputProps"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\magnetic.tsx": {
+    "publicContracts": [
+      "Magnetic"
+    ],
+    "internalExports": [],
+    "importedByCount": 2
+  },
+  "src\\components\\ui\\navigation-menu.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "navigationMenuTriggerStyle",
+      "NavigationMenu",
+      "NavigationMenuList",
+      "NavigationMenuItem",
+      "NavigationMenuContent",
+      "NavigationMenuTrigger",
+      "NavigationMenuLink",
+      "NavigationMenuIndicator",
+      "NavigationMenuViewport"
+    ],
+    "importedByCount": 0
+  },
+  "src\\components\\ui\\sheet.tsx": {
+    "publicContracts": [],
+    "internalExports": [
+      "Sheet",
+      "SheetPortal",
+      "SheetOverlay",
+      "SheetTrigger",
+      "SheetClose",
+      "SheetContent",
+      "SheetHeader",
+      "SheetFooter",
+      "SheetTitle",
+      "SheetDescription"
+    ],
+    "importedByCount": 0
+  },
+  "src\\db\\index.ts": {
+    "publicContracts": [
+      "db"
+    ],
+    "internalExports": [],
+    "importedByCount": 5
+  },
+  "src\\db\\schema.ts": {
+    "publicContracts": [
+      "categoryEnum",
+      "statusEnum",
+      "projects",
+      "documents"
+    ],
+    "internalExports": [],
+    "importedByCount": 6
+  },
+  "src\\i18n.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\lib\\utils.ts": {
+    "publicContracts": [
+      "cn"
+    ],
+    "internalExports": [],
+    "importedByCount": 9
+  },
+  "src\\main.tsx": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\pages\\Dashboard.tsx": {
+    "publicContracts": [
+      "Dashboard"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\pages\\Home.tsx": {
+    "publicContracts": [
+      "Home"
+    ],
+    "internalExports": [],
+    "importedByCount": 1
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\extract-colors.cjs": {
+    "publicContracts": [],
+    "internalExports": [
+      "parseBrandColors",
+      "hexToRgb",
+      "rgbToHex",
+      "colorDistance",
+      "findNearestBrandColor",
+      "calculateCompliance",
+      "parseImageMagickOutput"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\inject-brand-context.cjs": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\sync-brand-to-tokens.cjs": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\validate-asset.cjs": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\core.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "_load_csv",
+      "_search_csv",
+      "detect_domain",
+      "search",
+      "search_all",
+      "get_cip_brief",
+      "BM25",
+      "DATA_DIR",
+      "MAX_RESULTS",
+      "CSV_CONFIG"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\generate.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "load_logo_image",
+      "load_env",
+      "build_cip_prompt",
+      "generate_with_nano_banana",
+      "generate_cip_set",
+      "check_logo_required",
+      "main",
+      "MODELS",
+      "DEFAULT_MODEL"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\render-html.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "get_image_base64",
+      "get_deliverable_info",
+      "generate_html",
+      "main",
+      "DELIVERABLE_INFO"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\search.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "format_results",
+      "format_brief",
+      "main"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon\\generate.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "load_env",
+      "extract_svgs",
+      "apply_color",
+      "apply_viewbox_size",
+      "generate_icon",
+      "generate_batch",
+      "generate_sizes",
+      "main",
+      "GEMINI_API_KEY",
+      "MODEL",
+      "ICON_STYLES",
+      "ICON_CATEGORIES",
+      "SVG_PROMPT_TEMPLATE",
+      "SVG_BATCH_PROMPT_TEMPLATE"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\core.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "_load_csv",
+      "_search_csv",
+      "detect_domain",
+      "search",
+      "search_all",
+      "BM25",
+      "DATA_DIR",
+      "MAX_RESULTS",
+      "CSV_CONFIG"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\generate.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "load_env",
+      "enhance_prompt",
+      "generate_logo",
+      "generate_batch",
+      "main",
+      "GEMINI_API_KEY",
+      "GEMINI_FLASH",
+      "GEMINI_PRO",
+      "ASPECT_RATIOS",
+      "DEFAULT_ASPECT_RATIO",
+      "LOGO_PROMPT_TEMPLATE",
+      "STYLE_MODIFIERS",
+      "INDUSTRY_PROMPTS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\search.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "format_output",
+      "generate_design_brief"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\embed-tokens.cjs": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\fetch-background.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "resolve_token_reference",
+      "load_brand_colors",
+      "load_backgrounds_config",
+      "get_overlay_css",
+      "get_curated_images",
+      "get_pexels_search_url",
+      "get_background_image",
+      "generate_css_for_background",
+      "main",
+      "PROJECT_ROOT",
+      "TOKENS_PATH",
+      "BACKGROUNDS_CSV",
+      "CURATED_IMAGES"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-slide.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "generate_title_slide",
+      "generate_problem_slide",
+      "generate_solution_slide",
+      "generate_metrics_slide",
+      "generate_chart_slide",
+      "generate_testimonial_slide",
+      "generate_cta_slide",
+      "generate_deck",
+      "main",
+      "SCRIPT_DIR",
+      "DATA_DIR",
+      "TOKENS_CSS",
+      "TOKENS_JSON",
+      "OUTPUT_DIR",
+      "SLIDE_TEMPLATE",
+      "SLIDE_GENERATORS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-tokens.cjs": {
+    "publicContracts": [],
+    "internalExports": [
+      "colors",
+      "null"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\html-token-validator.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "load_css_variables",
+      "is_inside_block",
+      "is_allowed_exception",
+      "is_allowed_rgba",
+      "get_context",
+      "validate_html",
+      "validate_file",
+      "validate_directory",
+      "print_result",
+      "print_summary",
+      "main",
+      "ValidationResult",
+      "PROJECT_ROOT",
+      "TOKENS_JSON_PATH",
+      "TOKENS_CSS_PATH",
+      "ASSET_DIRS",
+      "FORBIDDEN_PATTERNS",
+      "ALLOWED_RGBA_PATTERNS",
+      "ALLOWED_EXCEPTIONS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\search-slides.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "format_result",
+      "format_context",
+      "main"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide-token-validator.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "main",
+      "SCRIPT_DIR",
+      "UNIFIED_VALIDATOR"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide_search_core.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "_load_csv",
+      "_search_csv",
+      "detect_domain",
+      "search",
+      "search_all",
+      "_load_decision_csv",
+      "get_layout_for_goal",
+      "get_typography_for_slide",
+      "get_color_for_emotion",
+      "get_background_config",
+      "should_use_full_bleed",
+      "calculate_pattern_break",
+      "search_with_context",
+      "BM25",
+      "DATA_DIR",
+      "MAX_RESULTS",
+      "CSV_CONFIG",
+      "AVAILABLE_DOMAINS",
+      "DECISION_CSV_CONFIG"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\validate-tokens.cjs": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\shadcn_add.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "main",
+      "ShadcnInstaller"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tailwind_config_gen.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "main",
+      "TailwindConfigGenerator"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "TestShadcnInstaller"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_tailwind_config_gen.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "TestTailwindConfigGenerator"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data\\_sync_all.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "h2r",
+      "r2h",
+      "lum",
+      "is_dark",
+      "on_color",
+      "blend",
+      "shift",
+      "derive_row",
+      "rebuild_colors",
+      "derive_ui_reasoning",
+      "rebuild_ui_reasoning",
+      "BASE",
+      "COLOR_RENAMES",
+      "UI_RENAMES",
+      "REMOVE_TYPES",
+      "NEW_COLORS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\core.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "_load_csv",
+      "_search_csv",
+      "detect_domain",
+      "search",
+      "search_stack",
+      "BM25",
+      "DATA_DIR",
+      "MAX_RESULTS",
+      "CSV_CONFIG",
+      "STACK_CONFIG",
+      "AVAILABLE_STACKS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\design_system.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "hex_to_ansi",
+      "ansi_ljust",
+      "section_header",
+      "format_ascii_box",
+      "format_markdown",
+      "generate_design_system",
+      "persist_design_system",
+      "format_master_md",
+      "format_page_override_md",
+      "_generate_intelligent_overrides",
+      "_detect_page_type",
+      "DesignSystemGenerator",
+      "REASONING_FILE",
+      "SEARCH_CONFIG",
+      "BOX_WIDTH"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\search.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "format_output"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "initCommand"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\uninstall.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "uninstallCommand"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\update.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "updateCommand"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\versions.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "versionsCommand"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\index.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "AI_TYPES",
+      "AI_FOLDERS",
+      "AIType",
+      "InstallType",
+      "Release",
+      "Asset",
+      "InstallConfig",
+      "PlatformConfig"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\detect.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "detectAIType",
+      "getAITypeDescription"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "extractZip",
+      "copyFolders",
+      "cleanup",
+      "createTempDir",
+      "installFromZip"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\github.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "GitHubRateLimitError",
+      "GitHubDownloadError",
+      "fetchReleases",
+      "getLatestRelease",
+      "downloadRelease",
+      "getAssetUrl"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\logger.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "logger"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\template.ts": {
+    "publicContracts": [],
+    "internalExports": [
+      "loadPlatformConfig",
+      "loadAllPlatformConfigs",
+      "renderSkillFile",
+      "generatePlatformFiles",
+      "generateAllPlatformFiles",
+      "getSupportedAITypes",
+      "PlatformConfig"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data\\_sync_all.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "h2r",
+      "r2h",
+      "lum",
+      "is_dark",
+      "on_color",
+      "blend",
+      "shift",
+      "derive_row",
+      "rebuild_colors",
+      "derive_ui_reasoning",
+      "rebuild_ui_reasoning",
+      "BASE",
+      "COLOR_RENAMES",
+      "UI_RENAMES",
+      "REMOVE_TYPES",
+      "NEW_COLORS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\core.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "_load_csv",
+      "_search_csv",
+      "detect_domain",
+      "search",
+      "search_stack",
+      "BM25",
+      "DATA_DIR",
+      "MAX_RESULTS",
+      "CSV_CONFIG",
+      "STACK_CONFIG",
+      "AVAILABLE_STACKS"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\design_system.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "hex_to_ansi",
+      "ansi_ljust",
+      "section_header",
+      "format_ascii_box",
+      "format_markdown",
+      "generate_design_system",
+      "persist_design_system",
+      "format_master_md",
+      "format_page_override_md",
+      "_generate_intelligent_overrides",
+      "_detect_page_type",
+      "DesignSystemGenerator",
+      "REASONING_FILE",
+      "SEARCH_CONFIG",
+      "BOX_WIDTH"
+    ],
+    "importedByCount": 0
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\search.py": {
+    "publicContracts": [],
+    "internalExports": [
+      "format_output"
+    ],
+    "importedByCount": 0
+  },
+  "src\\vite-env.d.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  },
+  "tailwind.config.js": {
+    "publicContracts": [],
+    "internalExports": [
+      "darkMode",
+      "content",
+      "tsx"
+    ],
+    "importedByCount": 0
+  },
+  "vite.config.ts": {
+    "publicContracts": [],
+    "internalExports": [],
+    "importedByCount": 0
+  }
+}

@@ -23,10 +23,10 @@ interface IncidentCard {
 }
 
 const categoryStyle: Record<Category, { badge: string; statColor: string; iconBg: string }> = {
-  fire:       { badge: "bg-red-500/10 border-red-500/25 text-red-400",        statColor: "text-red-400",    iconBg: "bg-red-500/10 text-red-400" },
-  cctv:       { badge: "bg-orange-500/10 border-orange-500/25 text-orange-400", statColor: "text-orange-400", iconBg: "bg-orange-500/10 text-orange-400" },
-  theft:      { badge: "bg-yellow-500/10 border-yellow-500/25 text-yellow-400", statColor: "text-yellow-400", iconBg: "bg-yellow-500/10 text-yellow-400" },
-  electrical: { badge: "bg-amber-500/10 border-amber-500/25 text-amber-400",   statColor: "text-amber-400",  iconBg: "bg-amber-500/10 text-amber-400" },
+  fire:       { badge: "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400",        statColor: "text-red-600 dark:text-red-400",    iconBg: "bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400" },
+  cctv:       { badge: "bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 text-orange-700 dark:text-orange-400", statColor: "text-orange-600 dark:text-orange-400", iconBg: "bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400" },
+  theft:      { badge: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400", statColor: "text-amber-700 dark:text-amber-400", iconBg: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400" },
+  electrical: { badge: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400",   statColor: "text-amber-700 dark:text-amber-400",  iconBg: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400" },
 }
 
 const incidents: IncidentCard[] = [
@@ -130,7 +130,7 @@ const incidents: IncidentCard[] = [
 
 export const PainSection = () => {
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-24 lg:py-32 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.06]">
 
       {/* Background glow */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
@@ -146,7 +146,7 @@ export const PainSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold uppercase tracking-wider mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wider mb-6 animate-fade-in"
           >
             <AlertTriangle size={12} className="animate-pulse" />
             Реальные случаи из СНГ
@@ -157,10 +157,10 @@ export const PainSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.08, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5"
           >
             Какова реальная цена{" "}
-            <span className="text-red-500">экономии на безопасности?</span>
+            <span className="text-red-600 dark:text-red-500">экономии на безопасности?</span>
           </motion.h2>
 
           <motion.p
@@ -168,7 +168,7 @@ export const PainSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15, ease }}
-            className="text-lg text-muted-foreground leading-relaxed"
+            className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed"
           >
             Четыре реальных инцидента, каждый из которых можно было предотвратить с профессиональной системой безопасности. Ссылки на источники прилагаются.
           </motion.p>
@@ -187,14 +187,14 @@ export const PainSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.75, delay: idx * 0.1, ease }}
-                className="news-card-hover group relative flex flex-col bg-card/20 dark:bg-white/[0.025] border border-border/50 rounded-2xl overflow-hidden"
+                className="news-card-hover group relative flex flex-col bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)] dark:hover:border-white/[0.12]"
               >
                 {/* Top gradient accent line */}
                 <div className={`h-px w-full ${
-                  item.category === "fire" ? "bg-gradient-to-r from-transparent via-red-500/50 to-transparent"
-                  : item.category === "cctv" ? "bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"
-                  : item.category === "theft" ? "bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"
-                  : "bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"
+                  item.category === "fire" ? "bg-gradient-to-r from-transparent via-red-500/40 to-transparent"
+                  : item.category === "cctv" ? "bg-gradient-to-r from-transparent via-orange-500/40 to-transparent"
+                  : item.category === "theft" ? "bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent"
+                  : "bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"
                 }`} />
 
                 <div className="flex flex-col gap-5 p-6 sm:p-7 flex-1">
@@ -206,8 +206,8 @@ export const PainSection = () => {
                       {item.categoryLabel}
                     </div>
                     <div className="text-right shrink-0">
-                      <div className="text-[11px] font-mono text-muted-foreground/55 leading-tight">{item.date}</div>
-                      <div className="text-[11px] font-mono text-muted-foreground/55 leading-tight">{item.location}</div>
+                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 leading-tight">{item.date}</div>
+                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 leading-tight">{item.location}</div>
                     </div>
                   </div>
 
@@ -216,13 +216,13 @@ export const PainSection = () => {
                     <span className={`text-[52px] sm:text-[60px] font-black tracking-tight leading-none tabular-nums ${style.statColor}`}>
                       {item.impactStat}
                     </span>
-                    <span className="text-sm sm:text-base font-semibold text-muted-foreground leading-tight">
+                    <span className="text-sm sm:text-base font-semibold text-slate-500 dark:text-slate-400 leading-tight">
                       {item.impactUnit}
                     </span>
                   </div>
 
                   {/* Incident headline */}
-                  <h3 className="text-base sm:text-lg font-bold text-foreground leading-snug group-hover:text-foreground/90 transition-colors">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                     {item.headline}
                   </h3>
 
@@ -230,15 +230,15 @@ export const PainSection = () => {
                   <div className="space-y-3 mt-auto">
 
                     {/* What went wrong */}
-                    <div className="p-4 rounded-xl bg-red-500/[0.05] border border-red-500/[0.12]">
+                    <div className="p-4 rounded-xl bg-red-50/70 dark:bg-red-950/20 border border-red-100 dark:border-red-950/30">
                       <div className="flex items-center gap-2 mb-2.5">
-                        <AlertTriangle size={13} className="text-red-400 shrink-0" />
-                        <span className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest">Что пошло не так</span>
+                        <AlertTriangle size={13} className="text-red-600 dark:text-red-400 shrink-0" />
+                        <span className="text-[10px] font-mono font-bold text-red-600 dark:text-red-400 uppercase tracking-widest">Что пошло не так</span>
                       </div>
                       <ul className="space-y-1.5">
                         {item.problemPoints.map((point, pi) => (
-                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-muted-foreground/80 leading-snug">
-                            <span className="mt-1.5 w-1 h-1 rounded-full bg-red-400/60 shrink-0" />
+                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-slate-700 dark:text-slate-300 leading-snug">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500/30 dark:bg-red-400/30 shrink-0" />
                             {point}
                           </li>
                         ))}
@@ -246,20 +246,21 @@ export const PainSection = () => {
                     </div>
 
                     {/* SBA solution */}
-                    <div className="p-4 rounded-xl bg-emerald-500/[0.05] border border-emerald-500/[0.12]">
+                    <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-950/30">
                       <div className="flex items-center gap-2 mb-2.5">
-                        <ShieldCheck size={13} className="text-emerald-400 shrink-0" />
-                        <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">Как SBA предотвращает это</span>
+                        <ShieldCheck size={13} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Как SBA предотвращает это</span>
                       </div>
                       <ul className="space-y-1.5">
                         {item.sbaPoints.map((point, pi) => (
-                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-muted-foreground/80 leading-snug">
-                            <span className="mt-1.5 w-1 h-1 rounded-full bg-emerald-400/60 shrink-0" />
+                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-slate-700 dark:text-slate-300 leading-snug">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/30 dark:bg-emerald-400/30 shrink-0" />
                             {point}
                           </li>
                         ))}
                       </ul>
                     </div>
+
                   </div>
 
                   {/* News source link */}
@@ -267,12 +268,12 @@ export const PainSection = () => {
                     href={item.newsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/link flex items-center gap-2.5 pt-4 border-t border-border/30 text-[11px] font-mono text-muted-foreground/40 hover:text-foreground/70 transition-colors duration-200"
+                    className="group/link flex items-center gap-2.5 pt-4 border-t border-slate-150 dark:border-white/[0.06] text-[11px] font-mono text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
                   >
-                    <ExternalLink size={11} className="shrink-0 group-hover/link:text-red-400 transition-colors" />
+                    <ExternalLink size={11} className="shrink-0 group-hover/link:text-red-500 dark:group-hover/link:text-red-400 transition-colors" />
                     <span className="font-bold uppercase tracking-wider">Источник:</span>
                     <span>{item.newsSource}</span>
-                    <span className="ml-auto text-muted-foreground/30">→ читать новость</span>
+                    <span className="ml-auto text-slate-300 dark:text-slate-650">→ читать новость</span>
                   </a>
                 </div>
               </motion.article>
@@ -288,8 +289,8 @@ export const PainSection = () => {
           transition={{ duration: 0.7, delay: 0.2, ease }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-border/40 bg-white/[0.02] text-sm text-muted-foreground/60">
-            <ShieldCheck size={15} className="text-emerald-400" />
+          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-slate-200 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02] text-sm text-slate-600 dark:text-slate-400 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+            <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400" />
             Профессиональная система безопасности — это инвестиция, которая окупается в первый же инцидент.
           </div>
         </motion.div>

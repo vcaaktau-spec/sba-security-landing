@@ -139,6 +139,12 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
   
   const orbY1 = useTransform(scrollYProgress, [0, 1], ["0px", "100px"])
   const orbY2 = useTransform(scrollYProgress, [0, 1], ["0px", "-60px"])
+  
+  // Premium parallax exit animations
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.92])
+  const contentBlur = useTransform(scrollYProgress, [0, 0.6], ["blur(0px)", "blur(12px)"])
 
   const features = [
     { Icon: Shield, key: "hero.feature1" },
@@ -157,12 +163,12 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
         {/* Top-left soft red atmosphere orb */}
         <motion.div style={{ y: orbY1 }} className="absolute inset-0">
           <div
-            className="absolute rounded-full opacity-20 dark:opacity-40"
+            className="absolute rounded-full opacity-15 dark:opacity-30"
             style={{
               width: 800, height: 800,
               top: "-20%", left: "-20%",
-              background: "radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%)",
-              filter: "blur(60px)",
+              background: "radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)",
+              filter: "blur(80px)",
             }}
           />
         </motion.div>
@@ -170,11 +176,11 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
         {/* Bottom-right soft red atmosphere orb */}
         <motion.div style={{ y: orbY2 }} className="absolute inset-0">
           <div
-            className="absolute rounded-full opacity-10 dark:opacity-35"
+            className="absolute rounded-full opacity-10 dark:opacity-25"
             style={{
               width: 600, height: 600,
               bottom: "-15%", right: "-10%",
-              background: "radial-gradient(circle, rgba(220,38,38,0.12) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(239,68,68,0.06) 0%, transparent 70%)",
               filter: "blur(80px)",
             }}
           />
@@ -182,18 +188,18 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
 
         {/* Technical Engineering Grid */}
         <div
-          className="absolute inset-0 opacity-[0.035] dark:opacity-[0.02] bg-[linear-gradient(rgba(0,0,0,1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,1)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:80px_80px]"
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.015] bg-[linear-gradient(rgba(0,0,0,1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,1)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:80px_80px]"
         />
 
         {/* Radial Vignette */}
         <div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(255,255,255,0.7)_100%)] dark:bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(3,3,3,0.85)_100%)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(248,250,252,0.85)_100%)] dark:bg-[radial-gradient(ellipse_100%_90%_at_50%_50%,transparent_35%,rgba(8,9,12,0.92)_100%)]"
         />
 
         {/* Ambient Scan sweep line */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            className="absolute top-0 left-0 w-[30%] h-full bg-gradient-to-r from-transparent via-black/[0.008] dark:via-white/[0.012] to-transparent"
+            className="absolute top-0 left-0 w-[30%] h-full bg-gradient-to-r from-transparent via-black/[0.005] dark:via-white/[0.01] to-transparent"
             animate={{ x: ["-30%", "130%"] }}
             transition={{
               duration: 3.2,
@@ -210,7 +216,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: E }}
-        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 text-[10px] font-mono border-b border-black/[0.06] dark:border-white/[0.06] bg-background/5"
+        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 text-[10px] font-mono border-b border-slate-200/50 dark:border-white/[0.06] bg-white/10 dark:bg-white/[0.01]"
       >
         <div className="flex items-center gap-2.5">
           <span className="relative flex h-[7px] w-[7px]">
@@ -219,14 +225,17 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           </span>
           <span className="tracking-widest uppercase text-muted-foreground/60">SBA Security · Актау</span>
         </div>
-        <div className="hidden sm:flex items-center gap-8 text-muted-foreground/40 tracking-widest uppercase">
+        <div className="hidden sm:flex items-center gap-8 text-muted-foreground/45 tracking-widest uppercase">
           <span>Мониторинг 24 / 7</span>
           <span>v 2.4</span>
         </div>
       </motion.div>
 
       {/* ───────────── Main Content Grid ───────────── */}
-      <div className="relative z-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0">
+      <motion.div 
+        style={{ y: contentY, opacity: contentOpacity, scale: contentScale, filter: contentBlur }}
+        className="relative z-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0"
+      >
         {/* ── LEFT: Typography & Features (col-span-7) ── */}
         <motion.div
           variants={containerVariants}
@@ -246,7 +255,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.03em" }}>
             {[
               { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.15 },
-              { text: t("hero.titleLine2"), colorClass: "text-foreground/45 dark:text-white/45", delay: 0.35 },
+              { text: t("hero.titleLine2"), colorClass: "text-foreground/40 dark:text-white/45", delay: 0.35 },
               { text: t("hero.titleLine3"), colorClass: "text-primary dark:text-red-500", delay: 0.55 },
             ].map(({ text, colorClass, delay }) => (
               <div key={text} className="overflow-hidden">
@@ -278,7 +287,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             {features.map(({ Icon, key }) => (
               <span
                 key={key}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wide border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.015] dark:bg-white/[0.015] text-muted-foreground/75"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[10px] font-mono tracking-wide border border-slate-200/60 dark:border-white/[0.06] bg-white/40 dark:bg-white/[0.02] text-muted-foreground/80 hover:text-foreground hover:border-slate-300 dark:hover:border-white/10 transition-colors"
               >
                 <Icon size={11} className="text-primary dark:text-red-500/80 shrink-0" />
                 {t(key)}
@@ -292,7 +301,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col border-t lg:border-t-0 lg:border-l border-black/[0.06] dark:border-white/[0.06] pt-10 lg:pt-0 lg:pl-12 w-full max-w-[480px] lg:max-w-none mx-auto lg:mx-0 select-none lg:col-span-5"
+          className="flex flex-col border-t lg:border-t-0 lg:border-l border-slate-200/50 dark:border-white/[0.06] pt-10 lg:pt-0 lg:pl-12 w-full max-w-[480px] lg:max-w-none mx-auto lg:mx-0 select-none lg:col-span-5"
         >
           {/* Stats list */}
           {[
@@ -303,7 +312,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             <motion.div
               key={i}
               variants={itemVariants}
-              className="py-6 border-b border-black/[0.06] dark:border-white/[0.06]"
+              className="py-6 border-b border-slate-200/50 dark:border-white/[0.06]"
             >
               <StatCard index={i + 1} {...s} />
             </motion.div>
@@ -318,10 +327,10 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           {/* Interactive Calculator CTA Control Panel Widget */}
           <motion.div
             variants={itemVariants}
-            className="border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md p-5 rounded-2xl relative overflow-hidden shadow-sm w-full"
+            className="border border-slate-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] backdrop-blur-md p-5 rounded-2xl relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.02)] dark:shadow-none w-full"
           >
             {/* Panel Diagnostics header */}
-            <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-black/[0.06] dark:border-white/[0.06] text-[9px] font-mono tracking-widest text-muted-foreground/50 uppercase">
+            <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-200/50 dark:border-white/[0.06] text-[9px] font-mono tracking-widest text-muted-foreground/50 uppercase">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                 SYSTEM_CALCULATOR_SCRIPT // v2.4
@@ -355,7 +364,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
                   href="https://wa.me/77779204988"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-muted-foreground hover:text-foreground border border-black/[0.08] dark:border-white/[0.08] w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-muted-foreground hover:text-foreground border border-slate-200 dark:border-white/[0.08] w-full sm:w-auto"
                 >
                   <MessageCircle size={14} className="text-emerald-500 shrink-0" />
                   WhatsApp
@@ -364,14 +373,14 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* ───────────── Bottom Diagnostic Bar ───────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.2, duration: 1.4, ease: E }}
-        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 border-t border-black/[0.06] dark:border-white/[0.06] text-muted-foreground/45 font-mono text-[9px] tracking-widest uppercase bg-background/5"
+        className="relative z-10 shrink-0 flex items-center justify-between px-6 lg:px-16 py-4 border-t border-slate-200/50 dark:border-white/[0.06] text-muted-foreground/50 font-mono text-[9px] tracking-widest uppercase bg-white/5 dark:bg-background/5"
       >
         <div className="w-8 h-[1px] bg-red-500/50" />
 

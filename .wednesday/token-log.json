@@ -1,0 +1,52 @@
+{
+  "sessions": [
+    {
+      "sessionId": "2026-06-13T07:22:41.743Z",
+      "command": "summarize",
+      "totalInputTokens": 0,
+      "totalOutputTokens": 0,
+      "totalTokensUsed": 0,
+      "totalBaselineTokens": 31800,
+      "tokensSaved": 31800,
+      "savingsPct": 100,
+      "llmCalls": 0,
+      "cacheHits": 106,
+      "breakdown": [
+        {
+          "operation": "summarize",
+          "calls": 0,
+          "cacheHits": 106,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "baselineTokens": 31800
+        }
+      ]
+    },
+    {
+      "sessionId": "2026-06-13T07:22:25.545Z",
+      "command": "summarize",
+      "totalInputTokens": 0,
+      "totalOutputTokens": 0,
+      "totalTokensUsed": 0,
+      "totalBaselineTokens": 0,
+      "tokensSaved": 0,
+      "savingsPct": 0,
+      "llmCalls": 0,
+      "cacheHits": 0,
+      "breakdown": []
+    },
+    {
+      "sessionId": "2026-06-13T07:22:21.029Z",
+      "command": "analyze",
+      "totalInputTokens": 0,
+      "totalOutputTokens": 0,
+      "totalTokensUsed": 0,
+      "totalBaselineTokens": 0,
+      "tokensSaved": 0,
+      "savingsPct": 0,
+      "llmCalls": 0,
+      "cacheHits": 0,
+      "breakdown": []
+    }
+  ]
+}

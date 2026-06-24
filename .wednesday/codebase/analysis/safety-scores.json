@@ -1,0 +1,1380 @@
+{
+  ".eslintrc.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\delete-project.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\get-all-projects.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\get-projects.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\projects.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\telegram.ts": {
+    "score": 21,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 2,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\upload.ts": {
+    "score": 18,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 1,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "api\\users.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "capacitor.config.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "clerk-react\\eslint.config.js": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "clerk-react\\src\\App.tsx": {
+    "score": 16,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "clerk-react\\src\\main.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "clerk-react\\vite.config.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "drizzle.config.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "ios\\App\\App\\AppDelegate.swift": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "ios\\App\\CapApp-SPM\\Package.swift": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "postcss.config.js": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\App.tsx": {
+    "score": 28,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 4,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Calculator.tsx": {
+    "score": 47,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 2,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Cta.tsx": {
+    "score": 50,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Features.tsx": {
+    "score": 50,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Footer.tsx": {
+    "score": 56,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 6,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\GlobalBackground.tsx": {
+    "score": 51,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 2,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Hero.tsx": {
+    "score": 56,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 6,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\HowItWorks.tsx": {
+    "score": 50,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\mode-toggle.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Navbar.tsx": {
+    "score": 51,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 2,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\NotFound.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Preloader.tsx": {
+    "score": 44,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 1,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Projects.tsx": {
+    "score": 56,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 8,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\SbaPlanner.tsx": {
+    "score": 44,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 1,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ScrollToTop.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\SeoBlock.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Services.tsx": {
+    "score": 53,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 4,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\smooth-scroll.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Statistics.tsx": {
+    "score": 50,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\Testimonials.tsx": {
+    "score": 56,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 7,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\theme-provider.tsx": {
+    "score": 44,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 3,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\accordion.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\avatar.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\badge.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\button.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\card.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\dropdown-menu.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\input.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\magnetic.tsx": {
+    "score": 42,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 2,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\navigation-menu.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\components\\ui\\sheet.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\db\\index.ts": {
+    "score": 46,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 5,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\db\\schema.ts": {
+    "score": 47,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 6,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\i18n.ts": {
+    "score": 25,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 3,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\lib\\utils.ts": {
+    "score": 51,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 9,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\main.tsx": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\pages\\Dashboard.tsx": {
+    "score": 44,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 1,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\pages\\Home.tsx": {
+    "score": 41,
+    "band": "Medium",
+    "action": "Review",
+    "details": {
+      "dependents": 1,
+      "isPublicContract": true,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\extract-colors.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\inject-brand-context.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\sync-brand-to-tokens.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\validate-asset.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\core.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\generate.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\render-html.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\search.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon\\generate.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\core.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\generate.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\search.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\embed-tokens.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\fetch-background.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-slide.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-tokens.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\html-token-validator.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\search-slides.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide-token-validator.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide_search_core.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\validate-tokens.cjs": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\shadcn_add.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tailwind_config_gen.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_tailwind_config_gen.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data\\_sync_all.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\core.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\design_system.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\search.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\uninstall.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\update.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\versions.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\index.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\detect.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\github.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\logger.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\template.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data\\_sync_all.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\core.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\design_system.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\search.py": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "src\\vite-env.d.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "tailwind.config.js": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  },
+  "vite.config.ts": {
+    "score": 15,
+    "band": "Low",
+    "action": "Proceed",
+    "details": {
+      "dependents": 0,
+      "isPublicContract": false,
+      "testCoverage": 0,
+      "bugFixCommits": 0,
+      "techDebt": null,
+      "isBizFeature": null
+    }
+  }
+}

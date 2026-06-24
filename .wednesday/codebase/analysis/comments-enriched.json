@@ -1,0 +1,138 @@
+{
+  "enrichedAt": "2026-06-13T12:22:35.000Z",
+  "reversePrd": "This project is a premium website landing page and design planning tool for SBA, a security systems installer in Aktau, Kazakhstan. It features service outlines, local currency interactive cost estimation quiz, customer review submission forms, local-first database sync, and a detailed client/admin dashboard utilizing an interactive Konva-based layout blueprint tool for cameras, fire detectors, and networking systems.",
+  "modules": {
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts": {
+      "purpose": "Scripts for embedding design tokens, fetching slide backgrounds, and validating token formats.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Optimize background image fetching caching", "Standardize tokens format in JSON schema"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip": {
+      "purpose": "Corporate Identity Program (CIP) styling core, generating briefs, and rendering preview assets.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Add support for additional vector asset formats", "Enhance prompt styling variables"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts": {
+      "purpose": "UI/UX Pro Max main search engine core and design system generator logic.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Integrate fuzzy matching for product categories", "Add automated validation for generated styling guidelines"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts": {
+      "purpose": "Static assets script bundle deployed during CLI initialization.",
+      "techDebt": "medium",
+      "isBizFeature": false,
+      "ideas": ["De-duplicate core script copies between src and assets", "Add minification script step"]
+    },
+    "src\\components": {
+      "purpose": "React UI components for the landing page including Hero, Calculator, Navbar, and SbaPlanner.",
+      "techDebt": "medium",
+      "isBizFeature": true,
+      "ideas": ["Expand keyboard navigation for SbaPlanner", "Improve mobile touch target sizes on small controls"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo": {
+      "purpose": "Logo design core search tool and image generation scripting with Gemini.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Support local transparent PNG exports", "Optimize image editing prompt pipeline"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon": {
+      "purpose": "Vector SVG icon generation utility using Gemini thinking models.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Implement validation for SVG XML well-formedness", "Support multi-color icon sets"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils": {
+      "purpose": "CLI helper functions for template building, GitHub downloads, and file compression.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Add direct caching for zip archives", "Enhance zip extraction error messages"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\brand\\scripts": {
+      "purpose": "Color extraction tools and prompt syncing utilities for brand guidelines matching.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Speed up color analysis with local canvas check", "Standardize palette json formats"]
+    },
+    "ios\\App\\App": {
+      "purpose": "Swift native application wrapper delegate setup for Capacitor mobile packaging.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Configure deep link routing handlers", "Clean up unused app lifecycle handlers"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands": {
+      "purpose": "CLI command declarations (init, versions, update, uninstall) for package installation.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Improve interactive prompt validation", "Add offline bundle fallback test cases"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts": {
+      "purpose": "Utility scripts for generating tailwind configs and managing shadcn components.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Add automatic color palette scales compiler", "Enhance dynamic config updates support"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data": {
+      "purpose": "Database reference files for product lists and colors synced with the CLI package.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Synchronize missing product categories list", "Compress CSV datasets"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data": {
+      "purpose": "Reference CSV tables for colors, fonts, products, and rules database.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Clean up old unused rows", "Optimize table query indexing"]
+    },
+    "api": {
+      "purpose": "Backend endpoints for projects, file uploads, Clerk users, and Telegram messaging proxy.",
+      "techDebt": "medium",
+      "isBizFeature": false,
+      "ideas": ["Implement rate-limiting on Telegram messaging proxy", "Add validation middleware for uploads"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests": {
+      "purpose": "Unit tests suite for component addition and tailwind configuration script generation.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Increase coverage for dry-run modes", "Add mock tests for empty configs"]
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types": {
+      "purpose": "TypeScript type declarations for CLI configs and legacy install templates.",
+      "techDebt": "low",
+      "isBizFeature": false,
+      "ideas": ["Clean up unused legacy zip install types", "Unify models schemas declarations"]
+    },
+    "src": {
+      "purpose": "React app core entry points, internationalization files, and global styles definitions.",
+      "techDebt": "low",
+      "isBizFeature": true,
+      "ideas": ["Modularize i18n translation files to load asynchronously", "Simplify main.tsx providers wrapper structure"]
+    },
+    "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp": {
+      "purpose": "Native instrumented UI/integration tests for Android wrapper package.",
+      "techDebt": "none",
+      "isBizFeature": false,
+      "ideas": ["Add sample flow tests for main view", "Integrate automated screenshots capture"]
+    },
+    "android\\app\\src\\test\\java\com\\getcapacitor\\myapp": {
+      "purpose": "Native JUnit unit tests for Android wrapper package.",
+      "techDebt": "none",
+      "isBizFeature": false,
+      "ideas": ["Add basic routing tests", "Verify app lifecycle callback triggers"]
+    },
+    "ios\\App\\CapApp-SPM": {
+      "purpose": "Swift package manager definition for native ios dependencies.",
+      "techDebt": "none",
+      "isBizFeature": false,
+      "ideas": ["Keep standard packages updated", "Optimize Swift build flags"]
+    },
+    "src\\pages": {
+      "purpose": "React page view components for Homepage and Administrator/Client Dashboard workspace.",
+      "techDebt": "medium",
+      "isBizFeature": true,
+      "ideas": ["Split admin SbaPlanner view into a dynamic lazy import", "Move mock guides datasets to a separate configuration file"]
+    }
+  }
+}

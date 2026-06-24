@@ -3,8 +3,8 @@
 import { useRef } from "react"
 import { useTranslation } from "react-i18next"
 import { PhoneCall, ClipboardList, Truck, Settings } from "lucide-react"
-import { motion, useInView } from "framer-motion"
-import { DotMatrix } from "./DotMatrix"
+import { motion, useScroll, useInView } from "framer-motion"
+import { Badge } from "./ui/badge"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -15,95 +15,75 @@ interface Step {
   description: string
 }
 
-/* ── Single step row ── */
-function StepRow({ step, index, isLast }: { step: Step; index: number; isLast: boolean }) {
+function StepRow({ step }: { step: Step }) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-12%" })
+  const inView = useInView(ref, { once: true, margin: "-20%" })
 
   return (
-    <div ref={ref}>
-      {/* Animated divider */}
-      <div className="h-px bg-white/[0.06] relative overflow-hidden">
-        <motion.div
-          className="absolute inset-0 origin-left"
-          style={{
-            background: "linear-gradient(90deg, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0.15) 60%, transparent 100%)",
-          }}
-          initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.85, ease, delay: index * 0.08 }}
-        />
-      </div>
+    <div ref={ref} className="relative pl-12 sm:pl-16 lg:pl-28 py-10 lg:py-16 group">
+      
+      {/* Node Indicator */}
+      <div className="absolute left-[-5px] top-12 lg:top-20 w-3 h-3 rounded-full bg-slate-100 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 z-10 transition-colors duration-500 group-hover:border-red-500" />
 
-      {/* Content row */}
-      <div className="grid grid-cols-[56px_1fr] sm:grid-cols-[72px_1fr] lg:grid-cols-[100px_1fr] gap-4 lg:gap-10 py-9 lg:py-12 items-start">
+      {/* Content Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-[120px_1fr] gap-6 lg:gap-12 items-start">
+        
+        {/* Large step number & Icon */}
+        <div className="flex items-center gap-6 lg:flex-col lg:items-start lg:gap-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.65, ease, delay: 0.1 }}
+            className="w-14 h-14 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/[0.06] flex items-center justify-center text-red-600 dark:text-red-400 shrink-0 shadow-sm"
+          >
+            <step.Icon size={24} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, ease, delay: 0.2 }}
+            className="text-[3rem] lg:text-[4.5rem] font-black text-slate-200 dark:text-white/[0.04] tracking-tighter leading-none select-none tabular-nums"
+            aria-hidden
+          >
+            {step.step}
+          </motion.div>
+        </div>
 
-        {/* Large step number (decorative watermark) */}
+        {/* Text */}
         <motion.div
-          initial={{ opacity: 0, x: -18 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.65, ease, delay: index * 0.08 + 0.12 }}
-          className="text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-red-500/[0.12] tracking-tighter leading-none select-none tabular-nums pt-1"
-          aria-hidden
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease, delay: 0.2 }}
+          className="pt-2"
         >
-          {step.step}
+          <div className="flex items-center gap-3 mb-4">
+            <Badge variant="secondary" className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
+              Этап // {step.step}
+            </Badge>
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-snug">
+            {step.title}
+          </h3>
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+            {step.description}
+          </p>
         </motion.div>
 
-        {/* Icon + text */}
-        <div className="flex items-start gap-4 sm:gap-6 lg:gap-8">
-
-          {/* Icon */}
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={inView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.5, ease, delay: index * 0.08 + 0.18 }}
-            className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-red-500/10 border border-red-500/[0.22] flex items-center justify-center text-red-400 shrink-0"
-          >
-            <step.Icon size={22} />
-          </motion.div>
-
-          {/* Text */}
-          <motion.div
-            initial={{ opacity: 0, x: 18 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.65, ease, delay: index * 0.08 + 0.22 }}
-          >
-            <div className="text-[10px] font-mono font-bold text-muted-foreground/30 uppercase tracking-[0.2em] mb-2">
-              Шаг {step.step}
-            </div>
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-3 leading-snug">
-              {step.title}
-            </h3>
-            <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed max-w-xl">
-              {step.description}
-            </p>
-          </motion.div>
-        </div>
       </div>
-
-      {/* Bottom divider for the last step */}
-      {isLast && (
-        <div className="h-px bg-white/[0.06] relative overflow-hidden">
-          <motion.div
-            className="absolute inset-0 origin-left"
-            style={{
-              background: "linear-gradient(90deg, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0.15) 60%, transparent 100%)",
-            }}
-            initial={{ scaleX: 0 }}
-            animate={inView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.85, ease, delay: index * 0.08 + 0.3 }}
-          />
-        </div>
-      )}
     </div>
   )
 }
 
-/* ── Section ── */
 export const HowItWorks = () => {
   const { t } = useTranslation()
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: "-10%" })
+  const sectionRef = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "end center"],
+  })
 
   const steps: Step[] = [
     { step: "01", Icon: PhoneCall,     title: t("how.s1_title"), description: t("how.s1_desc") },
@@ -113,53 +93,54 @@ export const HowItWorks = () => {
   ]
 
   return (
-    <section id="howItWorks" className="relative py-24 lg:py-32 overflow-hidden">
+    <section ref={sectionRef} id="howItWorks" className="relative py-24 lg:py-40 border-b border-slate-200/60 dark:border-white/[0.06] bg-white dark:bg-background">
       <div className="absolute top-0 inset-x-0 section-divider" />
 
-      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-[1000px] px-6 lg:px-12">
 
         {/* Header */}
-        <div ref={headerRef} className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16 lg:mb-20">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={headerInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, ease }}
-              className="text-[10px] font-mono font-bold text-red-400/60 uppercase tracking-[0.25em] mb-4"
-            >
-              — Процесс работы
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 24 }}
-              animate={headerInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, ease }}
-              className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.05]"
-            >
-              {t("how.title1")}{" "}
-              <span className="text-red-500">{t("how.title2")}</span>
-            </motion.h2>
-          </div>
-
+        <div ref={headerRef} className="flex flex-col mb-20 lg:mb-32">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={headerInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.15, ease }}
-            className="shrink-0"
+            initial={{ opacity: 0, y: 10 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease }}
+            className="mb-6"
           >
-            <DotMatrix cols={10} rows={4} className="text-white/20" />
+            <Badge variant="outline" className="font-mono tracking-widest uppercase border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400">
+              Алгоритм работы
+            </Badge>
           </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease }}
+            className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.05] max-w-3xl"
+          >
+            {t("how.title1")}{" "}
+            <span className="text-red-600 dark:text-red-500">{t("how.title2")}</span>
+          </motion.h2>
         </div>
 
-        {/* Step rows */}
-        <div>
-          {steps.map((step, i) => (
-            <StepRow
-              key={step.step}
-              step={step}
-              index={i}
-              isLast={i === steps.length - 1}
-            />
-          ))}
+        {/* Timeline Area */}
+        <div className="relative">
+          {/* Background Track */}
+          <div className="absolute top-8 bottom-8 left-0 w-px bg-slate-200 dark:bg-white/[0.06]" />
+          
+          {/* Scroll Animated Progress Line */}
+          <motion.div 
+            style={{ scaleY: scrollYProgress }}
+            className="absolute top-8 bottom-8 left-0 w-px bg-gradient-to-b from-red-500 via-rose-500 to-red-600 origin-top z-10"
+          />
+
+          {/* Steps */}
+          <div className="flex flex-col">
+            {steps.map((step) => (
+              <StepRow
+                key={step.step}
+                step={step}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Bottom note */}
@@ -168,15 +149,13 @@ export const HowItWorks = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, ease }}
-          className="mt-10 flex items-center gap-3 text-sm text-muted-foreground/40"
+          className="mt-16 pt-8 border-t border-slate-200/60 dark:border-white/[0.06] flex items-center gap-3 text-sm font-mono tracking-wide text-slate-500 dark:text-muted-foreground/50 uppercase"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/70 shrink-0" />
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
           {t("how.subtitle")}
         </motion.div>
 
       </div>
-
-      <div className="absolute bottom-0 inset-x-0 section-divider" />
     </section>
   )
 }

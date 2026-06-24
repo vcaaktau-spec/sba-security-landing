@@ -5,70 +5,68 @@
 /* *=========== SBA Premium Red Theme =========== */
 @layer base {
   :root {
-    /* Светлая тема */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%; /* Строгий почти черный текст */
+    /* Светлая тема - Премиальный стальной белый */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%; /* Глубокий угольный цвет для высокой контрастности */
     
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 222 47% 11%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 222 47% 11%;
     
-    /* Акцентный КРАСНЫЙ (эквивалент tailwind red-600) */
-    --primary: 0 72.2% 50.6%; 
-    --primary-foreground: 0 0% 100%; /* Белый текст на красной кнопке */
+    /* Акцентный КРАСНЫЙ (фирменный SBA Crimson) */
+    --primary: 354 75% 50%; 
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 222 47% 11%;
     
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 16% 47%;
     
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 210 20% 94%;
+    --accent-foreground: 222 47% 11%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 72.2% 50.6%; /* Красное свечение при фокусе инпутов */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 354 75% 50%;
     
-    --radius: 0.75rem; /* Сделал углы чуть мягче (12px) для премиальности */
+    --radius: 1.25rem; /* Округленные углы 20px для слайдов */
   }
 
   .dark {
-    /* Темная тема - Глубокий премиальный черный (не серый) */
-    --background: 0 0% 4%; 
-    --foreground: 0 0% 98%;
+    /* Темная тема - Премиальный стальной угольно-черный */
+    --background: 222 47% 4%; 
+    --foreground: 210 20% 98%;
     
-    /* Карточки чуть светлее фона */
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 35% 7%;
+    --card-foreground: 210 20% 98%;
     
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 35% 7%;
+    --popover-foreground: 210 20% 98%;
     
-    /* Тот же фирменный красный */
-    --primary: 0 72.2% 50.6%;
+    --primary: 354 75% 50%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 222 20% 12%;
+    --secondary-foreground: 210 20% 98%;
     
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 222 20% 12%;
+    --muted-foreground: 215 16% 65%;
     
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 222 20% 12%;
+    --accent-foreground: 210 20% 98%;
     
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 354 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 72.2% 50.6%;
+    --border: 222 20% 14%;
+    --input: 222 20% 14%;
+    --ring: 354 75% 50%;
   }
 }
 
@@ -78,20 +76,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Linear-style dot grid on the entire page */
-    background-image: radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
     background-attachment: fixed;
   }
 
-  /* In light mode, make dots slightly darker */
-  :root body {
-    background-image: radial-gradient(circle, rgba(0,0,0,0.055) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-
   .dark body {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
   }
 }

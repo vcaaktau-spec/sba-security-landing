@@ -1,0 +1,635 @@
+{
+  "generatedAt": "2026-06-13T07:22:25.541Z",
+  "enrichedAt": null,
+  "reversePrd": null,
+  "summary": {
+    "total": 352,
+    "taggedTotal": 9,
+    "untaggedTotal": 343,
+    "byType": {
+      "TEMP": 8,
+      "NOTE": 1
+    },
+    "bySeverity": {
+      "medium": 8,
+      "info": 1
+    },
+    "topFiles": [
+      {
+        "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+        "count": 4
+      },
+      {
+        "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts",
+        "count": 2
+      },
+      {
+        "file": "ios\\App\\App\\AppDelegate.swift",
+        "count": 1
+      },
+      {
+        "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py",
+        "count": 1
+      },
+      {
+        "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts",
+        "count": 1
+      }
+    ]
+  },
+  "modules": [
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts",
+      "fileCount": 9,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\embed-tokens.cjs",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\fetch-background.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-slide.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-tokens.cjs",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\html-token-validator.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\search-slides.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide-token-validator.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide_search_core.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\validate-tokens.cjs"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 62,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip",
+      "fileCount": 4,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\core.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\generate.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\render-html.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\search.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 46,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts",
+      "fileCount": 3,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\core.py",
+        "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\design_system.py",
+        "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\search.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 39,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts",
+      "fileCount": 3,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\core.py",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\design_system.py",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\search.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 38,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\components",
+      "fileCount": 20,
+      "files": [
+        "src\\components\\Calculator.tsx",
+        "src\\components\\Cta.tsx",
+        "src\\components\\Features.tsx",
+        "src\\components\\Footer.tsx",
+        "src\\components\\GlobalBackground.tsx",
+        "src\\components\\Hero.tsx",
+        "src\\components\\HowItWorks.tsx",
+        "src\\components\\mode-toggle.tsx",
+        "src\\components\\Navbar.tsx",
+        "src\\components\\NotFound.tsx",
+        "src\\components\\Preloader.tsx",
+        "src\\components\\Projects.tsx",
+        "src\\components\\SbaPlanner.tsx",
+        "src\\components\\ScrollToTop.tsx",
+        "src\\components\\SeoBlock.tsx",
+        "src\\components\\Services.tsx",
+        "src\\components\\smooth-scroll.tsx",
+        "src\\components\\Statistics.tsx",
+        "src\\components\\Testimonials.tsx",
+        "src\\components\\theme-provider.tsx"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 27,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo",
+      "fileCount": 3,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\core.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\generate.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\search.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 24,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon",
+      "fileCount": 1,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon\\generate.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 20,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils",
+      "fileCount": 5,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\detect.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\github.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\logger.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\template.ts"
+      ],
+      "taggedCount": 4,
+      "untaggedCount": 16,
+      "tagsByType": {
+        "TEMP": 4
+      },
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts",
+      "fileCount": 4,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\extract-colors.cjs",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\inject-brand-context.cjs",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\sync-brand-to-tokens.cjs",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\validate-asset.cjs"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 14,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "ios\\App\\App",
+      "fileCount": 1,
+      "files": [
+        "ios\\App\\App\\AppDelegate.swift"
+      ],
+      "taggedCount": 1,
+      "untaggedCount": 11,
+      "tagsByType": {
+        "TEMP": 1
+      },
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands",
+      "fileCount": 4,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\uninstall.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\update.ts",
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\versions.ts"
+      ],
+      "taggedCount": 2,
+      "untaggedCount": 7,
+      "tagsByType": {
+        "TEMP": 2
+      },
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts",
+      "fileCount": 2,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\shadcn_add.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tailwind_config_gen.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 8,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data",
+      "fileCount": 1,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data\\_sync_all.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 8,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data",
+      "fileCount": 1,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data\\_sync_all.py"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 8,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "api",
+      "fileCount": 7,
+      "files": [
+        "api\\delete-project.ts",
+        "api\\get-all-projects.ts",
+        "api\\get-projects.ts",
+        "api\\projects.ts",
+        "api\\telegram.ts",
+        "api\\upload.ts",
+        "api\\users.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 4,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests",
+      "fileCount": 2,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py",
+        "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_tailwind_config_gen.py"
+      ],
+      "taggedCount": 1,
+      "untaggedCount": 3,
+      "tagsByType": {
+        "TEMP": 1
+      },
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types",
+      "fileCount": 1,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts"
+      ],
+      "taggedCount": 1,
+      "untaggedCount": 2,
+      "tagsByType": {
+        "NOTE": 1
+      },
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src",
+      "fileCount": 4,
+      "files": [
+        "src\\App.tsx",
+        "src\\i18n.ts",
+        "src\\main.tsx",
+        "src\\vite-env.d.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 2,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp",
+      "fileCount": 1,
+      "files": [
+        "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 1,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp",
+      "fileCount": 1,
+      "files": [
+        "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 1,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "ios\\App\\CapApp-SPM",
+      "fileCount": 1,
+      "files": [
+        "ios\\App\\CapApp-SPM\\Package.swift"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 1,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\pages",
+      "fileCount": 2,
+      "files": [
+        "src\\pages\\Dashboard.tsx",
+        "src\\pages\\Home.tsx"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 1,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": ".",
+      "fileCount": 6,
+      "files": [
+        ".eslintrc.cjs",
+        "capacitor.config.ts",
+        "drizzle.config.ts",
+        "postcss.config.js",
+        "tailwind.config.js",
+        "vite.config.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "android\\app\\src\\main\\java\\com\\sba\\aktau",
+      "fileCount": 1,
+      "files": [
+        "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "clerk-react",
+      "fileCount": 2,
+      "files": [
+        "clerk-react\\eslint.config.js",
+        "clerk-react\\vite.config.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "clerk-react\\src",
+      "fileCount": 2,
+      "files": [
+        "clerk-react\\src\\App.tsx",
+        "clerk-react\\src\\main.tsx"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM",
+      "fileCount": 1,
+      "files": [
+        "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\components\\ui",
+      "fileCount": 10,
+      "files": [
+        "src\\components\\ui\\accordion.tsx",
+        "src\\components\\ui\\avatar.tsx",
+        "src\\components\\ui\\badge.tsx",
+        "src\\components\\ui\\button.tsx",
+        "src\\components\\ui\\card.tsx",
+        "src\\components\\ui\\dropdown-menu.tsx",
+        "src\\components\\ui\\input.tsx",
+        "src\\components\\ui\\magnetic.tsx",
+        "src\\components\\ui\\navigation-menu.tsx",
+        "src\\components\\ui\\sheet.tsx"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\db",
+      "fileCount": 2,
+      "files": [
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\lib",
+      "fileCount": 1,
+      "files": [
+        "src\\lib\\utils.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    },
+    {
+      "dir": "src\\skills\\ui-ux-pro-max-skill\\cli\\src",
+      "fileCount": 1,
+      "files": [
+        "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\index.ts"
+      ],
+      "taggedCount": 0,
+      "untaggedCount": 0,
+      "tagsByType": {},
+      "purpose": null,
+      "techDebt": null,
+      "isBizFeature": null,
+      "ideas": []
+    }
+  ],
+  "items": [
+    {
+      "file": "ios\\App\\App\\AppDelegate.swift",
+      "line": 15,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Sent when the application is about to move from active to inactive state. This can occur for certain types of interruptions (such as an incoming phone call or SMS message) or when the user quits the a",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py",
+      "line": 22,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Create project structure.",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts",
+      "line": 65,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Cleanup directory",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts",
+      "line": 70,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Cleanup directory on error",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+      "line": 99,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Create a directory for extracting ZIP files",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+      "line": 106,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Find the extracted folder inside directory",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+      "line": 130,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Create directory",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+      "line": 134,
+      "type": "TEMP",
+      "tagged": true,
+      "text": "Extract ZIP to directory",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts",
+      "line": 47,
+      "type": "NOTE",
+      "tagged": true,
+      "text": ".shared is included for platforms that used ZIP installs. Post-ZIP platforms",
+      "severity": "info"
+    }
+  ]
+}

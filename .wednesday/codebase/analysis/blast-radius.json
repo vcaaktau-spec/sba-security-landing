@@ -1,0 +1,436 @@
+{
+  "src\\lib\\utils.ts": {
+    "direct": 9,
+    "transitive": 14,
+    "dependents": [
+      "src\\components\\ui\\accordion.tsx",
+      "src\\components\\ui\\avatar.tsx",
+      "src\\components\\ui\\badge.tsx",
+      "src\\components\\ui\\button.tsx",
+      "src\\components\\ui\\card.tsx",
+      "src\\components\\ui\\dropdown-menu.tsx",
+      "src\\components\\ui\\input.tsx",
+      "src\\components\\ui\\navigation-menu.tsx",
+      "src\\components\\ui\\sheet.tsx",
+      "src\\components\\Footer.tsx",
+      "src\\components\\Hero.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\theme-provider.tsx": {
+    "direct": 3,
+    "transitive": 6,
+    "dependents": [
+      "src\\components\\mode-toggle.tsx",
+      "src\\components\\Navbar.tsx",
+      "src\\main.tsx",
+      "src\\pages\\Dashboard.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\db\\schema.ts": {
+    "direct": 6,
+    "transitive": 6,
+    "dependents": [
+      "api\\delete-project.ts",
+      "api\\get-all-projects.ts",
+      "api\\get-projects.ts",
+      "api\\projects.ts",
+      "api\\upload.ts",
+      "src\\db\\index.ts"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\ui\\magnetic.tsx": {
+    "direct": 2,
+    "transitive": 5,
+    "dependents": [
+      "src\\components\\Footer.tsx",
+      "src\\components\\Hero.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\db\\index.ts": {
+    "direct": 5,
+    "transitive": 5,
+    "dependents": [
+      "api\\delete-project.ts",
+      "api\\get-all-projects.ts",
+      "api\\get-projects.ts",
+      "api\\projects.ts",
+      "api\\upload.ts"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Navbar.tsx": {
+    "direct": 2,
+    "transitive": 4,
+    "dependents": [
+      "src\\pages\\Dashboard.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\ui\\accordion.tsx": {
+    "direct": 1,
+    "transitive": 4,
+    "dependents": [
+      "src\\components\\Footer.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\ui\\button.tsx": {
+    "direct": 1,
+    "transitive": 4,
+    "dependents": [
+      "src\\components\\Hero.tsx",
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Calculator.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Cta.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Features.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Footer.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\GlobalBackground.tsx": {
+    "direct": 2,
+    "transitive": 3,
+    "dependents": [
+      "src\\App.tsx",
+      "src\\pages\\Dashboard.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Hero.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\HowItWorks.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Projects.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\SbaPlanner.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Dashboard.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\ScrollToTop.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\SeoBlock.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Services.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\smooth-scroll.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Statistics.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Testimonials.tsx": {
+    "direct": 1,
+    "transitive": 3,
+    "dependents": [
+      "src\\pages\\Home.tsx",
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\NotFound.tsx": {
+    "direct": 1,
+    "transitive": 2,
+    "dependents": [
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\components\\Preloader.tsx": {
+    "direct": 1,
+    "transitive": 2,
+    "dependents": [
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\pages\\Dashboard.tsx": {
+    "direct": 1,
+    "transitive": 2,
+    "dependents": [
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\pages\\Home.tsx": {
+    "direct": 1,
+    "transitive": 2,
+    "dependents": [
+      "src\\App.tsx",
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "clerk-react\\src\\App.tsx": {
+    "direct": 1,
+    "transitive": 1,
+    "dependents": [
+      "clerk-react\\src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\App.tsx": {
+    "direct": 1,
+    "transitive": 1,
+    "dependents": [
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  "src\\i18n.ts": {
+    "direct": 1,
+    "transitive": 1,
+    "dependents": [
+      "src\\main.tsx"
+    ],
+    "crossLang": []
+  },
+  ".eslintrc.cjs": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\delete-project.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\get-all-projects.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\get-projects.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\projects.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\telegram.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\upload.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "api\\users.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "capacitor.config.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "clerk-react\\eslint.config.js": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "clerk-react\\src\\main.tsx": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "clerk-react\\vite.config.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "drizzle.config.ts": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "ios\\App\\App\\AppDelegate.swift": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "ios\\App\\CapApp-SPM\\Package.swift": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  },
+  "postcss.config.js": {
+    "direct": 0,
+    "transitive": 0,
+    "dependents": [],
+    "crossLang": []
+  }
+}

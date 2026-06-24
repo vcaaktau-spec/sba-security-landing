@@ -17,7 +17,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["Manrope", "system-ui", "-apple-system", "sans-serif"],
+        display: ["Unbounded", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       colors: {

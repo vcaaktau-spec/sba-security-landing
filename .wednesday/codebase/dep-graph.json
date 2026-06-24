@@ -1,0 +1,5611 @@
+{
+  "version": 2,
+  "generatedAt": "2026-06-13T07:22:25.476Z",
+  "rootDir": "C:\\Users\\PavelKalugin\\.sba\\sba-security-landing",
+  "nodes": {
+    ".eslintrc.cjs": {
+      "file": ".eslintrc.cjs",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [
+        "root",
+        "env",
+        "es2020"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java": {
+      "file": "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java",
+      "lang": "java",
+      "imports": [
+        "android.content.Context",
+        "androidx.test.ext.junit.runners.AndroidJUnit4",
+        "androidx.test.platform.app.InstrumentationRegistry",
+        "org.junit.Test",
+        "org.junit.runner.RunWith"
+      ],
+      "exports": [
+        "ExampleInstrumentedTest",
+        "useAppContext"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isTest": true,
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java": {
+      "file": "android\\app\\src\\main\\java\\com\\sba\\aktau\\MainActivity.java",
+      "lang": "java",
+      "imports": [
+        "com.getcapacitor.BridgeActivity"
+      ],
+      "exports": [
+        "MainActivity"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java": {
+      "file": "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java",
+      "lang": "java",
+      "imports": [
+        "org.junit.Test"
+      ],
+      "exports": [
+        "ExampleUnitTest",
+        "addition_isCorrect"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isTest": true,
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "api\\delete-project.ts": {
+      "file": "api\\delete-project.ts",
+      "lang": "typescript",
+      "imports": [
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts",
+        "drizzle-orm"
+      ],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 5,
+          "signature": "export default async function handler(req: any, res: any) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\get-all-projects.ts": {
+      "file": "api\\get-all-projects.ts",
+      "lang": "typescript",
+      "imports": [
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts",
+        "drizzle-orm"
+      ],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "export default async function handler(req: any, res: any) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\get-projects.ts": {
+      "file": "api\\get-projects.ts",
+      "lang": "typescript",
+      "imports": [
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts",
+        "drizzle-orm"
+      ],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "export default async function handler(req: any, res: any) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\projects.ts": {
+      "file": "api\\projects.ts",
+      "lang": "typescript",
+      "imports": [
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts",
+        "crypto"
+      ],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 5,
+          "signature": "export default async function handler(req: any, res: any) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\telegram.ts": {
+      "file": "api\\telegram.ts",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 3,
+          "bugFixCommits": 2,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 3
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 1,
+          "signature": "export default async function handler(req: Request) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\upload.ts": {
+      "file": "api\\upload.ts",
+      "lang": "typescript",
+      "imports": [
+        "@vercel/blob",
+        "src\\db\\index.ts",
+        "src\\db\\schema.ts"
+      ],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 2,
+          "bugFixCommits": 1,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 2
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 6,
+          "signature": "export default async function handler(req: Request) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "api\\users.ts": {
+      "file": "api\\users.ts",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [
+        "handler"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "function",
+          "lineStart": 1,
+          "signature": "export default async function handler(req: any, res: any) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "capacitor.config.ts": {
+      "file": "capacitor.config.ts",
+      "lang": "typescript",
+      "imports": [
+        "@capacitor/cli"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "clerk-react\\eslint.config.js": {
+      "file": "clerk-react\\eslint.config.js",
+      "lang": "typescript",
+      "imports": [
+        "@eslint/js",
+        "globals",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-react-refresh",
+        "typescript-eslint",
+        "eslint/config"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "clerk-react\\src\\App.tsx": {
+      "file": "clerk-react\\src\\App.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "clerk-react\\src\\assets\\react.svg",
+        "clerk-react\\src\\assets\\vite.svg",
+        "clerk-react\\src\\assets\\hero.png",
+        "clerk-react\\src\\App.css"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [
+        "clerk-react\\src\\main.tsx"
+      ],
+      "riskScore": 9,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "App",
+          "kind": "function",
+          "lineStart": 7,
+          "signature": "function App() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "clerk-react\\src\\main.tsx": {
+      "file": "clerk-react\\src\\main.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-dom/client",
+        "clerk-react\\src\\index.css",
+        "clerk-react\\src\\App.tsx"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "clerk-react\\vite.config.ts": {
+      "file": "clerk-react\\vite.config.ts",
+      "lang": "typescript",
+      "imports": [
+        "vite",
+        "@vitejs/plugin-react"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "drizzle.config.ts": {
+      "file": "drizzle.config.ts",
+      "lang": "typescript",
+      "imports": [
+        "drizzle-kit",
+        "dotenv"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "ios\\App\\App\\AppDelegate.swift": {
+      "file": "ios\\App\\App\\AppDelegate.swift",
+      "lang": "swift",
+      "imports": [
+        "UIKit",
+        "Capacitor"
+      ],
+      "exports": [
+        "AppDelegate"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "UIKit",
+        "isBarrel": false,
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "ios\\App\\CapApp-SPM\\Package.swift": {
+      "file": "ios\\App\\CapApp-SPM\\Package.swift",
+      "lang": "swift",
+      "imports": [
+        "PackageDescription"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isBarrel": false,
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift": {
+      "file": "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift",
+      "lang": "swift",
+      "imports": [],
+      "exports": [
+        "isCapacitorApp"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isBarrel": false,
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "postcss.config.js": {
+      "file": "postcss.config.js",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\App.tsx": {
+      "file": "src\\App.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react-router-dom",
+        "@clerk/clerk-react",
+        "src\\pages\\Home.tsx",
+        "src\\pages\\Dashboard.tsx",
+        "src\\components\\NotFound.tsx",
+        "src\\components\\GlobalBackground.tsx",
+        "src\\components\\Preloader.tsx",
+        "@vercel/analytics/react",
+        "@vercel/speed-insights/react",
+        "src\\App.css"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [
+        "src\\main.tsx"
+      ],
+      "riskScore": 9,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 13,
+          "bugFixCommits": 4,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 13
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "App",
+          "kind": "function",
+          "lineStart": 12,
+          "signature": "function App() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Calculator.tsx": {
+      "file": "src\\components\\Calculator.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react",
+        "react-intersection-observer"
+      ],
+      "exports": [
+        "Calculator"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 7,
+          "bugFixCommits": 2,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-06-13",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 7
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "getHddCost",
+          "kind": "function",
+          "lineStart": 67,
+          "signature": "const getHddCost = (tb: number): number => {"
+        },
+        {
+          "name": "Calculator",
+          "kind": "function",
+          "lineStart": 101,
+          "signature": "export const Calculator = ({ onClose }: CalculatorProps) => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Cta.tsx": {
+      "file": "src\\components\\Cta.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-dom",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "Cta"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 9,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 9
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Cta",
+          "kind": "function",
+          "lineStart": 9,
+          "signature": "export const Cta = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Features.tsx": {
+      "file": "src\\components\\Features.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "Features"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 7,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-11",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 7
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Features",
+          "kind": "function",
+          "lineStart": 8,
+          "signature": "export const Features = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Footer.tsx": {
+      "file": "src\\components\\Footer.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-dom",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react",
+        "src\\components\\ui\\magnetic.tsx",
+        "src\\components\\ui\\accordion.tsx"
+      ],
+      "exports": [
+        "Footer"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 13,
+          "bugFixCommits": 6,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 13
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Footer",
+          "kind": "function",
+          "lineStart": 36,
+          "signature": "export const Footer = ({ onOpenCalc }: FooterProps) => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\GlobalBackground.tsx": {
+      "file": "src\\components\\GlobalBackground.tsx",
+      "lang": "typescript",
+      "imports": [
+        "framer-motion"
+      ],
+      "exports": [
+        "GlobalBackground"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\App.tsx",
+        "src\\pages\\Dashboard.tsx"
+      ],
+      "riskScore": 35,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 3,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-11",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 94,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 3
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "GlobalBackground",
+          "kind": "function",
+          "lineStart": 5,
+          "signature": "export const GlobalBackground = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Hero.tsx": {
+      "file": "src\\components\\Hero.tsx",
+      "lang": "typescript",
+      "imports": [
+        "framer-motion",
+        "react-i18next",
+        "src\\components\\ui\\button.tsx",
+        "lucide-react",
+        "src\\components\\ui\\magnetic.tsx"
+      ],
+      "exports": [
+        "Hero"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 14,
+          "bugFixCommits": 6,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 14
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Hero",
+          "kind": "function",
+          "lineStart": 13,
+          "signature": "export const Hero = ({ onOpenCalc }: HeroProps) => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\HowItWorks.tsx": {
+      "file": "src\\components\\HowItWorks.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "HowItWorks"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 7,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-11",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 7
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "HowItWorks",
+          "kind": "function",
+          "lineStart": 8,
+          "signature": "export const HowItWorks = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\mode-toggle.tsx": {
+      "file": "src\\components\\mode-toggle.tsx",
+      "lang": "typescript",
+      "imports": [
+        "src\\components\\theme-provider.tsx",
+        "react"
+      ],
+      "exports": [
+        "ModeToggle"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "ModeToggle",
+          "kind": "function",
+          "lineStart": 6,
+          "signature": "export function ModeToggle() {"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\components\\theme-provider.tsx::useTheme"
+      ]
+    },
+    "src\\components\\Navbar.tsx": {
+      "file": "src\\components\\Navbar.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "src\\components\\theme-provider.tsx",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react",
+        "@clerk/clerk-react"
+      ],
+      "exports": [
+        "Navbar"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Dashboard.tsx",
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 35,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 11,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-06-13",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 11
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Navbar",
+          "kind": "function",
+          "lineStart": 10,
+          "signature": "export const Navbar = () => {"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\components\\theme-provider.tsx::useTheme"
+      ]
+    },
+    "src\\components\\NotFound.tsx": {
+      "file": "src\\components\\NotFound.tsx",
+      "lang": "typescript",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "react"
+      ],
+      "exports": [
+        "NotFound"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\App.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-13",
+          "lastCommit": "2026-03-13",
+          "ageInDays": 92,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "NotFound",
+          "kind": "function",
+          "lineStart": 7,
+          "signature": "export default function NotFound() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Preloader.tsx": {
+      "file": "src\\components\\Preloader.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom"
+      ],
+      "exports": [
+        "Preloader"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\App.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 4,
+          "bugFixCommits": 1,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-09",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 96,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 4
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Preloader",
+          "kind": "function",
+          "lineStart": 7,
+          "signature": "export const Preloader = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Projects.tsx": {
+      "file": "src\\components\\Projects.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "Projects"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 16,
+          "bugFixCommits": 8,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 16
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Projects",
+          "kind": "function",
+          "lineStart": 18,
+          "signature": "export const Projects = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\SbaPlanner.tsx": {
+      "file": "src\\components\\SbaPlanner.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "lucide-react",
+        "react-konva"
+      ],
+      "exports": [
+        "SbaPlanner"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Dashboard.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 3,
+          "bugFixCommits": 1,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-12",
+          "lastCommit": "2026-06-13",
+          "ageInDays": 93,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 3
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "SbaPlanner",
+          "kind": "function",
+          "lineStart": 66,
+          "signature": "export const SbaPlanner = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\ScrollToTop.tsx": {
+      "file": "src\\components\\ScrollToTop.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react"
+      ],
+      "exports": [
+        "ScrollToTop"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 2,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 2
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "ScrollToTop",
+          "kind": "function",
+          "lineStart": 7,
+          "signature": "export const ScrollToTop = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\SeoBlock.tsx": {
+      "file": "src\\components\\SeoBlock.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react"
+      ],
+      "exports": [
+        "SeoBlock"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-13",
+          "lastCommit": "2026-03-13",
+          "ageInDays": 92,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "SeoBlock",
+          "kind": "function",
+          "lineStart": 7,
+          "signature": "export const SeoBlock = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Services.tsx": {
+      "file": "src\\components\\Services.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react",
+        "react-intersection-observer"
+      ],
+      "exports": [
+        "Services"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 8,
+          "bugFixCommits": 4,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-11",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 8
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Services",
+          "kind": "function",
+          "lineStart": 9,
+          "signature": "export const Services = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\smooth-scroll.tsx": {
+      "file": "src\\components\\smooth-scroll.tsx",
+      "lang": "typescript",
+      "imports": [
+        "lenis",
+        "react"
+      ],
+      "exports": [
+        "SmoothScroll"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 3,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 3
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "SmoothScroll",
+          "kind": "function",
+          "lineStart": 6,
+          "signature": "export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Statistics.tsx": {
+      "file": "src\\components\\Statistics.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-countup",
+        "react-intersection-observer",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "Statistics"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 7,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-11",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 7
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Statistics",
+          "kind": "function",
+          "lineStart": 10,
+          "signature": "export const Statistics = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\Testimonials.tsx": {
+      "file": "src\\components\\Testimonials.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-i18next",
+        "lucide-react"
+      ],
+      "exports": [
+        "Testimonials"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\pages\\Home.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 17,
+          "bugFixCommits": 7,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-12",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 17
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Testimonials",
+          "kind": "function",
+          "lineStart": 28,
+          "signature": "export const Testimonials = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\theme-provider.tsx": {
+      "file": "src\\components\\theme-provider.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "ThemeProvider",
+        "useTheme"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\components\\mode-toggle.tsx",
+        "src\\components\\Navbar.tsx",
+        "src\\main.tsx"
+      ],
+      "riskScore": 36,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 2,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 2
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "ThemeProvider",
+          "kind": "function",
+          "lineStart": 23,
+          "signature": "export function ThemeProvider({"
+        },
+        {
+          "name": "useTheme",
+          "kind": "function",
+          "lineStart": 69,
+          "signature": "export const useTheme = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\ui\\accordion.tsx": {
+      "file": "src\\components\\ui\\accordion.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-accordion",
+        "lucide-react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Accordion",
+        "AccordionItem",
+        "AccordionTrigger",
+        "AccordionContent"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\components\\Footer.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\avatar.tsx": {
+      "file": "src\\components\\ui\\avatar.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-avatar",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Avatar",
+        "AvatarImage",
+        "AvatarFallback"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\badge.tsx": {
+      "file": "src\\components\\ui\\badge.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Badge",
+        "badgeVariants",
+        "BadgeProps"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Badge",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "function Badge({ className, variant, ...props }: BadgeProps) {"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\button.tsx": {
+      "file": "src\\components\\ui\\button.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Button",
+        "buttonVariants",
+        "ButtonProps"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\components\\Hero.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\card.tsx": {
+      "file": "src\\components\\ui\\card.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Card",
+        "CardHeader",
+        "CardFooter",
+        "CardTitle",
+        "CardDescription",
+        "CardContent"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\dropdown-menu.tsx": {
+      "file": "src\\components\\ui\\dropdown-menu.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-dropdown-menu",
+        "lucide-react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "DropdownMenu",
+        "DropdownMenuTrigger",
+        "DropdownMenuContent",
+        "DropdownMenuItem",
+        "DropdownMenuCheckboxItem",
+        "DropdownMenuRadioItem",
+        "DropdownMenuLabel",
+        "DropdownMenuSeparator",
+        "DropdownMenuShortcut",
+        "DropdownMenuGroup",
+        "DropdownMenuPortal",
+        "DropdownMenuSub",
+        "DropdownMenuSubContent",
+        "DropdownMenuSubTrigger",
+        "DropdownMenuRadioGroup"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "DropdownMenuShortcut",
+          "kind": "function",
+          "lineStart": 169,
+          "signature": "const DropdownMenuShortcut = ({"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\input.tsx": {
+      "file": "src\\components\\ui\\input.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Input",
+        "InputProps"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\magnetic.tsx": {
+      "file": "src\\components\\ui\\magnetic.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion"
+      ],
+      "exports": [
+        "Magnetic"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\components\\Footer.tsx",
+        "src\\components\\Hero.tsx"
+      ],
+      "riskScore": 35,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-09",
+          "lastCommit": "2026-03-09",
+          "ageInDays": 96,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Magnetic",
+          "kind": "function",
+          "lineStart": 6,
+          "signature": "export default function Magnetic({"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\components\\ui\\navigation-menu.tsx": {
+      "file": "src\\components\\ui\\navigation-menu.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-navigation-menu",
+        "class-variance-authority",
+        "lucide-react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "navigationMenuTriggerStyle",
+        "NavigationMenu",
+        "NavigationMenuList",
+        "NavigationMenuItem",
+        "NavigationMenuContent",
+        "NavigationMenuTrigger",
+        "NavigationMenuLink",
+        "NavigationMenuIndicator",
+        "NavigationMenuViewport"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\components\\ui\\sheet.tsx": {
+      "file": "src\\components\\ui\\sheet.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "@radix-ui/react-dialog",
+        "class-variance-authority",
+        "lucide-react",
+        "src\\lib\\utils.ts"
+      ],
+      "exports": [
+        "Sheet",
+        "SheetPortal",
+        "SheetOverlay",
+        "SheetTrigger",
+        "SheetClose",
+        "SheetContent",
+        "SheetHeader",
+        "SheetFooter",
+        "SheetTitle",
+        "SheetDescription"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "SheetHeader",
+          "kind": "function",
+          "lineStart": 75,
+          "signature": "const SheetHeader = ({"
+        },
+        {
+          "name": "SheetFooter",
+          "kind": "function",
+          "lineStart": 89,
+          "signature": "const SheetFooter = ({"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\lib\\utils.ts::cn"
+      ]
+    },
+    "src\\db\\index.ts": {
+      "file": "src\\db\\index.ts",
+      "lang": "typescript",
+      "imports": [
+        "@neondatabase/serverless",
+        "drizzle-orm/neon-http",
+        "src\\db\\schema.ts"
+      ],
+      "exports": [
+        "db"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "api\\delete-project.ts",
+        "api\\get-all-projects.ts",
+        "api\\get-projects.ts",
+        "api\\projects.ts",
+        "api\\upload.ts"
+      ],
+      "riskScore": 39,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\db\\schema.ts": {
+      "file": "src\\db\\schema.ts",
+      "lang": "typescript",
+      "imports": [
+        "drizzle-orm/pg-core"
+      ],
+      "exports": [
+        "categoryEnum",
+        "statusEnum",
+        "projects",
+        "documents"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "api\\delete-project.ts",
+        "api\\get-all-projects.ts",
+        "api\\get-projects.ts",
+        "api\\projects.ts",
+        "api\\upload.ts",
+        "src\\db\\index.ts"
+      ],
+      "riskScore": 40,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\i18n.ts": {
+      "file": "src\\i18n.ts",
+      "lang": "typescript",
+      "imports": [
+        "i18next",
+        "react-i18next"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [
+        "src\\main.tsx"
+      ],
+      "riskScore": 9,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 9,
+          "bugFixCommits": 3,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 9
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\lib\\utils.ts": {
+      "file": "src\\lib\\utils.ts",
+      "lang": "typescript",
+      "imports": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "exports": [
+        "cn"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\components\\ui\\accordion.tsx",
+        "src\\components\\ui\\avatar.tsx",
+        "src\\components\\ui\\badge.tsx",
+        "src\\components\\ui\\button.tsx",
+        "src\\components\\ui\\card.tsx",
+        "src\\components\\ui\\dropdown-menu.tsx",
+        "src\\components\\ui\\input.tsx",
+        "src\\components\\ui\\navigation-menu.tsx",
+        "src\\components\\ui\\sheet.tsx"
+      ],
+      "riskScore": 43,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "cn",
+          "kind": "function",
+          "lineStart": 4,
+          "signature": "export function cn(...inputs: ClassValue[]) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\main.tsx": {
+      "file": "src\\main.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-dom/client",
+        "src\\App.tsx",
+        "src\\components\\theme-provider.tsx",
+        "@clerk/clerk-react",
+        "@clerk/themes",
+        "@clerk/localizations",
+        "react-i18next",
+        "src\\index.css",
+        "src\\i18n.ts"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 3,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 3
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "ClerkThemeWrapper",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "const ClerkThemeWrapper = ({ children }: { children: React.ReactNode }) => {"
+        }
+      ],
+      "error": false,
+      "calls": [
+        "src\\components\\theme-provider.tsx::useTheme"
+      ]
+    },
+    "src\\pages\\Dashboard.tsx": {
+      "file": "src\\pages\\Dashboard.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "react-dom",
+        "@clerk/clerk-react",
+        "framer-motion",
+        "src\\components\\Navbar.tsx",
+        "lucide-react",
+        "src\\components\\GlobalBackground.tsx",
+        "src\\components\\SbaPlanner.tsx"
+      ],
+      "exports": [
+        "Dashboard"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\App.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 4,
+          "bugFixCommits": 1,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-29",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 4
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "Dashboard",
+          "kind": "function",
+          "lineStart": 109,
+          "signature": "export const Dashboard = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\pages\\Home.tsx": {
+      "file": "src\\pages\\Home.tsx",
+      "lang": "typescript",
+      "imports": [
+        "react",
+        "framer-motion",
+        "src\\components\\Navbar.tsx",
+        "src\\components\\Hero.tsx",
+        "src\\components\\Statistics.tsx",
+        "src\\components\\HowItWorks.tsx",
+        "src\\components\\Features.tsx",
+        "src\\components\\Services.tsx",
+        "src\\components\\Projects.tsx",
+        "src\\components\\Testimonials.tsx",
+        "src\\components\\Cta.tsx",
+        "src\\components\\SeoBlock.tsx",
+        "src\\components\\Footer.tsx",
+        "src\\components\\ScrollToTop.tsx",
+        "src\\components\\smooth-scroll.tsx",
+        "src\\components\\Calculator.tsx",
+        "lucide-react"
+      ],
+      "exports": [
+        "Home"
+      ],
+      "gaps": [],
+      "importedBy": [
+        "src\\App.tsx"
+      ],
+      "riskScore": 34,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "framework": "react",
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-16",
+          "lastCommit": "2026-03-16",
+          "ageInDays": 89,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [
+        {
+          "name": "GlassWrapper",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "const GlassWrapper = ({ children }: { children: React.ReactNode }) => ("
+        },
+        {
+          "name": "Home",
+          "kind": "function",
+          "lineStart": 31,
+          "signature": "export const Home = () => {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\extract-colors.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\extract-colors.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [
+        "parseBrandColors",
+        "hexToRgb",
+        "rgbToHex",
+        "colorDistance",
+        "findNearestBrandColor",
+        "calculateCompliance",
+        "parseImageMagickOutput"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "extractHexColors",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "function extractHexColors(text) {"
+        },
+        {
+          "name": "parseBrandColors",
+          "kind": "function",
+          "lineStart": 38,
+          "signature": "function parseBrandColors(guidelinesPath) {"
+        },
+        {
+          "name": "hexToRgb",
+          "kind": "function",
+          "lineStart": 83,
+          "signature": "function hexToRgb(hex) {"
+        },
+        {
+          "name": "rgbToHex",
+          "kind": "function",
+          "lineStart": 97,
+          "signature": "function rgbToHex(r, g, b) {"
+        },
+        {
+          "name": "colorDistance",
+          "kind": "function",
+          "lineStart": 113,
+          "signature": "function colorDistance(color1, color2) {"
+        },
+        {
+          "name": "findNearestBrandColor",
+          "kind": "function",
+          "lineStart": 129,
+          "signature": "function findNearestBrandColor(color, brandColors) {"
+        },
+        {
+          "name": "calculateCompliance",
+          "kind": "function",
+          "lineStart": 148,
+          "signature": "function calculateCompliance(extractedColors, brandColors, threshold = 50) {"
+        },
+        {
+          "name": "generateImageMagickCommand",
+          "kind": "function",
+          "lineStart": 167,
+          "signature": "function generateImageMagickCommand(imagePath, numColors = 10) {"
+        },
+        {
+          "name": "parseImageMagickOutput",
+          "kind": "function",
+          "lineStart": 174,
+          "signature": "function parseImageMagickOutput(output) {"
+        },
+        {
+          "name": "displayPalette",
+          "kind": "function",
+          "lineStart": 200,
+          "signature": "function displayPalette(palette) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 233,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\inject-brand-context.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\inject-brand-context.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "extractHexColors",
+          "kind": "function",
+          "lineStart": 24,
+          "signature": "function extractHexColors(text) {"
+        },
+        {
+          "name": "extractColorsFromTable",
+          "kind": "function",
+          "lineStart": 32,
+          "signature": "function extractColorsFromTable(content) {"
+        },
+        {
+          "name": "extractTypography",
+          "kind": "function",
+          "lineStart": 65,
+          "signature": "function extractTypography(content) {"
+        },
+        {
+          "name": "extractVoice",
+          "kind": "function",
+          "lineStart": 98,
+          "signature": "function extractVoice(content) {"
+        },
+        {
+          "name": "extractCoreAttributes",
+          "kind": "function",
+          "lineStart": 155,
+          "signature": "function extractCoreAttributes(content) {"
+        },
+        {
+          "name": "extractImageStyle",
+          "kind": "function",
+          "lineStart": 184,
+          "signature": "function extractImageStyle(content) {"
+        },
+        {
+          "name": "generatePromptAddition",
+          "kind": "function",
+          "lineStart": 268,
+          "signature": "function generatePromptAddition(brandContext) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 310,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\sync-brand-to-tokens.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\sync-brand-to-tokens.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path",
+        "child_process"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "extractColorsFromMarkdown",
+          "kind": "function",
+          "lineStart": 25,
+          "signature": "function extractColorsFromMarkdown(content) {"
+        },
+        {
+          "name": "generateColorScale",
+          "kind": "function",
+          "lineStart": 96,
+          "signature": "function generateColorScale(baseHex, darkHex, lightHex) {"
+        },
+        {
+          "name": "adjustBrightness",
+          "kind": "function",
+          "lineStart": 115,
+          "signature": "function adjustBrightness(hex, percent) {"
+        },
+        {
+          "name": "updateDesignTokens",
+          "kind": "function",
+          "lineStart": 126,
+          "signature": "function updateDesignTokens(tokens, colors) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 208,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\validate-asset.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\brand\\scripts\\validate-asset.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "parseFilename",
+          "kind": "function",
+          "lineStart": 53,
+          "signature": "function parseFilename(filename) {"
+        },
+        {
+          "name": "validateFilename",
+          "kind": "function",
+          "lineStart": 73,
+          "signature": "function validateFilename(filename) {"
+        },
+        {
+          "name": "validateFileSize",
+          "kind": "function",
+          "lineStart": 122,
+          "signature": "function validateFileSize(filepath, extension) {"
+        },
+        {
+          "name": "validateFormat",
+          "kind": "function",
+          "lineStart": 158,
+          "signature": "function validateFormat(extension) {"
+        },
+        {
+          "name": "checkManifest",
+          "kind": "function",
+          "lineStart": 187,
+          "signature": "function checkManifest(filepath) {"
+        },
+        {
+          "name": "suggestFilename",
+          "kind": "function",
+          "lineStart": 214,
+          "signature": "function suggestFilename(original, parsed) {"
+        },
+        {
+          "name": "formatBytes",
+          "kind": "function",
+          "lineStart": 229,
+          "signature": "function formatBytes(bytes) {"
+        },
+        {
+          "name": "validateAsset",
+          "kind": "function",
+          "lineStart": 240,
+          "signature": "function validateAsset(assetPath) {"
+        },
+        {
+          "name": "formatOutput",
+          "kind": "function",
+          "lineStart": 311,
+          "signature": "function formatOutput(results) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 351,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\core.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\core.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport re\nfrom pathlib import Path\nfrom math import log\nfrom collections import defaultdict\n\n\nDATA_DIR",
+        "pathlib",
+        "math",
+        "collections"
+      ],
+      "exports": [
+        "_load_csv",
+        "_search_csv",
+        "detect_domain",
+        "search",
+        "search_all",
+        "get_cip_brief",
+        "BM25",
+        "DATA_DIR",
+        "MAX_RESULTS",
+        "CSV_CONFIG"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "_load_csv",
+          "kind": "function",
+          "lineStart": 105,
+          "signature": "def _load_csv(filepath):"
+        },
+        {
+          "name": "_search_csv",
+          "kind": "function",
+          "lineStart": 111,
+          "signature": "def _search_csv(filepath, search_cols, output_cols, query, max_results):"
+        },
+        {
+          "name": "detect_domain",
+          "kind": "function",
+          "lineStart": 136,
+          "signature": "def detect_domain(query):"
+        },
+        {
+          "name": "search",
+          "kind": "function",
+          "lineStart": 152,
+          "signature": "def search(query, domain=None, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "search_all",
+          "kind": "function",
+          "lineStart": 174,
+          "signature": "def search_all(query, max_results=2):"
+        },
+        {
+          "name": "get_cip_brief",
+          "kind": "function",
+          "lineStart": 184,
+          "signature": "def get_cip_brief(brand_name, industry_query, style_query=None):"
+        },
+        {
+          "name": "BM25",
+          "kind": "class",
+          "lineStart": 42,
+          "signature": "class BM25:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\generate.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\generate.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport os\nimport sys\nfrom pathlib import Path\nfrom datetime import datetime\n\n\nsys.path.insert",
+        "pathlib",
+        "datetime",
+        "core"
+      ],
+      "exports": [
+        "load_logo_image",
+        "load_env",
+        "build_cip_prompt",
+        "generate_with_nano_banana",
+        "generate_cip_set",
+        "check_logo_required",
+        "main",
+        "MODELS",
+        "DEFAULT_MODEL"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "load_logo_image",
+          "kind": "function",
+          "lineStart": 36,
+          "signature": "def load_logo_image(logo_path):"
+        },
+        {
+          "name": "load_env",
+          "kind": "function",
+          "lineStart": 69,
+          "signature": "def load_env():"
+        },
+        {
+          "name": "build_cip_prompt",
+          "kind": "function",
+          "lineStart": 89,
+          "signature": "def build_cip_prompt(deliverable, brand_name, style=None, industry=None, mockup="
+        },
+        {
+          "name": "generate_with_nano_banana",
+          "kind": "function",
+          "lineStart": 186,
+          "signature": "def generate_with_nano_banana(prompt_data, output_dir=None, model_key=\"flash\", a"
+        },
+        {
+          "name": "generate_cip_set",
+          "kind": "function",
+          "lineStart": 286,
+          "signature": "def generate_cip_set(brand_name, industry, style=None, deliverables=None, output"
+        },
+        {
+          "name": "check_logo_required",
+          "kind": "function",
+          "lineStart": 341,
+          "signature": "def check_logo_required(brand_name, skip_prompt=False):"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 370,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\render-html.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\render-html.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport os\nimport sys\nimport base64\nfrom pathlib import Path\nfrom datetime import datetime\n\n\nsys.path.insert",
+        "pathlib",
+        "datetime",
+        "core"
+      ],
+      "exports": [
+        "get_image_base64",
+        "get_deliverable_info",
+        "generate_html",
+        "main",
+        "DELIVERABLE_INFO"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "get_image_base64",
+          "kind": "function",
+          "lineStart": 99,
+          "signature": "def get_image_base64(image_path):"
+        },
+        {
+          "name": "get_deliverable_info",
+          "kind": "function",
+          "lineStart": 109,
+          "signature": "def get_deliverable_info(filename):"
+        },
+        {
+          "name": "generate_html",
+          "kind": "function",
+          "lineStart": 124,
+          "signature": "def generate_html(brand_name, industry, images_dir, output_path=None, style=None"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 392,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\search.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\cip\\search.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport sys\nfrom pathlib import Path\n\n\nsys.path.insert",
+        "pathlib",
+        "core"
+      ],
+      "exports": [
+        "format_results",
+        "format_brief",
+        "main"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "format_results",
+          "kind": "function",
+          "lineStart": 17,
+          "signature": "def format_results(results, domain):"
+        },
+        {
+          "name": "format_brief",
+          "kind": "function",
+          "lineStart": 32,
+          "signature": "def format_brief(brief):"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 65,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon\\generate.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\icon\\generate.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport os\nimport re\nimport sys\nimport time\nfrom pathlib import Path\nfrom datetime import datetime\n\n\ndef load_env",
+        "pathlib",
+        "datetime"
+      ],
+      "exports": [
+        "load_env",
+        "extract_svgs",
+        "apply_color",
+        "apply_viewbox_size",
+        "generate_icon",
+        "generate_batch",
+        "generate_sizes",
+        "main",
+        "GEMINI_API_KEY",
+        "MODEL",
+        "ICON_STYLES",
+        "ICON_CATEGORIES",
+        "SVG_PROMPT_TEMPLATE",
+        "SVG_BATCH_PROMPT_TEMPLATE"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "load_env",
+          "kind": "function",
+          "lineStart": 27,
+          "signature": "def load_env():"
+        },
+        {
+          "name": "extract_svgs",
+          "kind": "function",
+          "lineStart": 128,
+          "signature": "def extract_svgs(text):"
+        },
+        {
+          "name": "apply_color",
+          "kind": "function",
+          "lineStart": 166,
+          "signature": "def apply_color(svg_code, color):"
+        },
+        {
+          "name": "apply_viewbox_size",
+          "kind": "function",
+          "lineStart": 177,
+          "signature": "def apply_viewbox_size(svg_code, size):"
+        },
+        {
+          "name": "generate_icon",
+          "kind": "function",
+          "lineStart": 189,
+          "signature": "def generate_icon(prompt, style=None, category=None, name=None,"
+        },
+        {
+          "name": "generate_batch",
+          "kind": "function",
+          "lineStart": 286,
+          "signature": "def generate_batch(prompt, count, output_dir, style=None, color=None,"
+        },
+        {
+          "name": "generate_sizes",
+          "kind": "function",
+          "lineStart": 371,
+          "signature": "def generate_sizes(prompt, sizes, style=None, color=None, output_dir=None, name="
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 403,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\core.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\core.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport re\nfrom pathlib import Path\nfrom math import log\nfrom collections import defaultdict\n\n\nDATA_DIR",
+        "pathlib",
+        "math",
+        "collections"
+      ],
+      "exports": [
+        "_load_csv",
+        "_search_csv",
+        "detect_domain",
+        "search",
+        "search_all",
+        "BM25",
+        "DATA_DIR",
+        "MAX_RESULTS",
+        "CSV_CONFIG"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "_load_csv",
+          "kind": "function",
+          "lineStart": 100,
+          "signature": "def _load_csv(filepath):"
+        },
+        {
+          "name": "_search_csv",
+          "kind": "function",
+          "lineStart": 106,
+          "signature": "def _search_csv(filepath, search_cols, output_cols, query, max_results):"
+        },
+        {
+          "name": "detect_domain",
+          "kind": "function",
+          "lineStart": 131,
+          "signature": "def detect_domain(query):"
+        },
+        {
+          "name": "search",
+          "kind": "function",
+          "lineStart": 146,
+          "signature": "def search(query, domain=None, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "search_all",
+          "kind": "function",
+          "lineStart": 168,
+          "signature": "def search_all(query, max_results=2):"
+        },
+        {
+          "name": "BM25",
+          "kind": "class",
+          "lineStart": 37,
+          "signature": "class BM25:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\generate.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\generate.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport os\nimport sys\nimport time\nfrom pathlib import Path\nfrom datetime import datetime\n\n\ndef load_env",
+        "pathlib",
+        "datetime"
+      ],
+      "exports": [
+        "load_env",
+        "enhance_prompt",
+        "generate_logo",
+        "generate_batch",
+        "main",
+        "GEMINI_API_KEY",
+        "GEMINI_FLASH",
+        "GEMINI_PRO",
+        "ASPECT_RATIOS",
+        "DEFAULT_ASPECT_RATIO",
+        "LOGO_PROMPT_TEMPLATE",
+        "STYLE_MODIFIERS",
+        "INDUSTRY_PROMPTS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "load_env",
+          "kind": "function",
+          "lineStart": 29,
+          "signature": "def load_env():"
+        },
+        {
+          "name": "enhance_prompt",
+          "kind": "function",
+          "lineStart": 119,
+          "signature": "def enhance_prompt(base_prompt, style=None, industry=None, brand_name=None):"
+        },
+        {
+          "name": "generate_logo",
+          "kind": "function",
+          "lineStart": 136,
+          "signature": "def generate_logo(prompt, style=None, industry=None, brand_name=None,"
+        },
+        {
+          "name": "generate_batch",
+          "kind": "function",
+          "lineStart": 230,
+          "signature": "def generate_batch(prompt, brand_name, count, output_dir, use_pro=False, brand_c"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 302,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\search.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design\\scripts\\logo\\search.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nfrom core import CSV_CONFIG",
+        "MAX_RESULTS",
+        "search",
+        "search_all\n\n\ndef format_output",
+        "core"
+      ],
+      "exports": [
+        "format_output",
+        "generate_design_brief"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "format_output",
+          "kind": "function",
+          "lineStart": 15,
+          "signature": "def format_output(result):"
+        },
+        {
+          "name": "generate_design_brief",
+          "kind": "function",
+          "lineStart": 37,
+          "signature": "def generate_design_brief(query, brand_name=None):"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\embed-tokens.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\embed-tokens.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "findProjectRoot",
+          "kind": "function",
+          "lineStart": 17,
+          "signature": "function findProjectRoot(startDir) {"
+        },
+        {
+          "name": "extractTokens",
+          "kind": "function",
+          "lineStart": 57,
+          "signature": "function extractTokens(css, minimal = false) {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\fetch-background.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\fetch-background.py",
+      "lang": "python",
+      "imports": [
+        "json\nimport csv\nimport re\nimport sys\nfrom pathlib import Path\n\n\nPROJECT_ROOT",
+        "pathlib"
+      ],
+      "exports": [
+        "resolve_token_reference",
+        "load_brand_colors",
+        "load_backgrounds_config",
+        "get_overlay_css",
+        "get_curated_images",
+        "get_pexels_search_url",
+        "get_background_image",
+        "generate_css_for_background",
+        "main",
+        "PROJECT_ROOT",
+        "TOKENS_PATH",
+        "BACKGROUNDS_CSV",
+        "CURATED_IMAGES"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "resolve_token_reference",
+          "kind": "function",
+          "lineStart": 20,
+          "signature": "def resolve_token_reference(ref: str, tokens: dict) -> str:"
+        },
+        {
+          "name": "load_brand_colors",
+          "kind": "function",
+          "lineStart": 39,
+          "signature": "def load_brand_colors():"
+        },
+        {
+          "name": "load_backgrounds_config",
+          "kind": "function",
+          "lineStart": 116,
+          "signature": "def load_backgrounds_config():"
+        },
+        {
+          "name": "get_overlay_css",
+          "kind": "function",
+          "lineStart": 129,
+          "signature": "def get_overlay_css(style: str, brand_colors: dict) -> str:"
+        },
+        {
+          "name": "get_curated_images",
+          "kind": "function",
+          "lineStart": 189,
+          "signature": "def get_curated_images(slide_type: str) -> list:"
+        },
+        {
+          "name": "get_pexels_search_url",
+          "kind": "function",
+          "lineStart": 194,
+          "signature": "def get_pexels_search_url(keywords: str) -> str:"
+        },
+        {
+          "name": "get_background_image",
+          "kind": "function",
+          "lineStart": 200,
+          "signature": "def get_background_image(slide_type: str) -> dict:"
+        },
+        {
+          "name": "generate_css_for_background",
+          "kind": "function",
+          "lineStart": 238,
+          "signature": "def generate_css_for_background(result: dict, slide_class: str = '.slide-with-bg"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 269,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-slide.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-slide.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nfrom pathlib import Path\nfrom datetime import datetime\n\n\nSCRIPT_DIR",
+        "pathlib",
+        "datetime"
+      ],
+      "exports": [
+        "generate_title_slide",
+        "generate_problem_slide",
+        "generate_solution_slide",
+        "generate_metrics_slide",
+        "generate_chart_slide",
+        "generate_testimonial_slide",
+        "generate_cta_slide",
+        "generate_deck",
+        "main",
+        "SCRIPT_DIR",
+        "DATA_DIR",
+        "TOKENS_CSS",
+        "TOKENS_JSON",
+        "OUTPUT_DIR",
+        "SLIDE_TEMPLATE",
+        "SLIDE_GENERATORS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "generate_title_slide",
+          "kind": "function",
+          "lineStart": 411,
+          "signature": "def generate_title_slide(data):"
+        },
+        {
+          "name": "generate_problem_slide",
+          "kind": "function",
+          "lineStart": 430,
+          "signature": "def generate_problem_slide(data):"
+        },
+        {
+          "name": "generate_solution_slide",
+          "kind": "function",
+          "lineStart": 461,
+          "signature": "def generate_solution_slide(data):"
+        },
+        {
+          "name": "generate_metrics_slide",
+          "kind": "function",
+          "lineStart": 506,
+          "signature": "def generate_metrics_slide(data):"
+        },
+        {
+          "name": "generate_chart_slide",
+          "kind": "function",
+          "lineStart": 537,
+          "signature": "def generate_chart_slide(data):"
+        },
+        {
+          "name": "generate_testimonial_slide",
+          "kind": "function",
+          "lineStart": 571,
+          "signature": "def generate_testimonial_slide(data):"
+        },
+        {
+          "name": "generate_cta_slide",
+          "kind": "function",
+          "lineStart": 589,
+          "signature": "def generate_cta_slide(data):"
+        },
+        {
+          "name": "generate_deck",
+          "kind": "function",
+          "lineStart": 620,
+          "signature": "def generate_deck(slides_data, title=\"Pitch Deck\"):"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 641,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-tokens.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\generate-tokens.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [
+        "colors",
+        "null"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "parseArgs",
+          "kind": "function",
+          "lineStart": 16,
+          "signature": "function parseArgs() {"
+        },
+        {
+          "name": "resolveReference",
+          "kind": "function",
+          "lineStart": 51,
+          "signature": "function resolveReference(value, tokens) {"
+        },
+        {
+          "name": "toCssVarName",
+          "kind": "function",
+          "lineStart": 73,
+          "signature": "function toCssVarName(path) {"
+        },
+        {
+          "name": "flattenTokens",
+          "kind": "function",
+          "lineStart": 80,
+          "signature": "function flattenTokens(obj, tokens, prefix = [], result = {}) {"
+        },
+        {
+          "name": "generateCSS",
+          "kind": "function",
+          "lineStart": 103,
+          "signature": "function generateCSS(tokens) {"
+        },
+        {
+          "name": "generateTailwind",
+          "kind": "function",
+          "lineStart": 143,
+          "signature": "function generateTailwind(tokens) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 167,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\html-token-validator.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\html-token-validator.py",
+      "lang": "python",
+      "imports": [
+        "re\nimport json\nimport sys\nfrom pathlib import Path\nfrom typing import Dict",
+        "List",
+        "Tuple",
+        "Optional\n\n\nPROJECT_ROOT",
+        "pathlib",
+        "typing"
+      ],
+      "exports": [
+        "load_css_variables",
+        "is_inside_block",
+        "is_allowed_exception",
+        "is_allowed_rgba",
+        "get_context",
+        "validate_html",
+        "validate_file",
+        "validate_directory",
+        "print_result",
+        "print_summary",
+        "main",
+        "ValidationResult",
+        "PROJECT_ROOT",
+        "TOKENS_JSON_PATH",
+        "TOKENS_CSS_PATH",
+        "ASSET_DIRS",
+        "FORBIDDEN_PATTERNS",
+        "ALLOWED_RGBA_PATTERNS",
+        "ALLOWED_EXCEPTIONS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "load_css_variables",
+          "kind": "function",
+          "lineStart": 78,
+          "signature": "def load_css_variables() -> Dict[str, str]:"
+        },
+        {
+          "name": "is_inside_block",
+          "kind": "function",
+          "lineStart": 89,
+          "signature": "def is_inside_block(content: str, match_pos: int, open_tag: str, close_tag: str)"
+        },
+        {
+          "name": "is_allowed_exception",
+          "kind": "function",
+          "lineStart": 97,
+          "signature": "def is_allowed_exception(context: str) -> bool:"
+        },
+        {
+          "name": "is_allowed_rgba",
+          "kind": "function",
+          "lineStart": 103,
+          "signature": "def is_allowed_rgba(match_text: str) -> bool:"
+        },
+        {
+          "name": "get_context",
+          "kind": "function",
+          "lineStart": 108,
+          "signature": "def get_context(content: str, pos: int, chars: int = 100) -> str:"
+        },
+        {
+          "name": "validate_html",
+          "kind": "function",
+          "lineStart": 115,
+          "signature": "def validate_html(content: str, file_path: Path, verbose: bool = False) -> Valid"
+        },
+        {
+          "name": "validate_file",
+          "kind": "function",
+          "lineStart": 185,
+          "signature": "def validate_file(file_path: Path, verbose: bool = False) -> ValidationResult:"
+        },
+        {
+          "name": "validate_directory",
+          "kind": "function",
+          "lineStart": 196,
+          "signature": "def validate_directory(dir_path: Path, verbose: bool = False) -> List[Validation"
+        },
+        {
+          "name": "print_result",
+          "kind": "function",
+          "lineStart": 205,
+          "signature": "def print_result(result: ValidationResult, verbose: bool = False):"
+        },
+        {
+          "name": "print_summary",
+          "kind": "function",
+          "lineStart": 221,
+          "signature": "def print_summary(all_results: Dict[str, List[ValidationResult]]):"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 260,
+          "signature": "def main():"
+        },
+        {
+          "name": "ValidationResult",
+          "kind": "class",
+          "lineStart": 62,
+          "signature": "class ValidationResult:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\search-slides.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\search-slides.py",
+      "lang": "python",
+      "imports": [
+        "sys\nimport json\nimport argparse\nfrom slide_search_core import",
+        "slide_search_core"
+      ],
+      "exports": [
+        "format_result",
+        "format_context",
+        "main"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "format_result",
+          "kind": "function",
+          "lineStart": 17,
+          "signature": "def format_result(result, domain):"
+        },
+        {
+          "name": "format_context",
+          "kind": "function",
+          "lineStart": 64,
+          "signature": "def format_context(context):"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 108,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide-token-validator.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide-token-validator.py",
+      "lang": "python",
+      "imports": [
+        "sys\nimport subprocess\nfrom pathlib import Path\n\nSCRIPT_DIR",
+        "pathlib"
+      ],
+      "exports": [
+        "main",
+        "SCRIPT_DIR",
+        "UNIFIED_VALIDATOR"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 20,
+          "signature": "def main():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide_search_core.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\slide_search_core.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport re\nfrom pathlib import Path\nfrom math import log\nfrom collections import defaultdict\n\n\nDATA_DIR",
+        "pathlib",
+        "math",
+        "collections"
+      ],
+      "exports": [
+        "_load_csv",
+        "_search_csv",
+        "detect_domain",
+        "search",
+        "search_all",
+        "_load_decision_csv",
+        "get_layout_for_goal",
+        "get_typography_for_slide",
+        "get_color_for_emotion",
+        "get_background_config",
+        "should_use_full_bleed",
+        "calculate_pattern_break",
+        "search_with_context",
+        "BM25",
+        "DATA_DIR",
+        "MAX_RESULTS",
+        "CSV_CONFIG",
+        "AVAILABLE_DOMAINS",
+        "DECISION_CSV_CONFIG"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "_load_csv",
+          "kind": "function",
+          "lineStart": 107,
+          "signature": "def _load_csv(filepath):"
+        },
+        {
+          "name": "_search_csv",
+          "kind": "function",
+          "lineStart": 113,
+          "signature": "def _search_csv(filepath, search_cols, output_cols, query, max_results):"
+        },
+        {
+          "name": "detect_domain",
+          "kind": "function",
+          "lineStart": 138,
+          "signature": "def detect_domain(query):"
+        },
+        {
+          "name": "search",
+          "kind": "function",
+          "lineStart": 158,
+          "signature": "def search(query, domain=None, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "search_all",
+          "kind": "function",
+          "lineStart": 180,
+          "signature": "def search_all(query, max_results=2):"
+        },
+        {
+          "name": "_load_decision_csv",
+          "kind": "function",
+          "lineStart": 215,
+          "signature": "def _load_decision_csv(csv_type):"
+        },
+        {
+          "name": "get_layout_for_goal",
+          "kind": "function",
+          "lineStart": 229,
+          "signature": "def get_layout_for_goal(goal, previous_emotion=None):"
+        },
+        {
+          "name": "get_typography_for_slide",
+          "kind": "function",
+          "lineStart": 247,
+          "signature": "def get_typography_for_slide(slide_type, has_metrics=False, has_quote=False):"
+        },
+        {
+          "name": "get_color_for_emotion",
+          "kind": "function",
+          "lineStart": 283,
+          "signature": "def get_color_for_emotion(emotion):"
+        },
+        {
+          "name": "get_background_config",
+          "kind": "function",
+          "lineStart": 292,
+          "signature": "def get_background_config(slide_type):"
+        },
+        {
+          "name": "should_use_full_bleed",
+          "kind": "function",
+          "lineStart": 301,
+          "signature": "def should_use_full_bleed(slide_index, total_slides, emotion):"
+        },
+        {
+          "name": "calculate_pattern_break",
+          "kind": "function",
+          "lineStart": 325,
+          "signature": "def calculate_pattern_break(slide_index, total_slides, previous_emotion=None):"
+        },
+        {
+          "name": "search_with_context",
+          "kind": "function",
+          "lineStart": 352,
+          "signature": "def search_with_context(query, slide_position=1, total_slides=9, previous_emotio"
+        },
+        {
+          "name": "BM25",
+          "kind": "class",
+          "lineStart": 44,
+          "signature": "class BM25:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\validate-tokens.cjs": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\design-system\\scripts\\validate-tokens.cjs",
+      "lang": "typescript",
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "parseArgs",
+          "kind": "function",
+          "lineStart": 17,
+          "signature": "function parseArgs() {"
+        },
+        {
+          "name": "getFiles",
+          "kind": "function",
+          "lineStart": 98,
+          "signature": "function getFiles(dir, ignore, files = []) {"
+        },
+        {
+          "name": "shouldSkip",
+          "kind": "function",
+          "lineStart": 122,
+          "signature": "function shouldSkip(filePath) {"
+        },
+        {
+          "name": "scanFile",
+          "kind": "function",
+          "lineStart": 129,
+          "signature": "function scanFile(filePath) {"
+        },
+        {
+          "name": "formatReport",
+          "kind": "function",
+          "lineStart": 175,
+          "signature": "function formatReport(violations) {"
+        },
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 216,
+          "signature": "function main() {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\shadcn_add.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\shadcn_add.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport subprocess\nimport sys\nfrom pathlib import Path\nfrom typing import List",
+        "Optional\n\n\nclass ShadcnInstaller",
+        "pathlib",
+        "typing"
+      ],
+      "exports": [
+        "main",
+        "ShadcnInstaller"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 194,
+          "signature": "def main():"
+        },
+        {
+          "name": "ShadcnInstaller",
+          "kind": "class",
+          "lineStart": 17,
+          "signature": "class ShadcnInstaller:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tailwind_config_gen.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tailwind_config_gen.py",
+      "lang": "python",
+      "imports": [
+        "argparse\nimport json\nimport sys\nfrom pathlib import Path\nfrom typing import Any",
+        "Dict",
+        "List",
+        "Optional\n\n\nclass TailwindConfigGenerator",
+        "pathlib",
+        "typing"
+      ],
+      "exports": [
+        "main",
+        "TailwindConfigGenerator"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "main",
+          "kind": "function",
+          "lineStart": 285,
+          "signature": "def main():"
+        },
+        {
+          "name": "TailwindConfigGenerator",
+          "kind": "class",
+          "lineStart": 16,
+          "signature": "class TailwindConfigGenerator:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_shadcn_add.py",
+      "lang": "python",
+      "imports": [
+        "json\nimport subprocess\nfrom pathlib import Path\nfrom unittest.mock import MagicMock",
+        "mock_open",
+        "patch\n\nimport pytest\n\n\nimport sys\nsys.path.insert",
+        "pathlib",
+        "unittest.mock",
+        "shadcn_add"
+      ],
+      "exports": [
+        "TestShadcnInstaller"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "TestShadcnInstaller",
+          "kind": "class",
+          "lineStart": 17,
+          "signature": "class TestShadcnInstaller:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_tailwind_config_gen.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\.claude\\skills\\ui-styling\\scripts\\tests\\test_tailwind_config_gen.py",
+      "lang": "python",
+      "imports": [
+        "pytest\n\n\nimport sys\nsys.path.insert",
+        "pathlib",
+        "tailwind_config_gen"
+      ],
+      "exports": [
+        "TestTailwindConfigGenerator"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "TestTailwindConfigGenerator",
+          "kind": "class",
+          "lineStart": 14,
+          "signature": "class TestTailwindConfigGenerator:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data\\_sync_all.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\data\\_sync_all.py",
+      "lang": "python",
+      "imports": [
+        "csv",
+        "os",
+        "json\n\nBASE"
+      ],
+      "exports": [
+        "h2r",
+        "r2h",
+        "lum",
+        "is_dark",
+        "on_color",
+        "blend",
+        "shift",
+        "derive_row",
+        "rebuild_colors",
+        "derive_ui_reasoning",
+        "rebuild_ui_reasoning",
+        "BASE",
+        "COLOR_RENAMES",
+        "UI_RENAMES",
+        "REMOVE_TYPES",
+        "NEW_COLORS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "h2r",
+          "kind": "function",
+          "lineStart": 15,
+          "signature": "def h2r(h):"
+        },
+        {
+          "name": "r2h",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "def r2h(r, g, b):"
+        },
+        {
+          "name": "lum",
+          "kind": "function",
+          "lineStart": 22,
+          "signature": "def lum(h):"
+        },
+        {
+          "name": "is_dark",
+          "kind": "function",
+          "lineStart": 27,
+          "signature": "def is_dark(bg):"
+        },
+        {
+          "name": "on_color",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "def on_color(bg):"
+        },
+        {
+          "name": "blend",
+          "kind": "function",
+          "lineStart": 33,
+          "signature": "def blend(a, b, f=0.15):"
+        },
+        {
+          "name": "shift",
+          "kind": "function",
+          "lineStart": 38,
+          "signature": "def shift(h, n):"
+        },
+        {
+          "name": "derive_row",
+          "kind": "function",
+          "lineStart": 42,
+          "signature": "def derive_row(pt, pri, sec, acc, bg, notes=\"\"):"
+        },
+        {
+          "name": "rebuild_colors",
+          "kind": "function",
+          "lineStart": 188,
+          "signature": "def rebuild_colors():"
+        },
+        {
+          "name": "derive_ui_reasoning",
+          "kind": "function",
+          "lineStart": 250,
+          "signature": "def derive_ui_reasoning(prod):"
+        },
+        {
+          "name": "rebuild_ui_reasoning",
+          "kind": "function",
+          "lineStart": 359,
+          "signature": "def rebuild_ui_reasoning():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\core.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\core.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport re\nfrom pathlib import Path\nfrom math import log\nfrom collections import defaultdict\n\n\nDATA_DIR",
+        "pathlib",
+        "math",
+        "collections"
+      ],
+      "exports": [
+        "_load_csv",
+        "_search_csv",
+        "detect_domain",
+        "search",
+        "search_stack",
+        "BM25",
+        "DATA_DIR",
+        "MAX_RESULTS",
+        "CSV_CONFIG",
+        "STACK_CONFIG",
+        "AVAILABLE_STACKS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "_load_csv",
+          "kind": "function",
+          "lineStart": 152,
+          "signature": "def _load_csv(filepath):"
+        },
+        {
+          "name": "_search_csv",
+          "kind": "function",
+          "lineStart": 158,
+          "signature": "def _search_csv(filepath, search_cols, output_cols, query, max_results):"
+        },
+        {
+          "name": "detect_domain",
+          "kind": "function",
+          "lineStart": 183,
+          "signature": "def detect_domain(query):"
+        },
+        {
+          "name": "search",
+          "kind": "function",
+          "lineStart": 206,
+          "signature": "def search(query, domain=None, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "search_stack",
+          "kind": "function",
+          "lineStart": 228,
+          "signature": "def search_stack(query, stack, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "BM25",
+          "kind": "class",
+          "lineStart": 89,
+          "signature": "class BM25:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\design_system.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\design_system.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport json\nimport os\nfrom datetime import datetime\nfrom pathlib import Path\nfrom core import search",
+        "DATA_DIR\n\n\n\nREASONING_FILE",
+        "datetime",
+        "pathlib",
+        "core"
+      ],
+      "exports": [
+        "hex_to_ansi",
+        "ansi_ljust",
+        "section_header",
+        "format_ascii_box",
+        "format_markdown",
+        "generate_design_system",
+        "persist_design_system",
+        "format_master_md",
+        "format_page_override_md",
+        "_generate_intelligent_overrides",
+        "_detect_page_type",
+        "DesignSystemGenerator",
+        "REASONING_FILE",
+        "SEARCH_CONFIG",
+        "BOX_WIDTH"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "hex_to_ansi",
+          "kind": "function",
+          "lineStart": 253,
+          "signature": "def hex_to_ansi(hex_color: str) -> str:"
+        },
+        {
+          "name": "ansi_ljust",
+          "kind": "function",
+          "lineStart": 267,
+          "signature": "def ansi_ljust(s: str, width: int) -> str:"
+        },
+        {
+          "name": "section_header",
+          "kind": "function",
+          "lineStart": 275,
+          "signature": "def section_header(name: str, width: int) -> str:"
+        },
+        {
+          "name": "format_ascii_box",
+          "kind": "function",
+          "lineStart": 282,
+          "signature": "def format_ascii_box(design_system: dict) -> str:"
+        },
+        {
+          "name": "format_markdown",
+          "kind": "function",
+          "lineStart": 422,
+          "signature": "def format_markdown(design_system: dict) -> str:"
+        },
+        {
+          "name": "generate_design_system",
+          "kind": "function",
+          "lineStart": 532,
+          "signature": "def generate_design_system(query: str, project_name: str = None, output_format:"
+        },
+        {
+          "name": "persist_design_system",
+          "kind": "function",
+          "lineStart": 561,
+          "signature": "def persist_design_system(design_system: dict, page: str = None, output_dir: str"
+        },
+        {
+          "name": "format_master_md",
+          "kind": "function",
+          "lineStart": 612,
+          "signature": "def format_master_md(design_system: dict) -> str:"
+        },
+        {
+          "name": "format_page_override_md",
+          "kind": "function",
+          "lineStart": 886,
+          "signature": "def format_page_override_md(design_system: dict, page_name: str, page_query: str"
+        },
+        {
+          "name": "_generate_intelligent_overrides",
+          "kind": "function",
+          "lineStart": 995,
+          "signature": "def _generate_intelligent_overrides(page_name: str, page_query: str, design_syst"
+        },
+        {
+          "name": "_detect_page_type",
+          "kind": "function",
+          "lineStart": 1101,
+          "signature": "def _detect_page_type(context: str, style_results: list) -> str:"
+        },
+        {
+          "name": "DesignSystemGenerator",
+          "kind": "class",
+          "lineStart": 37,
+          "signature": "class DesignSystemGenerator:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\search.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\assets\\scripts\\search.py",
+      "lang": "python",
+      "imports": [
+        "argparse\r\nimport sys\r\nimport io\r\nfrom core import CSV_CONFIG",
+        "AVAILABLE_STACKS",
+        "MAX_RESULTS",
+        "search",
+        "search_stack\r\nfrom design_system import generate_design_system",
+        "persist_design_system\r\n\r\n\nif sys.stdout.encoding and sys.stdout.encoding.lower",
+        "core",
+        "design_system"
+      ],
+      "exports": [
+        "format_output"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "format_output",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "def format_output(result):"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\init.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:path",
+        "node:url",
+        "chalk",
+        "ora",
+        "prompts",
+        "../types/index.js",
+        "../utils/extract.js",
+        "../utils/template.js",
+        "../utils/detect.js",
+        "../utils/logger.js",
+        "../utils/github.js"
+      ],
+      "exports": [
+        "initCommand"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "tryGitHubInstall",
+          "kind": "function",
+          "lineStart": 36,
+          "signature": "async function tryGitHubInstall("
+        },
+        {
+          "name": "templateInstall",
+          "kind": "function",
+          "lineStart": 100,
+          "signature": "async function templateInstall("
+        },
+        {
+          "name": "initCommand",
+          "kind": "function",
+          "lineStart": 117,
+          "signature": "export async function initCommand(options: InitOptions): Promise<void> {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\uninstall.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\uninstall.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:fs/promises",
+        "node:path",
+        "node:os",
+        "chalk",
+        "ora",
+        "prompts",
+        "../types/index.js",
+        "../utils/detect.js",
+        "../utils/logger.js"
+      ],
+      "exports": [
+        "uninstallCommand"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "removeSkillDir",
+          "kind": "function",
+          "lineStart": 20,
+          "signature": "async function removeSkillDir(baseDir: string, aiType: Exclude<AIType, 'all'>):"
+        },
+        {
+          "name": "uninstallCommand",
+          "kind": "function",
+          "lineStart": 39,
+          "signature": "export async function uninstallCommand(options: UninstallOptions): Promise<void>"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\update.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\update.ts",
+      "lang": "typescript",
+      "imports": [
+        "chalk",
+        "ora",
+        "../utils/github.js",
+        "../utils/logger.js",
+        "./init.js",
+        "../types/index.js"
+      ],
+      "exports": [
+        "updateCommand"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "updateCommand",
+          "kind": "function",
+          "lineStart": 12,
+          "signature": "export async function updateCommand(options: UpdateOptions): Promise<void> {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\versions.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\commands\\versions.ts",
+      "lang": "typescript",
+      "imports": [
+        "chalk",
+        "ora",
+        "../utils/github.js",
+        "../utils/logger.js"
+      ],
+      "exports": [
+        "versionsCommand"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "versionsCommand",
+          "kind": "function",
+          "lineStart": 6,
+          "signature": "export async function versionsCommand(): Promise<void> {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\index.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\index.ts",
+      "lang": "typescript",
+      "imports": [
+        "commander",
+        "fs",
+        "url",
+        "path",
+        "./commands/init.js",
+        "./commands/versions.js",
+        "./commands/update.js",
+        "./commands/uninstall.js",
+        "./types/index.js"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\types\\index.ts",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [
+        "AI_TYPES",
+        "AI_FOLDERS",
+        "AIType",
+        "InstallType",
+        "Release",
+        "Asset",
+        "InstallConfig",
+        "PlatformConfig"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\detect.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\detect.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:fs",
+        "node:path",
+        "../types/index.js"
+      ],
+      "exports": [
+        "detectAIType",
+        "getAITypeDescription"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "detectAIType",
+          "kind": "function",
+          "lineStart": 10,
+          "signature": "export function detectAIType(cwd: string = process.cwd()): DetectionResult {"
+        },
+        {
+          "name": "getAITypeDescription",
+          "kind": "function",
+          "lineStart": 79,
+          "signature": "export function getAITypeDescription(aiType: AIType): string {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\extract.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:fs/promises",
+        "node:path",
+        "node:child_process",
+        "node:util",
+        "node:os",
+        "../types/index.js"
+      ],
+      "exports": [
+        "extractZip",
+        "copyFolders",
+        "cleanup",
+        "createTempDir",
+        "installFromZip"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "extractZip",
+          "kind": "function",
+          "lineStart": 13,
+          "signature": "export async function extractZip(zipPath: string, destDir: string): Promise<void"
+        },
+        {
+          "name": "exists",
+          "kind": "function",
+          "lineStart": 26,
+          "signature": "async function exists(path: string): Promise<boolean> {"
+        },
+        {
+          "name": "copyFolders",
+          "kind": "function",
+          "lineStart": 35,
+          "signature": "export async function copyFolders("
+        },
+        {
+          "name": "cleanup",
+          "kind": "function",
+          "lineStart": 90,
+          "signature": "export async function cleanup(tempDir: string): Promise<void> {"
+        },
+        {
+          "name": "createTempDir",
+          "kind": "function",
+          "lineStart": 101,
+          "signature": "export async function createTempDir(): Promise<string> {"
+        },
+        {
+          "name": "findExtractedRoot",
+          "kind": "function",
+          "lineStart": 109,
+          "signature": "async function findExtractedRoot(tempDir: string): Promise<string> {"
+        },
+        {
+          "name": "installFromZip",
+          "kind": "function",
+          "lineStart": 125,
+          "signature": "export async function installFromZip("
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\github.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\github.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:fs/promises",
+        "../types/index.js"
+      ],
+      "exports": [
+        "GitHubRateLimitError",
+        "GitHubDownloadError",
+        "fetchReleases",
+        "getLatestRelease",
+        "downloadRelease",
+        "getAssetUrl"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "checkRateLimit",
+          "kind": "function",
+          "lineStart": 22,
+          "signature": "function checkRateLimit(response: Response): void {"
+        },
+        {
+          "name": "fetchReleases",
+          "kind": "function",
+          "lineStart": 34,
+          "signature": "export async function fetchReleases(): Promise<Release[]> {"
+        },
+        {
+          "name": "getLatestRelease",
+          "kind": "function",
+          "lineStart": 53,
+          "signature": "export async function getLatestRelease(): Promise<Release> {"
+        },
+        {
+          "name": "downloadRelease",
+          "kind": "function",
+          "lineStart": 72,
+          "signature": "export async function downloadRelease(url: string, dest: string): Promise<void>"
+        },
+        {
+          "name": "getAssetUrl",
+          "kind": "function",
+          "lineStart": 90,
+          "signature": "export function getAssetUrl(release: Release): string | null {"
+        },
+        {
+          "name": "GitHubRateLimitError",
+          "kind": "class",
+          "lineStart": 8,
+          "signature": "export class GitHubRateLimitError extends Error {"
+        },
+        {
+          "name": "GitHubDownloadError",
+          "kind": "class",
+          "lineStart": 15,
+          "signature": "export class GitHubDownloadError extends Error {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\logger.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\logger.ts",
+      "lang": "typescript",
+      "imports": [
+        "chalk"
+      ],
+      "exports": [
+        "logger"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\template.ts": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\cli\\src\\utils\\template.ts",
+      "lang": "typescript",
+      "imports": [
+        "node:fs/promises",
+        "node:path",
+        "node:os",
+        "node:url"
+      ],
+      "exports": [
+        "loadPlatformConfig",
+        "loadAllPlatformConfigs",
+        "renderSkillFile",
+        "generatePlatformFiles",
+        "generateAllPlatformFiles",
+        "getSupportedAITypes",
+        "PlatformConfig"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "exists",
+          "kind": "function",
+          "lineStart": 51,
+          "signature": "async function exists(path: string): Promise<boolean> {"
+        },
+        {
+          "name": "loadPlatformConfig",
+          "kind": "function",
+          "lineStart": 63,
+          "signature": "export async function loadPlatformConfig(aiType: string): Promise<PlatformConfig"
+        },
+        {
+          "name": "loadAllPlatformConfigs",
+          "kind": "function",
+          "lineStart": 77,
+          "signature": "export async function loadAllPlatformConfigs(): Promise<Map<string, PlatformConf"
+        },
+        {
+          "name": "loadTemplate",
+          "kind": "function",
+          "lineStart": 95,
+          "signature": "async function loadTemplate(templateName: string): Promise<string> {"
+        },
+        {
+          "name": "renderFrontmatter",
+          "kind": "function",
+          "lineStart": 103,
+          "signature": "function renderFrontmatter(frontmatter: Record<string, string> | null): string {"
+        },
+        {
+          "name": "renderSkillFile",
+          "kind": "function",
+          "lineStart": 123,
+          "signature": "export async function renderSkillFile(config: PlatformConfig, isGlobal = false):"
+        },
+        {
+          "name": "copyDataAndScripts",
+          "kind": "function",
+          "lineStart": 162,
+          "signature": "async function copyDataAndScripts(targetSkillDir: string): Promise<void> {"
+        },
+        {
+          "name": "generatePlatformFiles",
+          "kind": "function",
+          "lineStart": 187,
+          "signature": "export async function generatePlatformFiles("
+        },
+        {
+          "name": "generateAllPlatformFiles",
+          "kind": "function",
+          "lineStart": 223,
+          "signature": "export async function generateAllPlatformFiles(targetDir: string, isGlobal = fal"
+        },
+        {
+          "name": "getSupportedAITypes",
+          "kind": "function",
+          "lineStart": 241,
+          "signature": "export function getSupportedAITypes(): string[] {"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data\\_sync_all.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\data\\_sync_all.py",
+      "lang": "python",
+      "imports": [
+        "csv",
+        "os",
+        "json\n\nBASE"
+      ],
+      "exports": [
+        "h2r",
+        "r2h",
+        "lum",
+        "is_dark",
+        "on_color",
+        "blend",
+        "shift",
+        "derive_row",
+        "rebuild_colors",
+        "derive_ui_reasoning",
+        "rebuild_ui_reasoning",
+        "BASE",
+        "COLOR_RENAMES",
+        "UI_RENAMES",
+        "REMOVE_TYPES",
+        "NEW_COLORS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "h2r",
+          "kind": "function",
+          "lineStart": 15,
+          "signature": "def h2r(h):"
+        },
+        {
+          "name": "r2h",
+          "kind": "function",
+          "lineStart": 19,
+          "signature": "def r2h(r, g, b):"
+        },
+        {
+          "name": "lum",
+          "kind": "function",
+          "lineStart": 22,
+          "signature": "def lum(h):"
+        },
+        {
+          "name": "is_dark",
+          "kind": "function",
+          "lineStart": 27,
+          "signature": "def is_dark(bg):"
+        },
+        {
+          "name": "on_color",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "def on_color(bg):"
+        },
+        {
+          "name": "blend",
+          "kind": "function",
+          "lineStart": 33,
+          "signature": "def blend(a, b, f=0.15):"
+        },
+        {
+          "name": "shift",
+          "kind": "function",
+          "lineStart": 38,
+          "signature": "def shift(h, n):"
+        },
+        {
+          "name": "derive_row",
+          "kind": "function",
+          "lineStart": 42,
+          "signature": "def derive_row(pt, pri, sec, acc, bg, notes=\"\"):"
+        },
+        {
+          "name": "rebuild_colors",
+          "kind": "function",
+          "lineStart": 188,
+          "signature": "def rebuild_colors():"
+        },
+        {
+          "name": "derive_ui_reasoning",
+          "kind": "function",
+          "lineStart": 250,
+          "signature": "def derive_ui_reasoning(prod):"
+        },
+        {
+          "name": "rebuild_ui_reasoning",
+          "kind": "function",
+          "lineStart": 359,
+          "signature": "def rebuild_ui_reasoning():"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\core.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\core.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport re\nfrom pathlib import Path\nfrom math import log\nfrom collections import defaultdict\n\n\nDATA_DIR",
+        "pathlib",
+        "math",
+        "collections"
+      ],
+      "exports": [
+        "_load_csv",
+        "_search_csv",
+        "detect_domain",
+        "search",
+        "search_stack",
+        "BM25",
+        "DATA_DIR",
+        "MAX_RESULTS",
+        "CSV_CONFIG",
+        "STACK_CONFIG",
+        "AVAILABLE_STACKS"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {},
+      "symbols": [
+        {
+          "name": "_load_csv",
+          "kind": "function",
+          "lineStart": 167,
+          "signature": "def _load_csv(filepath):"
+        },
+        {
+          "name": "_search_csv",
+          "kind": "function",
+          "lineStart": 173,
+          "signature": "def _search_csv(filepath, search_cols, output_cols, query, max_results):"
+        },
+        {
+          "name": "detect_domain",
+          "kind": "function",
+          "lineStart": 198,
+          "signature": "def detect_domain(query):"
+        },
+        {
+          "name": "search",
+          "kind": "function",
+          "lineStart": 221,
+          "signature": "def search(query, domain=None, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "search_stack",
+          "kind": "function",
+          "lineStart": 243,
+          "signature": "def search_stack(query, stack, max_results=MAX_RESULTS):"
+        },
+        {
+          "name": "BM25",
+          "kind": "class",
+          "lineStart": 104,
+          "signature": "class BM25:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\design_system.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\design_system.py",
+      "lang": "python",
+      "imports": [
+        "csv\nimport json\nimport os\nfrom datetime import datetime\nfrom pathlib import Path\nfrom core import search",
+        "DATA_DIR\n\n\n\nREASONING_FILE",
+        "datetime",
+        "pathlib",
+        "core"
+      ],
+      "exports": [
+        "hex_to_ansi",
+        "ansi_ljust",
+        "section_header",
+        "format_ascii_box",
+        "format_markdown",
+        "generate_design_system",
+        "persist_design_system",
+        "format_master_md",
+        "format_page_override_md",
+        "_generate_intelligent_overrides",
+        "_detect_page_type",
+        "DesignSystemGenerator",
+        "REASONING_FILE",
+        "SEARCH_CONFIG",
+        "BOX_WIDTH"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "hex_to_ansi",
+          "kind": "function",
+          "lineStart": 253,
+          "signature": "def hex_to_ansi(hex_color: str) -> str:"
+        },
+        {
+          "name": "ansi_ljust",
+          "kind": "function",
+          "lineStart": 267,
+          "signature": "def ansi_ljust(s: str, width: int) -> str:"
+        },
+        {
+          "name": "section_header",
+          "kind": "function",
+          "lineStart": 275,
+          "signature": "def section_header(name: str, width: int) -> str:"
+        },
+        {
+          "name": "format_ascii_box",
+          "kind": "function",
+          "lineStart": 282,
+          "signature": "def format_ascii_box(design_system: dict) -> str:"
+        },
+        {
+          "name": "format_markdown",
+          "kind": "function",
+          "lineStart": 422,
+          "signature": "def format_markdown(design_system: dict) -> str:"
+        },
+        {
+          "name": "generate_design_system",
+          "kind": "function",
+          "lineStart": 532,
+          "signature": "def generate_design_system(query: str, project_name: str = None, output_format:"
+        },
+        {
+          "name": "persist_design_system",
+          "kind": "function",
+          "lineStart": 561,
+          "signature": "def persist_design_system(design_system: dict, page: str = None, output_dir: str"
+        },
+        {
+          "name": "format_master_md",
+          "kind": "function",
+          "lineStart": 612,
+          "signature": "def format_master_md(design_system: dict) -> str:"
+        },
+        {
+          "name": "format_page_override_md",
+          "kind": "function",
+          "lineStart": 886,
+          "signature": "def format_page_override_md(design_system: dict, page_name: str, page_query: str"
+        },
+        {
+          "name": "_generate_intelligent_overrides",
+          "kind": "function",
+          "lineStart": 995,
+          "signature": "def _generate_intelligent_overrides(page_name: str, page_query: str, design_syst"
+        },
+        {
+          "name": "_detect_page_type",
+          "kind": "function",
+          "lineStart": 1101,
+          "signature": "def _detect_page_type(context: str, style_results: list) -> str:"
+        },
+        {
+          "name": "DesignSystemGenerator",
+          "kind": "class",
+          "lineStart": 37,
+          "signature": "class DesignSystemGenerator:"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\search.py": {
+      "file": "src\\skills\\ui-ux-pro-max-skill\\src\\ui-ux-pro-max\\scripts\\search.py",
+      "lang": "python",
+      "imports": [
+        "argparse\r\nimport sys\r\nimport io\r\nfrom core import CSV_CONFIG",
+        "AVAILABLE_STACKS",
+        "MAX_RESULTS",
+        "search",
+        "search_stack\r\nfrom design_system import generate_design_system",
+        "persist_design_system\r\n\r\n\nif sys.stdout.encoding and sys.stdout.encoding.lower",
+        "core",
+        "design_system"
+      ],
+      "exports": [
+        "format_output"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": true,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "isEntryPoint": true
+      },
+      "symbols": [
+        {
+          "name": "format_output",
+          "kind": "function",
+          "lineStart": 30,
+          "signature": "def format_output(result):"
+        }
+      ],
+      "error": false,
+      "calls": []
+    },
+    "src\\vite-env.d.ts": {
+      "file": "src\\vite-env.d.ts",
+      "lang": "typescript",
+      "imports": [],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "tailwind.config.js": {
+      "file": "tailwind.config.js",
+      "lang": "typescript",
+      "imports": [
+        "tailwindcss-animate"
+      ],
+      "exports": [
+        "darkMode",
+        "content",
+        "tsx"
+      ],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    },
+    "vite.config.ts": {
+      "file": "vite.config.ts",
+      "lang": "typescript",
+      "imports": [
+        "path",
+        "@vitejs/plugin-react",
+        "vite"
+      ],
+      "exports": [],
+      "gaps": [],
+      "importedBy": [],
+      "riskScore": 8,
+      "isEntryPoint": false,
+      "isBarrel": false,
+      "nestEdges": [],
+      "meta": {
+        "gitHistory": {
+          "totalCommits": 1,
+          "bugFixCommits": 0,
+          "hackCommits": 0,
+          "todoCount": 0,
+          "firstCommit": "2026-03-08",
+          "lastCommit": "2026-03-08",
+          "ageInDays": 97,
+          "authors": [
+            {
+              "email": "vca.aktau@icloud.com",
+              "commits": 1
+            }
+          ]
+        }
+      },
+      "symbols": [],
+      "error": false,
+      "calls": []
+    }
+  },
+  "packages": {
+    "ios": {
+      "cocoapods": {
+        "pods": [],
+        "lockPods": []
+      },
+      "spm": {
+        "packages": []
+      }
+    }
+  },
+  "serverless": {
+    "functions": [],
+    "edges": []
+  },
+  "stats": {
+    "totalFiles": 106,
+    "errorFiles": 0,
+    "totalEdges": 390,
+    "byLang": {
+      "typescript": 74,
+      "java": 3,
+      "swift": 3,
+      "python": 26
+    },
+    "gapCount": 0,
+    "highRiskFiles": 0
+  }
+}

@@ -78,14 +78,14 @@ export const Statistics = () => {
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.75, ease, delay: stat.delay }}
-              className="group relative bg-white/[0.03] dark:bg-white/[0.02] border border-white/[0.08] rounded-2xl p-6 flex flex-col gap-4 hover:border-white/[0.15] hover:bg-white/[0.05] transition-all duration-400 overflow-hidden"
+              className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.08] rounded-2xl p-6 flex flex-col gap-4 hover:border-slate-300 dark:hover:border-white/[0.15] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-400 overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none"
             >
               {/* Subtle gradient overlay on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.04] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.03] to-transparent pointer-events-none" />
 
               {/* Icon */}
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-400 bg-white/[0.05] border-white/[0.10] group-hover:bg-red-500/10 group-hover:border-red-500/20 group-hover:text-red-400`}>
-                <stat.icon size={18} className="text-muted-foreground group-hover:text-red-400 transition-colors duration-400" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-400 bg-slate-50 dark:bg-white/5 border-slate-200/50 dark:border-white/10 group-hover:bg-red-500/10 group-hover:border-red-500/20">
+                <stat.icon size={18} className="text-slate-500 dark:text-muted-foreground group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-400" />
               </div>
 
               {/* Counter */}
@@ -101,13 +101,13 @@ export const Statistics = () => {
               </div>
 
               {/* Label */}
-              <p className="text-[11px] font-mono font-semibold text-muted-foreground/60 uppercase tracking-[0.08em] leading-tight">
+              <p className="text-[11px] font-mono font-bold text-slate-500/85 dark:text-muted-foreground/60 uppercase tracking-[0.08em] leading-tight">
                 {stat.label}
               </p>
 
               {/* Live dot */}
               <div className="absolute top-4 right-4">
-                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/20 group-hover:bg-red-500 group-hover:shadow-[0_0_6px_rgba(239,68,68,0.6)] transition-all duration-400" />
+                <div className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-white/10 group-hover:bg-red-500 group-hover:shadow-[0_0_6px_rgba(239,68,68,0.6)] transition-all duration-400" />
               </div>
             </motion.div>
           ))}

@@ -76,42 +76,42 @@ export const Navbar = () => {
           }}
           animate={hidden ? "hidden" : "visible"}
           transition={{ duration: 0.5, ease: smoothEase }}
-          className="flex items-center p-1.5 rounded-full backdrop-blur-2xl transition-all duration-500 pointer-events-auto border bg-background/80 dark:bg-black/80 border-border/50 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5)]"
+          className="flex items-center p-1.5 rounded-xl backdrop-blur-md transition-all duration-500 pointer-events-auto border bg-white/90 dark:bg-slate-950/95 border-slate-300 dark:border-slate-800 shadow-[0_6px_24px_rgba(0,0,0,0.02)]"
         >
           {/* Логотип */}
-          <a href="/" className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors ml-1">
-            <Cctv size={22} strokeWidth={1.5} className="text-foreground transition-colors group-hover:text-red-600" />
+          <a href="/" className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors ml-0.5">
+            <Cctv size={16} strokeWidth={1.5} className="text-slate-900 dark:text-white transition-colors hover:text-red-600" />
           </a>
 
           {/* ЕДИНЫЙ БЛОК КОНТРОЛОВ (Тумблеры + Логин) */}
-          <div className="flex items-center bg-muted/40 p-1 rounded-full border border-border/30 mx-3">
+          <div className="flex items-center bg-slate-50 dark:bg-slate-900/50 p-0.5 rounded-lg border border-slate-200 dark:border-slate-800 mx-2">
             {/* Язык */}
             <button 
               onClick={toggleLanguage} 
               aria-label="Сменить язык / Change language"
-              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-wider"
+              className="w-9 h-8 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-slate-800 hover:shadow-[0_1px_4px_rgba(0,0,0,0.02)] dark:hover:shadow-none transition-all text-slate-550 text-slate-500 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-mono font-bold text-[10px] uppercase tracking-wider"
             >
               {i18n.language || 'ru'}
             </button>
 
-            <div className="w-[1px] h-4 bg-border/50 mx-1" />
+            <div className="w-[1px] h-3 bg-slate-200 dark:bg-slate-800 mx-1" />
 
             {/* Тема */}
             <button 
               onClick={toggleTheme} 
               aria-label={isDark ? "Включить светлую тему" : "Включить темную тему"}
-              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground"
+              className="w-9 h-8 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-slate-800 hover:shadow-[0_1px_4px_rgba(0,0,0,0.02)] dark:hover:shadow-none transition-all text-slate-500 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white"
             >
-              {isDark ? <Sun size={15} strokeWidth={2.5} /> : <Moon size={15} strokeWidth={2.5} />}
+              {isDark ? <Sun size={12} strokeWidth={2.5} /> : <Moon size={12} strokeWidth={2.5} />}
             </button>
             
-            <div className="w-[1px] h-4 bg-border/50 mx-1" />
+            <div className="w-[1px] h-3 bg-slate-200 dark:bg-slate-800 mx-1" />
 
             {/* Клерк Вход/Аватар */}
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="h-8 px-3 flex items-center gap-1.5 rounded-full hover:bg-background hover:shadow-sm transition-all text-muted-foreground hover:text-foreground font-bold text-[11px] uppercase tracking-widest">
-                  <User size={14} strokeWidth={2.5} />
+                <button className="h-8 px-3.5 flex items-center gap-1.5 rounded-md hover:bg-white dark:hover:bg-slate-800 hover:shadow-[0_1px_4px_rgba(0,0,0,0.02)] dark:hover:shadow-none transition-all text-slate-500 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-mono font-bold text-[10px] uppercase tracking-wider">
+                  <User size={11} strokeWidth={2.5} />
                   <span>{t("nav.login", "Войти")}</span>
                 </button>
               </SignInButton>
@@ -127,7 +127,7 @@ export const Navbar = () => {
           <a 
             href="https://wa.me/77779204988"
             target="_blank" rel="noopener noreferrer"
-            className="mr-1 px-6 py-2.5 rounded-full bg-red-600 text-white hover:bg-red-700 text-[12px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-md hover:shadow-red-600/20"
+            className="mr-0.5 px-4 h-8 flex items-center justify-center rounded-lg bg-red-600 text-white hover:bg-red-700 text-[10px] font-black uppercase tracking-widest transition-all shadow-sm"
           >
             {t("nav.contact_btn", "Связаться")}
           </a>
@@ -143,17 +143,17 @@ export const Navbar = () => {
           }}
           animate={hidden && !isOpen ? "hidden" : "visible"}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className={`flex items-center justify-between p-2.5 rounded-3xl pointer-events-auto transition-all duration-300 border ${
+          className={`flex items-center justify-between p-2 rounded-xl pointer-events-auto transition-all duration-300 border ${
             scrolled || isOpen
-              ? "bg-background/95 dark:bg-[#050505]/95 backdrop-blur-md border-border/50 shadow-lg" 
+              ? "bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-slate-300 dark:border-slate-800 shadow-md" 
               : "bg-transparent border-transparent"
           }`}
         >
           <a href="/" className="flex items-center gap-2 pl-2" onClick={() => setIsOpen(false)}>
-            <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/20">
-              <Cctv size={20} strokeWidth={2} />
+            <div className="w-8 h-8 rounded-lg bg-red-650 bg-red-600 text-white flex items-center justify-center shadow-sm">
+              <Cctv size={16} strokeWidth={2} />
             </div>
-            <span className="text-lg font-black tracking-tight uppercase text-foreground">SBA</span>
+            <span className="text-sm font-black tracking-tight uppercase text-slate-900 dark:text-white font-display">SBA</span>
           </a>
 
           <div className="flex items-center gap-2">
@@ -162,9 +162,9 @@ export const Navbar = () => {
             </SignedIn>
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-muted/60 text-foreground"
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800"
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {isOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
           </div>
         </motion.div>
@@ -175,35 +175,35 @@ export const Navbar = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col pt-24 pb-12 px-6 md:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs flex flex-col pt-24 pb-12 px-6 md:hidden overflow-y-auto"
             onClick={(e) => { if (e.target === e.currentTarget) setIsOpen(false); }}
           >
             <div className="flex flex-col gap-6 w-full max-w-sm mx-auto flex-grow h-full pt-10">
               
-              <div className="flex items-center justify-between mb-8 pb-8 border-b border-border/50">
+              <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/20">
-                    <Cctv size={24} />
+                  <div className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center shadow-md">
+                    <Cctv size={20} />
                   </div>
-                  <h3 className="text-lg font-black uppercase tracking-tight">Управление</h3>
+                  <h3 className="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white font-display">Управление</h3>
                 </div>
               </div>
 
               {/* УНИФИЦИРОВАННЫЕ КОНТРОЛЫ НА МОБИЛКЕ */}
               <motion.div custom={1} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden" className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                  <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted/50 font-bold uppercase tracking-wider text-sm active:scale-[0.98] transition-all border border-border/50">
-                    <Globe size={18} className="text-muted-foreground"/> {i18n.language || 'ru'}
+                  <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-100 dark:bg-slate-900 font-mono font-bold uppercase tracking-wider text-xs active:scale-[0.98] transition-all border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
+                    <Globe size={16} className="text-slate-400 dark:text-slate-500"/> {i18n.language || 'ru'}
                   </button>
-                  <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-16 rounded-2xl bg-muted/50 font-bold text-sm active:scale-[0.98] transition-all border border-border/50">
-                    {isDark ? <Sun size={18} className="text-muted-foreground"/> : <Moon size={18} className="text-muted-foreground"/>} {isDark ? "Светлая" : "Темная"}
+                  <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-100 dark:bg-slate-900 font-mono font-bold text-xs active:scale-[0.98] transition-all border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
+                    {isDark ? <Sun size={16} className="text-slate-400 dark:text-slate-500"/> : <Moon size={16} className="text-slate-400 dark:text-slate-500"/>} {isDark ? "Светлая" : "Темная"}
                   </button>
                 </div>
 
                 <SignedOut>
                   <SignInButton mode="modal">
-                    <button onClick={() => setIsOpen(false)} className="w-full h-16 flex items-center justify-center gap-2 rounded-2xl border border-border/50 bg-muted/50 text-foreground font-bold text-sm uppercase tracking-widest active:scale-[0.98] transition-all">
-                      <User size={18} className="text-muted-foreground" />
+                    <button onClick={() => setIsOpen(false)} className="w-full h-14 flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-xs uppercase tracking-wider active:scale-[0.98] transition-all">
+                      <User size={16} className="text-slate-400 dark:text-slate-500" />
                       {t("nav.login", "Личный кабинет")}
                     </button>
                   </SignInButton>
@@ -215,9 +215,9 @@ export const Navbar = () => {
                 href="https://wa.me/77779204988"
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="w-full h-20 mt-auto flex items-center justify-center rounded-2xl bg-red-600 text-white font-black text-[15px] uppercase tracking-widest shadow-lg shadow-red-600/20 active:scale-[0.98] transition-transform"
+                className="w-full h-16 mt-auto flex items-center justify-center rounded-xl bg-red-600 text-white font-black text-sm uppercase tracking-widest shadow-sm active:scale-[0.98] transition-transform"
               >
-                {t("nav.contact_btn", "Связаться с нами")} <ArrowRight size={22} className="ml-2"/>
+                {t("nav.contact_btn", "Связаться с нами")} <ArrowRight size={18} className="ml-2"/>
               </motion.a>
             </div>
           </motion.div>
