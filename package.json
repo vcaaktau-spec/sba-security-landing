@@ -32,7 +32,7 @@
     "destination": "dist",
     "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
     "crawl": false,
-    "include": ["/"],
+    "include": ["/", "/uslugi/videonahljudenie", "/uslugi/skud", "/uslugi/signalizaciya", "/uslugi/seti"],
     "skipThirdPartyRequests": true,
     "inlineCss": false,
     "minifyHtml": false,

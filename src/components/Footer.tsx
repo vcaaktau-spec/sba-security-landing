@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next" 
-import { Phone, MessageCircle, FileText, X, Shield, ChevronUp, Star, Upload, CheckCircle2, Loader2, HelpCircle, MessageSquarePlus } from "lucide-react"
+import { Phone, MessageCircle, FileText, X, Shield, ChevronUp, Star, Upload, CheckCircle2, Loader2, HelpCircle, MessageSquarePlus, MapPin } from "lucide-react"
 import {
   Accordion,
   AccordionContent,
@@ -168,6 +168,10 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
               <p className="text-[13px] text-muted-foreground leading-relaxed max-w-[280px]">
                 {t("footer.desc", "Профессиональные решения в области безопасности и IT-инфраструктуры с 2016 года.")}
               </p>
+              <address className="not-italic flex items-start gap-1.5 text-[12px] text-muted-foreground/60">
+                <MapPin size={11} className="mt-0.5 text-red-500/60 shrink-0" />
+                <span>Микрорайон 12, Актау,<br />Мангистауская область, Казахстан</span>
+              </address>
             </div>
 
             <div className="flex flex-col gap-4">
