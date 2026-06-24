@@ -251,22 +251,22 @@ export const Cta = () => {
               <motion.div
                 initial={{ x: "100%" }} animate={{ x: "0%" }} exit={{ x: "100%" }}
                 transition={{ duration: 0.45, ease }}
-                className="relative w-full max-w-md h-full bg-[#0a0f1a] border-l border-white/[0.08] shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col z-[10001] overflow-hidden"
+                className="relative w-full max-w-md h-full bg-white dark:bg-[#0a0f1a] border-l border-slate-200 dark:border-white/[0.08] shadow-[0_0_100px_rgba(0,0,0,0.2)] dark:shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col z-[10001] overflow-hidden"
               >
                 {/* Tactical Blueprint Grid */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.15]" 
-                     style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+                <div className="absolute inset-0 pointer-events-none opacity-[0.06] dark:opacity-[0.15]" 
+                     style={{ backgroundImage: "linear-gradient(to right, rgba(100,100,100,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,100,0.3) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
                 {/* Header */}
-                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-white/[0.07] relative z-10 bg-[#0a0f1a]">
+                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-white/[0.07] relative z-10 bg-white dark:bg-[#0a0f1a]">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center">
                       <ShieldCheck size={17} className="text-red-400" />
                     </div>
-                    <h3 className="font-bold text-base tracking-tight">{t("cta.form_title")}</h3>
+                    <h3 className="font-bold text-base tracking-tight text-slate-900 dark:text-white">{t("cta.form_title")}</h3>
                   </div>
                   <button
                     onClick={() => setIsModalOpen(false)}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-white/[0.04] border border-white/[0.08] hover:border-red-500/30 hover:text-red-400 transition-all duration-200"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white hover:border-red-500/30 hover:text-red-400 transition-all duration-200"
                   >
                     <X size={16} />
                   </button>
@@ -302,9 +302,9 @@ export const Cta = () => {
                             required type="text" value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder=" "
-                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-white text-sm placeholder-transparent focus:border-red-500 outline-none transition-colors"
+                            className="peer w-full h-12 bg-transparent border-b border-slate-300 dark:border-white/[0.12] text-slate-900 dark:text-white text-sm placeholder-transparent focus:border-red-500 outline-none transition-colors"
                           />
-                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
+                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-400 dark:peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-500 dark:peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
                             {t("cta.name_label")}
                           </label>
                         </div>
@@ -315,25 +315,25 @@ export const Cta = () => {
                             required type="tel" value={phone}
                             onChange={handlePhoneChange}
                             maxLength={18} placeholder=" "
-                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-white text-sm font-mono placeholder-transparent focus:border-red-500 outline-none transition-colors"
+                            className="peer w-full h-12 bg-transparent border-b border-slate-300 dark:border-white/[0.12] text-slate-900 dark:text-white text-sm font-mono placeholder-transparent focus:border-red-500 outline-none transition-colors"
                           />
-                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
+                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-400 dark:peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-500 dark:peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
                             {t("cta.phone_label")}
                           </label>
                         </div>
 
                         {/* Service */}
                         <div className="relative">
-                          <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2 break-words">
+                          <label className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block mb-2 break-words">
                             {t("cta.service_label")}
                           </label>
                           <button
                             type="button"
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="w-full h-12 bg-transparent border-b border-white/[0.12] flex items-center justify-between text-sm transition-colors outline-none hover:border-white/[0.2]"
+                            className="w-full h-12 bg-transparent border-b border-slate-300 dark:border-white/[0.12] flex items-center justify-between text-sm transition-colors outline-none hover:border-slate-400 dark:hover:border-white/[0.2]"
                           >
-                            <span className="truncate pr-4 text-white">{service}</span>
-                            <ChevronDown size={14} className={`transition-transform duration-300 shrink-0 text-slate-400 ${isDropdownOpen ? "rotate-180 text-red-400" : ""}`} />
+                            <span className="truncate pr-4 text-slate-900 dark:text-white">{service}</span>
+                            <ChevronDown size={14} className={`transition-transform duration-300 shrink-0 text-slate-400 ${isDropdownOpen ? "rotate-180 text-red-500" : ""}`} />
                           </button>
 
                           {isDropdownOpen && (
@@ -347,7 +347,7 @@ export const Cta = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -6 }}
                                 transition={{ duration: 0.18 }}
-                                className="absolute top-full left-0 w-full mt-2 bg-slate-900 border border-white/[0.1] shadow-2xl z-50 flex flex-col py-1.5 rounded-xl overflow-hidden"
+                                className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/[0.1] shadow-2xl z-50 flex flex-col py-1.5 rounded-xl overflow-hidden"
                               >
                                 {serviceOptions.map((opt, i) => (
                                   <button
@@ -355,8 +355,8 @@ export const Cta = () => {
                                     onClick={() => { setService(opt); setIsDropdownOpen(false) }}
                                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors break-words ${
                                       service === opt
-                                        ? "bg-red-500/10 text-red-400 font-medium"
-                                        : "text-slate-300 hover:bg-white/[0.04] hover:text-white"
+                                        ? "bg-red-500/10 text-red-600 dark:text-red-400 font-medium"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/[0.04] hover:text-slate-900 dark:hover:text-white"
                                     }`}
                                   >
                                     {opt}

@@ -71,7 +71,12 @@ const resources = {
         get_estimate: "Получить смету",
         estimate_sent: "Смета успешно отправлена!",
         finish_quiz: "Завершите квиз, чтобы разблокировать стоимость",
-        calculating: "Расчет..."
+        calculating: "Расчет...",
+        step: "Шаг",
+        finish: "Финал",
+        back: "Назад",
+        next: "Далее",
+        poe: "PoE Свитчи"
       },
       hero: {
         title1: "Система Безопасности",
@@ -471,8 +476,13 @@ const resources = {
         phone_error: "Толық телефон нөмірін енгізіңіз",
         get_estimate: "Сметаны алу",
         estimate_sent: "Смета сәтті жіберілді!",
-        finish_quiz: "Құнын көру үшін квизді аяқтаңыз",
-        calculating: "Есептелуде..."
+        finish_quiz: "құнын көру үшін квизді аяқтаңыз",
+        calculating: "Есептелуде...",
+        step: "Қадам",
+        finish: "Финал",
+        back: "Артқа",
+        next: "Алға",
+        poe: "PoE Коммутаторлар"
       },
       hero: {
         title1: "Қауіпсіздік жүйесі",
@@ -853,7 +863,32 @@ const resources = {
         opt_channel: "Cable duct",
         group_cameras: "Cameras & Quality",
         group_route: "Route & Complexity",
-        group_archive: "Video Archive"
+        group_archive: "Video Archive",
+        q_location: "Where is the installation planned?",
+        q_location_desc: "The type of facility determines the complexity and cost of installation.",
+        obj_home: "Home / Apartment",
+        obj_commercial: "Shop / Office",
+        obj_industrial: "Production / Warehouse",
+        cable_length: "Cable length",
+        archive_duration: "Video storage duration",
+        week_1: "One week (7)",
+        week_2: "Two weeks (14)",
+        month_1: "One month (30)",
+        hdd_auto_1: "The system will automatically select a hard drive of",
+        hdd_auto_2: "TB to ensure the required archive.",
+        one_step: "One last step!",
+        leave_number: "Leave your number so we can save the estimate and contact you on WhatsApp.",
+        phone_label_wa: "Phone number (WhatsApp)",
+        phone_error: "Please enter your full phone number",
+        get_estimate: "Get Estimate",
+        estimate_sent: "Estimate successfully sent!",
+        finish_quiz: "Complete the quiz to unlock the price",
+        calculating: "Calculating...",
+        step: "Step",
+        finish: "Final",
+        back: "Back",
+        next: "Next",
+        poe: "PoE Switches"
       },
       hero: {
         title1: "Security System",

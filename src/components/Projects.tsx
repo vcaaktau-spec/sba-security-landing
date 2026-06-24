@@ -3,49 +3,31 @@
 import { useRef } from "react"
 import { Camera, Server, Flame, Building2, Instagram, ExternalLink } from "lucide-react"
 import { motion, useInView } from "framer-motion"
+import { useTranslation } from "react-i18next"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 interface ProjectItem {
   Icon: React.ElementType
-  category: string
-  title: string
-  tags: string[]
-  area: string
+  categoryKey: string
+  titleKey: string
+  tagsKey: string
+  areaKey: string
 }
 
-const projects: ProjectItem[] = [
-  {
-    Icon: Camera,
-    category: "Монтаж + Настройка",
-    title: "IP 4K Видеонаблюдение",
-    tags: ["IP 4K", "Настройка", "Удаленный доступ"],
-    area: "Актау, мкр. 12",
-  },
-  {
-    Icon: Server,
-    category: "СКУД / Турникеты",
-    title: "Контроль доступа",
-    tags: ["СКУД", "Турникеты", "Биометрия"],
-    area: "Актау, Промзона",
-  },
-  {
-    Icon: Flame,
-    category: "Пожарная система",
-    title: "Болид-Орион",
-    tags: ["Болид", "Установка", "Пусконаладка"],
-    area: "Актау, мкр. 7",
-  },
-  {
-    Icon: Building2,
-    category: "Комплексная безопасность",
-    title: "Умный офис",
-    tags: ["64 камеры", "Интеграция", "NVR"],
-    area: "Актау, мкр. 32",
-  },
+const projectMeta: ProjectItem[] = [
+  { Icon: Camera,    categoryKey: "p1_cat", titleKey: "p1_title", tagsKey: "p1_tags", areaKey: "p1_area" },
+  { Icon: Server,    categoryKey: "p2_cat", titleKey: "p2_title", tagsKey: "p2_tags", areaKey: "p2_area" },
+  { Icon: Flame,     categoryKey: "p3_cat", titleKey: "p3_title", tagsKey: "p3_tags", areaKey: "p3_area" },
+  { Icon: Building2, categoryKey: "p4_cat", titleKey: "p4_title", tagsKey: "p4_tags", areaKey: "p4_area" },
 ]
 
-function ProjectCard({ item, index }: { item: ProjectItem; index: number }) {
+function ProjectCard({
+  item, index, category, title, tags, area,
+}: {
+  item: ProjectItem; index: number
+  category: string; title: string; tags: string[]; area: string
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: "-10%" })
 
@@ -65,14 +47,14 @@ function ProjectCard({ item, index }: { item: ProjectItem; index: number }) {
         </div>
         <div>
           <div className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-tight">
-            {item.category}
+            {category}
           </div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white mt-0.5">{item.title}</h3>
+          <h3 className="text-base font-bold text-slate-900 dark:text-white mt-0.5">{title}</h3>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-1.5 z-10">
-        {item.tags.map((tag, ti) => (
+        {tags.map((tag, ti) => (
           <span
             key={ti}
             className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-white/[0.05] border border-slate-100 dark:border-white/[0.07] text-slate-600 dark:text-slate-300"
@@ -84,13 +66,14 @@ function ProjectCard({ item, index }: { item: ProjectItem; index: number }) {
 
       <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-400 dark:text-slate-500 mt-auto z-10">
         <span className="w-1 h-1 rounded-full bg-emerald-500 dark:bg-emerald-400/70" />
-        {item.area}
+        {area}
       </div>
     </motion.div>
   )
 }
 
 export const Projects = () => {
+  const { t } = useTranslation()
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: "-10%" })
   const igRef = useRef<HTMLDivElement>(null)
@@ -108,8 +91,8 @@ export const Projects = () => {
             transition={{ duration: 0.8, ease }}
             className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5"
           >
-            Реальные проекты.{" "}
-            <span className="text-red-600 dark:text-red-500">Без компромиссов.</span>
+            {t("projects.title1")}{" "}
+            <span className="text-red-600 dark:text-red-500">{t("projects.title2")}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -117,13 +100,21 @@ export const Projects = () => {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="text-lg text-slate-600 dark:text-slate-400"
           >
-            Мы работаем в Актау и Мангистауской области.
+            {t("projects.subtitle")}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {projects.map((item, i) => (
-            <ProjectCard key={i} item={item} index={i} />
+          {projectMeta.map((item, i) => (
+            <ProjectCard
+              key={i}
+              item={item}
+              index={i}
+              category={t(`projects.${item.categoryKey}`)}
+              title={t(`projects.${item.titleKey}`)}
+              tags={t(`projects.${item.tagsKey}`, { returnObjects: true }) as string[]}
+              area={t(`projects.${item.areaKey}`)}
+            />
           ))}
         </div>
 
@@ -141,7 +132,7 @@ export const Projects = () => {
             <div>
               <div className="font-bold text-slate-900 dark:text-white">@toosba7292</div>
               <div className="text-sm text-slate-600 dark:text-slate-400">
-                Больше работ смотрите в нашем инстаграм профиле
+                {t("projects.more_works")}
               </div>
             </div>
           </div>
@@ -152,7 +143,7 @@ export const Projects = () => {
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.12] text-slate-900 dark:text-white font-semibold text-sm hover:bg-slate-200/70 dark:hover:bg-white/[0.10] hover:border-slate-300 dark:hover:border-white/[0.20] transition-all duration-300 shrink-0"
           >
-            Смотреть работы
+            {t("projects.watch_works")}
             <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </motion.div>

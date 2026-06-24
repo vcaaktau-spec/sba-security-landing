@@ -295,8 +295,8 @@ const text = `📞 Тел: ${phone}
               />
             </div>
             <div className="text-[11px] text-muted-foreground mb-6 uppercase tracking-widest font-bold flex justify-between">
-              <span>Шаг {step} из 5</span>
-              {step === 5 && <span className="text-red-500">Финал</span>}
+              <span>{t("calc.step", "Шаг")} {step} / 5</span>
+              {step === 5 && <span className="text-red-500">{t("calc.finish", "Финал")}</span>}
             </div>
 
             {/* КОНТЕНТ ШАГОВ */}
@@ -307,14 +307,14 @@ const text = `📞 Тел: ${phone}
                 {step === 1 && (
                   <motion.div key="step1" custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6 flex flex-col w-full h-full justify-center">
                     <div className="text-center mb-4">
-                      <h3 className="text-xl font-bold mb-2">Где планируется установка?</h3>
-                      <p className="text-muted-foreground text-sm">От типа объекта зависит сложность и стоимость монтажных работ.</p>
+                      <h3 className="text-xl font-bold mb-2">{t("calc.q_location")}</h3>
+                      <p className="text-muted-foreground text-sm">{t("calc.q_location_desc")}</p>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <ObjectCard active={objectType === "home"} icon={Home} title="Дом / Квартира" onClick={() => {setObjectType("home"); nextStep()}} />
-                      <ObjectCard active={objectType === "commercial"} icon={Store} title="Магазин / Офис" onClick={() => {setObjectType("commercial"); nextStep()}} />
-                      <ObjectCard active={objectType === "industrial"} icon={Factory} title="Производство / Склады" onClick={() => {setObjectType("industrial"); nextStep()}} />
+                      <ObjectCard active={objectType === "home"} icon={Home} title={t("calc.obj_home")} onClick={() => {setObjectType("home"); nextStep()}} />
+                      <ObjectCard active={objectType === "commercial"} icon={Store} title={t("calc.obj_commercial")} onClick={() => {setObjectType("commercial"); nextStep()}} />
+                      <ObjectCard active={objectType === "industrial"} icon={Factory} title={t("calc.obj_industrial")} onClick={() => {setObjectType("industrial"); nextStep()}} />
                     </div>
                   </motion.div>
                 )}
@@ -322,7 +322,7 @@ const text = `📞 Тел: ${phone}
                 {/* ШАГ 2: КАМЕРЫ */}
                 {step === 2 && (
                   <motion.div key="step2" custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6 flex flex-col w-full">
-                    <h3 className="text-xl font-bold flex items-center gap-2"><Video className="text-red-500" /> Оборудование</h3>
+                    <h3 className="text-xl font-bold flex items-center gap-2"><Video className="text-red-500" /> {t("calc.group_cameras")}</h3>
                     
                     <div className="flex flex-col gap-3">
                       <label className="font-semibold text-[12px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
@@ -346,7 +346,7 @@ const text = `📞 Тел: ${phone}
                 {/* ШАГ 3: ТРАССА И МОНТАЖ */}
                 {step === 3 && (
                   <motion.div key="step3" custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6 flex flex-col w-full">
-                    <h3 className="text-xl font-bold flex items-center gap-2"><ShieldCheck className="text-red-500" /> Монтаж и Трасса</h3>
+                    <h3 className="text-xl font-bold flex items-center gap-2"><ShieldCheck className="text-red-500" /> {t("calc.group_route")}</h3>
                     
                     <div className="flex flex-col gap-3">
                       <label className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider">{t("calc.placement")}</label>
@@ -358,8 +358,8 @@ const text = `📞 Тел: ${phone}
 
                     <div className="flex flex-col gap-3">
                       <label className="font-semibold text-[12px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
-                        <span>Длина кабеля</span>
-                        <span className="text-foreground font-bold text-lg">{cable} м</span>
+                        <span>{t("calc.cable_length")}</span>
+                        <span className="text-foreground font-bold text-lg">{cable} {t("calc.meters")}</span>
                       </label>
                       <input type="range" min="10" max="1000" step="10" value={cable} onChange={(e) => setCable(Number(e.target.value))} className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500" />
                     </div>
@@ -387,23 +387,23 @@ const text = `📞 Тел: ${phone}
                 {/* ШАГ 4: ХРАНЕНИЕ */}
                 {step === 4 && (
                   <motion.div key="step4" custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6 flex flex-col w-full">
-                    <h3 className="text-xl font-bold flex items-center gap-2"><HardDrive className="text-red-500" /> Хранение данных</h3>
+                    <h3 className="text-xl font-bold flex items-center gap-2"><HardDrive className="text-red-500" /> {t("calc.group_archive")}</h3>
                     
                     <div className="flex flex-col gap-4 mt-4">
                       <label className="font-semibold text-[12px] uppercase tracking-wider flex justify-between items-center text-muted-foreground">
-                        <span>Срок хранения видео</span>
+                        <span>{t("calc.archive_duration")}</span>
                         <span className="text-foreground font-bold text-lg bg-gray-100 dark:bg-white/5 px-3 py-1.5 rounded-md">{archiveDays} {t("calc.days")}</span>
                       </label>
                       <input type="range" min="7" max="30" step="1" value={archiveDays} onChange={(e) => setArchiveDays(Number(e.target.value))} className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-red-600 dark:accent-red-500 mt-2" />
                       <div className="flex justify-between text-[11px] text-muted-foreground font-medium px-1">
-                        <span>Неделя (7)</span>
-                        <span>Две недели (14)</span>
-                        <span>Месяц (30)</span>
+                        <span>{t("calc.week_1")}</span>
+                        <span>{t("calc.week_2")}</span>
+                        <span>{t("calc.month_1")}</span>
                       </div>
                     </div>
 
                     <div className="p-4 bg-muted/30 rounded-xl border border-border mt-4">
-                      <p className="text-sm text-muted-foreground">Система автоматически подберет жесткий диск на <strong className="text-foreground">{calculatedTB} ТБ</strong> для обеспечения требуемого архива.</p>
+                      <p className="text-sm text-muted-foreground">{t("calc.hdd_auto_1")} <strong className="text-foreground">{calculatedTB} {t("calc.meters", "ТБ")}</strong> {t("calc.hdd_auto_2")}</p>
                     </div>
                   </motion.div>
                 )}
@@ -421,14 +421,14 @@ const text = `📞 Тел: ${phone}
                     ) : (
                       <>
                         <div className="text-center mb-4">
-                          <h3 className="text-2xl font-extrabold mb-2">Остался один шаг!</h3>
-                          <p className="text-muted-foreground text-sm">Оставьте ваш номер, чтобы мы зафиксировали расчет и связались с вами в WhatsApp.</p>
+                          <h3 className="text-2xl font-extrabold mb-2">{t("calc.one_step")}</h3>
+                          <p className="text-muted-foreground text-sm">{t("calc.leave_number")}</p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto w-full">
                           <div className="relative text-left">
                             <label htmlFor="calc-phone" className="block text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-2 cursor-pointer">
-                              Номер телефона (WhatsApp)
+                              {t("calc.phone_label_wa")}
                             </label>
                             <input 
                               id="calc-phone"
@@ -436,11 +436,11 @@ const text = `📞 Тел: ${phone}
                               className="w-full h-14 rounded-xl bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-[#333] px-4 outline-none focus:border-red-500 dark:focus:border-red-500 transition-colors font-mono text-base text-foreground placeholder:text-muted-foreground" 
                             />
                             {phone.length > 2 && phone.length < 18 && (
-                              <p className="text-xs text-red-500 mt-2 font-medium">Пожалуйста, введите полный номер телефона</p>
+                              <p className="text-xs text-red-500 mt-2 font-medium">{t("calc.phone_error")}</p>
                             )}
                           </div>
                           <button disabled={isSubmitting || phone.length < 18} className="w-full h-14 bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg flex items-center justify-center gap-2 uppercase">
-                            {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={16} /> Получить смету</>}
+                            {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={16} /> {t("calc.get_estimate")}</>}
                           </button>
                         </form>
                       </>
@@ -455,12 +455,12 @@ const text = `📞 Тел: ${phone}
             {!isSuccess && step > 1 && (
               <div className="mt-8 pt-4 border-t border-gray-100 dark:border-[#222] flex justify-between items-center z-10">
                 <button onClick={prevStep} className="px-5 py-2.5 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                  Назад
+                  {t("calc.back", "Назад")}
                 </button>
                 
                 {step < 5 ? (
                   <button onClick={nextStep} className="px-8 py-2.5 bg-foreground text-background rounded-xl text-sm font-bold shadow-md hover:scale-105 transition-transform">
-                    Далее
+                    {t("calc.next", "Далее")}
                   </button>
                 ) : <div />}
               </div>
@@ -482,20 +482,20 @@ const text = `📞 Тел: ${phone}
                 <span className="font-semibold">{cameras} шт.</span>
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
-                <span className="text-muted-foreground">Длина трассы</span> 
-                <span className="font-semibold">{cable} м</span>
+                <span className="text-muted-foreground">{t("calc.cable_length")}</span> 
+                <span className="font-semibold">{cable} {t("calc.meters")}</span>
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
-                <span className="text-muted-foreground">PoE Свитчи</span> 
+                <span className="text-muted-foreground">{t("calc.poe", "PoE Свитчи")}</span> 
                 <span className="font-semibold text-right">{poeSummary || "-"}</span>
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-gray-200 dark:border-[#222] pb-2">
-                <span className="text-muted-foreground">Сложность</span> 
+                <span className="text-muted-foreground">{t("calc.install")}</span> 
                 <span className="font-semibold uppercase text-[10px]">{t(`calc.opt_${installLevel}`)}</span>
               </div>
               <div className="flex justify-between items-center gap-2 pt-1">
-                <span className="flex items-center gap-1.5 text-muted-foreground shrink-0"><Settings2 size={14}/> Архив:</span> 
-                <span className="font-semibold whitespace-nowrap">{archiveDays} дн. (~{calculatedTB} ТБ)</span>
+                <span className="flex items-center gap-1.5 text-muted-foreground shrink-0"><Settings2 size={14}/> {t("calc.archive")}:</span> 
+                <span className="font-semibold whitespace-nowrap">{archiveDays} {t("calc.days")} (~{calculatedTB} TB)</span>
               </div>
             </div>
 
@@ -517,7 +517,7 @@ const text = `📞 Тел: ${phone}
             </div>
             
             {step < 5 && (
-              <p className="text-[10px] text-center text-muted-foreground mt-4">Завершите квиз, чтобы разблокировать стоимость</p>
+              <p className="text-[10px] text-center text-muted-foreground mt-4">{t("calc.finish_quiz")}</p>
             )}
           </motion.div>
 
