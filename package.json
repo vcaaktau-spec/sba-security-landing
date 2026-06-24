@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "postbuild": "react-snap",
+    "postbuild": "node -e \"if(!process.env.VERCEL && !process.env.CI){require('child_process').execSync('react-snap',{stdio:'inherit'})}else{console.log('react-snap: skipped in CI')}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
