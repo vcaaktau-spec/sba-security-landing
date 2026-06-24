@@ -245,16 +245,19 @@ export const Cta = () => {
               <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 onClick={() => setIsModalOpen(false)}
-                className="absolute inset-0 bg-background/85 backdrop-blur-md cursor-pointer"
+                className="absolute inset-0 bg-slate-950/95 cursor-pointer"
               />
 
               <motion.div
                 initial={{ x: "100%" }} animate={{ x: "0%" }} exit={{ x: "100%" }}
                 transition={{ duration: 0.45, ease }}
-                className="relative w-full max-w-md h-full bg-background border-l border-white/[0.08] shadow-2xl flex flex-col z-[10001]"
+                className="relative w-full max-w-md h-full bg-[#0a0f1a] border-l border-white/[0.08] shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col z-[10001] overflow-hidden"
               >
+                {/* Tactical Blueprint Grid */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.15]" 
+                     style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
                 {/* Header */}
-                <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-white/[0.07]">
+                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-white/[0.07] relative z-10 bg-[#0a0f1a]">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center">
                       <ShieldCheck size={17} className="text-red-400" />
@@ -270,7 +273,7 @@ export const Cta = () => {
                 </div>
 
                 {/* Body */}
-                <div className="flex-grow overflow-y-auto px-6 py-8 flex flex-col custom-scrollbar">
+                <div className="flex-grow overflow-y-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col custom-scrollbar relative z-10">
                   {isSuccess ? (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
@@ -287,7 +290,7 @@ export const Cta = () => {
                     </motion.div>
                   ) : (
                     <>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-8 pl-3 border-l border-red-600/50">
+                      <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 sm:mb-8 pl-3 border-l border-red-600/50 break-words hyphens-auto">
                         {t("cta.form_desc")}
                       </p>
 
@@ -299,9 +302,9 @@ export const Cta = () => {
                             required type="text" value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder=" "
-                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-foreground text-sm placeholder-transparent focus:border-red-500 outline-none transition-colors"
+                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-white text-sm placeholder-transparent focus:border-red-500 outline-none transition-colors"
                           />
-                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-muted-foreground/50 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-muted-foreground/40 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none">
+                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
                             {t("cta.name_label")}
                           </label>
                         </div>
@@ -312,16 +315,16 @@ export const Cta = () => {
                             required type="tel" value={phone}
                             onChange={handlePhoneChange}
                             maxLength={18} placeholder=" "
-                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-foreground text-sm font-mono placeholder-transparent focus:border-red-500 outline-none transition-colors"
+                            className="peer w-full h-12 bg-transparent border-b border-white/[0.12] text-white text-sm font-mono placeholder-transparent focus:border-red-500 outline-none transition-colors"
                           />
-                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-muted-foreground/50 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-muted-foreground/40 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none">
+                          <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-400 cursor-text pointer-events-none whitespace-nowrap">
                             {t("cta.phone_label")}
                           </label>
                         </div>
 
                         {/* Service */}
                         <div className="relative">
-                          <label className="text-[9px] font-bold text-muted-foreground/50 uppercase tracking-widest block mb-2">
+                          <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2 break-words">
                             {t("cta.service_label")}
                           </label>
                           <button
@@ -329,12 +332,12 @@ export const Cta = () => {
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             className="w-full h-12 bg-transparent border-b border-white/[0.12] flex items-center justify-between text-sm transition-colors outline-none hover:border-white/[0.2]"
                           >
-                            <span className="truncate pr-4 text-foreground/80">{service}</span>
-                            <ChevronDown size={14} className={`transition-transform duration-300 shrink-0 text-muted-foreground ${isDropdownOpen ? "rotate-180 text-red-400" : ""}`} />
+                            <span className="truncate pr-4 text-white">{service}</span>
+                            <ChevronDown size={14} className={`transition-transform duration-300 shrink-0 text-slate-400 ${isDropdownOpen ? "rotate-180 text-red-400" : ""}`} />
                           </button>
 
                           {isDropdownOpen && (
-                            <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
+                             <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
                           )}
 
                           <AnimatePresence>
@@ -344,16 +347,16 @@ export const Cta = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -6 }}
                                 transition={{ duration: 0.18 }}
-                                className="absolute top-full left-0 w-full mt-2 bg-background border border-white/[0.1] shadow-2xl z-50 flex flex-col py-1.5 rounded-xl overflow-hidden"
+                                className="absolute top-full left-0 w-full mt-2 bg-slate-900 border border-white/[0.1] shadow-2xl z-50 flex flex-col py-1.5 rounded-xl overflow-hidden"
                               >
                                 {serviceOptions.map((opt, i) => (
                                   <button
                                     key={i} type="button"
                                     onClick={() => { setService(opt); setIsDropdownOpen(false) }}
-                                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors break-words ${
                                       service === opt
                                         ? "bg-red-500/10 text-red-400 font-medium"
-                                        : "text-foreground/70 hover:bg-white/[0.04] hover:text-foreground"
+                                        : "text-slate-300 hover:bg-white/[0.04] hover:text-white"
                                     }`}
                                   >
                                     {opt}

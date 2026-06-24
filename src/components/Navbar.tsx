@@ -175,10 +175,14 @@ export const Navbar = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs flex flex-col pt-24 pb-12 px-6 md:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#0a0f1a] flex flex-col pt-24 pb-12 px-6 md:hidden overflow-y-auto relative"
             onClick={(e) => { if (e.target === e.currentTarget) setIsOpen(false); }}
           >
-            <div className="flex flex-col gap-6 w-full max-w-sm mx-auto flex-grow h-full pt-10">
+            {/* Tactical Blueprint Grid */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.1]" 
+                 style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+                 
+            <div className="flex flex-col gap-6 w-full max-w-sm mx-auto flex-grow h-full pt-10 relative z-10">
               
               <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-3">
@@ -192,18 +196,18 @@ export const Navbar = () => {
               {/* УНИФИЦИРОВАННЫЕ КОНТРОЛЫ НА МОБИЛКЕ */}
               <motion.div custom={1} variants={{hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }}} initial="hidden" animate="visible" exit="hidden" className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                  <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-100 dark:bg-slate-900 font-mono font-bold uppercase tracking-wider text-xs active:scale-[0.98] transition-all border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
-                    <Globe size={16} className="text-slate-400 dark:text-slate-500"/> {i18n.language || 'ru'}
+                  <button onClick={toggleLanguage} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-900 font-mono font-bold uppercase tracking-wider text-xs active:scale-[0.98] transition-all border border-slate-800 text-white hover:bg-slate-800 hover:border-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                    <Globe size={16} className="text-slate-400"/> {i18n.language || 'ru'}
                   </button>
-                  <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-100 dark:bg-slate-900 font-mono font-bold text-xs active:scale-[0.98] transition-all border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
-                    {isDark ? <Sun size={16} className="text-slate-400 dark:text-slate-500"/> : <Moon size={16} className="text-slate-400 dark:text-slate-500"/>} {isDark ? "Светлая" : "Темная"}
+                  <button onClick={toggleTheme} className="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl bg-slate-900 font-mono font-bold text-xs active:scale-[0.98] transition-all border border-slate-800 text-white hover:bg-slate-800 hover:border-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] break-words text-center leading-tight">
+                    {isDark ? <Sun size={16} className="text-slate-400"/> : <Moon size={16} className="text-slate-400"/>} {isDark ? "Светлая" : "Темная"}
                   </button>
                 </div>
 
                 <SignedOut>
                   <SignInButton mode="modal">
-                    <button onClick={() => setIsOpen(false)} className="w-full h-14 flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-xs uppercase tracking-wider active:scale-[0.98] transition-all">
-                      <User size={16} className="text-slate-400 dark:text-slate-500" />
+                    <button onClick={() => setIsOpen(false)} className="w-full h-14 flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900 text-white font-mono font-bold text-xs uppercase tracking-wider active:scale-[0.98] transition-all hover:bg-slate-800 hover:border-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] break-words">
+                      <User size={16} className="text-slate-400" />
                       {t("nav.login", "Личный кабинет")}
                     </button>
                   </SignInButton>
@@ -215,9 +219,9 @@ export const Navbar = () => {
                 href="https://wa.me/77779204988"
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="w-full h-16 mt-auto flex items-center justify-center rounded-xl bg-red-600 text-white font-black text-sm uppercase tracking-widest shadow-sm active:scale-[0.98] transition-transform"
+                className="w-full h-16 mt-auto flex items-center justify-center rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-[13px] uppercase tracking-widest shadow-[0_0_20px_rgba(239,68,68,0.15)] hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] active:scale-[0.98] transition-all break-words text-center leading-tight px-4"
               >
-                {t("nav.contact_btn", "Связаться с нами")} <ArrowRight size={18} className="ml-2"/>
+                {t("nav.contact_btn", "Связаться с нами")} <ArrowRight size={18} className="ml-2 flex-shrink-0"/>
               </motion.a>
             </div>
           </motion.div>

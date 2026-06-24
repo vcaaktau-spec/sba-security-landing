@@ -13,6 +13,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* -----------------------------------------------
+   MOBILE TEXT OVERFLOW PROTECTION
+   ----------------------------------------------- */
+@media (max-width: 768px) {
+  h1, h2, h3, h4, h5, h6, p, span, button {
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+/* -----------------------------------------------
    TACTICAL BLUEPRINT GRID & DECORATION
    ----------------------------------------------- */
 .blueprint-grid {
