@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
+import React, { useRef, useEffect, useState } from "react"
 import CountUp from "react-countup"
 import { useTranslation } from "react-i18next"
 import { useInView } from "react-intersection-observer"
@@ -54,7 +54,7 @@ export const Statistics = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5" style={{ textWrap: "balance" } as React.CSSProperties}
           >
             {t("stats.title1")}{" "}
             <span className="text-red-500">{t("stats.title2")}</span>
@@ -78,7 +78,7 @@ export const Statistics = () => {
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.75, ease, delay: stat.delay }}
-              className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.08] rounded-2xl p-6 flex flex-col gap-4 hover:border-slate-300 dark:hover:border-white/[0.15] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-400 overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none"
+              className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.08] rounded-2xl p-6 flex flex-col gap-4 hover:border-slate-300 dark:hover:border-white/[0.15] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-400 overflow-hidden"
             >
               {/* Subtle gradient overlay on hover */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.03] to-transparent pointer-events-none" />

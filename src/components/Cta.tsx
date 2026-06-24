@@ -290,7 +290,7 @@ export const Cta = () => {
                     </motion.div>
                   ) : (
                     <>
-                      <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 sm:mb-8 pl-3 border-l border-red-600/50 break-words hyphens-auto">
+                      <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 sm:mb-8 px-4 py-3 rounded-lg bg-red-600/[0.06] dark:bg-red-600/[0.08] break-words hyphens-auto">
                         {t("cta.form_desc")}
                       </p>
 

@@ -55,13 +55,11 @@ function useSbaCounter(end: number, duration = 3600, startDelay = 0) {
    StatCard
  ───────────────────────────────────────── */
 function StatCard({
-  index,
   end,
   label,
   suffix = "+",
   delay,
 }: {
-  index: number
   end: number
   label: string
   suffix?: string
@@ -77,9 +75,6 @@ function StatCard({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-col gap-1.5">
-        <span className="font-mono text-[9px] tracking-widest text-muted-foreground/40 uppercase">
-          METRIC // 0{index}
-        </span>
         <span className="text-xs font-mono font-semibold text-muted-foreground/80 tracking-wider uppercase">
           {label}
         </span>
@@ -252,7 +247,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
           </motion.div>
 
           {/* Headline (Dynamic lines) */}
-          <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.03em" }}>
+          <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.02em" }}>
             <span className="sr-only">Видеонаблюдение в Актау — Установка систем безопасности под ключ</span>
             {[
               { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.15 },
@@ -264,9 +259,9 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
                   initial={{ y: "115%", opacity: 0, filter: "blur(12px)" }}
                   animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 1.6, ease: E, delay }}
-                  className={`block font-black leading-[0.9] tracking-tighter ${colorClass}`}
+                  className={`block font-black leading-[0.92] ${colorClass}`}
                   style={{
-                    fontSize: "clamp(3.2rem, 9.5vw, 8.5rem)",
+                    fontSize: "clamp(2.5rem, 7.5vw, 5.5rem)",
                   }}
                 >
                   {text}
@@ -315,7 +310,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               variants={itemVariants}
               className="py-6 border-b border-slate-200/50 dark:border-white/[0.06]"
             >
-              <StatCard index={i + 1} {...s} />
+              <StatCard {...s} />
             </motion.div>
           ))}
 

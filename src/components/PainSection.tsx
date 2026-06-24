@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { AlertTriangle, ShieldCheck, ExternalLink, Flame, Eye, Lock, Zap } from "lucide-react"
 import { motion } from "framer-motion"
 import { useTranslation } from "react-i18next"
@@ -61,7 +62,7 @@ export const PainSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.08, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5" style={{ textWrap: "balance" } as React.CSSProperties}
           >
             {t("pain.title1")}{" "}
             <span className="text-red-600 dark:text-red-500">{t("pain.title2")}</span>
@@ -105,7 +106,7 @@ export const PainSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.75, delay: idx * 0.1, ease }}
-                className="news-card-hover group relative flex flex-col bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)] dark:hover:border-white/[0.12]"
+                className="news-card-hover group relative flex flex-col bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl overflow-hidden transition-all duration-300 dark:hover:border-white/[0.12]"
               >
                 {/* Top gradient accent line */}
                 <div className={`h-px w-full ${

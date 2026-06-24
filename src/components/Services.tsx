@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Shield, Network, Laptop, FileText, Check } from "lucide-react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
@@ -145,9 +145,9 @@ export const Services = () => {
           <Badge variant="outline" className="mb-6 font-mono tracking-widest uppercase border-red-500/30 text-red-600 dark:text-red-500 bg-red-500/5">
             // Оперативный профиль
           </Badge>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05]">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05]" style={{ textWrap: "balance" } as React.CSSProperties}>
             {t("services.title1")}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-500 dark:from-red-500 dark:to-orange-500">
+            <span className="text-red-600 dark:text-red-500">
               {t("services.title2")}
             </span>
           </h2>

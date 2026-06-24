@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { ShieldCheck, Cpu, HardDrive, Shield, Check } from "lucide-react"
 import { motion, useInView, useScroll, useTransform } from "framer-motion"
@@ -49,7 +49,7 @@ export const Features = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5" style={{ textWrap: "balance" } as React.CSSProperties}
           >
             {t("features.title1", "Почему выбирают")}{" "}
             <span className="text-red-650 text-red-600 dark:text-red-500">{t("features.title2", "именно нас")}</span>
@@ -72,7 +72,7 @@ export const Features = () => {
             initial={{ opacity: 0, y: 32 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.08 }}
-            className="group relative lg:col-span-2 bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 sm:p-9 flex flex-col md:flex-row gap-8 items-center hover:border-slate-350 dark:hover:border-white/[0.14] shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none transition-all duration-400 overflow-hidden"
+            className="group relative lg:col-span-2 bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 sm:p-9 flex flex-col md:flex-row gap-8 items-center hover:border-slate-350 dark:hover:border-white/[0.14] hover:shadow-none transition-all duration-400 overflow-hidden"
           >
             <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-emerald-500/[0.03] dark:from-emerald-500/[0.05] to-transparent pointer-events-none" />
 
@@ -115,7 +115,7 @@ export const Features = () => {
             initial={{ opacity: 0, y: 32 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.18 }}
-            className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 flex flex-col justify-between hover:border-slate-350 dark:hover:border-white/[0.14] shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none transition-all duration-400 overflow-hidden"
+            className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 flex flex-col justify-between hover:border-slate-350 dark:hover:border-white/[0.14] hover:shadow-none transition-all duration-400 overflow-hidden"
           >
             <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.03] dark:from-red-500/[0.04] to-transparent pointer-events-none" />
 
@@ -148,7 +148,7 @@ export const Features = () => {
             initial={{ opacity: 0, y: 32 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.28 }}
-            className="group relative lg:col-span-3 bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 sm:p-9 flex flex-col lg:flex-row gap-10 items-start lg:items-center hover:border-slate-350 dark:hover:border-white/[0.14] shadow-[0_8px_30px_rgba(0,0,0,0.015)] dark:shadow-none transition-all duration-400 overflow-hidden"
+            className="group relative lg:col-span-3 bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-7 sm:p-9 flex flex-col lg:flex-row gap-10 items-start lg:items-center hover:border-slate-350 dark:hover:border-white/[0.14] hover:shadow-none transition-all duration-400 overflow-hidden"
           >
             <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-red-500/[0.03] dark:from-red-500/[0.04] to-transparent pointer-events-none" />
 

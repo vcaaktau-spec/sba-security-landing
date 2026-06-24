@@ -1,10 +1,9 @@
 "use client"
 
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { useTranslation } from "react-i18next"
 import { PhoneCall, ClipboardList, Truck, Settings } from "lucide-react"
 import { motion, useScroll, useInView } from "framer-motion"
-import { Badge } from "./ui/badge"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -56,11 +55,6 @@ function StepRow({ step }: { step: Step }) {
           transition={{ duration: 0.7, ease, delay: 0.2 }}
           className="pt-2"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Badge variant="secondary" className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
-              Этап // {step.step}
-            </Badge>
-          </div>
           <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-snug">
             {step.title}
           </h3>
@@ -100,21 +94,11 @@ export const HowItWorks = () => {
 
         {/* Header */}
         <div ref={headerRef} className="flex flex-col mb-20 lg:mb-32">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease }}
-            className="mb-6"
-          >
-            <Badge variant="outline" className="font-mono tracking-widest uppercase border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400">
-              Алгоритм работы
-            </Badge>
-          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.05] max-w-3xl"
+            className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.05] max-w-3xl" style={{ textWrap: "balance" } as React.CSSProperties}
           >
             {t("how.title1")}{" "}
             <span className="text-red-600 dark:text-red-500">{t("how.title2")}</span>
