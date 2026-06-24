@@ -253,6 +253,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
 
           {/* Headline (Dynamic lines) */}
           <h1 className="mb-8 flex flex-col gap-1 sm:gap-2 select-none" style={{ letterSpacing: "-0.03em" }}>
+            <span className="sr-only">Видеонаблюдение в Актау — Установка систем безопасности под ключ</span>
             {[
               { text: t("hero.titleLine1"), colorClass: "text-foreground", delay: 0.15 },
               { text: t("hero.titleLine2"), colorClass: "text-foreground/40 dark:text-white/45", delay: 0.35 },

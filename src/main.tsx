@@ -43,7 +43,9 @@ const ClerkThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root")!;
+
+const app = (
   <React.StrictMode>
     <ThemeProvider>
       <ClerkThemeWrapper>
@@ -52,3 +54,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </ThemeProvider>
   </React.StrictMode>
 );
+
+// react-snap pre-renders the page: if root already has HTML — hydrate, otherwise mount fresh
+if (rootElement.hasChildNodes()) {
+  ReactDOM.hydrateRoot(rootElement, app);
+} else {
+  ReactDOM.createRoot(rootElement).render(app);
+}
