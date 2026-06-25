@@ -51,7 +51,7 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               transition={{ duration: 0.6, delay: 0.5, ease: E }}
               className="text-xs font-mono tracking-widest uppercase text-foreground/40 mb-6"
             >
-              Актау · с 2016 года
+              {t("hero.locationLabel")}
             </motion.p>
 
             {/* H1 */}

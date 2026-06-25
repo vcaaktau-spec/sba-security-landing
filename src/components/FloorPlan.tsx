@@ -83,7 +83,7 @@ export function FloorPlan({
       <motion.g
         id="coverage"
         style={{ opacity: coverageOpacity, scale: coverageScale }}
-        transformOrigin="center"
+        transformOrigin="400px 300px"
       >
         {CAMERAS.map((cam) => (
           <path

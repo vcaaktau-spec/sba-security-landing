@@ -84,6 +84,7 @@ const resources = {
         titleLine1: "ОХРАНА",
         titleLine2: "КАЖДОГО",
         titleLine3: "ОБЪЕКТА.",
+        locationLabel: "Актау · с 2016 года",
       },
       stats: {
         title1: "Безопасность вашего бизнеса",
@@ -481,6 +482,7 @@ const resources = {
         titleLine1: "ӘРБІР",
         titleLine2: "НЫСАНДЫ",
         titleLine3: "ҚОРҒАУ.",
+        locationLabel: "Ақтау · 2016 жылдан",
       },
       stats: {
         title1: "Сіздің бизнесіңіздің қауіпсіздігі",
@@ -878,6 +880,7 @@ const resources = {
         titleLine1: "GUARDING",
         titleLine2: "EVERY",
         titleLine3: "FACILITY.",
+        locationLabel: "Aktau · since 2016",
       },
       stats: {
         title1: "Your business security is",
