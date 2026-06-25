@@ -15,7 +15,11 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/(dashboard|sign-in|sign-up)(.*)",
+      "source": "/(dashboard|sign-in|sign-up|uslugi)(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
