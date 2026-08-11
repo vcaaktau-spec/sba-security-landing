@@ -11,7 +11,7 @@
 // через Neon/Drizzle Studio, когда таблица `products` будет наполняться
 // по-настоящему (см. .wednesday/plans/PLAN.md, фаза 2).
 
-import type { Product } from "./catalog"
+import type { Product } from "./catalog.js"
 
 export const CATALOG_SEED: Product[] = [
   // --- Видеонаблюдение ---
