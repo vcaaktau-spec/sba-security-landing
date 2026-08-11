@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Calculator } from "../components/Calculator";
-import { Catalog } from "../components/Catalog";
 import { Cta } from "../components/Cta";
 import { DotMatrix } from "../components/DotMatrix";
 import { Features } from "../components/Features";
@@ -46,11 +46,11 @@ const SectionAccent = ({ side = "right" }: { side?: "left" | "right" }) => (
 
 export const Home = () => {
   const [isCalcOpen, setIsCalcOpen] = useState(false);
-  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    document.body.style.overflow = isCalcOpen || isCatalogOpen ? "hidden" : "unset";
-  }, [isCalcOpen, isCatalogOpen]);
+    document.body.style.overflow = isCalcOpen ? "hidden" : "unset";
+  }, [isCalcOpen]);
 
   return (
     <>
@@ -68,7 +68,7 @@ export const Home = () => {
           <FadeSection><Features /></FadeSection>
           <SectionAccent side="right" />
           <FadeSection>
-            <TwoPathsSection onOpenCatalog={() => setIsCatalogOpen(true)} onOpenCalc={() => setIsCalcOpen(true)} />
+            <TwoPathsSection onOpenCatalog={() => navigate("/katalog")} onOpenCalc={() => setIsCalcOpen(true)} />
           </FadeSection>
           <FadeSection><Statistics /></FadeSection>
           <SectionAccent side="left" />
@@ -110,37 +110,6 @@ export const Home = () => {
               </button>
               <div className="flex-grow overflow-y-auto custom-scrollbar">
                 <Calculator onClose={() => setIsCalcOpen(false)} />
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isCatalogOpen && (
-          <div className="fixed inset-0 z-[999] flex justify-center items-center text-foreground">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCatalogOpen(false)}
-              className="absolute inset-0 bg-background/92 backdrop-blur-lg cursor-pointer"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 24 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full h-full lg:h-[90vh] lg:max-w-5xl lg:rounded-3xl bg-background border border-white/[0.08] shadow-2xl flex flex-col overflow-hidden m-0 lg:m-4"
-            >
-              <button
-                onClick={() => setIsCatalogOpen(false)}
-                className="absolute top-4 right-4 z-[1000] w-11 h-11 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center border border-white/[0.08] transition-all duration-200 hover:rotate-90"
-              >
-                <X size={20} />
-              </button>
-              <div className="flex-grow overflow-y-auto custom-scrollbar">
-                <Catalog />
               </div>
             </motion.div>
           </div>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Home } from "./pages/Home";
+import { Katalog } from "./pages/Katalog";
 import { Dashboard } from "./pages/Dashboard";
 import { Videonahljudenie } from "./pages/services/Videonahljudenie";
 import { Skud } from "./pages/services/Skud";
@@ -19,6 +20,7 @@ function App() {
       
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/katalog" element={<Katalog />} />
 
         {/* Страницы услуг */}
         <Route path="/uslugi/videonahljudenie" element={<Videonahljudenie />} />
