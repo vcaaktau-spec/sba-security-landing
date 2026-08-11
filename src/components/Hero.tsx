@@ -2,18 +2,19 @@
 
 import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { ArrowRight, MessageCircle } from "lucide-react"
+import { ArrowRight, Layers, MessageCircle } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Magnetic from "./ui/magnetic"
 import { FloorPlan } from "./FloorPlan"
 
 interface HeroProps {
   onOpenCalc: () => void
+  onOpenCatalog: () => void
 }
 
 const E = [0.22, 1, 0.36, 1] as const
 
-export const Hero = ({ onOpenCalc }: HeroProps) => {
+export const Hero = ({ onOpenCalc, onOpenCatalog }: HeroProps) => {
   const { t } = useTranslation()
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -106,6 +107,16 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               </Magnetic>
 
               <Magnetic strength={0.15}>
+                <button
+                  onClick={onOpenCatalog}
+                  className="inline-flex items-center justify-center gap-2 px-5 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-muted-foreground hover:text-foreground border border-slate-200 dark:border-white/[0.08]"
+                >
+                  <Layers size={14} className="shrink-0" />
+                  Каталог
+                </button>
+              </Magnetic>
+
+              <Magnetic strength={0.15}>
                 <a
                   href="https://wa.me/77779204988"
                   target="_blank"
@@ -128,6 +139,16 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:translate-x-full transition-transform duration-700" />
                   <span className="relative">{t("hero.btn")}</span>
                   <ArrowRight size={14} className="relative group-hover:translate-x-0.5 transition-transform duration-200" />
+                </button>
+              </Magnetic>
+
+              <Magnetic strength={0.15}>
+                <button
+                  onClick={onOpenCatalog}
+                  className="inline-flex items-center justify-center gap-2 px-5 h-11 text-xs font-mono font-bold tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-muted-foreground hover:text-foreground border border-slate-200 dark:border-white/[0.08]"
+                >
+                  <Layers size={14} className="shrink-0" />
+                  Каталог
                 </button>
               </Magnetic>
 

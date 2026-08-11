@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Layers, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Calculator } from "../components/Calculator";
 import { Catalog } from "../components/Catalog";
 import { Cta } from "../components/Cta";
@@ -43,21 +43,6 @@ const SectionAccent = ({ side = "right" }: { side?: "left" | "right" }) => (
   </div>
 );
 
-// Временная точка входа в витрину — фаза 0 (.wednesday/plans/PLAN.md).
-// Финальная подача появится в фазе 4 (редизайн главной, "два входа в
-// расчёт"); сейчас задача — просто дать каталогу быть доступным для
-// проверки, не трогая Hero/Footer (danger zones по research.md).
-const CatalogTeaser = ({ onOpen }: { onOpen: () => void }) => (
-  <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
-    <button
-      onClick={onOpen}
-      className="w-full flex items-center justify-center gap-2 h-12 rounded-xl border border-dashed border-border hover:border-foreground/40 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wide"
-    >
-      <Layers size={16} /> Смотреть каталог оборудования
-    </button>
-  </div>
-);
-
 export const Home = () => {
   const [isCalcOpen, setIsCalcOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
@@ -73,9 +58,7 @@ export const Home = () => {
           <Navbar />
 
           {/* Hero — no fade, instant */}
-          <Hero onOpenCalc={() => setIsCalcOpen(true)} />
-
-          <CatalogTeaser onOpen={() => setIsCatalogOpen(true)} />
+          <Hero onOpenCalc={() => setIsCalcOpen(true)} onOpenCatalog={() => setIsCatalogOpen(true)} />
 
           <FadeSection><Statistics /></FadeSection>
           <SectionAccent side="right" />
