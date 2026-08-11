@@ -68,6 +68,9 @@ importers:
       '@vercel/speed-insights':
         specifier: ^2.0.0
         version: 2.0.0(react@18.3.1)
+      cheerio:
+        specifier: ^1.0.0
+        version: 1.2.0
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1
@@ -147,9 +150,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.27(postcss@8.5.8)
-      cheerio:
-        specifier: ^1.0.0
-        version: 1.2.0
       dotenv:
         specifier: ^17.3.1
         version: 17.3.1
