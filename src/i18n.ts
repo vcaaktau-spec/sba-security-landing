@@ -85,6 +85,7 @@ const resources = {
         titleLine2: "КАЖДОГО",
         titleLine3: "ОБЪЕКТА.",
         locationLabel: "Актау · с 2016 года",
+        scrollHint: "Два пути расчёта",
       },
       stats: {
         title1: "Безопасность вашего бизнеса",
@@ -506,6 +507,7 @@ const resources = {
         titleLine2: "НЫСАНДЫ",
         titleLine3: "ҚОРҒАУ.",
         locationLabel: "Ақтау · 2016 жылдан",
+        scrollHint: "Есептеудің екі жолы",
       },
       stats: {
         title1: "Сіздің бизнесіңіздің қауіпсіздігі",
@@ -927,6 +929,7 @@ const resources = {
         titleLine2: "EVERY",
         titleLine3: "FACILITY.",
         locationLabel: "Aktau · since 2016",
+        scrollHint: "Two ways to calculate",
       },
       stats: {
         title1: "Your business security is",

@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { ArrowRight, MessageCircle } from "lucide-react"
+import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Magnetic from "./ui/magnetic"
 import { FloorPlan } from "./FloorPlan"
@@ -118,6 +118,25 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
               </Magnetic>
             </motion.div>
 
+            {/* Scroll cue — points at the "Два пути расчёта" section (desktop only,
+                fades in with the rest of the CTA so it doesn't compete with the
+                title/floor-plan reveal). */}
+            <motion.button
+              type="button"
+              onClick={() => document.getElementById("two-paths")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              style={{ opacity: ctaOpacity }}
+              className="hidden lg:inline-flex items-center gap-2 mt-8 text-[11px] font-mono font-bold tracking-widest uppercase text-foreground/40 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-300 group"
+            >
+              {t("hero.scrollHint")}
+              <motion.span
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="flex"
+              >
+                <ChevronDown size={14} className="group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors duration-300" />
+              </motion.span>
+            </motion.button>
+
             {/* CTA — mobile: immediately visible */}
             <div className="flex lg:hidden flex-col sm:flex-row items-start sm:items-center gap-3">
               <Magnetic strength={0.15}>
@@ -143,6 +162,24 @@ export const Hero = ({ onOpenCalc }: HeroProps) => {
                 </a>
               </Magnetic>
             </div>
+
+            <motion.button
+              type="button"
+              onClick={() => document.getElementById("two-paths")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 1.6, ease: E }}
+              className="flex lg:hidden items-center gap-2 mt-6 text-[11px] font-mono font-bold tracking-widest uppercase text-foreground/40"
+            >
+              {t("hero.scrollHint")}
+              <motion.span
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="flex"
+              >
+                <ChevronDown size={14} />
+              </motion.span>
+            </motion.button>
           </div>
 
           {/* ── RIGHT PANEL: col-span-7 — SVG floor plan (desktop) ── */}

@@ -116,7 +116,7 @@ export const TwoPathsSection = ({ onOpenCatalog, onOpenCalc }: TwoPathsSectionPr
   const path2Features = [t("twoPaths.path2_f1"), t("twoPaths.path2_f2"), t("twoPaths.path2_f3")]
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.06]">
+    <section id="two-paths" className="relative py-24 lg:py-32 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.06]">
       <div className="absolute inset-0 -z-10 dot-grid opacity-70" />
 
       <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
