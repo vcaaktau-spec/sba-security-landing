@@ -25,14 +25,20 @@ async function main(): Promise<void> {
     return
   }
 
-  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
-  if (!response.ok) {
-    console.error(`Fetch failed: HTTP ${response.status} ${response.statusText}`)
+  let html: string
+  try {
+    const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
+    if (!response.ok) {
+      console.error(`Fetch failed: HTTP ${response.status} ${response.statusText}`)
+      process.exit(1)
+      return
+    }
+    html = await response.text()
+  } catch (err) {
+    console.error(`Fetch failed: ${(err as Error).message}`)
     process.exit(1)
     return
   }
-
-  const html = await response.text()
 
   try {
     const result = parseBarlauProduct(html, url)
