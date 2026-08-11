@@ -1,5 +1,5 @@
-import { db } from '../src/db/index';
-import { projects, documents } from '../src/db/schema';
+import { db } from '../src/db/index.js';
+import { projects, documents } from '../src/db/schema.js';
 import { eq } from 'drizzle-orm';
 
 // Такая же броня для личного кабинета

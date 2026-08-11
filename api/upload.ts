@@ -1,6 +1,6 @@
 import { put } from '@vercel/blob';
-import { db } from '../src/db/index';
-import { documents } from '../src/db/schema';
+import { db } from '../src/db/index.js';
+import { documents } from '../src/db/schema.js';
 
 
 export default async function handler(req: Request) {

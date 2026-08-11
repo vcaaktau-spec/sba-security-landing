@@ -1,5 +1,5 @@
-import { db } from '../src/db/index';
-import { projects } from '../src/db/schema';
+import { db } from '../src/db/index.js';
+import { projects } from '../src/db/schema.js';
 import { eq } from 'drizzle-orm';
 
 // Функция-броня: повторяет запрос, если Neon отвалился из-за fetch failed

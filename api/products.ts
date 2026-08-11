@@ -1,5 +1,5 @@
-import { CATALOG_SEED } from '../src/lib/catalogSeed'
-import type { Product } from '../src/lib/catalog'
+import { CATALOG_SEED } from '../src/lib/catalogSeed.js'
+import type { Product } from '../src/lib/catalog.js'
 
 // Отдаёт витрине список товаров. Если таблица products в базе пустая или
 // недоступна — отдаёт встроенный стартовый набор (catalogSeed.ts), чтобы
@@ -25,8 +25,8 @@ export default async function handler(req: Request) {
   let source: 'db' | 'seed' = 'seed'
 
   try {
-    const { db } = await import('../src/db/index')
-    const { products } = await import('../src/db/schema')
+    const { db } = await import('../src/db/index.js')
+    const { products } = await import('../src/db/schema.js')
     const rows = await db.select().from(products)
     if (rows.length > 0) {
       items = rows
