@@ -44,16 +44,18 @@ New standalone script: `scripts/scrape-barlau.ts`, run via `pnpm scrape:barlau <
   "name": "DS-I203(E) (2.8mm), IP Камера, купольная, HiWatch",
   "brand": "HiWatch",
   "imageUrl": null,
-  "specs": { "Тип устройства": "IP Камера, купольная", "Разрешение": "2.0MP 1920×1080@25к/с", "...": "..." },
+  "specs": { "Тип устройства": "IP Камера, купольная", "Количество шт в коробке": "27", "Вес единицы кг.": "0.54", "Срок гарантии": "3 года", "Размер единицы мм": "150x150x140" },
   "basePrice": 16900,
   "active": true,
   "sortOrder": 0,
   "_sourceUrl": "https://barlau.kz/catalog/ip_kupolnye_videokamery/ds_i203_e_2_8mm/",
-  "_description": "Разрешение: 2.0MP ... (full free-text description block)"
+  "_description": "Разрешение: 2.0MP ... (full free-text description block, contains the real technical specs — resolution, lens, IR range, etc.)"
 }
 ```
 
 Fields prefixed `_` are review metadata, not part of the `Product` type — the operator strips them when copying the entry into `catalogSeed.ts`.
+
+**Note on `specs` vs `_description` (corrected after implementation):** on barlau.kz's Bitrix template, the "characteristics" tab (`.catalog-element-section-property-*`) duplicates the same handful of logistics fields already shown in the quick panel (`.catalog-element-property-*`) — verified byte-identical on the reference product page. The real technical specs (resolution, lens, IR range, protocol, etc.) exist ONLY as a pipe-delimited free-text block, captured in `_description`. An earlier draft of this doc's example showed `"Разрешение"` inside `specs`, implying it was structurally extractable — it isn't, on this template. The operator is expected to read `_description` and hand-copy the relevant technical specs into `catalogSeed.ts`'s `specs` object themselves; parsing the pipe-delimited text automatically was considered and deferred as out of scope (format isn't guaranteed consistent across categories, and this is meant to stay a thin, low-maintenance tool).
 
 ## Risk boundary (why this stays out of the flagged risk zone)
 
