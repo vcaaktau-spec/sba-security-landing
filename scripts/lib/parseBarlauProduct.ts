@@ -36,7 +36,10 @@ function slugFromUrl(sourceUrl: string): string {
 }
 
 function parsePriceText(text: string): number {
-  const digits = text.replace(/[^\d]/g, "")
+  // Drop a trailing ,XX or .XX kopeck/cent group before stripping non-digits — tenge
+  // doesn't use fractional units in practice, so discarding (not preserving) is correct.
+  const withoutFraction = text.replace(/[.,]\d{2}(?!\d)/, "")
+  const digits = withoutFraction.replace(/[^\d]/g, "")
   const value = digits.length > 0 ? parseInt(digits, 10) : NaN
   if (!Number.isFinite(value) || value <= 0) {
     throw new Error(`Could not parse a valid price from text: "${text}"`)
@@ -45,7 +48,9 @@ function parsePriceText(text: string): number {
 }
 
 function guessCategory(breadcrumbs: string[]): { category: BarlauCategory; reviewNeeded: boolean } {
-  for (const crumb of breadcrumbs) {
+  // Most specific crumb first: a product's own leaf category should win over a generic
+  // ancestor category (e.g. "Оборудование" as root vs. "Видеонаблюдение" as leaf).
+  for (const crumb of [...breadcrumbs].reverse()) {
     for (const [pattern, category] of CATEGORY_KEYWORDS) {
       if (pattern.test(crumb)) {
         return { category, reviewNeeded: false }
