@@ -17,6 +17,7 @@ import { Services } from "../components/Services";
 import { SmoothScroll } from "../components/smooth-scroll";
 import { Statistics } from "../components/Statistics";
 import { Testimonials } from "../components/Testimonials";
+import { TwoPathsSection } from "../components/TwoPathsSection";
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -58,15 +59,21 @@ export const Home = () => {
           <Navbar />
 
           {/* Hero — no fade, instant */}
-          <Hero onOpenCalc={() => setIsCalcOpen(true)} onOpenCatalog={() => setIsCatalogOpen(true)} />
+          <Hero onOpenCalc={() => setIsCalcOpen(true)} />
 
-          <FadeSection><Statistics /></FadeSection>
-          <SectionAccent side="right" />
+          {/* Порядок блоков по concept 2026 (docs/CONCEPT-2026.md, раздел 2):
+              Hero → боли → плюсы → два входа в расчёт → остальное. */}
           <FadeSection><PainSection /></FadeSection>
+          <SectionAccent side="left" />
+          <FadeSection><Features /></FadeSection>
+          <SectionAccent side="right" />
+          <FadeSection>
+            <TwoPathsSection onOpenCatalog={() => setIsCatalogOpen(true)} onOpenCalc={() => setIsCalcOpen(true)} />
+          </FadeSection>
+          <FadeSection><Statistics /></FadeSection>
           <SectionAccent side="left" />
           <FadeSection><HowItWorks /></FadeSection>
           <SectionAccent side="right" />
-          <FadeSection><Features /></FadeSection>
           <FadeSection><Services /></FadeSection>
           <SectionAccent side="left" />
           <FadeSection><Projects /></FadeSection>

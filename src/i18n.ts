@@ -397,6 +397,29 @@ const resources = {
         read_news: "читать новость",
         real_cases: "Реальные случаи из СНГ",
         footer_msg: "Профессиональная система безопасности — это инвестиция, которая окупается в первый же инцидент."
+      },
+      twoPaths: {
+        eyebrow: "Два пути расчёта",
+        title1: "Как хотите",
+        title2: "рассчитать систему?",
+        subtitle: "Выберите то, что подходит именно вам — оба варианта бесплатны и ни к чему не обязывают.",
+        divider: "ИЛИ",
+        path1_tag: "PROTOCOL_01",
+        path1_badge: "Рекомендуем",
+        path1_title: "Подобрать оборудование",
+        path1_desc: "Смотрите реальные камеры, регистраторы и комплекты с ценами — собирайте систему из того, что действительно будет стоять у вас.",
+        path1_f1: "Актуальные цены на оборудование",
+        path1_f2: "Характеристики и совместимость",
+        path1_f3: "Готовые комплекты под тип объекта",
+        path1_btn: "Смотреть каталог",
+        path2_tag: "PROTOCOL_02",
+        path2_title: "Быстро прикинуть монтаж",
+        path2_desc: "Ответьте на несколько вопросов о вашем объекте — получите примерную стоимость работ за пару минут.",
+        path2_f1: "2 минуты, без регистрации",
+        path2_f2: "Учитывает кабель и сложность монтажа",
+        path2_f3: "Смета — на WhatsApp и на скачивание",
+        path2_btn: "Рассчитать монтаж",
+        footer_note: "В обоих случаях точная стоимость фиксируется после бесплатного выезда специалиста."
       }
     }
   },
@@ -795,6 +818,29 @@ const resources = {
         read_news: "жаңалықты оқу",
         real_cases: "ТМД елдеріндегі нақты оқиғалар",
         footer_msg: "Кәсіби қауіпсіздік жүйесі — бұл алғашқы оқиғада-ақ өзін ақтайтын инвестиция."
+      },
+      twoPaths: {
+        eyebrow: "Есептеудің екі жолы",
+        title1: "Жүйені қалай",
+        title2: "есептегіңіз келеді?",
+        subtitle: "Өзіңізге қолайлысын таңдаңыз — екі нұсқа да тегін және еш нәрсеге міндеттемейді.",
+        divider: "НЕМЕСЕ",
+        path1_tag: "ПРОТОКОЛ_01",
+        path1_badge: "Ұсынамыз",
+        path1_title: "Жабдықты таңдау",
+        path1_desc: "Нақты камералар, тіркеушілер мен жиынтықтарды бағаларымен қараңыз — нақты тұратын жабдықтан жүйе жинаңыз.",
+        path1_f1: "Жабдыққа өзекті бағалар",
+        path1_f2: "Сипаттамалары мен үйлесімділігі",
+        path1_f3: "Нысан түріне дайын жиынтықтар",
+        path1_btn: "Каталогты қарау",
+        path2_tag: "ПРОТОКОЛ_02",
+        path2_title: "Монтажды жылдам есептеу",
+        path2_desc: "Нысаныңыз туралы бірнеше сұраққа жауап беріңіз — бірнеше минутта жұмыстың шамамен құнын алыңыз.",
+        path2_f1: "2 минут, тіркеусіз",
+        path2_f2: "Кабель мен монтаж күрделілігін ескереді",
+        path2_f3: "Смета — WhatsApp-қа және жүктеп алуға",
+        path2_btn: "Монтажды есептеу",
+        footer_note: "Екі жағдайда да нақты құн маманның тегін шығуынан кейін бекітіледі."
       }
     }
   },
@@ -1193,6 +1239,29 @@ const resources = {
         read_news: "read news",
         real_cases: "Real cases from the CIS",
         footer_msg: "A professional security system is an investment that pays off in the very first incident."
+      },
+      twoPaths: {
+        eyebrow: "Two Ways to Calculate",
+        title1: "How would you like",
+        title2: "to plan your system?",
+        subtitle: "Pick whichever suits you — both are free and non-binding.",
+        divider: "OR",
+        path1_tag: "PROTOCOL_01",
+        path1_badge: "Recommended",
+        path1_title: "Choose your equipment",
+        path1_desc: "Browse real cameras, recorders, and kits with prices — build a system from what will actually be installed.",
+        path1_f1: "Up-to-date equipment prices",
+        path1_f2: "Specs and compatibility",
+        path1_f3: "Ready-made kits by facility type",
+        path1_btn: "Browse the catalog",
+        path2_tag: "PROTOCOL_02",
+        path2_title: "Get a quick install estimate",
+        path2_desc: "Answer a few questions about your site — get an approximate installation cost in a couple of minutes.",
+        path2_f1: "2 minutes, no sign-up",
+        path2_f2: "Accounts for cable & install complexity",
+        path2_f3: "Estimate — via WhatsApp or download",
+        path2_btn: "Calculate installation",
+        footer_note: "Either way, the exact cost is confirmed after a free on-site visit."
       }
     }
   }
