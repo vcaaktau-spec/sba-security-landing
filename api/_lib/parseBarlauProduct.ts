@@ -19,6 +19,16 @@ function normalizeWhitespace(text: string): string {
   return text.replace(/\s+/g, " ").trim()
 }
 
+// Изредка на самом barlau.kz в поле характеристики попадает внутренний GUID
+// элемента Bitrix вместо значения (наблюдалось на "Вес единицы кг." одной
+// карточки) — не наша ошибка парсинга, а мусор в источнике. Отбрасываем
+// значение целиком, а не показываем его как реальную характеристику.
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function isLikelyGarbageValue(value: string): boolean {
+  return UUID_PATTERN.test(value)
+}
+
 function parsePriceText(text: string): number {
   const digits = text.replace(/[^\d]/g, "")
   const value = digits.length > 0 ? parseInt(digits, 10) : NaN
@@ -59,7 +69,7 @@ export function parseBarlauProductPage(html: string, sourceUrl: string): ParsedB
   const specs: Record<string, string> = {}
   if (propNames.length === propValues.length) {
     propNames.forEach((propName, i) => {
-      if (propName) specs[propName] = propValues[i]
+      if (propName && !isLikelyGarbageValue(propValues[i])) specs[propName] = propValues[i]
     })
   }
 

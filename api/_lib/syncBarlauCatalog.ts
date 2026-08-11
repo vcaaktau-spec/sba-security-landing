@@ -1,10 +1,9 @@
 import { parseBarlauProductPage, extractCategoryProductLinks, extractMaxPageNumber } from "./parseBarlauProduct.js"
 
 // Регулярное (см. api/cron/sync-catalog.ts) наполнение каталога `products` из
-// категорий IP-камер HiWatch/Hikvision на barlau.kz. Специально узкий охват —
-// только категории камер, не весь сайт, и с ограничениями по объёму (см.
-// MAX_PAGES_PER_CATEGORY/TIME_BUDGET_MS ниже) — см. docs/superpowers/specs/
-// 2026-08-11-barlau-catalog-sync-design.md для обоснования.
+// категорий IP-камер HiWatch/Hikvision + регистраторов и сетевого оборудования
+// на barlau.kz. Узкий, вручную составленный список категорий (не весь сайт),
+// с ограничениями по объёму (см. MAX_PAGES_PER_CATEGORY/TIME_BUDGET_MS ниже).
 //
 // Фото товара НЕ берётся с barlau.kz (тот же принцип, что и в
 // scripts/scrape-barlau.ts) — imageUrl всегда null. Автоматический поиск
@@ -18,24 +17,32 @@ const USER_AGENT =
 const BARLAU_ORIGIN = "https://barlau.kz"
 const MAX_PAGES_PER_CATEGORY = 2
 const PRODUCT_FETCH_CONCURRENCY = 4
-const TIME_BUDGET_MS = 4 * 60 * 1000
+const TIME_BUDGET_MS = 4.5 * 60 * 1000
 
-// Только категории IP-камер (не NVR/видеорегистраторы, не TVI, не Wi-Fi,
-// не видео-конференц-связь) — обнаружено вручную через хабы
-// /catalog/ip_videonablyudenie_hiwatch/ и /catalog/videonablyudenie_hikvision/.
-const CATEGORY_SLUGS = [
-  "ip_kupolnye_videokamery", // HiWatch, купольные
-  "ip_kubicheskie_videokamery", // HiWatch, кубические
-  "ip_tsilindricheskie_videokamery", // HiWatch, цилиндрические
-  "ip_ptz_pozitsionnye_videokamery", // HiWatch, PTZ
-  "ip_kamery_avtonomnye", // Hikvision, автономные
-  "ip_kamery_panoramnye", // Hikvision, панорамные
-  "ip_kamery_seriya_1", // Hikvision, серия 1
-  "ip_kamery_seriya_2", // Hikvision, серия 2
-  "ip_kamery_teplovizionnye", // Hikvision, тепловизионные
-  "ip_pt_kamery", // Hikvision, PT
-  "ip_ptz_kamery_pozitsionnye", // Hikvision, PTZ
-]
+// Значение — категория в enum `products.category` (cctv | network).
+// Обнаружено вручную через хабы /catalog/ip_videonablyudenie_hiwatch/ и
+// /catalog/videonablyudenie_hikvision/, плюс корневой /catalog/ для сетевых
+// категорий.
+const CATEGORIES: Record<string, "cctv" | "network"> = {
+  ip_kupolnye_videokamery: "cctv", // HiWatch, купольные камеры
+  ip_kubicheskie_videokamery: "cctv", // HiWatch, кубические камеры
+  ip_tsilindricheskie_videokamery: "cctv", // HiWatch, цилиндрические камеры
+  ip_ptz_pozitsionnye_videokamery: "cctv", // HiWatch, PTZ камеры
+  ip_kamery_avtonomnye: "cctv", // Hikvision, автономные камеры
+  ip_kamery_panoramnye: "cctv", // Hikvision, панорамные камеры
+  ip_kamery_seriya_1: "cctv", // Hikvision, камеры серия 1
+  ip_kamery_seriya_2: "cctv", // Hikvision, камеры серия 2
+  ip_kamery_teplovizionnye: "cctv", // Hikvision, тепловизионные камеры
+  ip_pt_kamery: "cctv", // Hikvision, PT камеры
+  ip_ptz_kamery_pozitsionnye: "cctv", // Hikvision, PTZ камеры
+  ip_zapisyvayushchie_ustroystva: "cctv", // HiWatch, регистраторы (NVR)
+  ip_videoregistratory: "cctv", // Hikvision, регистраторы (NVR)
+  wifi_routery: "network", // WiFi роутеры
+  wifi_tochki_dostupa: "network", // WiFi точки доступа
+  wifi_radiomosty_i_tochki_dostupa: "network", // WiFi радиомосты
+  poe_kommutatory: "network", // PoE коммутаторы
+  kommutatory: "network", // Коммутаторы
+}
 
 interface SyncResult {
   categoriesScanned: number
@@ -109,26 +116,28 @@ export async function syncBarlauCatalog(): Promise<SyncResult> {
     errors: [],
   }
 
-  const allProductUrls = new Set<string>()
+  const urlCategory = new Map<string, "cctv" | "network">()
 
-  for (const slug of CATEGORY_SLUGS) {
+  for (const [slug, category] of Object.entries(CATEGORIES)) {
     if (Date.now() > deadline) {
       result.stoppedEarly = true
       break
     }
     try {
       const urls = await discoverProductUrls(slug, deadline)
-      urls.forEach((url) => allProductUrls.add(url))
+      urls.forEach((url) => {
+        if (!urlCategory.has(url)) urlCategory.set(url, category)
+      })
       result.categoriesScanned++
     } catch (err) {
       result.errors.push(`category ${slug}: ${(err as Error).message}`)
     }
   }
 
-  result.productUrlsDiscovered = allProductUrls.size
+  result.productUrlsDiscovered = urlCategory.size
   let sortOrder = 0
 
-  await mapWithConcurrency([...allProductUrls], PRODUCT_FETCH_CONCURRENCY, async (url) => {
+  await mapWithConcurrency([...urlCategory.entries()], PRODUCT_FETCH_CONCURRENCY, async ([url, category]) => {
     if (Date.now() > deadline) {
       result.stoppedEarly = true
       return
@@ -142,7 +151,7 @@ export async function syncBarlauCatalog(): Promise<SyncResult> {
         .insert(products)
         .values({
           id,
-          category: "cctv",
+          category,
           environment: "universal",
           name: parsed.name,
           brand: parsed.brand,
