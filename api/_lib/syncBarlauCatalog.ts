@@ -16,8 +16,25 @@ const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
 const BARLAU_ORIGIN = "https://barlau.kz"
 const MAX_PAGES_PER_CATEGORY = 2
-const PRODUCT_FETCH_CONCURRENCY = 4
+const PRODUCT_FETCH_CONCURRENCY = 3
 const TIME_BUDGET_MS = 4.5 * 60 * 1000
+
+// Расширение списка категорий (11 → 18) на прошлом прогоне вызвало массовые
+// HTTP 503 от barlau.kz начиная примерно с 400-й последовательной загрузки —
+// похоже на временный троттлинг, не постоянную блокировку (обычный запрос
+// сразу после прогона прошёл штатно). Общий пейсер держит частоту запросов
+// по всем воркерам сразу низкой вне зависимости от конкурентности, плюс один
+// повтор с паузой специально для 503.
+const MIN_REQUEST_INTERVAL_MS = 250
+let nextAllowedRequestTime = 0
+
+async function paced<T>(fn: () => Promise<T>): Promise<T> {
+  const now = Date.now()
+  const waitMs = Math.max(0, nextAllowedRequestTime - now)
+  nextAllowedRequestTime = Math.max(now, nextAllowedRequestTime) + MIN_REQUEST_INTERVAL_MS
+  if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs))
+  return fn()
+}
 
 // Значение — категория в enum `products.category` (cctv | network).
 // Обнаружено вручную через хабы /catalog/ip_videonablyudenie_hiwatch/ и
@@ -53,12 +70,18 @@ interface SyncResult {
   errors: string[]
 }
 
-async function fetchHtml(url: string): Promise<string> {
-  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} for ${url}`)
-  }
-  return response.text()
+async function fetchHtml(url: string, attempt = 1): Promise<string> {
+  return paced(async () => {
+    const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
+    if (response.status === 503 && attempt < 3) {
+      await new Promise((resolve) => setTimeout(resolve, 1500 * attempt))
+      return fetchHtml(url, attempt + 1)
+    }
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} for ${url}`)
+    }
+    return response.text()
+  })
 }
 
 async function discoverProductUrls(slug: string, deadline: number): Promise<string[]> {
