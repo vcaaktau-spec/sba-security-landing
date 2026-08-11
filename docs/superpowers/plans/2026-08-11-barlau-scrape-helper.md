@@ -399,8 +399,10 @@ module.exports = {
 
 - [ ] **Step 7: Lint**
 
-Run: `pnpm lint`
-Expected: exits 0.
+The repo's full `pnpm lint` already fails on `main` before this task (33 pre-existing errors in `src/components/Calculator.tsx`, `SbaPlanner.tsx`, `Dashboard.tsx` — unrelated files, not touched by this task), so `pnpm lint` exiting 0 isn't a usable bar here. Scope the check to only the new files:
+
+Run: `pnpm exec eslint scripts/lib/parseBarlauProduct.ts scripts/scrape-barlau.ts`
+Expected: exits 0, no errors or warnings printed for these two files.
 
 - [ ] **Step 8: Commit**
 
