@@ -1,8 +1,8 @@
-export default async function handler(req: Request) {
-  if (req.method !== 'POST') {
-    return new Response('Method Not Allowed', { status: 405 });
-  }
-
+// Именованный экспорт по методу — см. комментарий в api/products.ts:
+// `export default handler(req: Request)` заставляет Vercel ждать res.end()
+// и игнорировать возвращённый Response, запрос зависает до тайм-аута.
+// Это напрямую ломало отправку форм (заявка на расчёт, отзыв) на сайте.
+export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     

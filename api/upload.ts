@@ -3,9 +3,10 @@ import { db } from '../src/db/index.js';
 import { documents } from '../src/db/schema.js';
 
 
-export default async function handler(req: Request) {
-  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
-
+// Именованный экспорт по методу — см. комментарий в api/products.ts:
+// `export default handler(req: Request)` заставляет Vercel ждать res.end()
+// и игнорировать возвращённый Response, запрос зависает до тайм-аута.
+export async function POST(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const filename = searchParams.get('filename');

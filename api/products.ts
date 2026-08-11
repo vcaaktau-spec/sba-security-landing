@@ -16,11 +16,11 @@ import type { Product } from '../src/lib/catalog.js'
 // CATALOG_SEED никогда не срабатывает. Динамический import() внутри try
 // гарантирует, что даже сбой инициализации БД перехватывается и каталог
 // всё равно отдаётся (на встроенных данных).
-export default async function handler(req: Request) {
-  if (req.method !== 'GET') {
-    return new Response('Method Not Allowed', { status: 405 })
-  }
-
+// Именованный экспорт по методу (не `export default handler(req: Request)`) —
+// иначе Vercel трактует функцию как legacy-обработчик (req, res) и игнорирует
+// возвращённый Response, из-за чего запрос зависает до тайм-аута. Подтверждено
+// `vercel logs` в проде.
+export async function GET() {
   let items: Product[] = CATALOG_SEED
   let source: 'db' | 'seed' = 'seed'
 
