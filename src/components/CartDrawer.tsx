@@ -1,11 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ShoppingCart, Minus, Plus, Trash2, Loader2, CheckCircle2, ArrowRight, Loader } from "lucide-react"
 import { useCart } from "@/contexts/CartContext"
 import { computeEstimate } from "@/lib/estimate"
+import { renderQuotePdf } from "@/lib/pdf/renderQuotePdf"
+import { QuoteTemplate } from "@/components/pdf/QuoteTemplate"
 import type { Product } from "@/lib/catalog"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -27,6 +29,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
   const [productsError, setProductsError] = useState(false)
 
   const [showContactForm, setShowContactForm] = useState(false)
+  const [quoteMeta, setQuoteMeta] = useState<{ docNumber: string; date: string } | null>(null)
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -58,6 +61,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
   }, [isOpen])
 
   const estimate = products ? computeEstimate(items, products) : null
+  const quoteRef = useRef<HTMLDivElement>(null)
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.replace(/\D/g, "")
@@ -92,6 +96,21 @@ ${lines}
     formData.append("name", name)
     formData.append("company", "КОРЗИНА")
     formData.append("text", text)
+
+    // Скачивание КП — независимая от отправки в Telegram операция (чистый
+    // клиентский рендер), не должна блокировать или ломаться из-за сети.
+    // Если генерация PDF не удалась (например html2canvas споткнулся о
+    // редкий edge case рендера) — заявка в Telegram всё равно должна уйти.
+    // quoteMeta генерируется один раз при открытии формы (см. кнопку
+    // "Получить КП" ниже) — так номер документа в самом PDF и в имени файла
+    // всегда совпадают.
+    if (quoteRef.current && quoteMeta) {
+      try {
+        await renderQuotePdf(quoteRef.current, `KP-SBA-${quoteMeta.docNumber}.pdf`)
+      } catch (err) {
+        console.error("Не удалось сгенерировать PDF КП:", err)
+      }
+    }
 
     try {
       const res = await fetch("/api/telegram", { method: "POST", body: formData })
@@ -234,7 +253,13 @@ ${lines}
                       </p>
 
                       <button
-                        onClick={() => setShowContactForm(true)}
+                        onClick={() => {
+                          setQuoteMeta({
+                            docNumber: `${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`,
+                            date: new Date().toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }),
+                          })
+                          setShowContactForm(true)
+                        }}
                         className="group mt-4 w-full h-12 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all duration-300 shadow-md shadow-red-600/10"
                       >
                         Получить КП
@@ -246,7 +271,7 @@ ${lines}
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-7 h-full">
                   <p className="text-sm text-muted-foreground leading-relaxed px-4 py-3 rounded-lg bg-red-600/[0.06]">
-                    Оставьте контакты — пришлём точную смету и свяжемся для бесплатного выезда специалиста.
+                    Оставьте контакты — сразу скачаете КП в PDF, а мы свяжемся для бесплатного выезда специалиста.
                   </p>
 
                   <div className="relative group">
@@ -302,6 +327,15 @@ ${lines}
               )}
             </div>
           </motion.div>
+
+          {/* Печатная форма КП — вне видимой области, только для захвата
+              html2canvas в handleSubmit. display:none не годится: элемент
+              без layout-размеров нечего фотографировать. */}
+          {estimate && quoteMeta && (
+            <div style={{ position: "fixed", left: -9999, top: 0, pointerEvents: "none" }} aria-hidden="true">
+              <QuoteTemplate ref={quoteRef} estimate={estimate} name={name} phone={phone} docNumber={quoteMeta.docNumber} date={quoteMeta.date} />
+            </div>
+          )}
         </div>
       )}
     </AnimatePresence>,
