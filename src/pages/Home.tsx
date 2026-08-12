@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Calculator } from "../components/Calculator";
@@ -17,7 +16,6 @@ import { Services } from "../components/Services";
 import { SmoothScroll } from "../components/smooth-scroll";
 import { Statistics } from "../components/Statistics";
 import { Testimonials } from "../components/Testimonials";
-import { TwoPathsSection } from "../components/TwoPathsSection";
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -46,7 +44,6 @@ const SectionAccent = ({ side = "right" }: { side?: "left" | "right" }) => (
 
 export const Home = () => {
   const [isCalcOpen, setIsCalcOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = isCalcOpen ? "hidden" : "unset";
@@ -59,17 +56,16 @@ export const Home = () => {
           <Navbar />
 
           {/* Hero — no fade, instant */}
-          <Hero onOpenCalc={() => setIsCalcOpen(true)} />
+          <Hero />
 
           {/* Порядок блоков по concept 2026 (docs/CONCEPT-2026.md, раздел 2):
-              Hero → боли → плюсы → два входа в расчёт → остальное. */}
+              Hero → боли → плюсы → остальное. TwoPathsSection убрана — Hero
+              теперь сам ведёт прямо в каталог, отдельный "выбор пути" не
+              нужен (см. обсуждение редизайна Hero). */}
           <FadeSection><PainSection /></FadeSection>
           <SectionAccent side="left" />
           <FadeSection><Features /></FadeSection>
           <SectionAccent side="right" />
-          <FadeSection>
-            <TwoPathsSection onOpenCatalog={() => navigate("/katalog")} onOpenCalc={() => setIsCalcOpen(true)} />
-          </FadeSection>
           <FadeSection><Statistics /></FadeSection>
           <SectionAccent side="left" />
           <FadeSection><HowItWorks /></FadeSection>
