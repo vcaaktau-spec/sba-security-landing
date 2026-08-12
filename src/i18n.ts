@@ -79,13 +79,13 @@ const resources = {
         poe: "PoE Свитчи"
       },
       hero: {
-        subtitle: "Проектируем и устанавливаем премиальные системы видеонаблюдения для домов, бизнеса и складов.",
+        subtitle: "Премиальное видеонаблюдение под ключ: проектируем, устанавливаем и даём гарантию — для дома, бизнеса и склада.",
         btn: "Подобрать оборудование",
-        titleLine1: "Охрана",
-        titleLine2: "каждого",
-        titleLine3: "объекта.",
+        btnSecondary: "Оставить заявку",
+        titleLine1: "Защита.",
+        titleLine2: "Контроль.",
+        titleLine3: "Уверенность.",
         locationLabel: "Актау · с 2016 года",
-        liveStat: "Объектов под защитой · 300+",
       },
       stats: {
         eyebrow: "В цифрах",
@@ -487,13 +487,13 @@ const resources = {
         poe: "PoE Коммутаторлар"
       },
       hero: {
-        subtitle: "Үйлерге, бизнеске және қоймаларға арналған премиум бейнебақылау жүйелерін жобалаймыз және орнатамыз.",
+        subtitle: "Премиум бейнебақылауды кілтке дейін орнатамыз: жобалаймыз, монтаждаймыз және кепілдік береміз — үйге, бизнеске және қоймаға.",
         btn: "Жабдықты таңдау",
-        titleLine1: "Әрбір",
-        titleLine2: "нысанды",
-        titleLine3: "қорғау.",
+        btnSecondary: "Өтінім қалдыру",
+        titleLine1: "Қорғау.",
+        titleLine2: "Бақылау.",
+        titleLine3: "Сенімділік.",
         locationLabel: "Ақтау · 2016 жылдан",
-        liveStat: "Қорғаудағы нысандар · 300+",
       },
       stats: {
         eyebrow: "Сандармен",
@@ -895,13 +895,13 @@ const resources = {
         poe: "PoE Switches"
       },
       hero: {
-        subtitle: "We design and install premium video surveillance systems for homes, businesses, and warehouses.",
+        subtitle: "Premium video surveillance, turnkey: we design, install, and warranty it — for homes, businesses, and warehouses.",
         btn: "Browse equipment",
-        titleLine1: "Guarding",
-        titleLine2: "every",
-        titleLine3: "facility.",
+        btnSecondary: "Request a quote",
+        titleLine1: "Protection.",
+        titleLine2: "Control.",
+        titleLine3: "Confidence.",
         locationLabel: "Aktau · since 2016",
-        liveStat: "Facilities protected · 300+",
       },
       stats: {
         eyebrow: "By the numbers",
