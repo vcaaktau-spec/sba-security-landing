@@ -1,17 +1,15 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { Shield, Network, Laptop, FileText, Check } from "lucide-react"
-import { motion, useInView, AnimatePresence } from "framer-motion"
+import { Shield, Network, Laptop, FileText } from "lucide-react"
+import { motion, useInView, useScroll, AnimatePresence } from "framer-motion"
 
-const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const E = [0.22, 1, 0.36, 1] as const
+const SERIF = "'Source Serif 4', serif"
 
 interface Service {
-  id: string
   Icon: React.ElementType
-  accentColor: string
-  glowColor: string
   title: string
   subtitle: string
   description: string
@@ -28,47 +26,39 @@ function ServiceBlock({
   setActive: (idx: number) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  // Trigger active state when block is near the vertical center
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" })
 
   useEffect(() => {
-    if (inView) {
-      setActive(index)
-    }
+    if (inView) setActive(index)
   }, [inView, index, setActive])
 
   return (
-    <div ref={ref} className="relative py-16 sm:py-24 first:pt-0 last:pb-0">
-      {/* Mobile Title (hidden on desktop where sticky side handles it) */}
-      <div className="lg:hidden mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-sm font-bold tracking-widest text-slate-400">
-            {service.id}
-          </span>
-          <div className={`p-2.5 rounded-xl border ${service.accentColor}`}>
-            <service.Icon size={20} />
-          </div>
+    <div ref={ref} className="py-14 sm:py-20 first:pt-0 last:pb-0">
+      {/* Мобильная шапка — на десктопе её роль играет липкая панель слева */}
+      <div className="lg:hidden mb-6">
+        <div className="flex items-center gap-2.5 mb-3">
+          <service.Icon size={15} className="text-red-600/70 dark:text-red-500/70 shrink-0" />
+          <span className="text-[12px] tracking-wide text-muted-foreground">{service.subtitle}</span>
         </div>
-        <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
+        <h3
+          className="font-semibold text-foreground leading-tight"
+          style={{ fontFamily: SERIF, fontSize: "clamp(1.4rem, 1.8vw, 1.75rem)" }}
+        >
           {service.title}
         </h3>
       </div>
 
-      <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+      <p className="text-[15px] leading-relaxed text-muted-foreground mb-8 max-w-xl">
         {service.description}
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
         {service.features.map((feat, fi) => (
-          <div
-            key={fi}
-            className="flex items-start gap-3 p-4 rounded-xl border border-slate-200/60 dark:border-white/[0.06] bg-white/40 dark:bg-white/[0.01] hover:bg-white/80 dark:hover:bg-white/[0.03] transition-colors"
-          >
-            <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center">
-              <Check size={10} strokeWidth={3} className="text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <span className="text-[14px] text-slate-700 dark:text-slate-300 font-medium">
+          <div key={fi} className="group flex items-start gap-2.5">
+            <span className="mt-[9px] w-1 h-1 rounded-full bg-red-600/50 dark:bg-red-500/50 shrink-0" />
+            <span className="relative text-[14px] text-foreground/80 leading-snug">
               {feat}
+              <span className="absolute left-0 -bottom-0.5 h-px w-full bg-current scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
             </span>
           </div>
         ))}
@@ -77,46 +67,49 @@ function ServiceBlock({
   )
 }
 
+// Второй заход. Первый уже был структурно неплохим — липкая деталь-панель
+// слева и скроллящийся контент справа, тот же принцип, что мы позже
+// повторили в Features. Но исполнение несло весь набор шаблонных
+// приёмов: четыре разных цвета-акцента на категорию (красный/синий/
+// фиолетовый/жёлтый — ровно то, от чего мы ушли в PainSection), большой
+// mono-номер "01" рядом с иконкой в цветном квадрате, аморфное цветное
+// пятно-подсветка позади всего блока, и фичи в виде карточек с рамкой и
+// галочкой в кружке. Здесь: один акцент (красный) вместо четырёх,
+// иконка без рамки и квадрата, номер убран — категория и так узнаётся
+// по короткому подзаголовку (kicker), фичи — обычный список с точкой
+// вместо карточек. Направляющая линия между колонками стала настоящим
+// scroll-прогрессом (заливка растёт вместе со скроллом по всей секции),
+// а не декоративным градиентом.
 export const Services = () => {
   const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState(0)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: scrollAreaRef, offset: ["start center", "end center"] })
 
   const services: Service[] = [
     {
-      id: "01",
       Icon: Shield,
-      accentColor: "bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-500/20",
-      glowColor: "rgba(239, 68, 68, 0.15)",
       title: t("services.s1_title"),
       subtitle: t("services.s1_sub"),
       description: t("services.s1_desc"),
       features: [t("services.s1_f1"), t("services.s1_f2"), t("services.s1_f3"), t("services.s1_f4")],
     },
     {
-      id: "02",
       Icon: Network,
-      accentColor: "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-500/20",
-      glowColor: "rgba(59, 130, 246, 0.15)",
       title: t("services.s2_title"),
       subtitle: t("services.s2_sub"),
       description: t("services.s2_desc"),
       features: [t("services.s2_f1"), t("services.s2_f2"), t("services.s2_f3"), t("services.s2_f4")],
     },
     {
-      id: "03",
       Icon: Laptop,
-      accentColor: "bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-500/20",
-      glowColor: "rgba(139, 92, 246, 0.15)",
       title: t("services.s3_title"),
       subtitle: t("services.s3_sub"),
       description: t("services.s3_desc"),
       features: [t("services.s3_f1"), t("services.s3_f2"), t("services.s3_f3"), t("services.s3_f4")],
     },
     {
-      id: "04",
       Icon: FileText,
-      accentColor: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20",
-      glowColor: "rgba(245, 158, 11, 0.15)",
       title: t("services.s4_title"),
       subtitle: t("services.s4_sub"),
       description: t("services.s4_desc"),
@@ -128,65 +121,68 @@ export const Services = () => {
   const ActiveIcon = activeService.Icon
 
   return (
-    <section id="services" className="relative py-24 lg:py-40 border-b border-slate-200/60 dark:border-white/[0.06] bg-slate-50 dark:bg-[#06080c]">
-      <div className="absolute top-0 inset-x-0 section-divider" />
+    <section id="services" className="relative py-24 lg:py-36 border-b border-slate-200/60 dark:border-white/[0.06]">
+      <div className="mx-auto w-full max-w-[1300px] px-6 sm:px-10">
 
-      {/* Global Ambient Glow connected to active service */}
-      <motion.div
-        className="absolute top-1/2 left-0 w-full h-[800px] -translate-y-1/2 rounded-full blur-[120px] pointer-events-none opacity-40 dark:opacity-20 transition-colors duration-1000 ease-in-out"
-        style={{ background: `radial-gradient(ellipse at center, ${activeService.glowColor} 0%, transparent 60%)` }}
-      />
-
-      <div className="mx-auto w-full max-w-[1300px] px-6 lg:px-12 relative z-10">
-        
-        {/* Main Section Header */}
-        <div className="mb-20 max-w-2xl">
+        {/* Header */}
+        <div className="max-w-2xl mb-20">
           <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: E }}
+            className="flex items-center gap-3 mb-6"
+          >
+            <span className="w-6 h-px bg-red-600/70 shrink-0" />
+            <span className="text-[13px] tracking-wide text-muted-foreground">
+              {t("services.eyebrow", "Оперативный профиль")}
+            </span>
+          </motion.div>
+
+          <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6"
+            transition={{ duration: 0.7, delay: 0.08, ease: E }}
+            className="font-semibold leading-[1.15] text-foreground mb-5"
+            style={{ fontFamily: SERIF, fontSize: "clamp(1.85rem, 3.4vw, 2.75rem)", letterSpacing: "-0.01em" }}
           >
-            {t("services.eyebrow", "Оперативный профиль")}
-          </motion.div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05]" style={{ textWrap: "balance" } as React.CSSProperties}>
-            {t("services.title1")}{" "}
-            <span className="text-red-600 dark:text-red-500">
-              {t("services.title2")}
-            </span>
-          </h2>
+            {t("services.title1")}
+            <span className="text-red-600 dark:text-red-500">{t("services.title2")}</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.14, ease: E }}
+            className="text-[15px] leading-relaxed text-muted-foreground"
+          >
+            {t("services.subtitle")}
+          </motion.p>
         </div>
 
-        {/* Sticky Scroll Layout */}
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative">
-          
-          {/* Left: Sticky Display */}
-          <div className="hidden lg:block w-5/12 shrink-0">
-            <div className="sticky top-32 flex flex-col h-[70vh] justify-center">
+        <div className="lg:flex lg:gap-20 relative">
+
+          {/* Липкая панель слева — активная категория, кроссфейд при скролле */}
+          <div className="hidden lg:block w-[320px] shrink-0">
+            <div className="sticky top-32">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                  initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                  transition={{ duration: 0.5, ease }}
-                  className="flex flex-col"
+                  exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
+                  transition={{ duration: 0.45, ease: E }}
                 >
-                  <div className="flex items-center gap-6 mb-8">
-                    <span className="font-mono text-7xl font-black text-slate-200 dark:text-white/[0.04] select-none tracking-tighter">
-                      {activeService.id}
-                    </span>
-                    <div className={`p-4 rounded-2xl border ${activeService.accentColor}`}>
-                      <ActiveIcon size={32} />
-                    </div>
-                  </div>
-                  
-                  <div className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-4">
+                  <ActiveIcon size={20} className="text-red-600/80 dark:text-red-500/80 mb-5" />
+                  <span className="block text-[13px] tracking-wide text-muted-foreground mb-3">
                     {activeService.subtitle}
-                  </div>
-                  
-                  <h3 className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+                  </span>
+                  <h3
+                    className="font-semibold text-foreground leading-[1.15]"
+                    style={{ fontFamily: SERIF, fontSize: "clamp(1.75rem, 2.4vw, 2.25rem)" }}
+                  >
                     {activeService.title}
                   </h3>
                 </motion.div>
@@ -194,19 +190,15 @@ export const Services = () => {
             </div>
           </div>
 
-          {/* Right: Scrolling Content */}
-          <div className="w-full lg:w-7/12 flex flex-col">
-            {/* Guide line for desktop */}
-            <div className="hidden lg:block absolute left-[41.666%] top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-slate-200 dark:via-white/[0.06] to-transparent -translate-x-12" />
+          {/* Правая колонка со scroll-прогрессом на направляющей */}
+          <div ref={scrollAreaRef} className="relative flex-1">
+            <div className="hidden lg:block absolute -left-10 top-0 bottom-0 w-px bg-slate-200 dark:bg-white/[0.06]">
+              <motion.div style={{ scaleY: scrollYProgress }} className="absolute inset-0 bg-red-600 origin-top" />
+            </div>
 
-            <div className="pb-[20vh] lg:pb-[50vh]">
+            <div className="divide-y divide-slate-200/60 dark:divide-white/[0.06]">
               {services.map((service, i) => (
-                <ServiceBlock
-                  key={service.id}
-                  service={service}
-                  index={i}
-                  setActive={setActiveIndex}
-                />
+                <ServiceBlock key={i} service={service} index={i} setActive={setActiveIndex} />
               ))}
             </div>
           </div>
