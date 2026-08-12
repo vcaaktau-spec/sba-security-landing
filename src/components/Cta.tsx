@@ -97,10 +97,10 @@ export const Cta = () => {
   ]
 
   const metrics = [
-    { value: "5 000+", label: "Камер установлено" },
-    { value: "300+",   label: "Объектов под защитой" },
-    { value: "10+",    label: "Лет опыта" },
-    { value: "24/7",   label: "Поддержка клиентов" },
+    { value: "5 000+", label: t("stats.stat1") },
+    { value: "300+",   label: t("stats.stat2") },
+    { value: "10+",    label: t("stats.stat3") },
+    { value: "24/7",   label: t("stats.stat4") },
   ]
 
   return (
@@ -141,7 +141,7 @@ export const Cta = () => {
                 />
               </div>
               <span className="text-sm font-semibold text-foreground/80">
-                Отвечаем на заявки в течение <span className="text-red-400 font-bold">15 минут</span>
+                {t("cta.badge_before")}<span className="text-red-400 font-bold">{t("cta.badge_highlight")}</span>{t("cta.badge_after")}
               </span>
             </div>
           </motion.div>
@@ -154,9 +154,9 @@ export const Cta = () => {
               transition={{ duration: 0.9, ease, delay: 0.08 }}
               className="text-5xl sm:text-6xl lg:text-[5rem] font-black tracking-tight leading-[1.04] text-foreground mb-6"
             >
-              Начните прямо{" "}
+              {t("cta.title1")}
               <span className="relative">
-                <span className="text-red-500">сейчас.</span>
+                <span className="text-red-500">{t("cta.title2")}</span>
                 {/* Underline glow */}
                 <motion.div
                   className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/60 to-red-500/0"
