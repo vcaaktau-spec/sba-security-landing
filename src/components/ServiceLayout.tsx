@@ -1,11 +1,14 @@
 "use client"
 
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { ArrowLeft, Shield, Phone, MessageCircle } from "lucide-react"
+import { ArrowLeft, Shield, Phone, MessageCircle, ShoppingCart } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 import { Moon, Sun } from "lucide-react"
 import { SmoothScroll } from "./smooth-scroll"
 import { GlobalBackground } from "./GlobalBackground"
+import { CartDrawer } from "./CartDrawer"
+import { useCart } from "@/contexts/CartContext"
 
 interface ServiceLayoutProps {
   children: React.ReactNode
@@ -13,6 +16,8 @@ interface ServiceLayoutProps {
 
 export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
   const { theme, setTheme } = useTheme()
+  const { totalQty } = useCart()
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
     <SmoothScroll>
@@ -32,6 +37,18 @@ export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
             </Link>
 
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="relative w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                aria-label="Открыть корзину"
+              >
+                <ShoppingCart size={14} />
+                {totalQty > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center tabular-nums">
+                    {totalQty}
+                  </span>
+                )}
+              </button>
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -85,6 +102,8 @@ export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
         </footer>
 
       </div>
+
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </SmoothScroll>
   )
 }

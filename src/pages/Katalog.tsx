@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
-import { Layers, Loader2, PackageSearch, Search, X } from "lucide-react"
+import { Layers, Loader2, Minus, PackageSearch, Plus, Search, ShoppingCart, X } from "lucide-react"
 import { ServiceLayout } from "@/components/ServiceLayout"
 import { CATEGORY_LABELS, type Product, type ProductCategory } from "@/lib/catalog"
+import { useCart } from "@/contexts/CartContext"
 
 const PAGE_SIZE = 24
 const DEVICE_TYPE_SPEC_KEY = "Тип устройства"
@@ -45,6 +46,7 @@ function sortProducts(items: Product[], key: SortKey): Product[] {
 // фильтрам (кроме себя) — так пункты, которые дали бы 0 результатов, просто
 // не показываются, а не висят мёртвым грузом в списке.
 export const Katalog = () => {
+  const { getQty, addItem, setQty } = useCart()
   const [products, setProducts] = useState<Product[] | null>(null)
   const [error, setError] = useState(false)
 
@@ -337,12 +339,39 @@ export const Katalog = () => {
                   ))}
                 </ul>
 
-                <div className="pt-3 border-t border-gray-100 dark:border-[#1a1a1a] flex items-baseline justify-between">
+                <div className="pt-3 border-t border-gray-100 dark:border-[#1a1a1a] flex items-baseline justify-between mb-3">
                   <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Цена</span>
                   <span className="text-lg font-extrabold text-foreground">
                     {item.basePrice.toLocaleString("ru-RU")} <span className="text-red-600 dark:text-red-500 text-sm">₸</span>
                   </span>
                 </div>
+
+                {getQty(item.id) === 0 ? (
+                  <button
+                    onClick={() => addItem(item.id)}
+                    className="w-full h-10 flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] text-xs font-mono font-bold uppercase tracking-wide text-foreground hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors"
+                  >
+                    <ShoppingCart size={13} /> В корзину
+                  </button>
+                ) : (
+                  <div className="flex items-center justify-between h-10 rounded-xl border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/[0.06] px-1.5">
+                    <button
+                      onClick={() => setQty(item.id, getQty(item.id) - 1)}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-red-600 dark:text-red-400 hover:bg-white dark:hover:bg-white/[0.06] transition-colors"
+                      aria-label="Уменьшить количество"
+                    >
+                      <Minus size={13} />
+                    </button>
+                    <span className="text-sm font-bold tabular-nums text-red-600 dark:text-red-400">{getQty(item.id)} в корзине</span>
+                    <button
+                      onClick={() => addItem(item.id)}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-red-600 dark:text-red-400 hover:bg-white dark:hover:bg-white/[0.06] transition-colors"
+                      aria-label="Увеличить количество"
+                    >
+                      <Plus size={13} />
+                    </button>
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
