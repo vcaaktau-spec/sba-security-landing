@@ -29,24 +29,8 @@ export const Hero = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[88vh] flex items-center bg-background text-foreground border-b border-slate-200/60 dark:border-white/[0.06] overflow-hidden"
+      className="relative min-h-[88vh] flex items-center bg-background text-foreground border-b border-slate-200/60 dark:border-white/[0.06]"
     >
-      {/* Фоновая фотография — камерная стойка, тот же материал бренда, что
-          и в тексте, но на грани восприятия (5% на светлой теме). На тёмной
-          теме снимок светлый по тону, поэтому яркости 5% мало — добавлена
-          отдельная тёмная заливка поверх, иначе кадр читается как блёклое
-          бельмо на тёмном фоне. Низ размывается в bg-background градиентом,
-          чтобы фотография не обрывалась жёсткой границей. */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <img
-          src="/hero-bg.jpg"
-          alt=""
-          className="w-full h-full object-cover object-[78%_center] opacity-[0.05] dark:opacity-[0.04]"
-        />
-      </div>
-      <div className="absolute inset-0 hidden dark:block bg-background/55 pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-background pointer-events-none" aria-hidden="true" />
-
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 sm:px-10 py-28 lg:py-0">
         <div className="max-w-xl">
           <motion.div

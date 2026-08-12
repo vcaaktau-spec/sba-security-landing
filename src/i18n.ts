@@ -141,12 +141,14 @@ const resources = {
         eyebrow: "Преимущества",
         title1: "Почему выбирают ",
         title2: "именно нас",
+        subtitle: "Узнайте, почему нам доверяют безопасность самых сложных объектов в Актау.",
         f1_title: "Бескомпромиссная гарантия",
         f1_desc: "Предоставляем официальную гарантию на оборудование и монтаж. Мы уверены в каждом соединении и несем личную ответственность за стабильность системы.",
         f2_title: "Мировые бренды",
         f2_desc: "Никаких безымянных аналогов с маркетплейсов. Работаем исключительно с сертифицированным оборудованием от лидеров: Hikvision, Dahua, Ezviz.",
         f3_title: "Эстетика монтажа",
         f3_desc: "Устанавливаем камеры без строительной пыли и висящих проводов. Скрытая прокладка кабеля, идеальные стыки и бережное отношение к интерьеру.",
+        list_label: "Устанавливаем и обслуживаем",
         list: ["IP Видеонаблюдение", "СКУД", "Домофония", "Умный дом", "Охранные системы", "Сети", "Аналитика ИИ"]
       },
       services: {
@@ -549,12 +551,14 @@ const resources = {
         eyebrow: "Артықшылықтар",
         title1: "Неліктен бізді ",
         title2: "таңдайды",
+        subtitle: "Ақтаудағы ең күрделі нысандардың қауіпсіздігін неге бізге сенетінін біліңіз.",
         f1_title: "Ымырасыз кепілдік",
         f1_desc: "Жабдыққа және монтажға ресми кепілдік береміз. Біз әрбір қосылымға сенімдіміз және жүйенің тұрақтылығына жеке жауапкершілік аламыз.",
         f2_title: "Әлемдік брендтер",
         f2_desc: "Маркетплейстердегі белгісіз аналогтар жоқ. Біз тек нарық көшбасшыларының сертификатталған жабдықтарымен жұмыс істейміз: Hikvision, Dahua, Ezviz.",
         f3_title: "Монтаж эстетикасы",
         f3_desc: "Камераларды құрылыс шаңы мен салбыраған сымдарсыз орнатамыз. Кабельді жасырын тарту, мінсіз түйіспелер және интерьерге ұқыпты қарау.",
+        list_label: "Орнатамыз және қызмет көрсетеміз",
         list: ["IP Бейнебақылау", "БҚБЖ (СКУД)", "Домофония", "Ақылды үй", "Күзет жүйелері", "Желілер", "ЖИ аналитикасы"]
       },
       services: {
@@ -957,12 +961,14 @@ const resources = {
         eyebrow: "Advantages",
         title1: "Why choose ",
         title2: "us",
+        subtitle: "See why we're trusted with security for the most demanding facilities in Aktau.",
         f1_title: "Uncompromising Warranty",
         f1_desc: "We provide an official warranty for equipment and installation. We are confident in every connection and take personal responsibility for system stability.",
         f2_title: "Global Brands",
         f2_desc: "No nameless knockoffs. We work exclusively with certified equipment from market leaders: Hikvision, Dahua, Ezviz.",
         f3_title: "Aesthetic Installation",
         f3_desc: "We install cameras without construction dust or hanging wires. Hidden cable routing, perfect joints, and careful treatment of your interior.",
+        list_label: "We install and service",
         list: ["IP CCTV", "Access Control", "Intercoms", "Smart Home", "Security Systems", "Networks", "AI Analytics"]
       },
       services: {
