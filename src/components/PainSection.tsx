@@ -24,11 +24,19 @@ const categoryStyle: Record<Category, { badge: string; statColor: string; iconBg
   electrical: { badge: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400",   statColor: "text-amber-700 dark:text-amber-400",  iconBg: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400" },
 }
 
+// Ссылки проверены вручную (curl + WebFetch) 12 августа 2026 — прежние
+// (BBC/Zakon.kz/Tengrinews) все оказались битыми: BBC отдавал 404, оба
+// zakon.kz и tengrinews.kz технически отвечали 200, но редиректили на
+// совершенно не связанные статьи (переиспользованные числовые ID). Кейсы
+// 2 и 3 заменены на реальные истории, которые удалось подтвердить —
+// содержание case2/case3 в i18n.ts переписано под них, это уже не старые
+// "6000+ камер"/"кража в Алматы", а Hikvision-бэкдор BBC и кража на складе
+// КТЖ в Костанае.
 const incidentsMeta: IncidentMeta[] = [
-  { category: "fire",       Icon: Flame, newsSource: "BBC Русская служба", newsLink: "https://www.bbc.com/russian/news-43506603",                                                                                                               caseKey: "case1" },
-  { category: "cctv",       Icon: Eye,   newsSource: "Zakon.kz",           newsLink: "https://www.zakon.kz/sobytiya/6008892-bolee-6-tysyach-kamer-vzlomali-khakery-v-kazakhstane-kak-obezopasit-sebya.html",                                   caseKey: "case2" },
-  { category: "theft",      Icon: Lock,  newsSource: "Tengrinews.kz",      newsLink: "https://tengrinews.kz/crime/krupnuyu-kraju-so-sklada-raskryili-v-almatyi-508544/",                                                                        caseKey: "case3" },
-  { category: "electrical", Icon: Zap,   newsSource: "МЧС РК / Zakon.kz", newsLink: "https://www.zakon.kz/obshestvo/6011400-korotkoe-zamykanie-v-provodke-kak-izbezhat-pozhara-rekomendatsii-mchs.html",                                       caseKey: "case4" },
+  { category: "fire",       Icon: Flame, newsSource: "Lenta.ru",   newsLink: "https://lenta.ru/articles/2023/03/24/vishnya/",                                                                                    caseKey: "case1" },
+  { category: "cctv",       Icon: Eye,   newsSource: "BBC News",   newsLink: "https://www.bbc.com/news/technology-65975446",                                                                                     caseKey: "case2" },
+  { category: "theft",      Icon: Lock,  newsSource: "Caravan.kz", newsLink: "https://www.caravan.kz/crime/kak-sluchajnyj-kljuch-s-rynka-podoshel-k-skladu-ktzh-istorija-krazhi-9-millionov-tenge/",              caseKey: "case3" },
+  { category: "electrical", Icon: Zap,   newsSource: "Inform.kz",  newsLink: "https://www.inform.kz/ru/pozhari-v-kazahstane-ot-chelovecheskih-oshibok-k-tsifrovoy-zashite-4b0e65",                                caseKey: "case4" },
 ]
 
 export const PainSection = () => {
