@@ -1,132 +1,145 @@
 "use client"
 
-import React, { useRef, useEffect, useState } from "react"
-import CountUp from "react-countup"
+import { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { useInView } from "react-intersection-observer"
 import { Camera, ShieldCheck, Award, Headset } from "lucide-react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from "framer-motion"
 
-const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const E = [0.22, 1, 0.36, 1] as const
+const SERIF = "'Source Serif 4', serif"
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReduced(mq.matches)
+    const handler = () => setReduced(mq.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return reduced
+}
+
+const formatNumber = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+
+// Второй заход. Первый — 4 одинаковых карточки с рамкой, иконкой в
+// квадрате, градиентной подсветкой на hover и мигающей точкой в углу:
+// это и есть тот самый "hero-metric template" (крупное число + мелкий
+// лейбл + декоративный градиент), который теперь читается как шаблон, а
+// не деталь бренда. Здесь заголовок и цифры разнесены по горизонтали
+// (левая колонка — тезис, правая — доказательство), между цифрами тонкие
+// линии-разделители вместо рамок карточек, а счётчик больше не играет
+// фиксированную по времени анимацию при появлении — он привязан к
+// прогрессу скролла (scroll-scrub): число растёт по мере того, как
+// секция проезжает мимо, а не крутится сама по себе 2.2 секунды.
+function StatNumber({ progress, target }: { progress: MotionValue<number>; target: number }) {
+  const value = useTransform(progress, [0.05, 0.7], [0, target])
+  const reduced = usePrefersReducedMotion()
+  const [display, setDisplay] = useState(reduced ? target : 0)
+
+  useMotionValueEvent(value, "change", (latest) => {
+    if (!reduced) setDisplay(Math.round(latest))
+  })
+
+  useEffect(() => {
+    if (reduced) setDisplay(target)
+  }, [reduced, target])
+
+  return <>{formatNumber(display)}</>
+}
 
 export const Statistics = () => {
   const { t } = useTranslation()
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
-    check()
-    window.addEventListener("resize", check)
-    return () => window.removeEventListener("resize", check)
-  }, [])
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start 0.85", "start 0.3"] })
 
   const stats = [
-    { quantity: 5000, suffix: "+",  label: t("stats.stat1"), icon: Camera,    animated: true,  delay: 0.05 },
-    { quantity: 300,  suffix: "+",  label: t("stats.stat2"), icon: ShieldCheck,animated: true,  delay: 0.12 },
-    { quantity: 10,   suffix: "+",  label: t("stats.stat3"), icon: Award,      animated: false, delay: 0.18 },
-    { quantity: 24,   suffix: "/7", label: t("stats.stat4"), icon: Headset,    animated: false, delay: 0.24 },
+    { quantity: 5000, suffix: "+", label: t("stats.stat1"), Icon: Camera },
+    { quantity: 300, suffix: "+", label: t("stats.stat2"), Icon: ShieldCheck },
+    { quantity: 10, suffix: "+", label: t("stats.stat3"), Icon: Award },
+    { quantity: 24, suffix: "/7", label: t("stats.stat4"), Icon: Headset },
   ]
-
-  const { ref: inViewRef, inView } = useInView({ triggerOnce: true, threshold: 0.15 })
-  const containerRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] })
-  const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"])
 
   return (
     <section
       id="statistics"
-      ref={containerRef}
-      className="relative py-24 lg:py-32 overflow-hidden"
+      ref={sectionRef}
+      className="relative py-24 lg:py-36 border-b border-slate-200/60 dark:border-white/[0.06]"
     >
-      {/* Subtle top divider */}
-      <div className="absolute top-0 inset-x-0 section-divider" />
+      <div className="mx-auto w-full max-w-[1200px] px-6 sm:px-10">
+        <div className="lg:grid lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-16 items-center">
 
-      <motion.div
-        ref={inViewRef}
-        style={{ y: contentY }}
-        className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6"
-      >
-
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6"
-          >
-            {t("stats.eyebrow", "В цифрах")}
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] mb-5" style={{ textWrap: "balance" } as React.CSSProperties}
-          >
-            {t("stats.title1")}{" "}
-            <span className="text-red-500">{t("stats.title2")}</span>
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease }}
-            className="text-lg text-muted-foreground leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: t("stats.desc") }}
-          />
-        </div>
-
-        {/* Stats grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {stats.map((stat, i) => (
+          {/* Левая колонка — тезис */}
+          <div className="mb-14 lg:mb-0">
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 32 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.75, ease, delay: stat.delay }}
-              className="group relative bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.08] rounded-2xl p-6 flex flex-col gap-4 hover:border-slate-300 dark:hover:border-white/[0.15] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-400 overflow-hidden"
+              initial={{ opacity: 0, x: -8 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: E }}
+              className="flex items-center gap-3 mb-6"
             >
-              {/* Subtle gradient overlay on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-red-500/[0.03] to-transparent pointer-events-none" />
-
-              {/* Icon */}
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-400 bg-slate-50 dark:bg-white/5 border-slate-200/50 dark:border-white/10 group-hover:bg-red-500/10 group-hover:border-red-500/20">
-                <stat.icon size={18} className="text-slate-500 dark:text-muted-foreground group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-400" />
-              </div>
-
-              {/* Counter */}
-              <div className="flex items-baseline gap-0.5 font-black tracking-tight text-foreground leading-none tabular-nums">
-                <span className="text-[42px] sm:text-[48px]">
-                  {stat.animated ? (
-                    inView ? (
-                      <CountUp start={0} end={stat.quantity} duration={2.2} useEasing separator=" " />
-                    ) : <span>0</span>
-                  ) : stat.quantity}
-                </span>
-                <span className="text-[22px] text-red-500 ml-0.5">{stat.suffix}</span>
-              </div>
-
-              {/* Label */}
-              <p className="text-[11px] font-mono font-bold text-slate-500/85 dark:text-muted-foreground/60 uppercase tracking-[0.08em] leading-tight">
-                {stat.label}
-              </p>
-
-              {/* Live dot */}
-              <div className="absolute top-4 right-4">
-                <div className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-white/10 group-hover:bg-red-500 group-hover:shadow-[0_0_6px_rgba(239,68,68,0.6)] transition-all duration-400" />
-              </div>
+              <span className="w-6 h-px bg-red-600/70 shrink-0" />
+              <span className="text-[13px] tracking-wide text-muted-foreground">
+                {t("stats.eyebrow", "В цифрах")}
+              </span>
             </motion.div>
-          ))}
+
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.08, ease: E }}
+              className="font-semibold leading-[1.2] text-foreground mb-5"
+              style={{ fontFamily: SERIF, fontSize: "clamp(1.85rem, 2.6vw, 2.5rem)", letterSpacing: "-0.01em" }}
+            >
+              {t("stats.title1")}{" "}
+              <span className="text-red-600 dark:text-red-500">{t("stats.title2")}</span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.14, ease: E }}
+              className="text-[15px] leading-relaxed text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: t("stats.desc") }}
+            />
+          </div>
+
+          {/* Правая колонка — доказательство: полоса цифр с тонкими разделителями */}
+          <div className="grid grid-cols-2 divide-x divide-y sm:divide-y-0 divide-slate-200/60 dark:divide-white/[0.06] border-t border-b sm:border-t-0 sm:border-b-0 border-slate-200/60 dark:border-white/[0.06]">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, ease: E, delay: i * 0.08 }}
+                className="group py-8 px-5 sm:px-8 first:pl-0"
+              >
+                <div className="flex items-baseline gap-1 mb-3">
+                  <span
+                    className="font-semibold leading-none text-foreground tabular-nums transition-colors duration-300 group-hover:text-red-600 dark:group-hover:text-red-500"
+                    style={{ fontFamily: SERIF, fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}
+                  >
+                    <StatNumber progress={scrollYProgress} target={stat.quantity} />
+                  </span>
+                  <span className="text-lg text-red-600 dark:text-red-500 font-medium">{stat.suffix}</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <stat.Icon size={14} className="text-muted-foreground/50 shrink-0" />
+                  <span className="relative text-[13px] text-muted-foreground leading-tight">
+                    {stat.label}
+                    <span className="absolute left-0 -bottom-0.5 h-px w-full bg-current scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
-
-      </motion.div>
-
-      {/* Bottom divider */}
-      <div className="absolute bottom-0 inset-x-0 section-divider" />
+      </div>
     </section>
   )
 }

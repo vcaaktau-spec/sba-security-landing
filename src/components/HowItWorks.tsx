@@ -1,15 +1,14 @@
 "use client"
 
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { PhoneCall, ClipboardList, Truck, Settings } from "lucide-react"
 import { motion, useScroll, useInView } from "framer-motion"
 
-const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const E = [0.22, 1, 0.36, 1] as const
+const SERIF = "'Source Serif 4', serif"
 
 interface Step {
   step: string
-  Icon: React.ElementType
   title: string
   description: string
 }
@@ -19,55 +18,52 @@ function StepRow({ step }: { step: Step }) {
   const inView = useInView(ref, { once: true, margin: "-20%" })
 
   return (
-    <div ref={ref} className="relative pl-12 sm:pl-16 lg:pl-28 py-10 lg:py-16 group">
-      
-      {/* Node Indicator */}
-      <div className="absolute left-[-5px] top-12 lg:top-20 w-3 h-3 rounded-full bg-slate-100 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 z-10 transition-colors duration-500 group-hover:border-red-500" />
+    <div ref={ref} className="group relative pl-10 sm:pl-16 py-10 lg:py-14">
+      {/* Узел на треке */}
+      <div className="absolute left-[-4px] top-12 lg:top-14 w-[9px] h-[9px] rounded-full bg-background border-2 border-slate-300 dark:border-white/20 transition-all duration-400 group-hover:border-red-600 group-hover:shadow-[0_0_10px_rgba(220,38,38,0.35)] z-10" />
 
-      {/* Content Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-[120px_1fr] gap-6 lg:gap-12 items-start">
-        
-        {/* Large step number & Icon */}
-        <div className="flex items-center gap-6 lg:flex-col lg:items-start lg:gap-4">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.65, ease, delay: 0.1 }}
-            className="w-14 h-14 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/[0.06] flex items-center justify-center text-red-600 dark:text-red-400 shrink-0 shadow-sm"
-          >
-            <step.Icon size={24} />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, ease, delay: 0.2 }}
-            className="text-[3rem] lg:text-[4.5rem] font-black text-slate-200 dark:text-white/[0.04] tracking-tighter leading-none select-none tabular-nums"
-            aria-hidden
-          >
-            {step.step}
-          </motion.div>
-        </div>
+      {/* Фантомная цифра — водяной знак позади заголовка, а не в отдельной колонке */}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.9, ease: E }}
+        aria-hidden
+        className="pointer-events-none select-none absolute -top-3 sm:-top-5 left-6 sm:left-14 font-semibold text-foreground/[0.05] dark:text-white/[0.045] group-hover:text-red-600/[0.08] dark:group-hover:text-red-500/[0.09] transition-colors duration-500 tabular-nums"
+        style={{ fontFamily: SERIF, fontSize: "clamp(4.5rem, 9vw, 7.5rem)", lineHeight: 1 }}
+      >
+        {step.step}
+      </motion.span>
 
-        {/* Text */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease, delay: 0.2 }}
-          className="pt-2"
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7, ease: E, delay: 0.1 }}
+        className="relative max-w-xl"
+      >
+        <h3
+          className="font-semibold text-foreground mb-3 transition-transform duration-400 group-hover:translate-x-1"
+          style={{ fontFamily: SERIF, fontSize: "clamp(1.4rem, 1.8vw, 1.75rem)" }}
         >
-          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-snug">
-            {step.title}
-          </h3>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-            {step.description}
-          </p>
-        </motion.div>
-
-      </div>
+          {step.title}
+        </h3>
+        <p className="text-[15px] leading-relaxed text-muted-foreground">
+          {step.description}
+        </p>
+      </motion.div>
     </div>
   )
 }
 
+// Второй заход. Первый выглядел уже неплохо (реальная последовательность
+// шагов — единственное место на странице, где нумерация 01-02-03-04
+// оправдана содержанием), но нёс тот же шаблонный груз, что и остальные
+// секции до редизайна: пилюля-бейдж, иконка в скруглённом квадрате с
+// рамкой, отдельная колонка под цифру+иконку. Здесь: иконки убраны
+// совсем (пусть у секции будет свой почерк, не как в "Преимуществах"),
+// фантомная цифра — Source Serif 4, наложена водяным знаком за
+// заголовком вместо отдельной колонки, а вдоль трека вместе с уже
+// существующей заливкой прогресса добавлена бегущая точка — движется по
+// вертикали синхронно со скроллом, как индикатор чтения в лонгриде.
 export const HowItWorks = () => {
   const { t } = useTranslation()
   const headerRef = useRef<HTMLDivElement>(null)
@@ -80,73 +76,71 @@ export const HowItWorks = () => {
   })
 
   const steps: Step[] = [
-    { step: "01", Icon: PhoneCall,     title: t("how.s1_title"), description: t("how.s1_desc") },
-    { step: "02", Icon: ClipboardList, title: t("how.s2_title"), description: t("how.s2_desc") },
-    { step: "03", Icon: Truck,         title: t("how.s3_title"), description: t("how.s3_desc") },
-    { step: "04", Icon: Settings,      title: t("how.s4_title"), description: t("how.s4_desc") },
+    { step: "01", title: t("how.s1_title"), description: t("how.s1_desc") },
+    { step: "02", title: t("how.s2_title"), description: t("how.s2_desc") },
+    { step: "03", title: t("how.s3_title"), description: t("how.s3_desc") },
+    { step: "04", title: t("how.s4_title"), description: t("how.s4_desc") },
   ]
 
   return (
-    <section ref={sectionRef} id="howItWorks" className="relative py-24 lg:py-40 border-b border-slate-200/60 dark:border-white/[0.06] bg-white dark:bg-background">
-      <div className="absolute top-0 inset-x-0 section-divider" />
-
-      <div className="mx-auto w-full max-w-[1000px] px-6 lg:px-12">
+    <section ref={sectionRef} id="howItWorks" className="relative py-24 lg:py-36 border-b border-slate-200/60 dark:border-white/[0.06]">
+      <div className="mx-auto w-full max-w-[1000px] px-6 sm:px-10">
 
         {/* Header */}
-        <div ref={headerRef} className="flex flex-col mb-20 lg:mb-32">
+        <div ref={headerRef} className="flex flex-col mb-20 lg:mb-28">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6 self-start"
+            initial={{ opacity: 0, x: -8 }}
+            animate={headerInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, ease: E }}
+            className="flex items-center gap-3 mb-6"
           >
-            {t("how.eyebrow", "Этапы работы")}
+            <span className="w-6 h-px bg-red-600/70 shrink-0" />
+            <span className="text-[13px] tracking-wide text-muted-foreground">
+              {t("how.eyebrow", "Этапы работы")}
+            </span>
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.05] max-w-3xl" style={{ textWrap: "balance" } as React.CSSProperties}
+            transition={{ duration: 0.7, delay: 0.08, ease: E }}
+            className="font-semibold leading-[1.15] text-foreground max-w-2xl"
+            style={{ fontFamily: SERIF, fontSize: "clamp(1.85rem, 3.4vw, 2.75rem)", letterSpacing: "-0.01em" }}
           >
-            {t("how.title1")}{" "}
+            {t("how.title1")}
             <span className="text-red-600 dark:text-red-500">{t("how.title2")}</span>
           </motion.h2>
         </div>
 
-        {/* Timeline Area */}
+        {/* Timeline */}
         <div className="relative">
-          {/* Background Track */}
-          <div className="absolute top-8 bottom-8 left-0 w-px bg-slate-200 dark:bg-white/[0.06]" />
-          
-          {/* Scroll Animated Progress Line */}
-          <motion.div 
-            style={{ scaleY: scrollYProgress }}
-            className="absolute top-8 bottom-8 left-0 w-px bg-gradient-to-b from-red-500 via-rose-500 to-red-600 origin-top z-10"
-          />
+          <div className="absolute top-8 bottom-8 left-0 w-px">
+            <div className="absolute inset-0 bg-slate-200 dark:bg-white/[0.06]" />
+            <motion.div style={{ scaleY: scrollYProgress }} className="absolute inset-0 bg-red-600 origin-top" />
+            <motion.div
+              style={{ top: scrollYProgress }}
+              className="absolute -left-[3.5px] w-[8px] h-[8px] rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
+            />
+          </div>
 
-          {/* Steps */}
           <div className="flex flex-col">
             {steps.map((step) => (
-              <StepRow
-                key={step.step}
-                step={step}
-              />
+              <StepRow key={step.step} step={step} />
             ))}
           </div>
         </div>
 
         {/* Bottom note */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.6, ease }}
-          className="mt-16 pt-8 border-t border-slate-200/60 dark:border-white/[0.06] flex items-center gap-3 text-sm font-mono tracking-wide text-slate-500 dark:text-muted-foreground/50 uppercase"
+          transition={{ duration: 0.6, ease: E }}
+          className="mt-16 pt-8 border-t border-slate-200/60 dark:border-white/[0.06] text-[15px] text-muted-foreground"
+          style={{ fontFamily: SERIF, fontStyle: "italic" }}
         >
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
           {t("how.subtitle")}
-        </motion.div>
+        </motion.p>
 
       </div>
     </section>
