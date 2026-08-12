@@ -1,11 +1,12 @@
 "use client"
 
 import React from "react"
-import { AlertTriangle, ShieldCheck, ExternalLink, Flame, Eye, Lock, Zap } from "lucide-react"
+import { ExternalLink, Flame, Eye, Lock, Zap } from "lucide-react"
 import { motion } from "framer-motion"
 import { useTranslation } from "react-i18next"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const SERIF = "'Source Serif 4', serif"
 
 type Category = "fire" | "cctv" | "theft" | "electrical"
 
@@ -17,71 +18,67 @@ interface IncidentMeta {
   caseKey: string // e.g. "case1"
 }
 
-const categoryStyle: Record<Category, { badge: string; statColor: string; iconBg: string }> = {
-  fire:       { badge: "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400",        statColor: "text-red-600 dark:text-red-400",    iconBg: "bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400" },
-  cctv:       { badge: "bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 text-orange-700 dark:text-orange-400", statColor: "text-orange-600 dark:text-orange-400", iconBg: "bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400" },
-  theft:      { badge: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400", statColor: "text-amber-700 dark:text-amber-400", iconBg: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400" },
-  electrical: { badge: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400",   statColor: "text-amber-700 dark:text-amber-400",  iconBg: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400" },
-}
-
 // Ссылки проверены вручную (curl + WebFetch) 12 августа 2026 — прежние
 // (BBC/Zakon.kz/Tengrinews) все оказались битыми: BBC отдавал 404, оба
 // zakon.kz и tengrinews.kz технически отвечали 200, но редиректили на
 // совершенно не связанные статьи (переиспользованные числовые ID). Кейсы
 // 2 и 3 заменены на реальные истории, которые удалось подтвердить —
-// содержание case2/case3 в i18n.ts переписано под них, это уже не старые
-// "6000+ камер"/"кража в Алматы", а Hikvision-бэкдор BBC и кража на складе
-// КТЖ в Костанае.
+// содержание case2/case3 в i18n.ts переписано под них.
 const incidentsMeta: IncidentMeta[] = [
-  { category: "fire",       Icon: Flame, newsSource: "Lenta.ru",   newsLink: "https://lenta.ru/articles/2023/03/24/vishnya/",                                                                                    caseKey: "case1" },
-  { category: "cctv",       Icon: Eye,   newsSource: "BBC News",   newsLink: "https://www.bbc.com/news/technology-65975446",                                                                                     caseKey: "case2" },
-  { category: "theft",      Icon: Lock,  newsSource: "Caravan.kz", newsLink: "https://www.caravan.kz/crime/kak-sluchajnyj-kljuch-s-rynka-podoshel-k-skladu-ktzh-istorija-krazhi-9-millionov-tenge/",              caseKey: "case3" },
-  { category: "electrical", Icon: Zap,   newsSource: "Inform.kz",  newsLink: "https://www.inform.kz/ru/pozhari-v-kazahstane-ot-chelovecheskih-oshibok-k-tsifrovoy-zashite-4b0e65",                                caseKey: "case4" },
+  { category: "fire",       Icon: Flame, newsSource: "Lenta.ru",   newsLink: "https://lenta.ru/articles/2023/03/24/vishnya/",                                                                        caseKey: "case1" },
+  { category: "cctv",       Icon: Eye,   newsSource: "BBC News",   newsLink: "https://www.bbc.com/news/technology-65975446",                                                                         caseKey: "case2" },
+  { category: "theft",      Icon: Lock,  newsSource: "Caravan.kz", newsLink: "https://www.caravan.kz/crime/kak-sluchajnyj-kljuch-s-rynka-podoshel-k-skladu-ktzh-istorija-krazhi-9-millionov-tenge/",  caseKey: "case3" },
+  { category: "electrical", Icon: Zap,   newsSource: "Inform.kz",  newsLink: "https://www.inform.kz/ru/pozhari-v-kazahstane-ot-chelovecheskih-oshibok-k-tsifrovoy-zashite-4b0e65",                    caseKey: "case4" },
 ]
 
+// Второй заход, под язык Hero (см. Hero.tsx): раньше секция была ровно
+// тем самым "SaaS-дашбордом", от которого мы ушли в заголовке — пилюля-
+// бейдж с иконкой, чёрный жирный sans-заголовок, у каждой карточки своя
+// цветная категория (красный/оранжевый/жёлтый/янтарный), градиентная
+// полоска сверху, две цветные плашки-заливки "проблема/решение". Здесь
+// один акцент (красный) вместо четырёх, заголовки — Source Serif 4,
+// плашки-заливки заменены на тонкую левую линию (как в цитате), боковая
+// пилюля-подвал — на простую строку без рамки.
 export const PainSection = () => {
   const { t } = useTranslation()
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.06]">
+    <section className="relative py-24 lg:py-32 border-b border-slate-200/60 dark:border-white/[0.06]">
+      <div className="relative mx-auto max-w-[1200px] px-6 sm:px-10">
 
-      {/* Background glow */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-red-600/5 rounded-full blur-[140px]" />
-      </div>
-
-      <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
-
-        {/* ── SECTION HEADER ── */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        {/* ── SECTION HEADER — тот же приём, что и в Hero ── */}
+        <div className="max-w-2xl mb-16 lg:mb-20">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -8 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wider mb-6 animate-fade-in"
+            className="flex items-center gap-3 mb-6"
           >
-            <AlertTriangle size={12} className="animate-pulse" />
-            {t("pain.real_cases")}
+            <span className="w-6 h-px bg-red-600/70 shrink-0" />
+            <span className="text-[13px] tracking-wide text-muted-foreground">
+              {t("pain.real_cases")}
+            </span>
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.08, ease }}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-5" style={{ textWrap: "balance" } as React.CSSProperties}
+            transition={{ duration: 0.7, delay: 0.08, ease }}
+            className="font-semibold leading-[1.15] text-foreground mb-5"
+            style={{ fontFamily: SERIF, fontSize: "clamp(1.85rem, 3.4vw, 2.75rem)", letterSpacing: "-0.01em" }}
           >
             {t("pain.title1")}{" "}
             <span className="text-red-600 dark:text-red-500">{t("pain.title2")}</span>
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.15, ease }}
-            className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.15, ease }}
+            className="text-base leading-relaxed text-muted-foreground"
           >
             {t("pain.subtitle")}
           </motion.p>
@@ -90,7 +87,6 @@ export const PainSection = () => {
         {/* ── NEWS GRID ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           {incidentsMeta.map((meta, idx) => {
-            const style = categoryStyle[meta.category]
             const Icon = meta.Icon
             const k = meta.caseKey
 
@@ -110,84 +106,71 @@ export const PainSection = () => {
             return (
               <motion.article
                 key={idx}
-                initial={{ opacity: 0, y: 44 }}
+                initial={{ opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.75, delay: idx * 0.1, ease }}
-                className="news-card-hover group relative flex flex-col bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-2xl overflow-hidden transition-all duration-300 dark:hover:border-white/[0.12]"
+                transition={{ duration: 0.7, delay: idx * 0.08, ease }}
+                className="news-card-hover group relative flex flex-col bg-white dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] rounded-lg overflow-hidden transition-colors duration-300 dark:hover:border-white/[0.12]"
               >
-                {/* Top gradient accent line */}
-                <div className={`h-px w-full ${
-                  meta.category === "fire" ? "bg-gradient-to-r from-transparent via-red-500/40 to-transparent"
-                  : meta.category === "cctv" ? "bg-gradient-to-r from-transparent via-orange-500/40 to-transparent"
-                  : meta.category === "theft" ? "bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent"
-                  : "bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"
-                }`} />
-
                 <div className="flex flex-col gap-5 p-6 sm:p-7 flex-1">
 
-                  {/* Card header: category + date/location */}
-                  <div className="flex items-start justify-between gap-4 flex-wrap">
-                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold uppercase tracking-wider border ${style.badge}`}>
-                      <Icon size={11} />
+                  {/* Category + date/location */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="inline-flex items-center gap-2 text-[11px] tracking-wider uppercase text-muted-foreground/80">
+                      <Icon size={12} className="text-red-600/70 dark:text-red-500/70 shrink-0" />
                       {t(`pain.${k}_badge`)}
                     </div>
-                    <div className="text-right shrink-0">
-                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 leading-tight">{t(`pain.${k}_date`)}</div>
-                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 leading-tight">{t(`pain.${k}_loc`)}</div>
+                    <div className="text-right shrink-0 text-[11px] text-muted-foreground/70 leading-tight">
+                      <div>{t(`pain.${k}_date`)}</div>
+                      <div>{t(`pain.${k}_loc`)}</div>
                     </div>
                   </div>
 
                   {/* Impact metric */}
                   <div className="flex items-baseline gap-2.5">
-                    <span className={`text-[52px] sm:text-[60px] font-black tracking-tight leading-none tabular-nums ${style.statColor}`}>
+                    <span
+                      className="font-semibold leading-none text-red-600 dark:text-red-500"
+                      style={{ fontFamily: SERIF, fontSize: "clamp(2.25rem, 4vw, 3rem)" }}
+                    >
                       {t(`pain.${k}_stat`)}
                     </span>
-                    <span className="text-sm sm:text-base font-semibold text-slate-500 dark:text-slate-400 leading-tight">
+                    <span className="text-sm text-muted-foreground leading-tight">
                       {t(`pain.${k}_unit`)}
                     </span>
                   </div>
 
                   {/* Incident headline */}
-                  <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                  <h3 className="text-base sm:text-[17px] font-medium text-foreground leading-snug">
                     {t(`pain.${k}_title`)}
                   </h3>
 
-                  {/* Problem vs SBA comparison */}
-                  <div className="space-y-3 mt-auto">
-
-                    {/* What went wrong */}
-                    <div className="p-4 rounded-xl bg-red-50/70 dark:bg-red-950/20 border border-red-100 dark:border-red-950/30">
-                      <div className="flex items-center gap-2 mb-2.5">
-                        <AlertTriangle size={13} className="text-red-600 dark:text-red-400 shrink-0" />
-                        <span className="text-[10px] font-mono font-bold text-red-600 dark:text-red-400 uppercase tracking-widest">{t("pain.what_wrong")}</span>
-                      </div>
+                  {/* Problem vs SBA comparison — тонкая линия слева вместо цветной плашки */}
+                  <div className="space-y-5 mt-auto pt-1">
+                    <div className="border-l-2 border-red-500/30 pl-4">
+                      <span className="block text-[11px] tracking-widest uppercase text-red-600/80 dark:text-red-500/80 mb-2">
+                        {t("pain.what_wrong")}
+                      </span>
                       <ul className="space-y-1.5">
                         {problemPoints.map((point, pi) => (
-                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-slate-700 dark:text-slate-300 leading-snug">
-                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500/30 dark:bg-red-400/30 shrink-0" />
+                          <li key={pi} className="text-[13px] text-muted-foreground leading-snug">
                             {point}
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    {/* SBA solution */}
-                    <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-950/30">
-                      <div className="flex items-center gap-2 mb-2.5">
-                        <ShieldCheck size={13} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
-                        <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">{t("pain.sba_solution")}</span>
-                      </div>
+                    <div className="border-l-2 border-emerald-500/30 pl-4">
+                      <span className="block text-[11px] tracking-widest uppercase text-emerald-700/80 dark:text-emerald-400/80 mb-2">
+                        {t("pain.sba_solution")}
+                      </span>
                       <ul className="space-y-1.5">
                         {sbaPoints.map((point, pi) => (
-                          <li key={pi} className="flex items-start gap-2 text-[12px] sm:text-[13px] text-slate-700 dark:text-slate-300 leading-snug">
-                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/30 dark:bg-emerald-400/30 shrink-0" />
+                          <li key={pi} className="text-[13px] text-muted-foreground leading-snug">
                             {point}
                           </li>
                         ))}
                       </ul>
                     </div>
-
                   </div>
 
                   {/* News source link */}
@@ -195,12 +178,13 @@ export const PainSection = () => {
                     href={meta.newsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/link flex items-center gap-2.5 pt-4 border-t border-slate-150 dark:border-white/[0.06] text-[11px] font-mono text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
+                    className="group/link inline-flex items-center gap-2 pt-4 mt-1 border-t border-slate-150 dark:border-white/[0.06] text-[13px] text-muted-foreground/80 hover:text-foreground transition-colors duration-200 w-fit"
                   >
-                    <ExternalLink size={11} className="shrink-0 group-hover/link:text-red-500 dark:group-hover/link:text-red-400 transition-colors" />
-                    <span className="font-bold uppercase tracking-wider">{t("pain.source")}</span>
-                    <span>{meta.newsSource}</span>
-                    <span className="ml-auto text-slate-300 dark:text-slate-650">→ {t("pain.read_news")}</span>
+                    <span className="relative">
+                      {t("pain.source")} {meta.newsSource}
+                      <span className="absolute left-0 -bottom-0.5 h-px w-full bg-current scale-x-0 group-hover/link:scale-x-100 origin-left transition-transform duration-300" />
+                    </span>
+                    <ExternalLink size={12} className="shrink-0" />
                   </a>
                 </div>
               </motion.article>
@@ -208,19 +192,17 @@ export const PainSection = () => {
           })}
         </div>
 
-        {/* ── BOTTOM HOOK ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        {/* ── BOTTOM HOOK — простая строка вместо пилюли ── */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2, ease }}
-          className="mt-16 text-center"
+          transition={{ duration: 0.6, delay: 0.15, ease }}
+          className="mt-14 text-center text-[15px] text-muted-foreground"
+          style={{ fontFamily: SERIF, fontStyle: "italic" }}
         >
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-slate-200 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02] text-sm text-slate-600 dark:text-slate-400 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
-            <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
-            {t("pain.footer_msg")}
-          </div>
-        </motion.div>
+          {t("pain.footer_msg")}
+        </motion.p>
       </div>
     </section>
   )
