@@ -63,6 +63,9 @@ export const Testimonials = () => {
         
         {/* HEADER */}
         <div className="w-full flex flex-col items-center text-center max-w-4xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6">
+            {t("testimonials.eyebrow", "Отзывы клиентов")}
+          </div>
           <h2 className="text-[34px] sm:text-[46px] lg:text-[56px] font-black tracking-tighter leading-[1.1] mb-6 flex flex-col items-center justify-center w-full">
             <span className="block w-full text-foreground">{t("testimonials.title1", "Что говорят")}</span>
             <span className="block text-red-600 mt-2">{t("testimonials.title2", "наши клиенты")}</span>
@@ -97,7 +100,7 @@ export const Testimonials = () => {
                 }}
                 exit={{ opacity: 0, x: -150, rotate: -10 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute w-full bg-card/60 backdrop-blur-xl border border-border/40 rounded-[28px] p-8 sm:p-10 shadow-2xl flex flex-col justify-between h-[300px]"
+                className="absolute w-full bg-white dark:bg-white/[0.02] backdrop-blur-xl border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-8 sm:p-10 shadow-xl flex flex-col justify-between h-[300px]"
               >
                 {/* Corner HUD markers on top card only */}
                 {index === 0 && (

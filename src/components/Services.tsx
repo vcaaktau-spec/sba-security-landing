@@ -4,7 +4,6 @@ import React, { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Shield, Network, Laptop, FileText, Check } from "lucide-react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
-import { Badge } from "./ui/badge"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -142,9 +141,15 @@ export const Services = () => {
         
         {/* Main Section Header */}
         <div className="mb-20 max-w-2xl">
-          <Badge variant="outline" className="mb-6 font-mono tracking-widest uppercase border-red-500/30 text-red-600 dark:text-red-500 bg-red-500/5">
-            // Оперативный профиль
-          </Badge>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6"
+          >
+            {t("services.eyebrow", "Оперативный профиль")}
+          </motion.div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05]" style={{ textWrap: "balance" } as React.CSSProperties}>
             {t("services.title1")}{" "}
             <span className="text-red-600 dark:text-red-500">

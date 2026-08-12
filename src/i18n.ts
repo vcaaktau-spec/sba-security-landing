@@ -88,6 +88,7 @@ const resources = {
         scrollHint: "Два пути расчёта",
       },
       stats: {
+        eyebrow: "В цифрах",
         title1: "Безопасность вашего бизнеса",
         title2: "наша зона ответственности",
         desc: "Компания <strong>«Система безопасности Актау»</strong> — это более 10 лет опыта в проектировании, чистом монтаже и настройке систем видеонаблюдения. Мы не просто вешаем камеры, мы создаем безотказную инфраструктуру контроля.",
@@ -122,6 +123,7 @@ const resources = {
         a10: "Да, это обязательная часть нашей работы. После монтажа мы устанавливаем приложение на все ваши устройства, настраиваем уведомления о движении и проводим краткий инструктаж: как смотреть онлайн, как найти нужный фрагмент в архиве и как скачать его на телефон."
       },
       how: {
+        eyebrow: "Этапы работы",
         title1: "Как мы ",
         title2: "работаем",
         subtitle: "Полный цикл установки видеонаблюдения — от вашей первой заявки до полностью настроенной и работающей системы.",
@@ -136,6 +138,7 @@ const resources = {
         s4_desc: "Устанавливаем камеры без грязи, прокладываем кабель, настраиваем систему и удалённый доступ на ваш смартфон."
       },
       features: {
+        eyebrow: "Преимущества",
         title1: "Почему выбирают ",
         title2: "именно нас",
         f1_title: "Бескомпромиссная гарантия",
@@ -147,6 +150,7 @@ const resources = {
         list: ["IP Видеонаблюдение", "СКУД", "Домофония", "Умный дом", "Охранные системы", "Сети", "Аналитика ИИ"]
       },
       services: {
+        eyebrow: "Оперативный профиль",
         title1: "Больше, чем ",
         title2: "видеонаблюдение",
         subtitle: "Мы предоставляем полный спектр услуг: от прокладки кабеля до проектной документации и IT-решений. Ваш бизнес под нашей защитой.",
@@ -180,6 +184,7 @@ const resources = {
         s4_f4: "Авторский надзор"
       },
       testimonials: {
+        eyebrow: "Отзывы клиентов",
         title1: "Доверие, подкрепленное ",
         title2: "результатом",
         subtitle: "Мы гордимся нашей работой. Почитайте, что говорят люди, которые уже доверили нам безопасность своего бизнеса и дома в Актау.",
@@ -241,6 +246,7 @@ const resources = {
         dashboard: "Личный кабинет"
       },
       projects: {
+        eyebrow: "Портфолио",
         title1: "Реальные проекты.",
         title2: "Без компромиссов.",
         subtitle: "Мы работаем в Актау и Мангистауской области.",
@@ -510,6 +516,7 @@ const resources = {
         scrollHint: "Есептеудің екі жолы",
       },
       stats: {
+        eyebrow: "Сандармен",
         title1: "Сіздің бизнесіңіздің қауіпсіздігі",
         title2: "біздің жауапкершілігіміз",
         desc: "<strong>«Ақтау қауіпсіздік жүйесі»</strong> компаниясы — бейнебақылау жүйелерін жобалау, таза монтаждау және баптау бойынша 10 жылдан астам тәжірибе. Біз жай ғана камераларды ілмейміз, біз мінсіз бақылау инфрақұрылымын жасаймыз.",
@@ -544,6 +551,7 @@ const resources = {
         a10: "Иә, бұл біздің жұмысымыздың міндетті бөлігі. Монтаждаудан кейін біз барлық құрылғыларыңызға қосымшаны орнатамыз, қозғалыс туралы хабарламаларды баптаймыз және қысқаша нұсқаулық жүргіземіз: онлайн қалай көруге болады, мұрағаттан қажетті үзіндіні қалай табуға болады және оны телефонға қалай жүктеп алуға болады."
       },
       how: {
+        eyebrow: "Жұмыс кезеңдері",
         title1: "Біз қалай ",
         title2: "жұмыс істейміз",
         subtitle: "Бейнебақылауды орнатудың толық циклі — сіздің алғашқы өтінішіңізден бастап толық бапталған және жұмыс істеп тұрған жүйеге дейін.",
@@ -558,6 +566,7 @@ const resources = {
         s4_desc: "Камераларды таза орнатамыз, кабель тартамыз, жүйені және смартфоныңызға қашықтан қосылуды баптаймыз."
       },
       features: {
+        eyebrow: "Артықшылықтар",
         title1: "Неліктен бізді ",
         title2: "таңдайды",
         f1_title: "Ымырасыз кепілдік",
@@ -569,6 +578,7 @@ const resources = {
         list: ["IP Бейнебақылау", "БҚБЖ (СКУД)", "Домофония", "Ақылды үй", "Күзет жүйелері", "Желілер", "ЖИ аналитикасы"]
       },
       services: {
+        eyebrow: "Операциялық профиль",
         title1: "Бейнебақылаудан ",
         title2: "да көбірек",
         subtitle: "Біз қызметтердің толық спектрін ұсынамыз: кабель тартудан бастап жобалық құжаттамаға және IT-шешімдерге дейін. Сіздің бизнесіңіз біздің қорғауымызда.",
@@ -602,6 +612,7 @@ const resources = {
         s4_f4: "Авторлық қадағалау"
       },
       testimonials: {
+        eyebrow: "Клиенттер пікірлері",
         title1: "Нәтижемен дәлелденген ",
         title2: "сенім",
         subtitle: "Біз өз жұмысымызды мақтан тұтамыз. Ақтаудағы бизнесі мен үйінің қауіпсіздігін бізге сеніп тапсырған адамдардың пікірін оқыңыз.",
@@ -663,6 +674,7 @@ const resources = {
         dashboard: "Жеке кабинет"
       },
       projects: {
+        eyebrow: "Портфолио",
         title1: "Нақты жобалар.",
         title2: "Ымырасыз.",
         subtitle: "Біз Ақтау және Маңғыстау облысында жұмыс істейміз.",
@@ -932,6 +944,7 @@ const resources = {
         scrollHint: "Two ways to calculate",
       },
       stats: {
+        eyebrow: "By the numbers",
         title1: "Your business security is",
         title2: "our area of responsibility",
         desc: "The <strong>Aktau Security System</strong> company has over 10 years of experience in designing, clean installation, and configuring video surveillance systems. We don't just hang cameras; we create a flawless monitoring infrastructure.",
@@ -966,6 +979,7 @@ const resources = {
         a10: "Yes, this is a mandatory part of our work. After installation, we install the app on all your devices, configure motion notifications, and provide a brief briefing: how to watch online, how to find the required fragment in the archive, and how to download it to your phone."
       },
       how: {
+        eyebrow: "Process",
         title1: "How we ",
         title2: "work",
         subtitle: "The full cycle of video surveillance installation — from your initial request to a fully configured and working system.",
@@ -980,6 +994,7 @@ const resources = {
         s4_desc: "We install cameras cleanly, route cables, configure the system, and set up remote access on your smartphone."
       },
       features: {
+        eyebrow: "Advantages",
         title1: "Why choose ",
         title2: "us",
         f1_title: "Uncompromising Warranty",
@@ -991,6 +1006,7 @@ const resources = {
         list: ["IP CCTV", "Access Control", "Intercoms", "Smart Home", "Security Systems", "Networks", "AI Analytics"]
       },
       services: {
+        eyebrow: "Operational profile",
         title1: "More than just ",
         title2: "video surveillance",
         subtitle: "We provide a full range of services: from cable routing to project documentation and IT solutions. Your business is under our protection.",
@@ -1024,6 +1040,7 @@ const resources = {
         s4_f4: "Architectural supervision"
       },
       testimonials: {
+        eyebrow: "Client reviews",
         title1: "Trust backed by ",
         title2: "results",
         subtitle: "We are proud of our work. Read what people who have already entrusted us with the security of their business and home in Aktau say.",
@@ -1085,6 +1102,7 @@ const resources = {
         dashboard: "Dashboard"
       },
       projects: {
+        eyebrow: "Portfolio",
         title1: "Real projects.",
         title2: "No compromises.",
         subtitle: "We work in Aktau and the Mangystau region.",

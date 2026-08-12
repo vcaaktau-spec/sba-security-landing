@@ -85,6 +85,15 @@ export const Projects = () => {
 
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6">
         <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6"
+          >
+            {t("projects.eyebrow", "Портфолио")}
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}

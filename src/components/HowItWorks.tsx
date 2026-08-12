@@ -94,6 +94,15 @@ export const HowItWorks = () => {
 
         {/* Header */}
         <div ref={headerRef} className="flex flex-col mb-20 lg:mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-muted-foreground text-xs font-mono font-bold uppercase tracking-widest mb-6 self-start"
+          >
+            {t("how.eyebrow", "Этапы работы")}
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
