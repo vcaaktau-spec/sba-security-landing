@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next" 
-import { Phone, MessageCircle, FileText, X, Shield, ChevronUp, Star, Upload, CheckCircle2, Loader2, HelpCircle, MessageSquarePlus, MapPin } from "lucide-react"
+import { Phone, MessageCircle, FileText, X, Shield, ChevronUp, HelpCircle, MessageSquarePlus, MapPin, Star, Instagram } from "lucide-react"
 import {
   Accordion,
   AccordionContent,
@@ -26,7 +26,7 @@ const languages = [
   { code: "EN", label: "English", flag: "🇺🇸" },
 ]
 
-type ModalType = "privacy" | "terms" | "dpa" | "faq" | "review" | null;
+type ModalType = "privacy" | "terms" | "dpa" | "faq" | null;
 
 interface FooterProps {
   onOpenCalc: () => void;
@@ -83,46 +83,6 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
     { question: t("faq.q10"), answer: t("faq.a10"), value: "item-10" },
   ]
 
-  const [name, setName] = useState("")
-  const [company, setCompany] = useState("")
-  const [text, setText] = useState("")
-  const [rating, setRating] = useState(5)
-  const [photo, setPhoto] = useState<File | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-
-  const handleReviewSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    const formData = new FormData()
-    formData.append("name", name)
-    formData.append("company", company)
-    formData.append("rating", rating.toString())
-    formData.append("text", text)
-    if (photo) formData.append("photo", photo)
-    
-    try {
-      const res = await fetch("/api/telegram", { method: "POST", body: formData })
-      if (!res.ok) throw new Error("Error")
-      setIsSuccess(true)
-      setTimeout(() => {
-        closeDrawer()
-        setTimeout(() => { 
-          setIsSuccess(false)
-          setName("")
-          setCompany("")
-          setText("")
-          setRating(5)
-          setPhoto(null)
-        }, 500)
-      }, 3000)
-    } catch (error) { 
-      alert("Ошибка отправки") 
-    } finally { 
-      setIsSubmitting(false) 
-    }
-  }
-
   const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
   return (
@@ -158,7 +118,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
             
             <div className="col-span-1 md:col-span-2 flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center border border-red-500/20 shadow-[0_0_15px_rgba(220,38,38,0.25)]">
+                <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center">
                   <Shield size={18} className="text-white" />
                 </div>
                 <span className="text-base font-black tracking-tight uppercase">
@@ -172,21 +132,47 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                 <MapPin size={11} className="mt-0.5 text-red-500/60 shrink-0" />
                 <span>Микрорайон 12, Актау,<br />Мангистауская область, Казахстан</span>
               </address>
+
+              {/* Trust row — реальные, проверяемые ссылки, а не витринные карточки */}
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-1">
+                <a
+                  href="https://share.google/6itbS8mcK09IjZrbJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Star size={13} className="fill-red-500 text-red-500 shrink-0" />
+                  <span className="font-semibold text-foreground/90">{t("footer.google_rating", "5.0")}</span>
+                  {t("footer.google_reviews", "19 отзывов")}
+                </a>
+                <a
+                  href="https://www.instagram.com/toosba7292"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Instagram size={13} className="text-red-500/70 shrink-0" />
+                  @toosba7292
+                </a>
+              </div>
             </div>
 
             <div className="flex flex-col gap-4">
-              <h4 className="text-[10px] font-mono font-bold text-foreground uppercase tracking-widest">{t("footer.nav_title", "Навигация")}</h4>
+              <h4 className="text-[13px] tracking-wide text-muted-foreground">{t("footer.nav_title", "Навигация")}</h4>
               <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground">
                 <li><a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-red-500 transition-colors">{t("nav.services", "Услуги")}</a></li>
-                <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="hover:text-red-500 transition-colors">{t("nav.projects", "Проекты")}</a></li>
                 <li><button onClick={onOpenCalc} className="hover:text-red-500 transition-colors">{t("calc.badge", "Онлайн расчет")}</button></li>
                 <li><button onClick={() => setModalContent("faq")} className="hover:text-red-500 transition-colors">FAQ</button></li>
-                <li><button onClick={() => setModalContent("review")} className="hover:text-red-500 transition-colors">{t("review_form.title", "Оставить отзыв")}</button></li>
+                <li>
+                  <a href="https://g.page/r/Ce2IQ5cacC8sEAE/review" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">
+                    {t("footer.google_review", "Оставить отзыв на Google")}
+                  </a>
+                </li>
               </ul>
             </div>
-              
+
             <div className="flex flex-col gap-4">
-              <h4 className="text-[10px] font-mono font-bold text-foreground uppercase tracking-widest">{t("footer.settings_title", "Документация")}</h4>
+              <h4 className="text-[13px] tracking-wide text-muted-foreground">{t("footer.settings_title", "Документация")}</h4>
               <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground">
                 <li><button onClick={() => setModalContent("privacy")} className="hover:text-red-500 transition-colors">{t("docs.privacy", "Политика конфиденциальности")}</button></li>
                 <li><button onClick={() => setModalContent("terms")} className="hover:text-red-500 transition-colors">{t("docs.terms", "Пользовательское соглашение")}</button></li>
@@ -195,7 +181,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
             </div>
 
             <div className="flex flex-col gap-4 lg:items-end">
-              <h4 className="text-[10px] font-mono font-bold text-foreground uppercase tracking-widest lg:text-right w-full">{t("footer.contacts_title", "Контакты")}</h4>
+              <h4 className="text-[13px] tracking-wide text-muted-foreground lg:text-right w-full">{t("footer.contacts_title", "Контакты")}</h4>
               
               <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground lg:text-right w-full mb-4">
                 <li>
@@ -279,14 +265,12 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                 className="relative w-full max-w-lg h-full bg-background border-l border-border/50 shadow-2xl flex flex-col z-[10000]"
               >
                   <div className="flex-shrink-0 bg-background/90 backdrop-blur-xl border-b border-border/50 p-6 flex items-center justify-between z-10">
-                    <div className="flex items-center gap-3 font-bold text-lg">
+                    <div className="flex items-center gap-3">
                       {modalContent === "faq" && <HelpCircle size={20} className="text-red-500" />}
-                      {modalContent === "review" && <MessageSquarePlus size={20} className="text-red-500" />}
                       {(modalContent === "privacy" || modalContent === "terms" || modalContent === "dpa") && <FileText size={20} className="text-muted-foreground" />}
-                      
-                      <span>
+
+                      <span className="font-semibold text-lg" style={{ fontFamily: "'Source Serif 4', serif" }}>
                         {modalContent === "faq" && "FAQ"}
-                        {modalContent === "review" && t("review_form.title")}
                         {modalContent === "privacy" && t("docs.privacy")}
                         {modalContent === "terms" && t("docs.terms")}
                         {modalContent === "dpa" && t("docs.dpa")}
@@ -344,56 +328,6 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                           </AccordionItem>
                         ))}
                       </Accordion>
-                    )}
-
-                    {modalContent === "review" && (
-                      isSuccess ? (
-                        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center h-full py-20">
-                          <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mb-6 border border-green-500/30">
-                            <CheckCircle2 size={32} className="text-green-500" />
-                          </div>
-                          <h4 className="text-xl font-bold mb-2 uppercase text-foreground">{t("review_form.success_title")}</h4>
-                          <p className="text-muted-foreground">{t("review_form.success_desc")}</p>
-                        </motion.div>
-                      ) : (
-                        <form onSubmit={handleReviewSubmit} className="flex flex-col gap-6">
-                          <p className="text-xs mb-2">{t("review_form.desc")}</p>
-                          
-                          <div className="relative group">
-                            <input required type="text" value={name} onChange={e => setName(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-sm placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
-                            <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-muted-foreground uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-muted-foreground/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-600 pointer-events-none">{t("review_form.name")}</label>
-                          </div>
-                          
-                          <div className="relative group">
-                            <input required type="text" value={company} onChange={e => setCompany(e.target.value)} placeholder=" " className="peer w-full h-12 bg-transparent border-b border-border text-foreground text-sm placeholder-transparent focus:border-red-600 outline-none transition-colors rounded-none" />
-                            <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-muted-foreground uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-muted-foreground/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-600 pointer-events-none">{t("review_form.company")}</label>
-                          </div>
-                          
-                          <div>
-                            <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-2">{t("review_form.rating")}</label>
-                            <div className="flex gap-1.5">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star key={star} onClick={() => setRating(star)} className={`w-7 h-7 cursor-pointer transition-all ${rating >= star ? "fill-red-500 text-red-500" : "text-muted-foreground/30 hover:text-red-400"}`} />
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="relative group mt-2">
-                            <textarea required value={text} onChange={e => setText(e.target.value)} rows={4} placeholder=" " className="peer w-full bg-transparent border-b border-border text-foreground text-sm placeholder-transparent focus:border-red-600 outline-none transition-colors resize-none rounded-none pt-2" />
-                            <label className="absolute left-0 -top-3.5 text-[9px] font-bold text-muted-foreground uppercase tracking-widest transition-all peer-placeholder-shown:text-[13px] peer-placeholder-shown:text-muted-foreground/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[9px] peer-focus:text-red-600 pointer-events-none">{t("review_form.text")}</label>
-                          </div>
-                          
-                          <label className={`flex items-center justify-center gap-3 w-full border border-dashed rounded-xl py-5 cursor-pointer transition-all ${photo ? "border-red-500 bg-red-500/5" : "border-border hover:border-red-500 hover:bg-red-500/5"}`}>
-                            <input type="file" accept="image/*" onChange={(e) => setPhoto(e.target.files?.[0] || null)} className="hidden" />
-                            <Upload size={18} className={photo ? "text-red-500" : "text-muted-foreground"} />
-                            <span className={`text-xs font-bold ${photo ? "text-red-500" : "text-muted-foreground"}`}>{photo ? photo.name : t("review_form.upload")}</span>
-                          </label>
-                          
-                          <button disabled={isSubmitting} type="submit" className="w-full mt-4 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex justify-center items-center gap-2 uppercase tracking-widest text-[11px]">
-                            {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : t("review_form.submit")}
-                          </button>
-                        </form>
-                      )
                     )}
 
                   </div>

@@ -10,12 +10,10 @@ import { Hero } from "../components/Hero";
 import { HowItWorks } from "../components/HowItWorks";
 import { Navbar } from "../components/Navbar";
 import { PainSection } from "../components/PainSection";
-import { Projects } from "../components/Projects";
 import { SeoBlock } from "../components/SeoBlock";
 import { Services } from "../components/Services";
 import { SmoothScroll } from "../components/smooth-scroll";
 import { Statistics } from "../components/Statistics";
-import { Testimonials } from "../components/Testimonials";
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -72,9 +70,6 @@ export const Home = () => {
           <SectionAccent side="right" />
           <FadeSection><Services /></FadeSection>
           <SectionAccent side="left" />
-          <FadeSection><Projects /></FadeSection>
-          <FadeSection><Testimonials /></FadeSection>
-          <SectionAccent side="right" />
           <FadeSection><Cta /></FadeSection>
           <FadeSection><SeoBlock /></FadeSection>
           <FadeSection><Footer onOpenCalc={() => setIsCalcOpen(true)} /></FadeSection>
