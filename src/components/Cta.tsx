@@ -7,6 +7,7 @@ import { X, ArrowRight, ShieldCheck, CheckCircle2, Loader2, ChevronDown, Message
 import { motion, AnimatePresence, useInView } from "framer-motion"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const SERIF = "'Source Serif 4', serif"
 
 /* ── Radar ring component ── */
 function RadarRing({ radius, delay }: { radius: number; delay: number }) {
@@ -28,6 +29,14 @@ function RadarRing({ radius, delay }: { radius: number; delay: number }) {
   )
 }
 
+// Третий заход. Остальная страница ушла в сдержанную типографику — тонкие
+// линии вместо рамок, один спокойный акцент вместо блеска. CTA — намеренное
+// исключение: это последняя точка перед конверсией, и весь предыдущий
+// сдержанный скролл должен разрешиться во что-то громкое. Общий язык
+// (Source Serif 4, красный акцент, без градиентных "SaaS" трюков вроде
+// shine-sweep на кнопке) сохранён, но масштаб, насыщенность и движение —
+// сознательно на максимум: это единственное место на странице, где можно
+// быть громким, и весь бюджет громкости потрачен именно здесь.
 export const Cta = () => {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -108,58 +117,55 @@ export const Cta = () => {
       <section
         id="cta"
         ref={sectionRef}
-        className="relative py-24 lg:py-40 overflow-hidden flex items-center"
+        className="relative py-28 lg:py-44 overflow-hidden flex items-center"
       >
-        {/* ── Animated radar background ── */}
+        {/* ── Радар — единственный на странице момент атмосферного фона ── */}
         <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
-          {/* Ambient glow orb */}
-          <div className="absolute w-[700px] h-[700px] rounded-full bg-red-600/[0.12] blur-[90px]" />
-          {/* Pulsing rings */}
+          <div className="absolute w-[750px] h-[750px] rounded-full bg-red-600/[0.14] dark:bg-red-600/[0.16] blur-[100px]" />
           {[120, 200, 300, 420, 550].map((r, i) => (
             <RadarRing key={r} radius={r} delay={i * 0.65} />
           ))}
-          {/* Static base ring */}
-          <div className="absolute w-[240px] h-[240px] rounded-full border border-red-500/[0.07]" />
+          <div className="absolute w-[240px] h-[240px] rounded-full border border-red-500/[0.1]" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6">
 
-          {/* ── 15 минут badge ── */}
+          {/* ── Живой бейдж ── */}
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.6, ease }}
             className="flex justify-center mb-10"
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/[0.05] border border-white/[0.1] backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-red-600/10 dark:bg-red-500/15 border border-red-600/25 dark:border-red-500/25">
               <div className="relative flex items-center justify-center w-5 h-5">
-                <Clock size={14} className="text-red-400" />
+                <Clock size={14} className="text-red-600 dark:text-red-400" />
                 <motion.div
-                  className="absolute inset-[-3px] rounded-full border border-red-500/40"
+                  className="absolute inset-[-3px] rounded-full border border-red-500/50"
                   animate={{ scale: [1, 1.4], opacity: [0.7, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
                 />
               </div>
-              <span className="text-sm font-semibold text-foreground/80">
-                {t("cta.badge_before")}<span className="text-red-400 font-bold">{t("cta.badge_highlight")}</span>{t("cta.badge_after")}
+              <span className="text-sm font-semibold text-foreground/90">
+                {t("cta.badge_before")}<span className="text-red-600 dark:text-red-400 font-bold">{t("cta.badge_highlight")}</span>{t("cta.badge_after")}
               </span>
             </div>
           </motion.div>
 
-          {/* ── Main headline ── */}
+          {/* ── Заголовок — та же гарнитура, что и по всей странице, но на максимум масштаба ── */}
           <div className="text-center max-w-4xl mx-auto mb-14">
             <motion.h2
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.9, ease, delay: 0.08 }}
-              className="text-5xl sm:text-6xl lg:text-[5rem] font-black tracking-tight leading-[1.04] text-foreground mb-6"
+              className="font-semibold leading-[1.02] text-foreground mb-6"
+              style={{ fontFamily: SERIF, fontSize: "clamp(3rem, 7.5vw, 6.5rem)", letterSpacing: "-0.015em" }}
             >
               {t("cta.title1")}
-              <span className="relative">
-                <span className="text-red-500">{t("cta.title2")}</span>
-                {/* Underline glow */}
+              <span className="relative inline-block">
+                <span className="text-red-600 dark:text-red-500">{t("cta.title2")}</span>
                 <motion.div
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/60 to-red-500/0"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/70 to-red-500/0"
                   initial={{ scaleX: 0 }}
                   animate={inView ? { scaleX: 1 } : {}}
                   transition={{ duration: 1, ease, delay: 0.6 }}
@@ -171,40 +177,35 @@ export const Cta = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease, delay: 0.18 }}
-              className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+              className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
             >
               {t("cta.subtitle")}
             </motion.p>
           </div>
 
-          {/* ── CTA Buttons ── */}
+          {/* ── Кнопки — без shine-sweep, но крупные и с фирменным свечением ── */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.26 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
-            {/* Primary */}
             <button
               onClick={() => setIsModalOpen(true)}
-              className="group relative w-full sm:w-auto h-14 px-9 overflow-hidden rounded-2xl bg-red-600 text-white font-bold text-[15px] tracking-wide hover:bg-red-500 transition-colors duration-300 shadow-[0_0_40px_rgba(239,68,68,0.2)] hover:shadow-[0_0_60px_rgba(239,68,68,0.4)] flex items-center justify-center gap-3"
+              className="group w-full sm:w-auto h-14 px-9 rounded-xl bg-red-600 text-white font-bold text-[15px] tracking-wide hover:bg-red-700 transition-all duration-300 shadow-[0_0_40px_rgba(239,68,68,0.25)] hover:shadow-[0_0_60px_rgba(239,68,68,0.4)] flex items-center justify-center gap-3"
             >
-              {/* shine sweep */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
-              <span className="relative z-10">{t("cta.btn_main")}</span>
-              <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+              <span>{t("cta.btn_main")}</span>
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
             </button>
 
-            {/* WhatsApp */}
             <a
               href="https://wa.me/77779204988"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative w-full sm:w-auto h-14 px-9 rounded-2xl bg-white/[0.04] border border-white/[0.1] text-foreground font-semibold text-[15px] hover:bg-white/[0.08] hover:border-white/[0.18] transition-all duration-300 flex items-center justify-center gap-3"
+              className="group relative w-full sm:w-auto h-14 px-9 rounded-xl bg-white/[0.04] border border-white/[0.1] text-foreground font-semibold text-[15px] hover:bg-white/[0.08] hover:border-white/[0.18] transition-all duration-300 flex items-center justify-center gap-3"
             >
               <MessageCircle size={18} className="text-green-400" />
               <span>{t("cta.btn_wa")}</span>
-              {/* Online pulse */}
               <span className="absolute -top-1 -right-1 flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
@@ -212,22 +213,22 @@ export const Cta = () => {
             </a>
           </motion.div>
 
-          {/* ── Metric strip ── */}
+          {/* ── Метрики — та же полоса с разделителями, что в "В цифрах", крупнее ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.38 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-px border border-white/[0.07] rounded-2xl overflow-hidden"
+            className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-slate-200/60 dark:divide-white/[0.08] border-y border-slate-200/60 dark:border-white/[0.08] max-w-3xl mx-auto"
           >
             {metrics.map((m, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center justify-center py-6 px-4 bg-white/[0.025] hover:bg-white/[0.04] transition-colors duration-300"
-              >
-                <span className="text-2xl sm:text-3xl font-black tracking-tight text-foreground tabular-nums">
+              <div key={i} className="flex flex-col items-center justify-center py-6 px-4">
+                <span
+                  className="font-semibold leading-none text-foreground tabular-nums"
+                  style={{ fontFamily: SERIF, fontSize: "clamp(1.65rem, 2.6vw, 2.1rem)" }}
+                >
                   {m.value}
                 </span>
-                <span className="text-[11px] font-medium text-muted-foreground/60 mt-1 text-center leading-tight">
+                <span className="text-[11px] font-medium text-muted-foreground/60 mt-2 text-center leading-tight">
                   {m.label}
                 </span>
               </div>
@@ -237,7 +238,7 @@ export const Cta = () => {
         </div>
       </section>
 
-      {/* ── Side drawer modal ── */}
+      {/* ── Боковая форма ── */}
       {mounted && createPortal(
         <AnimatePresence>
           {isModalOpen && (
@@ -253,16 +254,13 @@ export const Cta = () => {
                 transition={{ duration: 0.45, ease }}
                 className="relative w-full max-w-md h-full bg-white dark:bg-[#0a0f1a] border-l border-slate-200 dark:border-white/[0.08] shadow-[0_0_100px_rgba(0,0,0,0.2)] dark:shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col z-[10001] overflow-hidden"
               >
-                {/* Tactical Blueprint Grid */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.06] dark:opacity-[0.15]" 
-                     style={{ backgroundImage: "linear-gradient(to right, rgba(100,100,100,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,100,0.3) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
                 {/* Header */}
                 <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-white/[0.07] relative z-10 bg-white dark:bg-[#0a0f1a]">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center">
                       <ShieldCheck size={17} className="text-red-400" />
                     </div>
-                    <h3 className="font-bold text-base tracking-tight text-slate-900 dark:text-white">{t("cta.form_title")}</h3>
+                    <h3 className="font-semibold text-lg text-slate-900 dark:text-white" style={{ fontFamily: SERIF }}>{t("cta.form_title")}</h3>
                   </div>
                   <button
                     onClick={() => setIsModalOpen(false)}
