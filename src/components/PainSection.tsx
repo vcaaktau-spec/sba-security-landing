@@ -50,6 +50,7 @@ export const PainSection = () => {
         <div className="max-w-2xl mb-16 lg:mb-20">
           <motion.div
             initial={false}
+            animate={{ opacity: 1, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
@@ -63,6 +64,7 @@ export const PainSection = () => {
 
           <motion.h2
             initial={false}
+            animate={{ opacity: 1, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.08, ease }}
@@ -75,6 +77,7 @@ export const PainSection = () => {
 
           <motion.p
             initial={false}
+            animate={{ opacity: 1, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15, ease }}
@@ -107,6 +110,7 @@ export const PainSection = () => {
               <motion.article
                 key={idx}
                 initial={false}
+                animate={{ opacity: 1, y: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.7, delay: idx * 0.08, ease }}
@@ -195,6 +199,7 @@ export const PainSection = () => {
         {/* ── BOTTOM HOOK — простая строка вместо пилюли ── */}
         <motion.p
           initial={false}
+          animate={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15, ease }}

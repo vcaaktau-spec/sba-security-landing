@@ -1,7 +1,6 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { motion } from "framer-motion"
 
 interface Props {
   cols?: number
@@ -13,12 +12,8 @@ const dotBase = (i: number, col: number, row: number) =>
   ((i * 13 + col * 7 + row * 3) % 7) / 38 + 0.04
 
 export function DotMatrix({ cols = 9, rows = 6, className = "" }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true })
-
   return (
     <div
-      ref={ref}
       className={`pointer-events-none select-none ${className}`}
       style={{
         display: "grid",
@@ -36,7 +31,7 @@ export function DotMatrix({ cols = 9, rows = 6, className = "" }: Props) {
             key={i}
             style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "currentColor" }}
             initial={false}
-            animate={inView ? { opacity: [base, base + 0.22, base] } : { opacity: 0 }}
+            animate={{ opacity: [base, base + 0.22, base] }}
             transition={{
               duration: 2.2 + (i % 5) * 0.45,
               repeat: Infinity,

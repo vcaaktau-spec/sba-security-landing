@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { motion, useScroll, useInView } from "framer-motion"
+import { motion, useScroll } from "framer-motion"
 
 const E = [0.22, 1, 0.36, 1] as const
 const SERIF = "'Source Serif 4', serif"
@@ -14,18 +14,15 @@ interface Step {
 }
 
 function StepRow({ step }: { step: Step }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-20%" })
-
   return (
-    <div ref={ref} className="group relative pl-10 sm:pl-16 py-10 lg:py-14">
+    <div className="group relative pl-10 sm:pl-16 py-10 lg:py-14">
       {/* Узел на треке */}
       <div className="absolute left-[-4px] top-12 lg:top-14 w-[9px] h-[9px] rounded-full bg-background border-2 border-slate-300 dark:border-white/20 transition-all duration-400 group-hover:border-red-600 group-hover:shadow-[0_0_10px_rgba(220,38,38,0.35)] z-10" />
 
       {/* Фантомная цифра — водяной знак позади заголовка, а не в отдельной колонке */}
       <motion.span
         initial={false}
-        animate={inView ? { opacity: 1 } : {}}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.9, ease: E }}
         aria-hidden
         className="pointer-events-none select-none absolute -top-3 sm:-top-5 left-6 sm:left-14 font-semibold text-foreground/[0.05] dark:text-white/[0.045] group-hover:text-red-600/[0.08] dark:group-hover:text-red-500/[0.09] transition-colors duration-500 tabular-nums"
@@ -36,7 +33,7 @@ function StepRow({ step }: { step: Step }) {
 
       <motion.div
         initial={false}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: E, delay: 0.1 }}
         className="relative max-w-xl"
       >
@@ -66,8 +63,6 @@ function StepRow({ step }: { step: Step }) {
 // вертикали синхронно со скроллом, как индикатор чтения в лонгриде.
 export const HowItWorks = () => {
   const { t } = useTranslation()
-  const headerRef = useRef<HTMLDivElement>(null)
-  const headerInView = useInView(headerRef, { once: true, margin: "-10%" })
   const sectionRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -87,10 +82,10 @@ export const HowItWorks = () => {
       <div className="mx-auto w-full max-w-[1000px] px-6 sm:px-10">
 
         {/* Header */}
-        <div ref={headerRef} className="flex flex-col mb-20 lg:mb-28">
+        <div className="flex flex-col mb-20 lg:mb-28">
           <motion.div
             initial={false}
-            animate={headerInView ? { opacity: 1, x: 0 } : {}}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: E }}
             className="flex items-center gap-3 mb-6"
           >
@@ -102,7 +97,7 @@ export const HowItWorks = () => {
 
           <motion.h2
             initial={false}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.08, ease: E }}
             className="font-semibold leading-[1.15] text-foreground max-w-2xl"
             style={{ fontFamily: SERIF, fontSize: "clamp(1.85rem, 3.4vw, 2.75rem)", letterSpacing: "-0.01em" }}
@@ -133,6 +128,7 @@ export const HowItWorks = () => {
         {/* Bottom note */}
         <motion.p
           initial={false}
+          animate={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, ease: E }}

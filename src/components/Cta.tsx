@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { X, ArrowRight, ShieldCheck, CheckCircle2, Loader2, ChevronDown, MessageCircle, Clock } from "lucide-react"
-import { motion, AnimatePresence, useInView } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 const SERIF = "'Source Serif 4', serif"
@@ -50,7 +50,6 @@ export const Cta = () => {
   const [isSuccess, setIsSuccess] = useState(false)
 
   const sectionRef = useRef<HTMLElement>(null)
-  const inView = useInView(sectionRef, { once: true, margin: "-15%" })
 
   useEffect(() => { setMounted(true) }, [])
 
@@ -133,7 +132,7 @@ export const Cta = () => {
           {/* ── Живой бейдж ── */}
           <motion.div
             initial={false}
-            animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.6, ease }}
             className="flex justify-center mb-10"
           >
@@ -156,7 +155,7 @@ export const Cta = () => {
           <div className="text-center max-w-4xl mx-auto mb-14">
             <motion.h2
               initial={false}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease, delay: 0.08 }}
               className="font-semibold leading-[1.02] text-foreground mb-6"
               style={{ fontFamily: SERIF, fontSize: "clamp(3rem, 7.5vw, 6.5rem)", letterSpacing: "-0.015em" }}
@@ -167,7 +166,7 @@ export const Cta = () => {
                 <motion.div
                   className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/70 to-red-500/0"
                   initial={false}
-                  animate={inView ? { scaleX: 1 } : {}}
+                  animate={{ scaleX: 1 }}
                   transition={{ duration: 1, ease, delay: 0.6 }}
                 />
               </span>
@@ -175,7 +174,7 @@ export const Cta = () => {
 
             <motion.p
               initial={false}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease, delay: 0.18 }}
               className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
             >
@@ -186,7 +185,7 @@ export const Cta = () => {
           {/* ── Кнопки — без shine-sweep, но крупные и с фирменным свечением ── */}
           <motion.div
             initial={false}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: 0.26 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
@@ -216,7 +215,7 @@ export const Cta = () => {
           {/* ── Метрики — та же полоса с разделителями, что в "В цифрах", крупнее ── */}
           <motion.div
             initial={false}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: 0.38 }}
             className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-slate-200/60 dark:divide-white/[0.08] border-y border-slate-200/60 dark:border-white/[0.08] max-w-3xl mx-auto"
           >

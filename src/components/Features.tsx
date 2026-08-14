@@ -21,8 +21,6 @@ const E = [0.22, 1, 0.36, 1] as const
 // цифры здесь были бы ещё одним шаблонным приёмом.
 export const Features = () => {
   const { t } = useTranslation()
-  const sectionRef = useRef<HTMLElement>(null)
-  const isHeaderInView = useInView(sectionRef, { once: true, margin: "-10%" })
   const [activeIndex, setActiveIndex] = useState(0)
 
   const capabilities = [
@@ -46,7 +44,6 @@ export const Features = () => {
   return (
     <section
       id="features"
-      ref={sectionRef}
       className="relative py-24 lg:py-36 border-b border-slate-200/60 dark:border-white/[0.06]"
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 sm:px-10">
@@ -56,7 +53,7 @@ export const Features = () => {
           <div className="lg:sticky lg:top-32 lg:self-start mb-16 lg:mb-0">
             <motion.div
               initial={false}
-              animate={isHeaderInView ? { opacity: 1, x: 0 } : {}}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.05, ease: E }}
               className="flex items-center gap-3 mb-6"
             >
@@ -68,7 +65,7 @@ export const Features = () => {
 
             <motion.h2
               initial={false}
-              animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.12, ease: E }}
               className="font-semibold leading-[1.15] text-foreground mb-5"
               style={{ fontFamily: "'Source Serif 4', serif", fontSize: "clamp(1.85rem, 2.6vw, 2.5rem)", letterSpacing: "-0.01em" }}
@@ -79,7 +76,7 @@ export const Features = () => {
 
             <motion.p
               initial={false}
-              animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.18, ease: E }}
               className="text-[15px] leading-relaxed text-muted-foreground mb-10"
             >
@@ -136,6 +133,7 @@ export const Features = () => {
             {/* Возможности — простой перечень вместо цветных плашек */}
             <motion.div
               initial={false}
+              animate={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: E }}
@@ -188,6 +186,7 @@ const FeatureRow = ({
       id={`feature-${index}`}
       ref={ref}
       initial={false}
+      animate={{ opacity: 1, y: 0 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: E }}

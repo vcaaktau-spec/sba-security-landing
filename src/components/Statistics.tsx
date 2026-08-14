@@ -73,6 +73,7 @@ export const Statistics = () => {
           <div className="mb-14 lg:mb-0">
             <motion.div
               initial={false}
+              animate={{ opacity: 1, x: 0 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: E }}
@@ -86,6 +87,7 @@ export const Statistics = () => {
 
             <motion.h2
               initial={false}
+              animate={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.08, ease: E }}
@@ -98,6 +100,7 @@ export const Statistics = () => {
 
             <motion.p
               initial={false}
+              animate={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.14, ease: E }}
@@ -112,6 +115,7 @@ export const Statistics = () => {
               <motion.div
                 key={i}
                 initial={false}
+                animate={{ opacity: 1, y: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, ease: E, delay: i * 0.08 }}
