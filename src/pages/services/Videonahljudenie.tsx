@@ -33,6 +33,25 @@ export const Videonahljudenie = () => {
     canonical: `https://toosba.kz${path}`,
   })
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("service_pages.common.breadcrumb_home"), item: `https://toosba.kz${homePath}` },
+      { "@type": "ListItem", position: 2, name: t("service_pages.videonabludenie.breadcrumb_current") },
+    ],
+  }
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: t("service_pages.videonabludenie.breadcrumb_current"),
+    name: t("service_pages.videonabludenie.seo_title"),
+    description: t("service_pages.videonabludenie.seo_desc"),
+    provider: { "@type": "Organization", "@id": "https://toosba.kz/#organization" },
+    areaServed: { "@type": "City", name: "Актау" },
+    url: `https://toosba.kz${path}`,
+  }
+
   const included = includedIcons.map((icon, i) => ({
     icon,
     text: (t("service_pages.videonabludenie.included", { returnObjects: true }) as string[])[i],
@@ -45,6 +64,8 @@ export const Videonahljudenie = () => {
 
   return (
     <ServiceLayout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* Breadcrumb */}
       <nav className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-6 flex items-center gap-1.5 text-xs text-muted-foreground/60" aria-label={t("service_pages.common.breadcrumb_nav")}>

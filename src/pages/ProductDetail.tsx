@@ -90,9 +90,21 @@ export const ProductDetail = () => {
     },
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("service_pages.common.breadcrumb_home"), item: `https://toosba.kz${homePath}` },
+      { "@type": "ListItem", position: 2, name: t("service_pages.common.breadcrumb_catalog"), item: `https://toosba.kz${catalogPath}` },
+      { "@type": "ListItem", position: 3, name: CATEGORY_LABELS[product.category] },
+      { "@type": "ListItem", position: 4, name: product.name },
+    ],
+  }
+
   return (
     <ServiceLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <div className="max-w-[900px] mx-auto px-4 sm:px-6 py-10 md:py-14">
         {/* Breadcrumb */}

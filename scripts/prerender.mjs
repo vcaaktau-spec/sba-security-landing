@@ -204,8 +204,33 @@ function applyMeta(html, route) {
     /<link rel="alternate" hreflang="ru"[^>]*>(\s*<link rel="alternate" hreflang="en"[^>]*>)?\s*<link rel="alternate" hreflang="x-default"[^>]*>/,
     hreflangLines.join("\n    ")
   );
+
+  // 404.html обслуживается Vercel-ом для ЛЮБОГО непойманного адреса — сама
+  // эта капча не должна попасть в индекс сама по себе (иначе получится
+  // одна страница-дубль под сотней разных URL), в отличие от статуса 404
+  // на самом URL, который как раз и нужен поисковикам.
+  if (route.noindex) {
+    html = /<meta name="robots"/.test(html)
+      ? replaceTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/, `<meta name="robots" content="noindex, nofollow" />`)
+      : html.replace("</title>", "</title>\n    <meta name=\"robots\" content=\"noindex, nofollow\" />");
+  }
+
   return html;
 }
+
+// Обслуживается Vercel-ом как статус-код 404 для любого адреса, не
+// пойманного ни одним rewrite в vercel.json (см. узкий whitelist там —
+// только /dashboard, /sign-in, /sign-up, /admin остаются на index.html,
+// всё остальное несуществующее должно реально 404-иться, а не тихо
+// отдавать 200 с главной — это било по краулинговому бюджету).
+const NOT_FOUND_ROUTE = {
+  path: "/__not-found-capture__",
+  lang: "ru",
+  title: "Страница не найдена | SBA Security",
+  description: "Запрошенная страница не найдена. Вернитесь на главную SBA Security — видеонаблюдение, СКУД и охранные системы в Актау.",
+  alternates: { ru: `${SITE}/` },
+  noindex: true,
+};
 
 function buildSitemap(pageRoutes, products) {
   const today = new Date().toISOString().slice(0, 10);
@@ -342,10 +367,12 @@ async function renderWorker(browser, queue, products) {
 
         const html = applyMeta(await page.content(), route);
 
-        const outDir = route.path === "/" ? distDir : path.join(distDir, route.path.replace(/^\//, ""));
-        mkdirSync(outDir, { recursive: true });
-        writeFileSync(path.join(outDir, "index.html"), html, "utf-8");
-        console.log(`[prerender] ok  ${route.path} -> ${path.relative(root, path.join(outDir, "index.html"))}`);
+        const outFile = route.path === NOT_FOUND_ROUTE.path
+          ? path.join(distDir, "404.html")
+          : path.join(route.path === "/" ? distDir : path.join(distDir, route.path.replace(/^\//, "")), "index.html");
+        mkdirSync(path.dirname(outFile), { recursive: true });
+        writeFileSync(outFile, html, "utf-8");
+        console.log(`[prerender] ok  ${route.path} -> ${path.relative(root, outFile)}`);
         ok = true;
       } catch (err) {
         lastErr = err;
@@ -369,7 +396,7 @@ async function main() {
   const products = await fetchActiveProducts();
   const pageRoutes = buildPageRoutes();
   const productRoutes = buildProductRoutes(products);
-  const ROUTES = [...pageRoutes, ...productRoutes];
+  const ROUTES = [...pageRoutes, ...productRoutes, NOT_FOUND_ROUTE];
 
   // Запускаем JS-энтрипоинт vite напрямую через node — без shell:true и без
   // .cmd-обёртки (на Windows spawn .cmd без shell даёт EINVAL). Так .kill()

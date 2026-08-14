@@ -65,11 +65,11 @@
       "destination": "/en/katalog/index.html"
     },
     {
-      "source": "/(dashboard|sign-in|sign-up|uslugi)(.*)",
+      "source": "/katalog/(.+)",
       "destination": "/index.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/(dashboard|sign-in|sign-up|admin)(.*)",
       "destination": "/index.html"
     }
   ]

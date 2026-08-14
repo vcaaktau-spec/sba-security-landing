@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, ShoppingCart, Minus, Plus, Trash2, Loader2, CheckCircle2, ArrowRight, Loader } from "lucide-react"
 import { useCart } from "@/contexts/CartContext"
 import { computeEstimate } from "@/lib/estimate"
-import { renderQuotePdf } from "@/lib/pdf/renderQuotePdf"
 import { QuoteTemplate } from "@/components/pdf/QuoteTemplate"
 import type { Product } from "@/lib/catalog"
 
@@ -106,6 +105,10 @@ ${lines}
     // всегда совпадают.
     if (quoteRef.current && quoteMeta) {
       try {
+        // html2canvas+jsPDF грузятся только здесь, по факту клика — не тянем
+        // их в общий бандл ради функции, которой пользуется малая часть
+        // посетителей (см. обсуждение веса бандла).
+        const { renderQuotePdf } = await import("@/lib/pdf/renderQuotePdf")
         await renderQuotePdf(quoteRef.current, `KP-SBA-${quoteMeta.docNumber}.pdf`)
       } catch (err) {
         console.error("Не удалось сгенерировать PDF КП:", err)

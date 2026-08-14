@@ -1,9 +1,9 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Home } from "./pages/Home";
 import { Katalog } from "./pages/Katalog";
 import { ProductDetail } from "./pages/ProductDetail";
-import { Dashboard } from "./pages/Dashboard";
 import { Videonahljudenie } from "./pages/services/Videonahljudenie";
 import { Skud } from "./pages/services/Skud";
 import { Signalizaciya } from "./pages/services/Signalizaciya";
@@ -15,6 +15,13 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { CartProvider } from "./contexts/CartContext";
 import "./App.css";
+
+// Ленивая загрузка: личный кабинет тянет Konva (react-konva/SbaPlanner) —
+// это ощутимый кусок веса, нужный только авторизованным пользователям на
+// /dashboard. Вынесен в отдельный чанк, чтобы не грузить его на публичных
+// страницах (Home, услуги, каталог) — именно тех, что должны быстро
+// открываться для SEO/Core Web Vitals.
+const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
 
 // Маршрутизируемые (не auth/dashboard) страницы — сейчас доступны на
 // русском (без префикса) и английском (/en/...). Казахский пока только
@@ -59,7 +66,9 @@ function App() {
             element={
               <>
                 <SignedIn>
-                  <Dashboard />
+                  <Suspense fallback={null}>
+                    <Dashboard />
+                  </Suspense>
                 </SignedIn>
                 <SignedOut>
                   <Navigate to="/" replace />

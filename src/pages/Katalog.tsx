@@ -165,8 +165,18 @@ export const Katalog = () => {
   const selectClass =
     "h-10 px-3 rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] text-xs text-foreground outline-none focus:border-red-500/50 transition-colors"
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Главная", item: "https://toosba.kz/" },
+      { "@type": "ListItem", position: 2, name: "Каталог оборудования" },
+    ],
+  }
+
   return (
     <ServiceLayout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <section className="relative py-10 md:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-8">
