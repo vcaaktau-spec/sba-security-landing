@@ -75,3 +75,16 @@ export const products = pgTable("products", {
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+// План из конструктора SbaPlanner (см. src/components/SbaPlanner.tsx).
+// Намеренно отдельная таблица, не привязана к projects — projects сейчас
+// нигде в UI не используется (нет страницы выбора проекта), см. design doc
+// 2026-08-14-sba-planner-annotations-export-design.md "Non-goals".
+export const sbaPlans = pgTable("sba_plans", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  name: text("name").notNull(),
+  data: jsonb("data").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
