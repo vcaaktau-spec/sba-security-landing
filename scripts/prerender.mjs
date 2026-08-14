@@ -396,7 +396,13 @@ async function main() {
   const products = await fetchActiveProducts();
   const pageRoutes = buildPageRoutes();
   const productRoutes = buildProductRoutes(products);
-  const ROUTES = [...pageRoutes, ...productRoutes, NOT_FOUND_ROUTE];
+  // NOT_FOUND_ROUTE — первым в очереди, а не последним: браузер на
+  // Vercel иногда падает целиком где-то посреди сотен товарных страниц
+  // (см. комментарий про CONCURRENCY выше), и тогда всё, что стояло в
+  // очереди ПОСЛЕ точки падения, просто не рендерится в этот раз. 404.html
+  // — маленький фиксированный набор из 13 страниц (12 + сам 404), он
+  // должен успеть отрендериться даже если товарный цикл потом упадёт.
+  const ROUTES = [NOT_FOUND_ROUTE, ...pageRoutes, ...productRoutes];
 
   // Запускаем JS-энтрипоинт vite напрямую через node — без shell:true и без
   // .cmd-обёртки (на Windows spawn .cmd без shell даёт EINVAL). Так .kill()
