@@ -70,7 +70,7 @@
     },
     {
       "source": "/(dashboard|sign-in|sign-up|admin)(.*)",
-      "destination": "/index.html"
+      "destination": "/app.html"
     }
   ]
 }

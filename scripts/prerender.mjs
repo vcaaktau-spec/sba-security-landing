@@ -391,7 +391,22 @@ async function renderWorker(browser, queue, products) {
 }
 
 async function main() {
-  readFileSync(path.join(distDir, "index.html"), "utf-8"); // fail fast если build не запускался
+  const pristineShell = readFileSync(path.join(distDir, "index.html"), "utf-8"); // fail fast если build не запускался
+
+  // /dashboard, /sign-in, /sign-up, /admin — чисто клиентские маршруты
+  // (реального контента для них нет, только React после логина через
+  // Clerk), но vercel.json заворачивает их на index.html — а прямо ниже
+  // этот же index.html будет ПЕРЕЗАПИСАН пре-рендером главной страницы
+  // (Hero/PainSection/Footer и т.д.). Открыв /dashboard напрямую, браузер
+  // сперва получает HTML главной страницы, а React пытается гидрировать
+  // поверх него дерево Dashboard — несовпадающие деревья, часть старого
+  // DOM домашней страницы (тот же Footer) остаётся на месте рядом с
+  // реальным личным кабинетом. Сохраняем ДО перезаписи чистую, пустую
+  // SPA-болванку (какой index.html был сразу после `vite build`, ещё без
+  // пре-рендера) в app.html — на неё в vercel.json переключены эти
+  // маршруты, так что React монтируется с нуля (createRoot), а не
+  // гидрируется поверх чужого контента.
+  writeFileSync(path.join(distDir, "app.html"), pristineShell, "utf-8");
 
   const products = await fetchActiveProducts();
   const pageRoutes = buildPageRoutes();
