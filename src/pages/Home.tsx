@@ -20,7 +20,8 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /* Section reveal — large y movement + scale for visible scroll animation */
 const FadeSection = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 70, scale: 0.985 }}
+    initial={false}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
     whileInView={{ opacity: 1, y: 0, scale: 1 }}
     viewport={{ once: true, margin: "-60px" }}
     transition={{ duration: 1.0, ease, delay }}

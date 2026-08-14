@@ -24,7 +24,7 @@ function StepRow({ step }: { step: Step }) {
 
       {/* Фантомная цифра — водяной знак позади заголовка, а не в отдельной колонке */}
       <motion.span
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={inView ? { opacity: 1 } : {}}
         transition={{ duration: 0.9, ease: E }}
         aria-hidden
@@ -35,7 +35,7 @@ function StepRow({ step }: { step: Step }) {
       </motion.span>
 
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={false}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: E, delay: 0.1 }}
         className="relative max-w-xl"
@@ -89,7 +89,7 @@ export const HowItWorks = () => {
         {/* Header */}
         <div ref={headerRef} className="flex flex-col mb-20 lg:mb-28">
           <motion.div
-            initial={{ opacity: 0, x: -8 }}
+            initial={false}
             animate={headerInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, ease: E }}
             className="flex items-center gap-3 mb-6"
@@ -101,7 +101,7 @@ export const HowItWorks = () => {
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.08, ease: E }}
             className="font-semibold leading-[1.15] text-foreground max-w-2xl"
@@ -132,7 +132,7 @@ export const HowItWorks = () => {
 
         {/* Bottom note */}
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, ease: E }}

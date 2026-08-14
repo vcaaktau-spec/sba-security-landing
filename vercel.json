@@ -21,6 +21,50 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/uslugi/videonahljudenie",
+      "destination": "/uslugi/videonahljudenie/index.html"
+    },
+    {
+      "source": "/uslugi/skud",
+      "destination": "/uslugi/skud/index.html"
+    },
+    {
+      "source": "/uslugi/signalizaciya",
+      "destination": "/uslugi/signalizaciya/index.html"
+    },
+    {
+      "source": "/uslugi/seti",
+      "destination": "/uslugi/seti/index.html"
+    },
+    {
+      "source": "/katalog",
+      "destination": "/katalog/index.html"
+    },
+    {
+      "source": "/en",
+      "destination": "/en/index.html"
+    },
+    {
+      "source": "/en/uslugi/videonahljudenie",
+      "destination": "/en/uslugi/videonahljudenie/index.html"
+    },
+    {
+      "source": "/en/uslugi/skud",
+      "destination": "/en/uslugi/skud/index.html"
+    },
+    {
+      "source": "/en/uslugi/signalizaciya",
+      "destination": "/en/uslugi/signalizaciya/index.html"
+    },
+    {
+      "source": "/en/uslugi/seti",
+      "destination": "/en/uslugi/seti/index.html"
+    },
+    {
+      "source": "/en/katalog",
+      "destination": "/en/katalog/index.html"
+    },
+    {
       "source": "/(dashboard|sign-in|sign-up|uslugi)(.*)",
       "destination": "/index.html"
     },

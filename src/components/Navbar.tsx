@@ -1,20 +1,23 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useTheme } from "@/components/theme-provider"
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Menu, X, Cctv, Moon, Sun, Globe, LayoutDashboard, ArrowRight, User } from "lucide-react"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react"
+import { stripLocalePrefix, withLocalePrefix } from "@/lib/locale"
 
 export const Navbar = () => {
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
+  const location = useLocation()
+  const navigate = useNavigate()
   
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   const { scrollY } = useScroll()
 
@@ -29,16 +32,10 @@ export const Navbar = () => {
   })
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden"
     else document.body.style.overflow = "unset"
     return () => { document.body.style.overflow = "unset" }
   }, [isOpen])
-
-  if (!mounted) return null
 
   const isDark = theme === "dark"
   const toggleTheme = () => setTheme(isDark ? "light" : "dark")
@@ -46,8 +43,18 @@ export const Navbar = () => {
   const languages = ['ru', 'kz', 'en']
   const toggleLanguage = () => {
     const currentIndex = languages.indexOf(i18n.language || 'ru')
-    const nextIndex = (currentIndex + 1) % languages.length
-    i18n.changeLanguage(languages[nextIndex])
+    const nextLang = languages[(currentIndex + 1) % languages.length]
+    // У "en" есть свой префикс URL (/en) — кроулер должен видеть отдельный
+    // адрес. У "kz" пока своего URL нет (черновой перевод сервисных страниц
+    // ещё не проверен носителем языка), поэтому он остаётся только
+    // переключателем интерфейса на том же адресе.
+    const bare = stripLocalePrefix(location.pathname)
+    if (nextLang === 'en') {
+      navigate(withLocalePrefix(bare, 'en'))
+    } else {
+      if (location.pathname !== bare) navigate(bare)
+      i18n.changeLanguage(nextLang)
+    }
   }
 
   const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]

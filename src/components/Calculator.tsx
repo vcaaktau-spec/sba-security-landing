@@ -3,9 +3,10 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "react-i18next"
-import { 
-  Send, CheckCircle2, Loader2, Calculator as CalcIcon, HardDrive, 
-  Video, Activity, Settings2, ShieldCheck, Home, Store, Factory 
+import {
+  Send, CheckCircle2, Loader2, Calculator as CalcIcon, HardDrive,
+  Video, Activity, Settings2, ShieldCheck, Home, Store, Factory,
+  type LucideIcon,
 } from "lucide-react"
 import { useInView } from "react-intersection-observer"
 
@@ -126,7 +127,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
   const slideVariants = {
     enter: (dir: number) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
     center: { zIndex: 1, x: 0, opacity: 1 },
-    exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? 40 : -40, opacity: 0, position: "absolute" as any })
+    exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? 40 : -40, opacity: 0, position: "absolute" as const })
   }
 
   // СИНХРОННЫЕ РАСЧЕТЫ
@@ -138,7 +139,7 @@ export const Calculator = ({ onClose }: CalculatorProps) => {
 
   let poeCost = 0;
   let remainingCameras = cameras;
-  let poeCounts = { 16: 0, 8: 0, 4: 0 };
+  const poeCounts = { 16: 0, 8: 0, 4: 0 };
   while (remainingCameras > 0) {
     if (remainingCameras >= 16) { poeCost += PRICES.poe[16]; remainingCameras -= 16; poeCounts[16]++; }
     else if (remainingCameras > 8) { poeCost += PRICES.poe[16]; remainingCameras -= 16; poeCounts[16]++; }
@@ -246,7 +247,7 @@ const text = `📞 Тел: ${phone}
     </button>
   )
 
-  const ObjectCard = ({ active, icon: Icon, title, onClick }: { active: boolean, icon: any, title: string, onClick: () => void }) => (
+  const ObjectCard = ({ active, icon: Icon, title, onClick }: { active: boolean, icon: LucideIcon, title: string, onClick: () => void }) => (
     <button
       type="button"
       onClick={onClick}

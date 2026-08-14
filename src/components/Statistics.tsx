@@ -72,7 +72,7 @@ export const Statistics = () => {
           {/* Левая колонка — тезис */}
           <div className="mb-14 lg:mb-0">
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={false}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: E }}
@@ -85,7 +85,7 @@ export const Statistics = () => {
             </motion.div>
 
             <motion.h2
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.08, ease: E }}
@@ -97,7 +97,7 @@ export const Statistics = () => {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.14, ease: E }}
@@ -111,7 +111,7 @@ export const Statistics = () => {
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 24 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, ease: E, delay: i * 0.08 }}

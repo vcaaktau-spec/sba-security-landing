@@ -35,7 +35,7 @@ export function DotMatrix({ cols = 9, rows = 6, className = "" }: Props) {
           <motion.div
             key={i}
             style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "currentColor" }}
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={inView ? { opacity: [base, base + 0.22, base] } : { opacity: 0 }}
             transition={{
               duration: 2.2 + (i % 5) * 0.45,

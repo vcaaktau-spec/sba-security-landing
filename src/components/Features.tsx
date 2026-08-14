@@ -55,7 +55,7 @@ export const Features = () => {
           {/* Левая колонка — липкая на десктопе */}
           <div className="lg:sticky lg:top-32 lg:self-start mb-16 lg:mb-0">
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={false}
               animate={isHeaderInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.05, ease: E }}
               className="flex items-center gap-3 mb-6"
@@ -67,7 +67,7 @@ export const Features = () => {
             </motion.div>
 
             <motion.h2
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.12, ease: E }}
               className="font-semibold leading-[1.15] text-foreground mb-5"
@@ -78,7 +78,7 @@ export const Features = () => {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.18, ease: E }}
               className="text-[15px] leading-relaxed text-muted-foreground mb-10"
@@ -135,7 +135,7 @@ export const Features = () => {
 
             {/* Возможности — простой перечень вместо цветных плашек */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: E }}
@@ -187,7 +187,7 @@ const FeatureRow = ({
     <motion.div
       id={`feature-${index}`}
       ref={ref}
-      initial={{ opacity: 0, y: 28 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: E }}

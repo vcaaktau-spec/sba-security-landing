@@ -78,7 +78,7 @@ export const GlobalBackground = () => {
           {cctvTargets.map((target, index) => (
             <div key={index} className="absolute" style={{ top: target.top, left: target.left }}>
               <motion.div
-                initial={{ opacity: 0, scale: 1.5 }}
+                initial={false}
                 animate={{
                   opacity: [0, 1, 1, 0],
                   scale: [1.15, 1, 1, 0.95],

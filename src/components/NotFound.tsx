@@ -57,8 +57,8 @@ export default function NotFound() {
       </div>
 
       {/* Основной контент */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
+      <motion.div
+        initial={false}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-20 flex flex-col items-center text-center px-6 w-full max-w-lg"

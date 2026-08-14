@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Layers, Loader2, Minus, PackageSearch, Plus, Search, ShoppingCart, X } from "lucide-react"
 import { ServiceLayout } from "@/components/ServiceLayout"
@@ -318,28 +319,30 @@ export const Katalog = () => {
             {visible.map((item) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
                 className="flex flex-col bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-5 shadow-sm"
               >
-                {item.brand && (
-                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">
-                    {item.brand}
-                  </span>
-                )}
-                <h4 className="font-bold text-base mb-3 text-foreground leading-snug">{item.name}</h4>
+                <Link to={`/katalog/${item.id}`} className="group">
+                  {item.brand && (
+                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1 block">
+                      {item.brand}
+                    </span>
+                  )}
+                  <h4 className="font-bold text-base mb-3 text-foreground leading-snug group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">{item.name}</h4>
 
-                <ul className="space-y-1 mb-4 flex-grow">
-                  {Object.entries(item.specs).map(([label, value]) => (
-                    <li key={label} className="flex justify-between gap-2 text-xs text-muted-foreground">
-                      <span>{label}</span>
-                      <span className="font-semibold text-foreground text-right">{value}</span>
-                    </li>
-                  ))}
-                </ul>
+                  <ul className="space-y-1 mb-4">
+                    {Object.entries(item.specs).map(([label, value]) => (
+                      <li key={label} className="flex justify-between gap-2 text-xs text-muted-foreground">
+                        <span>{label}</span>
+                        <span className="font-semibold text-foreground text-right">{value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Link>
 
-                <div className="pt-3 border-t border-gray-100 dark:border-[#1a1a1a] flex items-baseline justify-between mb-3">
+                <div className="mt-auto pt-3 border-t border-gray-100 dark:border-[#1a1a1a] flex items-baseline justify-between mb-3">
                   <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Цена</span>
                   <span className="text-lg font-extrabold text-foreground">
                     {item.basePrice.toLocaleString("ru-RU")} <span className="text-red-600 dark:text-red-500 text-sm">₸</span>

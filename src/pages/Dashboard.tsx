@@ -136,7 +136,7 @@ export const Dashboard = () => {
   }
 
   const isAdmin = user?.publicMetadata?.role === "admin";
-  const smoothEase = [0.22, 1, 0.36, 1];
+  const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
   return (
     <div className="relative min-h-screen flex flex-col pt-32 pb-20 px-4 md:px-6">
@@ -237,7 +237,7 @@ export const Dashboard = () => {
 
               <motion.div
                 initial={{ x: "100%", opacity: 0 }} animate={{ x: "0%", opacity: 1 }} exit={{ x: "100%", opacity: 0 }} 
-                transition={{ duration: 0.5, ease: smoothEase as any}}
+                transition={{ duration: 0.5, ease: smoothEase }}
                 className="relative w-full max-w-lg h-full bg-background border-l border-border/50 shadow-2xl flex flex-col z-[10001]"
               >
                 <div className="flex-shrink-0 relative z-30 flex items-center justify-between p-6 sm:p-8 border-b border-border/50 bg-muted/10">

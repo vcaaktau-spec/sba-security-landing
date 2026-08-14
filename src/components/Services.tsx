@@ -127,7 +127,7 @@ export const Services = () => {
         {/* Header */}
         <div className="max-w-2xl mb-20">
           <motion.div
-            initial={{ opacity: 0, x: -8 }}
+            initial={false}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: E }}
@@ -140,7 +140,7 @@ export const Services = () => {
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.08, ease: E }}
@@ -152,7 +152,7 @@ export const Services = () => {
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.14, ease: E }}
@@ -170,7 +170,7 @@ export const Services = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
                   transition={{ duration: 0.45, ease: E }}

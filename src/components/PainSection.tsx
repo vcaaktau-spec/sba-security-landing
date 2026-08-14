@@ -49,7 +49,7 @@ export const PainSection = () => {
         {/* ── SECTION HEADER — тот же приём, что и в Hero ── */}
         <div className="max-w-2xl mb-16 lg:mb-20">
           <motion.div
-            initial={{ opacity: 0, x: -8 }}
+            initial={false}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
@@ -62,7 +62,7 @@ export const PainSection = () => {
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.08, ease }}
@@ -74,7 +74,7 @@ export const PainSection = () => {
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15, ease }}
@@ -106,7 +106,7 @@ export const PainSection = () => {
             return (
               <motion.article
                 key={idx}
-                initial={{ opacity: 0, y: 36 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.7, delay: idx * 0.08, ease }}
@@ -194,7 +194,7 @@ export const PainSection = () => {
 
         {/* ── BOTTOM HOOK — простая строка вместо пилюли ── */}
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15, ease }}

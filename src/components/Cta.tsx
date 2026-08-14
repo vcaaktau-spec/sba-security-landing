@@ -132,7 +132,7 @@ export const Cta = () => {
 
           {/* ── Живой бейдж ── */}
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={false}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.6, ease }}
             className="flex justify-center mb-10"
@@ -155,7 +155,7 @@ export const Cta = () => {
           {/* ── Заголовок — та же гарнитура, что и по всей странице, но на максимум масштаба ── */}
           <div className="text-center max-w-4xl mx-auto mb-14">
             <motion.h2
-              initial={{ opacity: 0, y: 32 }}
+              initial={false}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.9, ease, delay: 0.08 }}
               className="font-semibold leading-[1.02] text-foreground mb-6"
@@ -166,7 +166,7 @@ export const Cta = () => {
                 <span className="text-red-600 dark:text-red-500">{t("cta.title2")}</span>
                 <motion.div
                   className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/70 to-red-500/0"
-                  initial={{ scaleX: 0 }}
+                  initial={false}
                   animate={inView ? { scaleX: 1 } : {}}
                   transition={{ duration: 1, ease, delay: 0.6 }}
                 />
@@ -174,7 +174,7 @@ export const Cta = () => {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease, delay: 0.18 }}
               className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
@@ -185,7 +185,7 @@ export const Cta = () => {
 
           {/* ── Кнопки — без shine-sweep, но крупные и с фирменным свечением ── */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={false}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.26 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
@@ -215,7 +215,7 @@ export const Cta = () => {
 
           {/* ── Метрики — та же полоса с разделителями, что в "В цифрах", крупнее ── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease, delay: 0.38 }}
             className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-slate-200/60 dark:divide-white/[0.08] border-y border-slate-200/60 dark:border-white/[0.08] max-w-3xl mx-auto"

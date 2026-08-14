@@ -340,6 +340,179 @@ const resources = {
         read_news: "читать новость",
         real_cases: "Реальные случаи",
         footer_msg: "Профессиональная система безопасности — это инвестиция, которая окупается в первый же инцидент."
+      },
+
+      service_pages: {
+        common: {
+          breadcrumb_home: "Главная",
+          breadcrumb_services: "Услуги",
+          breadcrumb_nav: "Навигация",
+          whatsapp_long: "Написать в WhatsApp",
+          whatsapp_short: "WhatsApp",
+          call: "Позвонить",
+          included_title: "Что входит в услугу",
+          process_title: "Как мы работаем",
+          related_title: "Другие услуги SBA",
+          equipment_title: "Работаем с оборудованием",
+          layout_back_home: "На главную",
+          layout_cart_aria: "Открыть корзину",
+          layout_theme_aria: "Переключить тему",
+          breadcrumb_catalog: "Каталог",
+          price_label: "Цена",
+          add_to_cart: "В корзину",
+          qty_decrease: "Уменьшить количество",
+          qty_increase: "Увеличить количество",
+          in_cart_suffix: "в корзине",
+          check_availability: "Уточнить наличие",
+          product_note: "Оборудование не продаётся отдельно — только вместе с монтажом. Цена ориентировочная, точная стоимость уточняется при выезде специалиста.",
+          product_loading: "Загружаем товар…",
+          product_not_found: "Такого товара нет в каталоге — возможно, он снят с продажи.",
+          product_back_to_catalog: "Вернуться в каталог",
+          product_seo_title: "{{name}} — купить с установкой в Актау | SBA Security",
+          product_seo_title_missing: "Товар не найден | SBA Security",
+          product_seo_desc: "{{name}} — {{price}}. Продажа с установкой в Актау. Бесплатный выезд инженера, гарантия 12 месяцев.",
+          product_seo_desc_missing: "Такого товара нет в каталоге — возможно, он снят с продажи."
+        },
+        videonabludenie: {
+          breadcrumb_current: "Видеонаблюдение",
+          seo_title: "Установка видеонаблюдения в Актау — под ключ | SBA Security",
+          seo_desc: "Монтаж IP и CCTV видеонаблюдения в Актау. Hikvision, Dahua, Tiandy. Бесплатный выезд инженера, смета за 10 минут, гарантия 12 месяцев.",
+          eyebrow: "Установка под ключ",
+          h1_line1: "Установка",
+          h1_accent: "видеонаблюдения",
+          h1_line3: "в Актау",
+          intro: "Профессиональный монтаж IP‑камер и аналоговых систем CCTV любой сложности — от одной камеры в квартире до распределённых корпоративных комплексов. Работаем с 2016 года, выполнено 300+ объектов в Актау и Мангистауской области.",
+          stats: [
+            { value: "300+", label: "Объектов" },
+            { value: "5 000+", label: "Камер" },
+            { value: "12 мес", label: "Гарантия" }
+          ],
+          included: [
+            "Монтаж IP и аналоговых камер (CCTV) любой сложности",
+            "Установка DVR/NVR-регистраторов с жёсткими дисками WD Purple / Seagate SkyHawk",
+            "Настройка удалённого доступа через смартфон (iVMS-4500, DMSS, SmartPSS)",
+            "Скрытая прокладка кабеля — без торчащих проводов и строительного мусора",
+            "Настройка детекции движения и push-уведомлений на телефон",
+            "Обучение и гарантия 12 месяцев на монтажные работы"
+          ],
+          object_types_title: "Типы объектов",
+          object_types: [
+            { label: "Частный дом / квартира", desc: "от 2 до 8 камер, удалённый просмотр" },
+            { label: "Магазин / торговая точка", desc: "охват кассы, входа, склада" },
+            { label: "Офис / бизнес-центр", desc: "СКУД + видеонаблюдение, интеграция" },
+            { label: "Склад / производство", desc: "широкоугольные и PTZ-камеры, архив 30+ дней" }
+          ],
+          steps: [
+            { title: "Бесплатный выезд", desc: "Инженер осматривает объект и предлагает оптимальные точки установки." },
+            { title: "Смета за 10 минут", desc: "Три варианта по бюджету: эконом, оптимальный, премиум." },
+            { title: "Монтаж за 1–3 дня", desc: "Небольшие объекты — один рабочий день. Большие — до трёх." },
+            { title: "Сдача и обучение", desc: "Ставим приложение на все ваши устройства, объясняем работу системы." }
+          ],
+          cta_title: "Бесплатный выезд инженера",
+          cta_desc: "Подберём оптимальное решение под ваш объект и бюджет — без давления и скрытых платежей.",
+          related: ["СКУД в Актау", "Пожарная сигнализация", "Корпоративные сети"]
+        },
+        skud: {
+          breadcrumb_current: "СКУД",
+          seo_title: "Монтаж СКУД в Актау — системы контроля доступа | SBA Security",
+          seo_desc: "Установка систем контроля и управления доступом (СКУД) в Актау. Магнитные замки, считыватели, турникеты, учёт рабочего времени. Гарантия 12 месяцев.",
+          eyebrow: "Безопасный доступ",
+          h1_line1: "Монтаж СКУД",
+          h1_accent: "в Актау",
+          intro: "Системы контроля и управления доступом (СКУД) для офисов, складов и производственных предприятий. Ограничиваем доступ в зоны, ведём учёт рабочего времени и интегрируем с видеонаблюдением.",
+          included: [
+            "Магнитные замки и электромеханические защёлки для всех типов дверей",
+            "Считыватели карт, брелоков, отпечатков пальцев и QR-кодов",
+            "Учёт рабочего времени — отчёты о приходах/уходах сотрудников",
+            "Турникеты и шлагбаумы для въезда на территорию",
+            "Интеграция СКУД с системой видеонаблюдения",
+            "Программное обеспечение для управления доступом и отчётности"
+          ],
+          object_types_title: "Объекты",
+          object_types: [
+            { label: "Офисы и бизнес-центры", desc: "контроль доступа по этажам и отделам" },
+            { label: "Склады и логистика", desc: "зональный доступ, шлагбаумы, учёт времени" },
+            { label: "Производственные предприятия", desc: "турникеты, биометрия, противоразрывная защита" },
+            { label: "Жилые комплексы", desc: "домофоны IP, запись звонков, управление с телефона" }
+          ],
+          steps: [
+            { title: "Анализ объекта", desc: "Изучаем планировку, количество точек доступа и требования к зонированию." },
+            { title: "Проект и смета", desc: "Подбираем оборудование под задачи: карты, биометрия или мобильный доступ." },
+            { title: "Монтаж", desc: "Устанавливаем замки, считыватели, прокладываем кабель скрытым способом." },
+            { title: "Настройка ПО", desc: "Создаём базу сотрудников, уровни доступа и первые отчёты." }
+          ],
+          cta_title: "Рассчитать стоимость СКУД",
+          cta_desc: "Бесплатный выезд инженера и смета за 10 минут.",
+          related: ["Видеонаблюдение", "Пожарная сигнализация", "Корпоративные сети"]
+        },
+        signalizaciya: {
+          breadcrumb_current: "Сигнализация",
+          seo_title: "Монтаж охранно-пожарной сигнализации в Актау | SBA Security",
+          seo_desc: "Установка охранно-пожарной сигнализации и систем оповещения в Актау. Датчики дыма, ППК, GSM-уведомления. Гарантия и техобслуживание.",
+          eyebrow: "Пожарная защита",
+          h1_line1: "Охранно-пожарная",
+          h1_accent: "сигнализация",
+          h1_line3: "в Актау",
+          intro: "Проектирование и монтаж охранно-пожарной сигнализации и систем оповещения (СОУЭ) для объектов любого класса пожарной опасности. Работаем в соответствии со строительными нормами Казахстана.",
+          included: [
+            "Датчики дыма, тепла и пламени сертифицированных производителей",
+            "Приёмно-контрольные приборы (ППК) с выводом на пульт охраны",
+            "Световые и звуковые оповещатели для эвакуации персонала",
+            "Модули GSM/GPRS — уведомление на телефон при срабатывании",
+            "Системы оповещения и управления эвакуацией (СОУЭ) любого уровня",
+            "Техническое обслуживание и плановые проверки по договору"
+          ],
+          object_types_title: "Объекты",
+          object_types: [
+            { label: "Торговые помещения и рестораны", desc: "скрытая установка, интеграция с противопожарными шторами" },
+            { label: "Офисные здания", desc: "зонирование эвакуации, оповещение по этажам" },
+            { label: "Склады и производства", desc: "пожарный извещатель каждые 25 м², ввод в ПОЖО" },
+            { label: "Жилые комплексы", desc: "системы СОУЭ 1–3 уровней, дымоудаление" }
+          ],
+          steps: [
+            { title: "Обследование", desc: "Определяем категорию объекта и класс пожарной опасности." },
+            { title: "Проект", desc: "Разрабатываем схему размещения датчиков согласно СП 5.13130." },
+            { title: "Монтаж", desc: "Скрытая прокладка кабеля, установка датчиков и ППК." },
+            { title: "Сдача", desc: "Проверка всех зон, акт о вводе в эксплуатацию, инструктаж." }
+          ],
+          cta_title: "Получить консультацию",
+          cta_desc: "Подберём систему под ваш объект и класс пожарной опасности.",
+          related: ["Видеонаблюдение", "СКУД", "Корпоративные сети"]
+        },
+        seti: {
+          breadcrumb_current: "Корпоративные сети",
+          seo_title: "Монтаж корпоративных сетей Wi-Fi в Актау | SBA Security",
+          seo_desc: "Проектирование и монтаж корпоративных Wi-Fi сетей и СКС в Актау. MikroTik, Ubiquiti, Ruijie. Настройка маршрутизаторов, серверных, VLAN.",
+          eyebrow: "IT-инфраструктура",
+          h1_line1: "Корпоративные",
+          h1_accent: "сети и Wi-Fi",
+          h1_line3: "в Актау",
+          intro: "Проектируем и строим надёжную IT-инфраструктуру для бизнеса: структурированные кабельные системы (СКС), корпоративный Wi-Fi, серверные комнаты и интеграция с системами безопасности.",
+          included: [
+            "Проектирование и монтаж корпоративных Wi-Fi сетей (MikroTik, Ubiquiti, Ruijie)",
+            "Прокладка структурированной кабельной системы (СКС) — витая пара, оптика",
+            "Настройка маршрутизаторов, коммутаторов, VLAN и межсетевых экранов",
+            "Монтаж серверных стоек и серверных помещений (ЦОД-lite)",
+            "Мониторинг сети и удалённое администрирование по договору",
+            "Интеграция с системами видеонаблюдения и СКУД по IP"
+          ],
+          object_types_title: "Объекты",
+          object_types: [
+            { label: "Офисы и бизнес-центры", desc: "бесшовный Wi-Fi роуминг, гостевые сети, VLAN по отделам" },
+            { label: "Торговые центры и рестораны", desc: "зоны для клиентов, POS-терминалы, видеоаналитика" },
+            { label: "Склады и производства", desc: "промышленный Wi-Fi для сканеров, терминалов сбора данных" },
+            { label: "Жилые комплексы", desc: "домовые сети, IPTV, управление доступом через IP" }
+          ],
+          steps: [
+            { title: "Аудит и проект", desc: "Изучаем планировку, радиопомехи, количество устройств и нагрузку." },
+            { title: "Смета", desc: "Подбираем оборудование под бюджет: MikroTik, Ubiquiti, Ruijie или Cisco." },
+            { title: "Монтаж", desc: "Прокладываем кабель, устанавливаем точки доступа и настраиваем оборудование." },
+            { title: "Сдача", desc: "Тест покрытия, замер скоростей, документация и обучение IT-специалиста." }
+          ],
+          cta_title: "Обсудить проект сети",
+          cta_desc: "Расскажите о задаче — подберём оборудование под ваш бюджет.",
+          related: ["Видеонаблюдение", "СКУД", "Пожарная сигнализация"]
+        }
       }
     }
   },
@@ -1022,20 +1195,211 @@ const resources = {
         read_news: "read news",
         real_cases: "Real cases",
         footer_msg: "A professional security system is an investment that pays off in the very first incident."
+      },
+
+      service_pages: {
+        common: {
+          breadcrumb_home: "Home",
+          breadcrumb_services: "Services",
+          breadcrumb_nav: "Navigation",
+          whatsapp_long: "Message on WhatsApp",
+          whatsapp_short: "WhatsApp",
+          call: "Call",
+          included_title: "What's included",
+          process_title: "How we work",
+          related_title: "Other SBA services",
+          equipment_title: "Equipment we work with",
+          layout_back_home: "Back to home",
+          layout_cart_aria: "Open cart",
+          layout_theme_aria: "Toggle theme",
+          breadcrumb_catalog: "Catalog",
+          price_label: "Price",
+          add_to_cart: "Add to cart",
+          qty_decrease: "Decrease quantity",
+          qty_increase: "Increase quantity",
+          in_cart_suffix: "in cart",
+          check_availability: "Check availability",
+          product_note: "Equipment is not sold separately — only together with installation. The price is approximate; the exact cost is confirmed on-site by our engineer.",
+          product_loading: "Loading product…",
+          product_not_found: "This product isn't in the catalog — it may have been discontinued.",
+          product_back_to_catalog: "Back to catalog",
+          product_seo_title: "{{name}} — Buy with Installation in Aktau | SBA Security",
+          product_seo_title_missing: "Product not found | SBA Security",
+          product_seo_desc: "{{name}} — {{price}}. Sold with installation in Aktau. Free engineer site visit, 12-month warranty.",
+          product_seo_desc_missing: "This product isn't in the catalog — it may have been discontinued."
+        },
+        videonabludenie: {
+          breadcrumb_current: "CCTV",
+          seo_title: "CCTV Installation in Aktau — Turnkey | SBA Security",
+          seo_desc: "IP and CCTV video surveillance installation in Aktau. Hikvision, Dahua, Tiandy. Free on-site visit, quote in 10 minutes, 12-month warranty.",
+          eyebrow: "Turnkey installation",
+          h1_line1: "CCTV",
+          h1_accent: "installation",
+          h1_line3: "in Aktau",
+          intro: "Professional installation of IP cameras and analog CCTV systems of any complexity — from a single camera in an apartment to distributed corporate complexes. In business since 2016, 300+ installations completed in Aktau and the Mangystau region.",
+          stats: [
+            { value: "300+", label: "Projects" },
+            { value: "5,000+", label: "Cameras" },
+            { value: "12 mo", label: "Warranty" }
+          ],
+          included: [
+            "Installation of IP and analog (CCTV) cameras of any complexity",
+            "DVR/NVR recorders with WD Purple / Seagate SkyHawk hard drives",
+            "Remote access setup via smartphone (iVMS-4500, DMSS, SmartPSS)",
+            "Concealed cable routing — no exposed wires or construction mess",
+            "Motion detection and push notifications to your phone",
+            "Training and a 12-month warranty on installation work"
+          ],
+          object_types_title: "Facility types",
+          object_types: [
+            { label: "Private house / apartment", desc: "2 to 8 cameras, remote viewing" },
+            { label: "Shop / retail outlet", desc: "coverage of checkout, entrance, storage" },
+            { label: "Office / business center", desc: "access control + CCTV, integration" },
+            { label: "Warehouse / production site", desc: "wide-angle and PTZ cameras, 30+ day archive" }
+          ],
+          steps: [
+            { title: "Free site visit", desc: "An engineer inspects the site and suggests the best mounting points." },
+            { title: "Quote in 10 minutes", desc: "Three budget options: economy, optimal, premium." },
+            { title: "Installation in 1–3 days", desc: "Small sites — one working day. Larger ones — up to three." },
+            { title: "Handover and training", desc: "We install the app on all your devices and explain how the system works." }
+          ],
+          cta_title: "Free engineer site visit",
+          cta_desc: "We'll pick the best solution for your site and budget — no pressure, no hidden fees.",
+          related: ["Access control in Aktau", "Fire alarm systems", "Corporate networks"]
+        },
+        skud: {
+          breadcrumb_current: "Access control",
+          seo_title: "Access Control (ACS) Installation in Aktau | SBA Security",
+          seo_desc: "Access control system (ACS) installation in Aktau. Magnetic locks, card readers, turnstiles, time tracking. 12-month warranty.",
+          eyebrow: "Secure access",
+          h1_line1: "Access control",
+          h1_accent: "in Aktau",
+          intro: "Access control systems (ACS) for offices, warehouses, and manufacturing facilities. We restrict access to zones, track working hours, and integrate with video surveillance.",
+          included: [
+            "Magnetic locks and electromechanical strikes for all door types",
+            "Card, key fob, fingerprint, and QR-code readers",
+            "Time tracking — reports on employee arrivals/departures",
+            "Turnstiles and barriers for site entry",
+            "Access control integration with the CCTV system",
+            "Software for access management and reporting"
+          ],
+          object_types_title: "Facilities",
+          object_types: [
+            { label: "Offices and business centers", desc: "access control by floor and department" },
+            { label: "Warehouses and logistics", desc: "zone access, barriers, time tracking" },
+            { label: "Manufacturing facilities", desc: "turnstiles, biometrics, anti-passback protection" },
+            { label: "Residential complexes", desc: "IP intercoms, call recording, control from a phone" }
+          ],
+          steps: [
+            { title: "Site analysis", desc: "We study the layout, number of access points, and zoning requirements." },
+            { title: "Design and quote", desc: "We select equipment for the task: cards, biometrics, or mobile access." },
+            { title: "Installation", desc: "We install locks and readers, running cable concealed." },
+            { title: "Software setup", desc: "We build the employee database, access levels, and initial reports." }
+          ],
+          cta_title: "Get an access control quote",
+          cta_desc: "Free engineer site visit and a quote in 10 minutes.",
+          related: ["CCTV", "Fire alarm systems", "Corporate networks"]
+        },
+        signalizaciya: {
+          breadcrumb_current: "Alarm systems",
+          seo_title: "Fire & Security Alarm Installation in Aktau | SBA Security",
+          seo_desc: "Fire and security alarm installation and notification systems in Aktau. Smoke detectors, control panels, GSM alerts. Warranty and maintenance.",
+          eyebrow: "Fire protection",
+          h1_line1: "Fire & security",
+          h1_accent: "alarm systems",
+          h1_line3: "in Aktau",
+          intro: "Design and installation of fire and security alarm systems and evacuation notification systems for facilities of any fire hazard class. We work in compliance with Kazakhstan's construction codes.",
+          included: [
+            "Certified smoke, heat, and flame detectors",
+            "Control and monitoring panels with output to the security desk",
+            "Light and sound alarms for staff evacuation",
+            "GSM/GPRS modules — phone notification on trigger",
+            "Evacuation notification and control systems (any level)",
+            "Maintenance and scheduled inspections under contract"
+          ],
+          object_types_title: "Facilities",
+          object_types: [
+            { label: "Retail spaces and restaurants", desc: "concealed installation, integration with fire curtains" },
+            { label: "Office buildings", desc: "evacuation zoning, floor-by-floor alerts" },
+            { label: "Warehouses and production sites", desc: "one fire detector per 25 m², fire authority registration" },
+            { label: "Residential complexes", desc: "level 1–3 evacuation systems, smoke extraction" }
+          ],
+          steps: [
+            { title: "Survey", desc: "We determine the facility category and fire hazard class." },
+            { title: "Design", desc: "We design the detector layout per SP 5.13130 code." },
+            { title: "Installation", desc: "Concealed cable routing, detector and control panel installation." },
+            { title: "Handover", desc: "All-zone testing, commissioning certificate, staff briefing." }
+          ],
+          cta_title: "Get a consultation",
+          cta_desc: "We'll select a system for your facility and fire hazard class.",
+          related: ["CCTV", "Access control", "Corporate networks"]
+        },
+        seti: {
+          breadcrumb_current: "Corporate networks",
+          seo_title: "Corporate Wi-Fi Network Installation in Aktau | SBA Security",
+          seo_desc: "Design and installation of corporate Wi-Fi networks and structured cabling in Aktau. MikroTik, Ubiquiti, Ruijie. Routers, server rooms, VLAN setup.",
+          eyebrow: "IT infrastructure",
+          h1_line1: "Corporate",
+          h1_accent: "networks & Wi-Fi",
+          h1_line3: "in Aktau",
+          intro: "We design and build reliable IT infrastructure for business: structured cabling systems, corporate Wi-Fi, server rooms, and integration with security systems.",
+          included: [
+            "Design and installation of corporate Wi-Fi networks (MikroTik, Ubiquiti, Ruijie)",
+            "Structured cabling system (SCS) — twisted pair, fiber optic",
+            "Router, switch, VLAN, and firewall configuration",
+            "Server rack and server room installation (lite data center)",
+            "Network monitoring and remote administration under contract",
+            "IP integration with CCTV and access control systems"
+          ],
+          object_types_title: "Facilities",
+          object_types: [
+            { label: "Offices and business centers", desc: "seamless Wi-Fi roaming, guest networks, VLAN by department" },
+            { label: "Shopping centers and restaurants", desc: "customer zones, POS terminals, video analytics" },
+            { label: "Warehouses and production sites", desc: "industrial Wi-Fi for scanners and data collection terminals" },
+            { label: "Residential complexes", desc: "building networks, IPTV, IP-based access control" }
+          ],
+          steps: [
+            { title: "Audit and design", desc: "We study the layout, radio interference, device count, and load." },
+            { title: "Quote", desc: "We select equipment for your budget: MikroTik, Ubiquiti, Ruijie, or Cisco." },
+            { title: "Installation", desc: "We run cable, install access points, and configure the equipment." },
+            { title: "Handover", desc: "Coverage testing, speed measurements, documentation, and IT staff training." }
+          ],
+          cta_title: "Discuss your network project",
+          cta_desc: "Tell us about your task — we'll select equipment for your budget.",
+          related: ["CCTV", "Access control", "Fire alarm systems"]
+        }
       }
     }
   }
 };
 
+// Начальный язык определяется из URL (/en/... -> en), а не из localStorage —
+// так первый рендер сразу совпадает с тем, что должен увидеть краулер на
+// этом конкретном URL, без вспышки русского текста до переключения.
+function initialLanguageFromPath(): string {
+  if (typeof window === "undefined") return "ru";
+  const path = window.location.pathname;
+  if (path === "/en" || path.startsWith("/en/")) return "en";
+  return "ru";
+}
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "ru",
+    lng: initialLanguageFromPath(),
     fallbackLng: "ru",
     interpolation: {
-      escapeValue: false 
-    }
+      escapeValue: false
+    },
+    // Ресурсы загружены синхронно (без backend-плагина) — ждать нечего,
+    // а Suspense-заглушка react-i18next по умолчанию (useSuspense: true)
+    // на первом рендере не совпадает с уже готовым текстом в пре-рендере
+    // (React error #423, гидратация Suspense-границы) — см. обсуждение
+    // бага с переключением языка.
+    react: {
+      useSuspense: false,
+    },
   });
 
 export default i18n;

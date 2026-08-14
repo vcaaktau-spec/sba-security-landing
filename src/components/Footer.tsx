@@ -44,16 +44,24 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
   }, [])
 
   useEffect(() => {
+    // Lenis скроллит страницу поверх нативного скролла body — просто
+    // overflow:hidden на body его не останавливает, поэтому фон продолжал
+    // ехать под открытой модалкой. Останавливаем сам Lenis на время модалки.
+    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+
     if (modalContent) {
       document.body.style.overflow = "hidden"
       document.body.style.touchAction = "none"
+      lenis?.stop()
     } else {
       document.body.style.overflow = ""
       document.body.style.touchAction = ""
+      lenis?.start()
     }
-    return () => { 
+    return () => {
       document.body.style.overflow = ""
-      document.body.style.touchAction = "" 
+      document.body.style.touchAction = ""
+      lenis?.start()
     }
   }, [modalContent])
 
@@ -92,7 +100,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
       <div className="section-divider" />
 
       {/* Brands marquee */}
-      <div className="w-full overflow-hidden py-4 border-b border-white/[0.06]">
+      <div className="w-full overflow-hidden py-3 border-b border-white/[0.06]">
         <div className="relative marquee-mask">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
@@ -112,11 +120,11 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
       </div>
 
       {/* Main Grid */}
-      <div className="w-full mt-10">
-        <div className="w-full max-w-[1200px] mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-8">
-            
-            <div className="col-span-1 md:col-span-2 flex flex-col gap-4">
+      <div className="w-full mt-6">
+        <div className="w-full max-w-[1200px] mx-auto px-6 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-6">
+
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center">
                   <Shield size={18} className="text-white" />
@@ -157,9 +165,9 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2.5">
               <h4 className="text-[13px] tracking-wide text-muted-foreground">{t("footer.nav_title", "Навигация")}</h4>
-              <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground">
+              <ul className="space-y-2.5 text-[13px] font-medium text-muted-foreground">
                 <li><a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-red-500 transition-colors">{t("nav.services", "Услуги")}</a></li>
                 <li><button onClick={onOpenCalc} className="hover:text-red-500 transition-colors">{t("calc.badge", "Онлайн расчет")}</button></li>
                 <li><button onClick={() => setModalContent("faq")} className="hover:text-red-500 transition-colors">FAQ</button></li>
@@ -171,19 +179,19 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
               </ul>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2.5">
               <h4 className="text-[13px] tracking-wide text-muted-foreground">{t("footer.settings_title", "Документация")}</h4>
-              <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground">
+              <ul className="space-y-2.5 text-[13px] font-medium text-muted-foreground">
                 <li><button onClick={() => setModalContent("privacy")} className="hover:text-red-500 transition-colors">{t("docs.privacy", "Политика конфиденциальности")}</button></li>
                 <li><button onClick={() => setModalContent("terms")} className="hover:text-red-500 transition-colors">{t("docs.terms", "Пользовательское соглашение")}</button></li>
                 <li><button onClick={() => setModalContent("dpa")} className="hover:text-red-500 transition-colors">{t("docs.dpa", "Обработка данных")}</button></li>
               </ul>
             </div>
 
-            <div className="flex flex-col gap-4 lg:items-end">
+            <div className="flex flex-col gap-2.5 lg:items-end">
               <h4 className="text-[13px] tracking-wide text-muted-foreground lg:text-right w-full">{t("footer.contacts_title", "Контакты")}</h4>
               
-              <ul className="space-y-3.5 text-[13px] font-medium text-muted-foreground lg:text-right w-full mb-4">
+              <ul className="space-y-2.5 text-[13px] font-medium text-muted-foreground lg:text-right w-full mb-4">
                 <li>
                   <Magnetic strength={0.1}>
                     <a href="tel:+77779204988" className="hover:text-red-500 transition-colors inline-flex items-center gap-2 justify-start lg:justify-end w-full">
@@ -238,7 +246,7 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
 
       {/* Copyright segment */}
       <div className="w-full border-t border-white/[0.05]">
-        <div className="w-full max-w-[1200px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-muted-foreground/40 font-medium tracking-wide">
+        <div className="w-full max-w-[1200px] mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-muted-foreground/40 font-medium tracking-wide">
           <p>{t("footer.copyright")}</p>
           <a href="https://wa.me/77064230090" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-muted-foreground/70 transition-colors duration-200">
             {t("footer.love")} <span className="text-muted-foreground/60">RS STUDIO</span>
@@ -289,27 +297,27 @@ export const Footer = ({ onOpenCalc }: FooterProps) => {
                         
                         {modalContent === "privacy" && (
                           <div className="space-y-6">
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.privacy_1_title")}</h4><p>{t("docs.privacy_1_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.privacy_2_title")}</h4><p>{t("docs.privacy_2_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.privacy_3_title")}</h4><p>{t("docs.privacy_3_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.privacy_4_title")}</h4><p>{t("docs.privacy_4_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.privacy_5_title")}</h4><p>{t("docs.privacy_5_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.privacy_1_title")}</h4><p>{t("docs.privacy_1_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.privacy_2_title")}</h4><p>{t("docs.privacy_2_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.privacy_3_title")}</h4><p>{t("docs.privacy_3_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.privacy_4_title")}</h4><p>{t("docs.privacy_4_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.privacy_5_title")}</h4><p>{t("docs.privacy_5_desc")}</p></section>
                           </div>
                         )}
                         {modalContent === "terms" && (
                           <div className="space-y-6">
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.terms_1_title")}</h4><p>{t("docs.terms_1_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.terms_2_title")}</h4><p>{t("docs.terms_2_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.terms_3_title")}</h4><p>{t("docs.terms_3_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.terms_4_title")}</h4><p>{t("docs.terms_4_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.terms_1_title")}</h4><p>{t("docs.terms_1_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.terms_2_title")}</h4><p>{t("docs.terms_2_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.terms_3_title")}</h4><p>{t("docs.terms_3_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.terms_4_title")}</h4><p>{t("docs.terms_4_desc")}</p></section>
                           </div>
                         )}
                         {modalContent === "dpa" && (
                           <div className="space-y-6">
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.dpa_1_title")}</h4><p>{t("docs.dpa_1_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.dpa_2_title")}</h4><p>{t("docs.dpa_2_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.dpa_3_title")}</h4><p>{t("docs.dpa_3_desc")}</p></section>
-                            <section><h4 className="text-foreground font-bold mb-2">{t("docs.dpa_4_title")}</h4><p>{t("docs.dpa_4_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.dpa_1_title")}</h4><p>{t("docs.dpa_1_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.dpa_2_title")}</h4><p>{t("docs.dpa_2_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.dpa_3_title")}</h4><p>{t("docs.dpa_3_desc")}</p></section>
+                            <section><h4 className="text-red-600 dark:text-red-500 font-bold mb-2">{t("docs.dpa_4_title")}</h4><p>{t("docs.dpa_4_desc")}</p></section>
                           </div>
                         )}
                       </>

@@ -1,14 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Link } from "react-router-dom"
-import { ArrowLeft, Shield, Phone, MessageCircle, ShoppingCart } from "lucide-react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import { ArrowLeft, Shield, Phone, MessageCircle, ShoppingCart, Globe } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 import { Moon, Sun } from "lucide-react"
 import { SmoothScroll } from "./smooth-scroll"
 import { GlobalBackground } from "./GlobalBackground"
 import { CartDrawer } from "./CartDrawer"
 import { useCart } from "@/contexts/CartContext"
+import { stripLocalePrefix, withLocalePrefix } from "@/lib/locale"
 
 interface ServiceLayoutProps {
   children: React.ReactNode
@@ -17,7 +19,19 @@ interface ServiceLayoutProps {
 export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
   const { theme, setTheme } = useTheme()
   const { totalQty } = useCart()
+  const { t, i18n } = useTranslation()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [isCartOpen, setIsCartOpen] = useState(false)
+
+  const isEn = i18n.language === "en"
+  const homePath = isEn ? "/en" : "/"
+
+  const toggleLanguage = () => {
+    const nextLang = isEn ? "ru" : "en"
+    const bare = stripLocalePrefix(location.pathname)
+    navigate(withLocalePrefix(bare, nextLang))
+  }
 
   return (
     <SmoothScroll>
@@ -27,7 +41,7 @@ export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
         {/* Header */}
         <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+            <Link to={homePath} className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
               <div className="w-7 h-7 rounded-md bg-red-600 flex items-center justify-center shadow-[0_0_10px_rgba(220,38,38,0.3)]">
                 <Shield size={14} className="text-white" />
               </div>
@@ -38,9 +52,17 @@ export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
 
             <div className="flex items-center gap-3">
               <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-1 px-2 h-8 rounded-full text-xs font-mono font-bold uppercase text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                aria-label="Language"
+              >
+                <Globe size={13} />
+                {isEn ? "EN" : "RU"}
+              </button>
+              <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                aria-label="Открыть корзину"
+                aria-label={t("service_pages.common.layout_cart_aria")}
               >
                 <ShoppingCart size={14} />
                 {totalQty > 0 && (
@@ -52,16 +74,16 @@ export const ServiceLayout = ({ children }: ServiceLayoutProps) => {
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                aria-label="Переключить тему"
+                aria-label={t("service_pages.common.layout_theme_aria")}
               >
                 {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
               </button>
               <Link
-                to="/"
+                to={homePath}
                 className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft size={13} />
-                На главную
+                {t("service_pages.common.layout_back_home")}
               </Link>
             </div>
           </div>

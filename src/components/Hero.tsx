@@ -34,7 +34,7 @@ export const Hero = () => {
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 sm:px-10 py-28 lg:py-0">
         <div className="max-w-xl">
           <motion.div
-            initial={{ opacity: 0, x: -8 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: E }}
             className="flex items-center gap-3 mb-7"
@@ -54,7 +54,7 @@ export const Hero = () => {
             ].map(({ text, cls, delay }) => (
               <div key={text} className="overflow-hidden">
                 <motion.span
-                  initial={{ y: "100%", opacity: 0 }}
+                  initial={false}
                   animate={{ y: "0%", opacity: 1 }}
                   transition={{ duration: 0.7, ease: E, delay }}
                   className={`block font-semibold leading-[1.08] whitespace-nowrap ${cls}`}
@@ -67,7 +67,7 @@ export const Hero = () => {
           </h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.56, ease: E }}
             className="text-base leading-relaxed mb-10 text-muted-foreground"
@@ -76,7 +76,7 @@ export const Hero = () => {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.68, ease: E }}
             className="flex flex-wrap items-center gap-x-8 gap-y-4"

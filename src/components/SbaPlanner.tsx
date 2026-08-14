@@ -8,12 +8,14 @@ import {
   BellRing, SquareTerminal, Hand, Lock, CreditCard, LogOut, Cpu 
 } from 'lucide-react';
 import { Stage, Layer, Rect, Text, Group, Transformer, Path, Line, Circle, Wedge } from 'react-konva';
+import type Konva from 'konva';
 
 type PlannerRoom = { id: string; x: number; y: number; width: number; height: number; type: 'room' | 'circle' | 'radius' };
 type DeviceCategory = 'cctv' | 'lan' | 'fire' | 'arch' | 'acs';
 type DeviceType = 'camera' | 'nvr' | 'switch' | 'monitor' | 'rack' | 'socket' | 'smoke' | 'panel' | 'pc' | 'router' | 'printer' | 'wifi' | 'lan_switch' | 'door' | 'heat' | 'linear' | 'siren' | 'tableau' | 'call_point' | 'lock' | 'reader' | 'acs_switch' | 'exit_btn' | 'controller';
 type PlannerDevice = { id: string; x: number; y: number; rotation: number; scaleX?: number; scaleY?: number; type: DeviceType; category: DeviceCategory; label: string; radius?: number };
 type DrawnLine = { id: string; points: number[]; type: 'trunk' | 'corrugation' | 'cable'; category: DeviceCategory; x?: number; y?: number };
+type AutoCableLine = { points: number[]; color: string; dash: number[] };
 
 const M_PER_PX = 0.1;
 const SNAP_SIZE = 10;
@@ -85,8 +87,8 @@ export const SbaPlanner = () => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   
-  const trRef = useRef<any>(null);
-  const stageRef = useRef<any>(null);
+  const trRef = useRef<Konva.Transformer>(null);
+  const stageRef = useRef<Konva.Stage>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const saveToHistory = () => {
@@ -138,15 +140,15 @@ export const SbaPlanner = () => {
 
   useEffect(() => {
     if (selectedId && trRef.current) {
-      if (selectedId.startsWith('line')) { 
-        trRef.current.nodes([]); 
-        trRef.current.getLayer().batchDraw(); 
-        return; 
+      if (selectedId.startsWith('line')) {
+        trRef.current.nodes([]);
+        trRef.current.getLayer()?.batchDraw();
+        return;
       }
-      
-      let node = stageRef.current.findOne('#' + selectedId);
+
+      let node = stageRef.current?.findOne('#' + selectedId);
       if (selectedId.startsWith('dev-')) {
-         node = stageRef.current.findOne('#dev_body_' + selectedId); 
+         node = stageRef.current?.findOne('#dev_body_' + selectedId);
       }
 
       if (node) {
@@ -162,7 +164,7 @@ export const SbaPlanner = () => {
             trRef.current.enabledAnchors([]); 
             trRef.current.rotateEnabled(true);
         }
-        trRef.current.getLayer().batchDraw();
+        trRef.current.getLayer()?.batchDraw();
       }
     } else if (trRef.current) { trRef.current.nodes([]); }
   }, [selectedId, rooms, devices]);
@@ -174,7 +176,7 @@ export const SbaPlanner = () => {
 
   const resetView = () => { setScale(1); setPosition({ x: 0, y: 0 }); };
 
-  const handleWheel = (e: any) => {
+  const handleWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
     if (!e.evt.ctrlKey) return; 
     e.evt.preventDefault();
     const scaleBy = 1.1; const stage = stageRef.current; if (!stage) return;
@@ -211,10 +213,11 @@ export const SbaPlanner = () => {
     setDrawMode({ active: true, type, category }); setSelectedId(null);
   };
 
-  const getRelativePointerPosition = (node: any) => {
+  const getRelativePointerPosition = (node: Konva.Node) => {
     const transform = node.getAbsoluteTransform().copy();
     transform.invert();
-    return transform.point(node.getStage().getPointerPosition());
+    const pointerPos = node.getStage()?.getPointerPosition() ?? { x: 0, y: 0 };
+    return transform.point(pointerPos);
   };
 
   const getSnapPos = (x: number, y: number) => {
@@ -228,9 +231,11 @@ export const SbaPlanner = () => {
     return { x: finalX, y: finalY };
   };
 
-  const handleStagePointerDown = (e: any) => {
+  const handleStagePointerDown = (e: Konva.KonvaEventObject<PointerEvent | TouchEvent>) => {
     if (drawMode.active) {
-      const pos = getRelativePointerPosition(e.target.getStage());
+      const stageNode = e.target.getStage();
+      if (!stageNode) return;
+      const pos = getRelativePointerPosition(stageNode);
       const { x: finalX, y: finalY } = getSnapPos(pos.x, pos.y);
 
       if (!currentLinePoints) { 
@@ -245,12 +250,14 @@ export const SbaPlanner = () => {
     if (e.target === e.target.getStage()) setSelectedId(null);
   };
 
-  const handleStagePointerMove = (e: any) => {
+  const handleStagePointerMove = (e: Konva.KonvaEventObject<PointerEvent | TouchEvent>) => {
     if (drawMode.active && currentLinePoints) {
-      const pos = getRelativePointerPosition(e.target.getStage());
+      const stageNode = e.target.getStage();
+      if (!stageNode) return;
+      const pos = getRelativePointerPosition(stageNode);
       const { x: finalX, y: finalY } = getSnapPos(pos.x, pos.y);
       setCurrentLinePoints([currentLinePoints[0], currentLinePoints[1], finalX, finalY]);
-    } else if (!drawMode.active && !selectedId && e.evt.buttons === 1) {
+    } else if (!drawMode.active && !selectedId && "buttons" in e.evt && e.evt.buttons === 1) {
       setPosition({ x: position.x + e.evt.movementX, y: position.y + e.evt.movementY });
     }
   };
@@ -297,7 +304,7 @@ export const SbaPlanner = () => {
   };
 
   const computedCables = useMemo(() => {
-    let lines: any[] = []; let totalAuto = 0;
+    const lines: AutoCableLine[] = []; let totalAuto = 0;
     if (isAutoCable) {
       const cctvNvr = devices.find(d => d.type === 'nvr' && d.category === 'cctv'); const cctvSwitches = devices.filter(d => d.type === 'switch' && d.category === 'cctv');
       devices.filter(d => d.category === 'cctv' && (d.type === 'camera' || d.type === 'monitor')).forEach(dev => {
@@ -557,7 +564,7 @@ export const SbaPlanner = () => {
 
             {/* КОМНАТЫ И РАДИУСЫ */}
             {rooms.map((room) => {
-              const handleDragMove = (e: any) => {
+              const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
                  const node = e.target;
                  const { x, y } = getSnapPos(node.x(), node.y());
                  node.position({ x, y });
@@ -610,7 +617,7 @@ export const SbaPlanner = () => {
             {devices.map((dev) => {
                const color = dev.category === 'cctv' ? '#06b6d4' : dev.category === 'lan' ? '#22c55e' : dev.category === 'acs' ? '#eab308' : dev.category === 'fire' ? '#ef4444' : '#a3a3a3';
                
-               const handleDragMove = (e: any) => {
+               const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
                  const node = e.target;
                  const { x, y } = getSnapPos(node.x(), node.y());
                  node.position({ x, y });

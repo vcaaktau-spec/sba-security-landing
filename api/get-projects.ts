@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { db } from '../src/db/index.js';
 import { projects, documents } from '../src/db/schema.js';
 import { eq } from 'drizzle-orm';
@@ -7,7 +8,7 @@ const withRetry = async <T>(fn: () => Promise<T>, retries = 3): Promise<T> => {
   for (let i = 0; i < retries; i++) {
     try {
       return await fn();
-    } catch (error: any) {
+    } catch (error) {
       if (i === retries - 1) throw error;
       console.warn(`Neon DB fetch failed. Попытка ${i + 1} из ${retries}...`);
       await new Promise(res => setTimeout(res, 500));
@@ -16,7 +17,7 @@ const withRetry = async <T>(fn: () => Promise<T>, retries = 3): Promise<T> => {
   throw new Error("Unreachable");
 };
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -40,8 +41,8 @@ export default async function handler(req: any, res: any) {
     result.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
 
     res.status(200).json(result);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Ошибка при получении объектов:", error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 }
