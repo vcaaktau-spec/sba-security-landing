@@ -9,13 +9,15 @@ import {
 } from 'lucide-react';
 import { Stage, Layer, Rect, Text, Group, Transformer, Path, Line, Circle, Wedge } from 'react-konva';
 import type Konva from 'konva';
+import { useUser } from '@clerk/clerk-react';
 
 type PlannerRoom = { id: string; x: number; y: number; width: number; height: number; type: 'room' | 'circle' | 'radius' };
 type DeviceCategory = 'cctv' | 'lan' | 'fire' | 'arch' | 'acs';
 type DeviceType = 'camera' | 'nvr' | 'switch' | 'monitor' | 'rack' | 'socket' | 'smoke' | 'panel' | 'pc' | 'router' | 'printer' | 'wifi' | 'lan_switch' | 'door' | 'heat' | 'linear' | 'siren' | 'tableau' | 'call_point' | 'lock' | 'reader' | 'acs_switch' | 'exit_btn' | 'controller';
-type PlannerDevice = { id: string; x: number; y: number; rotation: number; scaleX?: number; scaleY?: number; type: DeviceType; category: DeviceCategory; label: string; radius?: number };
+type PlannerDevice = { id: string; x: number; y: number; rotation: number; scaleX?: number; scaleY?: number; type: DeviceType; category: DeviceCategory; label: string; radius?: number; price?: number };
 type DrawnLine = { id: string; points: number[]; type: 'trunk' | 'corrugation' | 'cable'; category: DeviceCategory; x?: number; y?: number };
 type AutoCableLine = { points: number[]; color: string; dash: number[] };
+type PlannerText = { id: string; x: number; y: number; rotation: number; content: string; fontSize: 12 | 18 | 28; bold: boolean };
 
 const M_PER_PX = 0.1;
 const SNAP_SIZE = 10;
@@ -24,6 +26,9 @@ const SNAP_DISTANCE = 5;
 const t = {
   arch: 'Архитектура', cctv: 'Видеонаблюдение', lan: 'Локалка (ЛВС)', fire: 'ОПС (Пожарная)', acs: 'СКУД IP',
   block: 'Блок', circle: 'Круг', radiusZone: 'Зона/Радиус', trunk: 'К/Канал', corrugation: 'Гофра', door: 'Дверь',
+  text: 'Текст', textContent: 'Текст:', textSize: 'Размер:', textSizeS: 'S', textSizeM: 'M', textSizeL: 'L',
+  priceLabel: 'Цена (₸):',
+  savePlan: 'Сохранить', myPlans: 'Мои планы', planNamePlaceholder: 'Название плана', noSavedPlans: 'Нет сохранённых планов', loadPlan: 'Загрузить',
   camera: 'Камера', switch: 'Свитч', nvr: 'Регистратор', monitor: 'Монитор', line: 'Трасса', rack: 'Шкаф',
   router: 'Роутер', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Точка', pc: 'Раб. Место', printer: 'Принтер', socket: 'Розетка',
   smoke: 'Датчик Дымовой', heat: 'Датчик Тепловой', linear: 'Датчик Линейный', siren: 'Сирена', tableau: 'Табло', call_point: 'ИПР', panel: 'ППК',
@@ -69,6 +74,13 @@ export const SbaPlanner = () => {
   const [rooms, setRooms] = useState<PlannerRoom[]>([]);
   const [devices, setDevices] = useState<PlannerDevice[]>([]);
   const [drawnLines, setDrawnLines] = useState<DrawnLine[]>([]);
+  const [texts, setTexts] = useState<PlannerText[]>([]);
+  const { user } = useUser();
+  const [planId, setPlanId] = useState<string | null>(null);
+  const [planName, setPlanName] = useState('');
+  const [savedPlans, setSavedPlans] = useState<{ id: string; name: string; updatedAt: string }[]>([]);
+  const [isPlansOpen, setIsPlansOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [drawMode, setDrawMode] = useState<{ active: boolean, type: 'trunk' | 'corrugation' | 'cable', category: DeviceCategory }>({ active: false, type: 'cable', category: 'arch' });
   const [currentLinePoints, setCurrentLinePoints] = useState<number[] | null>(null);
 
@@ -155,13 +167,17 @@ export const SbaPlanner = () => {
         trRef.current.nodes([node]);
         const isRoom = selectedId.startsWith('room');
         const isDoor = selectedId.startsWith('dev-door');
-        
+        const isText = selectedId.startsWith('text-');
+
         if (isRoom || isDoor) {
             trRef.current.enabledAnchors(['top-left', 'top-right', 'bottom-left', 'bottom-right', 'top-center', 'bottom-center', 'left-center', 'right-center']);
             trRef.current.rotateEnabled(true);
             if (isRoom) trRef.current.rotateEnabled(false);
+        } else if (isText) {
+            trRef.current.enabledAnchors([]);
+            trRef.current.rotateEnabled(true);
         } else {
-            trRef.current.enabledAnchors([]); 
+            trRef.current.enabledAnchors([]);
             trRef.current.rotateEnabled(true);
         }
         trRef.current.getLayer()?.batchDraw();
@@ -207,6 +223,71 @@ export const SbaPlanner = () => {
         id: `dev-${type}-${Date.now()}`, x: centerX, y: centerY, rotation: 0, scaleX: 1, scaleY: 1, type, category, label, radius: defaultRadius 
     };
     setDevices([...devices, newDev]); setSelectedId(newDev.id);
+  };
+
+  const addText = () => {
+    saveToHistory();
+    const centerX = (stageSize.width / 2 - position.x) / scale;
+    const centerY = (stageSize.height / 2 - position.y) / scale;
+    const newText: PlannerText = { id: `text-${Date.now()}`, x: centerX, y: centerY, rotation: 0, content: t.text, fontSize: 18, bold: false };
+    setTexts([...texts, newText]);
+    setSelectedId(newText.id);
+  };
+
+  const handleSave = async () => {
+    if (!user || !planName.trim()) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/sba-plans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: planId ?? undefined,
+          userId: user.id,
+          name: planName.trim(),
+          data: { rooms, devices, drawnLines, texts },
+        }),
+      });
+      if (!res.ok) throw new Error('save failed');
+      const saved = await res.json();
+      setPlanId(saved.id);
+    } catch (err) {
+      console.error('Не удалось сохранить план:', err);
+      alert('Не удалось сохранить план. Попробуйте ещё раз.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const fetchSavedPlans = async () => {
+    if (!user) return;
+    try {
+      const res = await fetch(`/api/get-sba-plans?userId=${encodeURIComponent(user.id)}`);
+      if (!res.ok) throw new Error('list failed');
+      setSavedPlans(await res.json());
+    } catch (err) {
+      console.error('Не удалось получить список планов:', err);
+    }
+  };
+
+  const handleLoad = async (id: string) => {
+    try {
+      const res = await fetch(`/api/get-sba-plan?id=${encodeURIComponent(id)}`);
+      if (!res.ok) throw new Error('load failed');
+      const plan = await res.json();
+      saveToHistory();
+      setRooms(plan.data.rooms ?? []);
+      setDevices(plan.data.devices ?? []);
+      setDrawnLines(plan.data.drawnLines ?? []);
+      setTexts(plan.data.texts ?? []);
+      setPlanId(plan.id);
+      setPlanName(plan.name);
+      setSelectedId(null);
+      setIsPlansOpen(false);
+    } catch (err) {
+      console.error('Не удалось загрузить план:', err);
+      alert('Не удалось загрузить план.');
+    }
   };
 
   const startDrawMode = (type: 'trunk' | 'corrugation' | 'cable', category: DeviceCategory) => {
@@ -376,6 +457,7 @@ export const SbaPlanner = () => {
              <button onClick={() => addRoom('radius')} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 border border-blue-700 rounded-md transition-all text-[10px] sm:text-xs font-medium shadow-sm whitespace-nowrap"><Radar size={14} /> {t.radiusZone}</button>
              <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
              <button onClick={() => addDevice('door', 'arch', t.door)} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><DoorClosed size={14} /> {t.door}</button>
+             <button onClick={addText} className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border hover:bg-muted rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap"><SquareTerminal size={14} /> {t.text}</button>
              <div className="w-px h-6 bg-border mx-1 shrink-0 hidden sm:block" />
              <button onClick={() => startDrawMode('trunk', 'arch')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.type === 'trunk' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Box size={14} /> {t.trunk}</button>
              <button onClick={() => startDrawMode('corrugation', 'arch')} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border rounded-md transition-all text-[10px] sm:text-xs font-medium whitespace-nowrap ${drawMode.active && drawMode.type === 'corrugation' ? 'bg-muted border-border text-foreground shadow-inner' : 'bg-transparent border-transparent text-muted-foreground hover:bg-muted'}`}><Activity size={14} /> {t.corrugation}</button>
@@ -438,6 +520,48 @@ export const SbaPlanner = () => {
           <button onClick={handleUndo} disabled={history.length === 0} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border rounded-md transition-all text-[10px] sm:text-xs font-medium ${history.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-muted'}`} title={t.undo}>
               <RotateCcw size={14} /> <span className="hidden sm:inline">{t.undo}</span>
           </button>
+
+          <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 border border-border rounded-md bg-secondary/50">
+            <input
+              type="text"
+              value={planName}
+              onChange={(e) => setPlanName(e.target.value)}
+              placeholder={t.planNamePlaceholder}
+              className="text-xs sm:text-sm bg-transparent outline-none w-24 sm:w-36 text-foreground placeholder:text-muted-foreground"
+            />
+            <button
+              onClick={handleSave}
+              disabled={!planName.trim() || isSaving}
+              className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] sm:text-xs font-medium ${!planName.trim() || isSaving ? 'opacity-50 cursor-not-allowed text-muted-foreground' : 'text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30'}`}
+            >
+              {t.savePlan}
+            </button>
+            <div className="relative">
+              <button
+                onClick={() => { setIsPlansOpen(!isPlansOpen); if (!isPlansOpen) fetchSavedPlans(); }}
+                className="flex items-center gap-1 px-2 py-1 rounded text-[10px] sm:text-xs font-medium text-muted-foreground hover:bg-muted"
+              >
+                {t.myPlans}
+              </button>
+              {isPlansOpen && (
+                <div className="absolute top-full left-0 mt-1 w-56 bg-background border border-border rounded-md shadow-lg z-50 max-h-64 overflow-y-auto">
+                  {savedPlans.length === 0 ? (
+                    <p className="p-3 text-xs text-muted-foreground">{t.noSavedPlans}</p>
+                  ) : (
+                    savedPlans.map((p) => (
+                      <button
+                        key={p.id}
+                        onClick={() => handleLoad(p.id)}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-muted border-b border-border last:border-0"
+                      >
+                        {p.name}
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 px-2.5 sm:px-3 py-1.5 border border-border rounded-md bg-secondary/50">
             <div className="flex items-center gap-1.5 sm:gap-2">
@@ -613,6 +737,37 @@ export const SbaPlanner = () => {
               )
             })}
 
+            {/* ТЕКСТОВЫЕ АННОТАЦИИ */}
+            {texts.map((txt) => (
+              <Text
+                key={txt.id}
+                id={txt.id}
+                text={txt.content}
+                x={txt.x}
+                y={txt.y}
+                rotation={txt.rotation}
+                fontSize={txt.fontSize}
+                fontStyle={txt.bold ? 'bold' : 'normal'}
+                fill={selectedId === txt.id ? '#2563eb' : '#374151'}
+                draggable={!drawMode.active}
+                onPointerDown={(e) => { if (!drawMode.active) { e.cancelBubble = true; setSelectedId(txt.id); } }}
+                onDragStart={() => saveToHistory()}
+                onDragMove={(e) => {
+                  const node = e.target;
+                  const { x, y } = getSnapPos(node.x(), node.y());
+                  node.position({ x, y });
+                }}
+                onDragEnd={(e) => { e.cancelBubble = true; setTexts((prev) => prev.map((t2) => (t2.id === txt.id ? { ...t2, x: e.target.x(), y: e.target.y() } : t2))); }}
+                onTransformStart={() => saveToHistory()}
+                onTransform={(e) => {
+                  const node = e.target;
+                  setTexts((prev) => prev.map((t2) => (t2.id === txt.id ? { ...t2, rotation: node.rotation() } : t2)));
+                  node.scaleX(1);
+                  node.scaleY(1);
+                }}
+              />
+            ))}
+
             {/* ПРОФЕССИОНАЛЬНЫЕ ИКОНКИ */}
             {devices.map((dev) => {
                const color = dev.category === 'cctv' ? '#06b6d4' : dev.category === 'lan' ? '#22c55e' : dev.category === 'acs' ? '#eab308' : dev.category === 'fire' ? '#ef4444' : '#a3a3a3';
@@ -759,15 +914,28 @@ export const SbaPlanner = () => {
                             onFocus={() => saveToHistory()}
                             className="text-xs sm:text-sm font-medium bg-transparent border-b border-dashed border-muted-foreground/50 outline-none w-20 sm:w-32 text-foreground focus:border-blue-500 py-0.5"
                         />
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase ml-2">{t.priceLabel}</span>
+                        <input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={devices.find(d => d.id === selectedId)?.price ?? ''}
+                            onChange={(e) => {
+                                const val = e.target.value === '' ? undefined : parseFloat(e.target.value);
+                                setDevices(prev => prev.map(d => d.id === selectedId ? { ...d, price: val } : d));
+                            }}
+                            onFocus={() => saveToHistory()}
+                            className="text-xs sm:text-sm font-medium bg-transparent border-b border-dashed border-muted-foreground/50 outline-none w-16 sm:w-20 text-foreground focus:border-blue-500 py-0.5"
+                        />
                     </div>
                 )}
-                
+
                 {/* Настройка радиуса (только для Wi-Fi и Пожарки) */}
                 {['wifi', 'smoke', 'heat'].includes(devices.find(d => d.id === selectedId)?.type || '') && (
                      <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 border-r border-border shrink-0">
                         <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase">Радиус (М):</span>
-                        <input 
-                            type="number" 
+                        <input
+                            type="number"
                             value={Math.round((devices.find(d => d.id === selectedId)?.radius || 100) * M_PER_PX)}
                             onChange={(e) => {
                                 const val = parseFloat(e.target.value) || 0;
@@ -777,13 +945,41 @@ export const SbaPlanner = () => {
                         />
                     </div>
                 )}
-                
-                <button onClick={() => { 
+
+                {/* Редактирование текста */}
+                {texts.find(t2 => t2.id === selectedId) && (
+                    <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 border-r border-border shrink-0">
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase">{t.textContent}</span>
+                        <input
+                            type="text"
+                            value={texts.find(t2 => t2.id === selectedId)?.content || ''}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setTexts(prev => prev.map(t2 => t2.id === selectedId ? { ...t2, content: val } : t2));
+                            }}
+                            onFocus={() => saveToHistory()}
+                            className="text-xs sm:text-sm font-medium bg-transparent border-b border-dashed border-muted-foreground/50 outline-none w-24 sm:w-40 text-foreground focus:border-blue-500 py-0.5"
+                        />
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-semibold uppercase ml-1">{t.textSize}</span>
+                        {([12, 18, 28] as const).map((size, i) => (
+                            <button
+                                key={size}
+                                onClick={() => { saveToHistory(); setTexts(prev => prev.map(t2 => t2.id === selectedId ? { ...t2, fontSize: size } : t2)); }}
+                                className={`px-1.5 py-0.5 text-[10px] font-bold rounded border ${texts.find(t2 => t2.id === selectedId)?.fontSize === size ? 'bg-blue-600 text-white border-blue-700' : 'bg-transparent border-border text-muted-foreground hover:bg-muted'}`}
+                            >
+                                {[t.textSizeS, t.textSizeM, t.textSizeL][i]}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                <button onClick={() => {
                     saveToHistory();
-                    setRooms(rooms.filter(r => r.id !== selectedId)); 
-                    setDevices(devices.filter(d => d.id !== selectedId)); 
-                    setDrawnLines(drawnLines.filter(l => l.id !== selectedId)); 
-                    setSelectedId(null); 
+                    setRooms(rooms.filter(r => r.id !== selectedId));
+                    setDevices(devices.filter(d => d.id !== selectedId));
+                    setDrawnLines(drawnLines.filter(l => l.id !== selectedId));
+                    setTexts(texts.filter(t2 => t2.id !== selectedId));
+                    setSelectedId(null);
                   }}
                   className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30 rounded-md transition-all flex items-center justify-center shrink-0">
                   <Trash2 size={16} />
@@ -792,7 +988,7 @@ export const SbaPlanner = () => {
           )}
         </div>
 
-        {position.x === 0 && scale === 1 && rooms.length === 0 && devices.length === 0 && drawnLines.length === 0 && !drawMode.active && (
+        {position.x === 0 && scale === 1 && rooms.length === 0 && devices.length === 0 && drawnLines.length === 0 && texts.length === 0 && !drawMode.active && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/40 text-center pointer-events-none px-4">
                 <p className="font-mono text-xs sm:text-sm font-bold uppercase">{t.emptyHint}</p>
                 <p className="text-[10px] sm:text-xs mt-1 opacity-70 italic">{t.betaHint}</p>
