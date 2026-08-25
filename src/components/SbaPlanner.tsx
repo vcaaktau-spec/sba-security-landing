@@ -30,6 +30,7 @@ const t = {
   priceLabel: 'Цена (₸):',
   savePlan: 'Сохранить', myPlans: 'Мои планы', planNamePlaceholder: 'Название плана', noSavedPlans: 'Нет сохранённых планов', loadPlan: 'Загрузить',
   objectList: 'Объекты', objectListEmpty: 'Пока пусто', showList: 'Список', hideList: 'Скрыть список',
+  redo: 'Вперёд',
   camera: 'Камера', switch: 'Свитч', nvr: 'Регистратор', monitor: 'Монитор', line: 'Трасса', rack: 'Шкаф',
   router: 'Роутер', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Точка', pc: 'Раб. Место', printer: 'Принтер', socket: 'Розетка',
   smoke: 'Датчик Дымовой', heat: 'Датчик Тепловой', linear: 'Датчик Линейный', siren: 'Сирена', tableau: 'Табло', call_point: 'ИПР', panel: 'ППК',
@@ -86,6 +87,7 @@ export const SbaPlanner = () => {
   const [currentLinePoints, setCurrentLinePoints] = useState<number[] | null>(null);
 
   const [history, setHistory] = useState<string[]>([]);
+  const [redoStack, setRedoStack] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'arch' | 'cctv' | 'lan' | 'fire' | 'acs'>('arch');
   
@@ -106,16 +108,31 @@ export const SbaPlanner = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const saveToHistory = () => {
-    const stateStr = JSON.stringify({ rooms, devices, drawnLines });
+    const stateStr = JSON.stringify({ rooms, devices, drawnLines, texts });
     setHistory(prev => [...prev.slice(-20), stateStr]);
+    setRedoStack([]);
   };
 
   const handleUndo = () => {
     if (history.length === 0) return;
+    const currentStateStr = JSON.stringify({ rooms, devices, drawnLines, texts });
     const lastStateStr = history[history.length - 1];
     const lastState = JSON.parse(lastStateStr);
-    setRooms(lastState.rooms); setDevices(lastState.devices); setDrawnLines(lastState.drawnLines);
-    setHistory(prev => prev.slice(0, -1)); setSelectedId(null);
+    setRooms(lastState.rooms); setDevices(lastState.devices); setDrawnLines(lastState.drawnLines); setTexts(lastState.texts ?? []);
+    setHistory(prev => prev.slice(0, -1));
+    setRedoStack(prev => [...prev, currentStateStr]);
+    setSelectedId(null);
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+    const currentStateStr = JSON.stringify({ rooms, devices, drawnLines, texts });
+    const nextStateStr = redoStack[redoStack.length - 1];
+    const nextState = JSON.parse(nextStateStr);
+    setRooms(nextState.rooms); setDevices(nextState.devices); setDrawnLines(nextState.drawnLines); setTexts(nextState.texts ?? []);
+    setRedoStack(prev => prev.slice(0, -1));
+    setHistory(prev => [...prev, currentStateStr]);
+    setSelectedId(null);
   };
 
   const handleExportPng = () => {
@@ -528,6 +545,9 @@ export const SbaPlanner = () => {
           
           <button onClick={handleUndo} disabled={history.length === 0} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border rounded-md transition-all text-[10px] sm:text-xs font-medium ${history.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-muted'}`} title={t.undo}>
               <RotateCcw size={14} /> <span className="hidden sm:inline">{t.undo}</span>
+          </button>
+          <button onClick={handleRedo} disabled={redoStack.length === 0} className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-secondary text-secondary-foreground border border-border rounded-md transition-all text-[10px] sm:text-xs font-medium ${redoStack.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-muted'}`} title={t.redo}>
+              <RotateCcw size={14} className="scale-x-[-1]" /> <span className="hidden sm:inline">{t.redo}</span>
           </button>
 
           <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 border border-border rounded-md bg-secondary/50">
