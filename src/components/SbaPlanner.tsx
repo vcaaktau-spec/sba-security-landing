@@ -139,6 +139,23 @@ export const SbaPlanner = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isFullscreen]);
 
+  const [watermarkPattern, setWatermarkPattern] = useState<HTMLCanvasElement | null>(null);
+  useEffect(() => {
+    const tile = document.createElement('canvas');
+    tile.width = 400;
+    tile.height = 400;
+    const ctx = tile.getContext('2d');
+    if (ctx) {
+      ctx.translate(200, 200);
+      ctx.rotate((-30 * Math.PI) / 180);
+      ctx.font = 'bold 60px monospace';
+      ctx.fillStyle = 'rgba(136, 136, 136, 0.06)';
+      ctx.textAlign = 'center';
+      ctx.fillText('RS STUDIO', 0, 0);
+    }
+    setWatermarkPattern(tile);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -424,16 +441,6 @@ export const SbaPlanner = () => {
     return Math.round(total);
   }, [drawnLines]);
 
-  const watermarkGrid = useMemo(() => {
-      const grid = [];
-      for (let i = -5; i <= 5; i++) {
-          for (let j = -5; j <= 5; j++) {
-              grid.push({ x: i * 800, y: j * 800 });
-          }
-      }
-      return grid;
-  }, []);
-
   if (!isMounted) return <div className="h-[600px] w-full bg-muted/20 animate-pulse rounded-md" />;
 
   return (
@@ -629,22 +636,14 @@ export const SbaPlanner = () => {
         >
           {/* Слой с Вотермарками (на самом дне) */}
           <Layer listening={false}>
-             <Group listening={false}>
-                {watermarkGrid.map((pos, idx) => (
-                    <Text 
-                       key={`wm-${idx}`} 
-                       x={pos.x} y={pos.y} 
-                       rotation={-30} 
-                       text="RS STUDIO" 
-                       fontSize={60} 
-                       fontFamily="monospace" 
-                       fontWeight="bold"
-                       fill="#888" 
-                       opacity={0.03} 
-                       listening={false} 
-                    />
-                ))}
-             </Group>
+             {watermarkPattern && (
+                <Rect
+                   x={-4000} y={-4000} width={8000} height={8000}
+                   fillPatternImage={watermarkPattern as unknown as HTMLImageElement}
+                   fillPatternRepeat="repeat"
+                   listening={false}
+                />
+             )}
           </Layer>
 
           {/* Основной Слой (Комнаты, Линии, Оборудование) */}
