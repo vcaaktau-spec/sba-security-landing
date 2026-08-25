@@ -10,6 +10,7 @@ import {
 import { Stage, Layer, Rect, Text, Group, Transformer, Path, Line, Circle, Wedge } from 'react-konva';
 import type Konva from 'konva';
 import { useUser } from '@clerk/clerk-react';
+import { PlannerQuoteTemplate } from '@/components/pdf/PlannerQuoteTemplate';
 
 type PlannerRoom = { id: string; x: number; y: number; width: number; height: number; type: 'room' | 'circle' | 'radius' };
 type DeviceCategory = 'cctv' | 'lan' | 'fire' | 'arch' | 'acs';
@@ -42,6 +43,7 @@ const t = {
   controlsHint: 'С ЗАЖАТЫМ CTRL + КОЛЕСИКО ДЛЯ ЗУМА | ЛКМ ДЛЯ ПАНОРАМЫ',
   autoMeters: 'Авто-Трасса', manualMeters: 'Ручная (Линии)', totalMeters: 'Общая', radius: 'РАДИУС',
   savePng: 'Сохранить PNG',
+  savePdf: 'Экспорт КП',
   magnet: 'Магнит',
   largeIcons: 'Крупные иконки'
 };
@@ -106,6 +108,8 @@ export const SbaPlanner = () => {
   const trRef = useRef<Konva.Transformer>(null);
   const stageRef = useRef<Konva.Stage>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [exportData, setExportData] = useState<{ planImageDataUrl: string; items: { label: string; qty: number; price: number }[]; total: number } | null>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   const saveToHistory = () => {
     const stateStr = JSON.stringify({ rooms, devices, drawnLines, texts });
@@ -135,21 +139,36 @@ export const SbaPlanner = () => {
     setSelectedId(null);
   };
 
-  const handleExportPng = () => {
+  const handleExportDocument = () => {
     setSelectedId(null);
     setDrawMode({ active: false, type: 'cable', category: 'arch' });
     setTimeout(() => {
-      if (stageRef.current) {
-        const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
-        const link = document.createElement('a');
-        link.download = `sba-plan-${Date.now()}.png`;
-        link.href = uri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      if (!stageRef.current) return;
+      const planImageDataUrl = stageRef.current.toDataURL({ pixelRatio: 2 });
+
+      const priced = devices.filter(d => d.price && d.price > 0);
+      const grouped = new Map<string, { label: string; qty: number; price: number }>();
+      priced.forEach(d => {
+        const key = `${d.label}__${d.price}`;
+        const existing = grouped.get(key);
+        if (existing) existing.qty += 1;
+        else grouped.set(key, { label: d.label, qty: 1, price: d.price! });
+      });
+      const items = Array.from(grouped.values());
+      const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+      setExportData({ planImageDataUrl, items, total });
     }, 50);
   };
+
+  useEffect(() => {
+    if (!exportData || !exportRef.current) return;
+    (async () => {
+      const { renderQuotePdf } = await import('@/lib/pdf/renderQuotePdf');
+      await renderQuotePdf(exportRef.current!, `sba-plan-${Date.now()}.pdf`);
+      setExportData(null);
+    })();
+  }, [exportData]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -627,7 +646,7 @@ export const SbaPlanner = () => {
             <button onClick={() => setIsListOpen(!isListOpen)} className={`flex items-center justify-center p-1 sm:p-1.5 rounded transition-colors ${isListOpen ? 'bg-blue-600 text-white' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`} title={isListOpen ? t.hideList : t.showList}>
               <SquareTerminal size={14} />
             </button>
-            <button onClick={handleExportPng} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title={t.savePng}>
+            <button onClick={handleExportDocument} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title={t.savePdf}>
               <Download size={14} />
             </button>
             <button onClick={toggleFullscreen} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title="На весь экран">
@@ -1049,6 +1068,20 @@ export const SbaPlanner = () => {
             </div>
         )}
       </div>
+
+      {exportData && (
+        <div style={{ position: 'fixed', left: -9999, top: 0, pointerEvents: 'none' }} aria-hidden="true">
+          <PlannerQuoteTemplate
+            ref={exportRef}
+            planImageDataUrl={exportData.planImageDataUrl}
+            planName={planName || 'План объекта'}
+            items={exportData.items}
+            total={exportData.total}
+            docNumber={String(Date.now()).slice(-6)}
+            date={new Date().toLocaleDateString('ru-RU')}
+          />
+        </div>
+      )}
     </div>
   );
 };
