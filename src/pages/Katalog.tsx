@@ -10,6 +10,7 @@ import { useCart } from "@/contexts/CartContext"
 
 const PAGE_SIZE = 24
 const DEVICE_TYPE_SPEC_KEY = "Тип устройства"
+const CARD_SPEC_LIMIT = 4
 
 type SortKey = "default" | "price_asc" | "price_desc" | "name_asc"
 
@@ -335,6 +336,16 @@ export const Katalog = () => {
                 className="flex flex-col bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-[#222] rounded-xl p-5 shadow-sm"
               >
                 <Link to={`/katalog/${item.id}`} className="group">
+                  {item.imageUrl && (
+                    <div className="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-slate-50 dark:bg-white/[0.03]">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        loading="lazy"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  )}
                   {item.brand && (
                     <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1 block">
                       {item.brand}
@@ -343,7 +354,7 @@ export const Katalog = () => {
                   <h4 className="font-bold text-base mb-3 text-foreground leading-snug group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">{item.name}</h4>
 
                   <ul className="space-y-1 mb-4">
-                    {Object.entries(item.specs).map(([label, value]) => (
+                    {Object.entries(item.specs).slice(0, CARD_SPEC_LIMIT).map(([label, value]) => (
                       <li key={label} className="flex justify-between gap-2 text-xs text-muted-foreground">
                         <span>{label}</span>
                         <span className="font-semibold text-foreground text-right">{value}</span>

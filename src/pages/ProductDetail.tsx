@@ -120,6 +120,11 @@ export const ProductDetail = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-10">
           <div>
+            {product.imageUrl && (
+              <div className="w-full max-w-sm aspect-square mb-6 rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] border border-border/50">
+                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
+              </div>
+            )}
             {product.brand && (
               <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-bold mb-2 block">
                 {product.brand}

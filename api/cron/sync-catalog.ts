@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { syncBarlauCatalog } from "../_lib/syncBarlauCatalog.js"
 
-// Еженедельный фоновый пересбор каталога камер HiWatch/Hikvision с barlau.kz
-// (см. vercel.json → crons, docs/superpowers/specs/2026-08-11-barlau-catalog-sync-design.md).
+// Еженедельный фоновый пересбор каталога из YML-фида b2b.barlau.kz
+// (см. vercel.json → crons, api/_lib/parseBarlauFeed.ts).
 //
 // Доступ ограничен: Vercel Cron помечает свои запросы заголовком
 // `user-agent: vercel-cron/1.0` — этого достаточно как барьер от случайных
