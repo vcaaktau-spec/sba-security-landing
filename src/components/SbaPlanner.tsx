@@ -29,6 +29,7 @@ const t = {
   text: 'Текст', textContent: 'Текст:', textSize: 'Размер:', textSizeS: 'S', textSizeM: 'M', textSizeL: 'L',
   priceLabel: 'Цена (₸):',
   savePlan: 'Сохранить', myPlans: 'Мои планы', planNamePlaceholder: 'Название плана', noSavedPlans: 'Нет сохранённых планов', loadPlan: 'Загрузить',
+  objectList: 'Объекты', objectListEmpty: 'Пока пусто', showList: 'Список', hideList: 'Скрыть список',
   camera: 'Камера', switch: 'Свитч', nvr: 'Регистратор', monitor: 'Монитор', line: 'Трасса', rack: 'Шкаф',
   router: 'Роутер', lan_switch: 'Коммутатор', wifi: 'Wi-Fi Точка', pc: 'Раб. Место', printer: 'Принтер', socket: 'Розетка',
   smoke: 'Датчик Дымовой', heat: 'Датчик Тепловой', linear: 'Датчик Линейный', siren: 'Сирена', tableau: 'Табло', call_point: 'ИПР', panel: 'ППК',
@@ -93,6 +94,7 @@ export const SbaPlanner = () => {
   const [isLargeIcons, setIsLargeIcons] = useState(false);
   const iconScale = isLargeIcons ? 1 : 0.5;
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isListOpen, setIsListOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
@@ -602,6 +604,9 @@ export const SbaPlanner = () => {
         </div>
         
         <div className="flex items-center gap-0.5 sm:gap-1 bg-secondary rounded-md border border-border p-0.5 shrink-0">
+            <button onClick={() => setIsListOpen(!isListOpen)} className={`flex items-center justify-center p-1 sm:p-1.5 rounded transition-colors ${isListOpen ? 'bg-blue-600 text-white' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`} title={isListOpen ? t.hideList : t.showList}>
+              <SquareTerminal size={14} />
+            </button>
             <button onClick={handleExportPng} className="flex items-center justify-center p-1 sm:p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground rounded transition-colors" title={t.savePng}>
               <Download size={14} />
             </button>
@@ -879,6 +884,35 @@ export const SbaPlanner = () => {
                />
           </Layer>
         </Stage>
+
+        {isListOpen && (
+          <div className="absolute top-3 left-3 w-56 max-h-[calc(100%-24px)] overflow-y-auto bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-sm z-20">
+            <div className="px-3 py-2 border-b border-border text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground sticky top-0 bg-background/95">
+              {t.objectList}
+            </div>
+            {rooms.length === 0 && devices.length === 0 && texts.length === 0 ? (
+              <p className="p-3 text-xs text-muted-foreground">{t.objectListEmpty}</p>
+            ) : (
+              <div className="p-1">
+                {rooms.map((r) => (
+                  <button key={r.id} onClick={() => setSelectedId(r.id)} className={`w-full text-left px-2 py-1.5 text-xs rounded truncate ${selectedId === r.id ? 'bg-blue-600 text-white' : 'hover:bg-muted text-foreground'}`}>
+                    {t.block} {(r.width * M_PER_PX).toFixed(1)}×{(r.height * M_PER_PX).toFixed(1)}
+                  </button>
+                ))}
+                {devices.map((d) => (
+                  <button key={d.id} onClick={() => setSelectedId(d.id)} className={`w-full text-left px-2 py-1.5 text-xs rounded truncate ${selectedId === d.id ? 'bg-blue-600 text-white' : 'hover:bg-muted text-foreground'}`}>
+                    {t[d.type as keyof typeof t] || d.type} — {d.label}
+                  </button>
+                ))}
+                {texts.map((tx) => (
+                  <button key={tx.id} onClick={() => setSelectedId(tx.id)} className={`w-full text-left px-2 py-1.5 text-xs rounded truncate ${selectedId === tx.id ? 'bg-blue-600 text-white' : 'hover:bg-muted text-foreground'}`}>
+                    {t.text}: {tx.content}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3 max-w-[calc(100vw-32px)]">
           <div className="flex flex-wrap sm:flex-nowrap bg-background/90 backdrop-blur-md border border-border rounded-lg p-2 sm:p-3 shadow-sm items-center gap-3 sm:gap-4 pointer-events-none">
