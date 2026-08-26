@@ -194,7 +194,7 @@ export const Katalog = () => {
           </div>
 
           {products && products.length > 0 && (
-            <div className="flex flex-col gap-3 mb-6 sticky top-16 z-20 bg-background/95 backdrop-blur-sm py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 border-b border-border/40">
+            <div className="flex flex-col gap-3 mb-6 sm:sticky sm:top-16 z-20 bg-background/95 backdrop-blur-sm py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 border-b border-border/40">
               <div className="relative">
                 <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
