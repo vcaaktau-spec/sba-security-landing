@@ -164,7 +164,7 @@ export const Katalog = () => {
     }`
 
   const selectClass =
-    "h-10 px-3 rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] text-xs text-foreground outline-none focus:border-red-500/50 transition-colors"
+    "h-10 px-3 rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] text-xs text-foreground outline-none focus:border-red-500/50 transition-colors dark:[color-scheme:dark]"
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
